@@ -317,11 +317,11 @@ export default function VoiceGatewayScreen({ userSession }) {
               </span>
             </div>
 
-            <h1 style={{ fontSize: '1.65rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', margin: 0 }}>
+            <h1 style={{ fontSize: '1.65rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.02em', margin: 0 }}>
               Voice Agent Gateway & Supervisor Playground
             </h1>
             <p style={{ fontSize: '0.88rem', color: 'var(--muted-foreground)', marginTop: '8px', lineHeight: 1.5 }}>
-              A real ElevenLabs agent handles voice support calls through the FlowGuard gateway. Every call receives an 
+              A real ElevenLabs agent handles voice support calls through the Veratone gateway. Every call receives an 
               <strong> ArmorIQ-signed plan</strong>. When callers attempt unverified payout modifications or refunds, 
               the agent notifies a supervisor. <strong>On this playground, YOU are the supervisor</strong>.
             </p>
@@ -384,7 +384,7 @@ export default function VoiceGatewayScreen({ userSession }) {
         {/* 45-Second Timeline Progression Bar */}
         <div style={{ marginTop: '20px', paddingTop: '16px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '8px' }}>
-            <span style={{ fontWeight: 600, color: '#e4e4e7' }}>
+            <span style={{ fontWeight: 600, color: 'var(--foreground)' }}>
               45-Second End-to-End Voice Scenario Timeline
             </span>
             <span style={{ fontFamily: 'monospace', color: '#10b981', fontWeight: 700 }}>
@@ -416,7 +416,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                 border: timerSeconds >= idx * 11 ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid transparent'
               }}>
                 <div style={{ color: timerSeconds >= idx * 11 ? '#10b981' : '#71717a', fontWeight: 600 }}>{step.time}</div>
-                <div style={{ color: '#fafafa', fontWeight: 500 }}>{step.title}</div>
+                <div style={{ color: 'var(--foreground)', fontWeight: 500 }}>{step.title}</div>
                 <div style={{ color: 'var(--muted-foreground)', fontSize: '0.68rem' }}>{step.sub}</div>
               </div>
             ))}
@@ -438,10 +438,10 @@ export default function VoiceGatewayScreen({ userSession }) {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               <ShieldCheck size={14} color="#34d399" />
-              <span style={{ fontWeight: 700, color: '#fafafa' }}>Hackathon Rules Verification:</span>
-              <span style={{ color: '#a1a1aa' }}>1. AI Agent: <strong style={{ color: '#ffffff' }}>ElevenLabs Support Agent</strong></span>
+              <span style={{ fontWeight: 700, color: 'var(--foreground)' }}>Hackathon Rules Verification:</span>
+              <span style={{ color: 'var(--muted-foreground)' }}>1. AI Agent: <strong style={{ color: 'var(--foreground)' }}>ElevenLabs Support Agent</strong></span>
               <span style={{ color: '#71717a' }}>·</span>
-              <span style={{ color: '#a1a1aa' }}>2. MCP: <code style={{ color: '#c084fc', background: 'rgba(255,255,255,0.05)', padding: '2px 4px', borderRadius: '4px' }}>flowguard-treasury-mcp</code></span>
+              <span style={{ color: 'var(--muted-foreground)' }}>2. MCP: <code style={{ color: '#c084fc', background: 'rgba(255,255,255,0.05)', padding: '2px 4px', borderRadius: '4px' }}>flowguard-treasury-mcp</code></span>
               <span style={{ color: '#71717a' }}>·</span>
               <span style={{ color: '#a1a1aa' }}>3. ArmorIQ:</span>
               <span className="badge badge-success" style={{ fontSize: '0.65rem', padding: '2px 6px' }}>✅ Allowed: order_lookup</span>
@@ -481,10 +481,10 @@ export default function VoiceGatewayScreen({ userSession }) {
                   <PhoneCall size={16} color={isGuidedRunning ? '#34d399' : '#a1a1aa'} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '0.88rem', fontWeight: 700, margin: 0, color: '#fafafa' }}>
+                  <h3 style={{ fontSize: '0.88rem', fontWeight: 700, margin: 0, color: 'var(--foreground)' }}>
                     Active Voice Channel
                   </h3>
-                  <span style={{ fontSize: '0.7rem', color: isGuidedRunning ? '#34d399' : '#a1a1aa' }}>
+                  <span style={{ fontSize: '0.7rem', color: isGuidedRunning ? '#34d399' : 'var(--muted-foreground)' }}>
                     {isGuidedRunning ? 'Call In-Progress' : 'Standby / Ready'}
                   </span>
                 </div>
@@ -532,11 +532,11 @@ export default function VoiceGatewayScreen({ userSession }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.8rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', paddingBottom: '6px' }}>
                 <span style={{ color: 'var(--muted-foreground)' }}>Caller</span>
-                <span style={{ fontWeight: 600, color: '#fafafa' }}>{sessionData?.caller?.name || 'Alex Vance'}</span>
+                <span style={{ fontWeight: 600, color: 'var(--foreground)' }}>{sessionData?.caller?.name || 'Alex Vance'}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', paddingBottom: '6px' }}>
                 <span style={{ color: 'var(--muted-foreground)' }}>Company</span>
-                <span style={{ fontWeight: 500, color: '#fafafa' }}>{sessionData?.caller?.company || 'Acme Global Freight'}</span>
+                <span style={{ fontWeight: 500, color: 'var(--foreground)' }}>{sessionData?.caller?.company || 'Acme Global Freight'}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', paddingBottom: '6px' }}>
                 <span style={{ color: 'var(--muted-foreground)' }}>Target Order</span>
@@ -557,19 +557,19 @@ export default function VoiceGatewayScreen({ userSession }) {
           <div className="card" style={{ padding: '16px', border: '1px solid rgba(139, 92, 246, 0.3)', background: 'rgba(139, 92, 246, 0.04)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
               <Shield size={16} color="#a78bfa" />
-              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#e9d5ff' }}>
+              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--foreground)' }}>
                 ArmorIQ Call Intent Token
               </span>
             </div>
 
-            <div style={{ fontSize: '0.72rem', display: 'flex', flexDirection: 'column', gap: '6px', color: '#d4d4d8' }}>
+            <div style={{ fontSize: '0.72rem', display: 'flex', flexDirection: 'column', gap: '6px', color: 'var(--muted-foreground)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: 'var(--muted-foreground)' }}>Token ID:</span>
                 <span style={{ fontFamily: 'monospace', color: '#c084fc' }}>{sessionData?.intentToken?.token_id || 'aiq_vtok_89201'}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: 'var(--muted-foreground)' }}>Plan Hash:</span>
-                <span style={{ fontFamily: 'monospace', color: '#fafafa' }}>
+                <span style={{ fontFamily: 'monospace', color: 'var(--foreground)' }}>
                   {sessionData?.planHash ? `${sessionData.planHash.substring(0, 14)}...` : 'sha256:c8491...'}
                 </span>
               </div>
@@ -583,7 +583,7 @@ export default function VoiceGatewayScreen({ userSession }) {
               </div>
             </div>
 
-            <div style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px solid rgba(139, 92, 246, 0.2)', fontSize: '0.68rem', color: '#a1a1aa' }}>
+            <div style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px solid rgba(139, 92, 246, 0.2)', fontSize: '0.68rem', color: 'var(--muted-foreground)' }}>
               Every support call mints an immutable plan binding caller identity to permitted corridor policies.
             </div>
           </div>
@@ -593,7 +593,7 @@ export default function VoiceGatewayScreen({ userSession }) {
         <div className="card" style={{ padding: '20px', minHeight: '580px', display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '14px', borderBottom: '1px solid var(--border)', marginBottom: '16px' }}>
             <div>
-              <h2 style={{ fontSize: '1rem', fontWeight: 700, margin: 0, color: '#fafafa' }}>
+              <h2 style={{ fontSize: '1rem', fontWeight: 700, margin: 0, color: 'var(--foreground)' }}>
                 Live Support Call Stream
               </h2>
               <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginTop: '2px', margin: 0 }}>
@@ -601,7 +601,7 @@ export default function VoiceGatewayScreen({ userSession }) {
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span className="badge" style={{ background: 'rgba(255, 255, 255, 0.06)', color: '#d4d4d8' }}>
+              <span className="badge" style={{ background: 'rgba(255, 255, 255, 0.06)', color: 'var(--muted-foreground)' }}>
                 {sessionData?.transcript?.length || 0} Events
               </span>
             </div>
@@ -620,7 +620,7 @@ export default function VoiceGatewayScreen({ userSession }) {
             {sessionData?.transcript?.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--muted-foreground)' }}>
                 <Phone size={36} style={{ margin: '0 auto 12px auto', opacity: 0.3 }} />
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: '#fafafa', margin: '0 0 6px 0' }}>
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--foreground)', margin: '0 0 6px 0' }}>
                   Awaiting Support Call
                 </h4>
                 <p style={{ fontSize: '0.8rem', maxWidth: '360px', margin: '0 auto' }}>
@@ -684,7 +684,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                         : isAgent
                         ? '1px solid rgba(16, 185, 129, 0.3)'
                         : '1px solid rgba(245, 158, 11, 0.3)',
-                      color: '#fafafa',
+                      color: 'var(--foreground)',
                       fontSize: '0.83rem',
                       lineHeight: 1.45
                     }}>
@@ -726,14 +726,14 @@ export default function VoiceGatewayScreen({ userSession }) {
               ? '1px solid rgba(239, 68, 68, 0.6)'
               : '1px solid var(--border)',
             background: pendingAction
-              ? 'linear-gradient(180deg, rgba(239, 68, 68, 0.08) 0%, rgba(9, 9, 11, 0.95) 100%)'
+              ? 'linear-gradient(180deg, rgba(239, 68, 68, 0.08) 0%, var(--card) 100%)'
               : undefined,
             boxShadow: pendingAction ? '0 0 25px rgba(239, 68, 68, 0.2)' : undefined
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <UserCheck size={18} color={pendingAction ? '#f87171' : '#34d399'} />
-                <h3 style={{ fontSize: '0.92rem', fontWeight: 700, margin: 0, color: '#fafafa' }}>
+                <h3 style={{ fontSize: '0.92rem', fontWeight: 700, margin: 0, color: 'var(--foreground)' }}>
                   Supervisor Console
                 </h3>
               </div>
@@ -777,7 +777,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                   <strong>5s Timeout Handling:</strong> Gateway answered <em>"A supervisor has been notified"</em> inside window. Awaiting your decision.
                 </div>
 
-                <div style={{ fontSize: '0.76rem', display: 'flex', flexDirection: 'column', gap: '6px', color: '#d4d4d8' }}>
+                <div style={{ fontSize: '0.76rem', display: 'flex', flexDirection: 'column', gap: '6px', color: 'var(--foreground)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: 'var(--muted-foreground)' }}>Target Account:</span>
                     <span style={{ fontFamily: 'monospace', fontWeight: 600, color: '#f87171' }}>
@@ -927,7 +927,7 @@ export default function VoiceGatewayScreen({ userSession }) {
             ) : (
               <div style={{ textAlign: 'center', padding: '24px 10px', color: 'var(--muted-foreground)' }}>
                 <CheckCircle2 size={32} color="#34d399" style={{ margin: '0 auto 8px auto', opacity: 0.8 }} />
-                <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#fafafa' }}>
+                <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--foreground)' }}>
                   No Escalations Pending
                 </div>
                 <p style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)', marginTop: '4px' }}>
@@ -941,7 +941,7 @@ export default function VoiceGatewayScreen({ userSession }) {
           <div className="card" style={{ padding: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
               <Terminal size={14} color="#60a5fa" />
-              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#fafafa' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--foreground)' }}>
                 Tool Trigger Sandbox
               </span>
             </div>
@@ -958,9 +958,9 @@ export default function VoiceGatewayScreen({ userSession }) {
                     width: '100%',
                     padding: '8px 10px',
                     borderRadius: '6px',
-                    background: '#09090b',
+                    background: 'var(--card)',
                     border: '1px solid var(--border)',
-                    color: '#fafafa',
+                    color: 'var(--foreground)',
                     fontSize: '0.78rem'
                   }}
                 >
@@ -978,7 +978,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                       type="text"
                       value={manualRouting}
                       onChange={(e) => setManualRouting(e.target.value)}
-                      style={{ width: '100%', padding: '6px', borderRadius: '4px', background: '#09090b', border: '1px solid var(--border)', color: '#fafafa', fontSize: '0.75rem' }}
+                      style={{ width: '100%', padding: '6px', borderRadius: '4px', background: 'var(--card)', border: '1px solid var(--border)', color: 'var(--foreground)', fontSize: '0.75rem' }}
                     />
                   </div>
                   <div>
@@ -987,7 +987,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                       type="text"
                       value={manualAccount}
                       onChange={(e) => setManualAccount(e.target.value)}
-                      style={{ width: '100%', padding: '6px', borderRadius: '4px', background: '#09090b', border: '1px solid var(--border)', color: '#fafafa', fontSize: '0.75rem' }}
+                      style={{ width: '100%', padding: '6px', borderRadius: '4px', background: 'var(--card)', border: '1px solid var(--border)', color: 'var(--foreground)', fontSize: '0.75rem' }}
                     />
                   </div>
                 </div>
@@ -1000,7 +1000,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                     type="number"
                     value={manualRefundAmount}
                     onChange={(e) => setManualRefundAmount(e.target.value)}
-                    style={{ width: '100%', padding: '6px', borderRadius: '4px', background: '#09090b', border: '1px solid var(--border)', color: '#fafafa', fontSize: '0.75rem' }}
+                    style={{ width: '100%', padding: '6px', borderRadius: '4px', background: 'var(--card)', border: '1px solid var(--border)', color: 'var(--foreground)', fontSize: '0.75rem' }}
                   />
                 </div>
               )}
@@ -1038,7 +1038,7 @@ export default function VoiceGatewayScreen({ userSession }) {
             {/* Modal Header */}
             <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, margin: 0, color: '#fafafa' }}>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, margin: 0, color: 'var(--foreground)' }}>
                   ElevenLabs Voice Agent DX Architecture Notes
                 </h3>
                 <p style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', marginTop: '4px', margin: 0 }}>
@@ -1055,7 +1055,7 @@ export default function VoiceGatewayScreen({ userSession }) {
             </div>
 
             {/* Modal Navigation Tabs */}
-            <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', padding: '0 24px', background: 'rgba(0, 0, 0, 0.4)' }}>
+            <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', padding: '0 24px', background: 'var(--muted)' }}>
               {[
                 { id: 'insights', label: '1. Two Core Voice Insights' },
                 { id: 'schemas', label: '2. ElevenLabs Tool Schemas' },
@@ -1068,7 +1068,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                     background: 'transparent',
                     border: 'none',
                     borderBottom: activeDxTab === tab.id ? '2px solid #10b981' : '2px solid transparent',
-                    color: activeDxTab === tab.id ? '#fafafa' : 'var(--muted-foreground)',
+                    color: activeDxTab === tab.id ? 'var(--foreground)' : 'var(--muted-foreground)',
                     padding: '12px 16px',
                     fontSize: '0.82rem',
                     fontWeight: activeDxTab === tab.id ? 700 : 500,
@@ -1085,11 +1085,11 @@ export default function VoiceGatewayScreen({ userSession }) {
               {activeDxTab === 'insights' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                   {dxNotes?.insights?.map(ins => (
-                    <div key={ins.id} style={{ background: '#09090b', padding: '18px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                    <div key={ins.id} style={{ background: 'var(--card)', padding: '18px', borderRadius: '10px', border: '1px solid var(--border)' }}>
                       <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#34d399', margin: '0 0 10px 0' }}>
                         {ins.title}
                       </h4>
-                      <div style={{ fontSize: '0.82rem', color: '#d4d4d8', marginBottom: '10px', lineHeight: 1.5 }}>
+                      <div style={{ fontSize: '0.82rem', color: 'var(--foreground)', marginBottom: '10px', lineHeight: 1.5 }}>
                         <strong style={{ color: '#f87171' }}>Problem Encountered: </strong>
                         {ins.problem}
                       </div>

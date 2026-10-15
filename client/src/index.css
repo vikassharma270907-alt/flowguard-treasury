@@ -116,8 +116,18 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+/* Base Card Class */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--card-shadow);
+  color: var(--card-foreground);
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
 /* Typography with WCAG AA compliance */
-h1, h2, h3, h4, .font-display {
+h1, h2, h3, h4, h5, h6, .font-display {
   font-family: var(--font-display);
   letter-spacing: -0.025em;
   font-weight: 700;
@@ -140,6 +150,182 @@ h1, h2, h3, h4, .font-display {
 
 .shadcn-card:hover {
   border-color: var(--border-subtle);
+}
+
+/* ============================================================
+   LIGHT THEME WCAG AA / AAA TEXT CONTRAST & ACCESSIBILITY RULES
+   ============================================================ */
+
+[data-theme="light"] {
+  color: #0f172a;
+}
+
+/* Headings in light mode: deep navy charcoal (#0f172a) for maximum contrast */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6,
+[data-theme="light"] .font-display {
+  color: #0f172a !important;
+}
+
+/* Strong text */
+[data-theme="light"] strong,
+[data-theme="light"] b {
+  color: #0f172a !important;
+}
+
+/* Fix any inline white, off-white, or pale gray text in light mode */
+[data-theme="light"] [style*="color: #ffffff"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
+[data-theme="light"] [style*="color: rgb(255, 255, 255)"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
+[data-theme="light"] [style*="color: #fafafa"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
+[data-theme="light"] [style*="color: #f4f4f5"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
+[data-theme="light"] [style*="color: #e4e4e7"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
+[data-theme="light"] [style*="color: #d4d4d8"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
+[data-theme="light"] [style*="color: #e9d5ff"],
+[data-theme="light"] [style*="color: #c4b5fd"] {
+  color: #0f172a !important;
+}
+
+/* Secondary & Muted text colors in light mode (Slate 600 #475569 - 5.4:1 contrast ratio) */
+[data-theme="light"] .text-muted,
+[data-theme="light"] .text-muted-foreground,
+[data-theme="light"] [style*="color: #a1a1aa"],
+[data-theme="light"] [style*="color: #71717a"],
+[data-theme="light"] [style*="color: #94a3b8"],
+[data-theme="light"] [style*="color: var(--muted-foreground)"] {
+  color: #475569 !important;
+}
+
+/* High-contrast status colors for light mode */
+[data-theme="light"] [style*="color: #34d399"],
+[data-theme="light"] [style*="color: #10b981"] {
+  color: #047857 !important;
+}
+
+[data-theme="light"] [style*="color: #60a5fa"],
+[data-theme="light"] [style*="color: #38bdf8"],
+[data-theme="light"] [style*="color: #3b82f6"] {
+  color: #1d4ed8 !important;
+}
+
+[data-theme="light"] [style*="color: #c084fc"],
+[data-theme="light"] [style*="color: #8b5cf6"] {
+  color: #6d28d9 !important;
+}
+
+[data-theme="light"] [style*="color: #fbbf24"],
+[data-theme="light"] [style*="color: #f59e0b"] {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] [style*="color: #f87171"],
+[data-theme="light"] [style*="color: #ef4444"],
+[data-theme="light"] [style*="color: #fca5a5"],
+[data-theme="light"] [style*="color: #fecaca"] {
+  color: #b91c1c !important;
+}
+
+/* Badges with light backgrounds and deep accessible text */
+[data-theme="light"] .badge-live,
+[data-theme="light"] .badge-success {
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+  border: 1px solid #a7f3d0 !important;
+}
+
+[data-theme="light"] .badge-warning,
+[data-theme="light"] .badge-mock {
+  background: #fffbeb !important;
+  color: #92400e !important;
+  border: 1px solid #fde68a !important;
+}
+
+[data-theme="light"] .badge-danger {
+  background: #fef2f2 !important;
+  color: #991b1b !important;
+  border: 1px solid #fecaca !important;
+}
+
+[data-theme="light"] .badge-neutral {
+  background: #f1f5f9 !important;
+  color: #334155 !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+/* Cards & Modals in Light Mode */
+[data-theme="light"] .card,
+[data-theme="light"] .shadcn-card,
+[data-theme="light"] .modal-content {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Nested subcontainers in light mode */
+[data-theme="light"] .card [style*="background: #09090b"],
+[data-theme="light"] .card [style*="background: #050507"],
+[data-theme="light"] .modal-content [style*="background: #09090b"],
+[data-theme="light"] [style*="linear-gradient(135deg, rgba(24, 24, 27"] {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* Inputs, Textareas, Selects in Light Mode */
+[data-theme="light"] input,
+[data-theme="light"] textarea,
+[data-theme="light"] select,
+[data-theme="light"] .shadcn-input {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Code & inline tags in light mode */
+[data-theme="light"] code:not(pre code) {
+  background: #f1f5f9 !important;
+  color: #4338ca !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* Buttons in light mode */
+[data-theme="light"] .btn-primary {
+  background: #0f172a !important;
+  color: #ffffff !important;
+  border-color: #0f172a !important;
+}
+
+[data-theme="light"] .btn-primary * {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .btn-secondary {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .btn-secondary:hover {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .btn-danger {
+  background: #dc2626 !important;
+  color: #ffffff !important;
+  border-color: #dc2626 !important;
+}
+
+[data-theme="light"] .btn-danger * {
+  color: #ffffff !important;
 }
 
 .glass-card {
