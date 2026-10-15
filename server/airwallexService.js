@@ -23,9 +23,9 @@ const { INITIAL_BALANCES, INDICATIVE_FX_RATES } = require('./mockData');
 
 class AirwallexService {
   constructor() {
-    this.clientId = process.env.AIRWALLEX_CLIENT_ID || '';
-    this.apiKey = process.env.AIRWALLEX_API_KEY || '';
-    this.apiUrl = process.env.AIRWALLEX_API_URL || 'https://api.sandbox.airwallex.com/api/v1';
+    this.clientId = (process.env.AIRWALLEX_CLIENT_ID || '').replace(/^["']|["']$/g, '').trim();
+    this.apiKey = (process.env.AIRWALLEX_API_KEY || '').replace(/^["']|["']$/g, '').trim();
+    this.apiUrl = (process.env.AIRWALLEX_API_URL || 'https://api.sandbox.airwallex.com/api/v1').replace(/^["']|["']$/g, '').trim();
     this.forceMock = process.env.AIRWALLEX_MOCK_MODE === 'true';
 
     this.token = null;

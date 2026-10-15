@@ -33,7 +33,7 @@ class ArmorIQService {
   }
 
   initClient() {
-    let key = this.apiKey || process.env.ARMORIQ_API_KEY;
+    let key = (this.apiKey || process.env.ARMORIQ_API_KEY || '').replace(/^["']|["']$/g, '').trim();
     if (!key) {
       try {
         const { loadCredentials } = require('@armoriq/sdk/dist/credentials');
