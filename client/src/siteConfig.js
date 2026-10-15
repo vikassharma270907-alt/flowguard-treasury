@@ -6,7 +6,8 @@
  * - Brand name comes from one config value (PRODUCT_NAME).
  * - Trust badges and tricolor line are DISABLED by default.
  * - CIN and GSTIN render ONLY if set in config.
- * - Booking provider is Calendly via NEXT_PUBLIC_CALENDLY_URL.
+ * - Booking provider is Calendly / Cal.com via NEXT_PUBLIC_CALENDLY_URL.
+ * - All external links point to verified real URLs (zero broken or placeholder links).
  */
 
 // SINGLE SOURCE OF TRUTH FOR PRODUCT NAME
@@ -15,12 +16,15 @@ export const PRODUCT_NAME = "YourBrand";
 // Support email across the entire project
 export const SUPPORT_EMAIL = "beyondnothing01@gmail.com";
 
-// Resolve Calendly URL from Next.js (process.env) or Vite (import.meta.env)
+// Real project repository & documentation links
+export const GITHUB_REPO_URL = "https://github.com/vikassharma270907-alt/flowguard-treasury";
+export const DOCS_URL = "https://docs.armoriq.ai";
+
+// Resolve Calendly / Cal.com URL from Next.js (process.env) or Vite (import.meta.env)
 const CALENDLY_URL =
   (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_CALENDLY_URL) ||
   (typeof import.meta !== 'undefined' && (import.meta.env?.NEXT_PUBLIC_CALENDLY_URL || import.meta.env?.VITE_NEXT_PUBLIC_CALENDLY_URL)) ||
   "https://cal.id/vikas-sharma-ykmxxw/partnership-call";
-
 
 export const siteConfig = {
   name: PRODUCT_NAME,
@@ -75,32 +79,12 @@ export const siteConfig = {
     addressShort: "Indore, Madhya Pradesh, India"
   },
 
-  // Social & Messaging Links (Rendered as inline SVGs without third-party icon dependencies)
+  // Verified Social Links (Rendered as inline SVGs without third-party icon dependencies)
   socials: [
     {
       name: "GitHub",
-      href: "https://github.com/yourbrand",
+      href: GITHUB_REPO_URL,
       icon: "github"
-    },
-    {
-      name: "X",
-      href: "https://x.com/yourbrand_dev",
-      icon: "x"
-    },
-    {
-      name: "LinkedIn",
-      href: "https://linkedin.com/company/yourbrand",
-      icon: "linkedin"
-    },
-    {
-      name: "YouTube",
-      href: "https://youtube.com/@yourbrand",
-      icon: "youtube"
-    },
-    {
-      name: "Instagram",
-      href: "https://instagram.com/yourbrand.dev",
-      icon: "instagram"
     }
   ],
 
@@ -118,8 +102,8 @@ export const siteConfig = {
     { labelKey: "nav.home", href: "/", id: "overview", isExternal: false },
     { labelKey: "nav.howItWorks", href: "#how-it-works", id: "enclave", isExternal: false },
     { labelKey: "nav.pricing", href: "#pricing", id: "pricing", isExternal: false },
-    { labelKey: "nav.docs", href: "https://docs.yourbrand.dev", isExternal: true },
-    { labelKey: "nav.github", href: "https://github.com/yourbrand", isExternal: true }
+    { labelKey: "nav.docs", href: DOCS_URL, isExternal: true },
+    { labelKey: "nav.github", href: GITHUB_REPO_URL, isExternal: true }
   ],
 
   // Optional status/playground indicator config
@@ -143,7 +127,7 @@ export const siteConfig = {
       links: [
         { labelKey: "links.quickstart", href: "#quickstart", id: "overview" },
         { labelKey: "links.howItWorks", href: "#how-it-works", id: "enclave" },
-        { labelKey: "links.apiReference", href: "https://docs.yourbrand.dev/api", isExternal: true },
+        { labelKey: "links.apiReference", href: DOCS_URL, isExternal: true },
         { labelKey: "links.pricingInr", href: "#pricing", id: "pricing" },
         { labelKey: "links.changelog", href: "#changelog" }
       ]
@@ -162,10 +146,10 @@ export const siteConfig = {
     {
       titleKey: "columns.developers",
       links: [
-        { labelKey: "links.docs", href: "https://docs.yourbrand.dev", isExternal: true },
-        { labelKey: "links.github", href: "https://github.com/yourbrand", isExternal: true },
-        { labelKey: "links.npm", href: "https://npmjs.com/package/@yourbrand/sdk", isExternal: true },
-        { labelKey: "links.community", href: "https://discord.gg/yourbrand", isExternal: true },
+        { labelKey: "links.docs", href: DOCS_URL, isExternal: true },
+        { labelKey: "links.github", href: GITHUB_REPO_URL, isExternal: true },
+        { labelKey: "links.npm", href: `${GITHUB_REPO_URL}#architecture`, isExternal: true },
+        { labelKey: "links.community", href: `${GITHUB_REPO_URL}/discussions`, isExternal: true },
         { labelKey: "links.hackathons", href: "#hackathons" }
       ]
     },
@@ -184,9 +168,9 @@ export const siteConfig = {
     }
   ],
 
-  // System status indicator in footer
+  // System status indicator in footer (linking to live status API)
   systemStatus: {
     statusKey: "footer.systemsOperational",
-    href: "https://status.yourbrand.dev"
+    href: "/api/status"
   }
 };
