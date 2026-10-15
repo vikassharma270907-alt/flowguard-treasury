@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import {
   Shield, Activity, RefreshCw, Key, ChevronDown, CheckCircle2,
   AlertTriangle, Play, Lock, User, LogOut, Sliders, Video, X,
-  ShieldCheck, Clock, ArrowDownCircle
+  ShieldCheck, Clock, ArrowDownCircle, Sun, Moon, Box
 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Navbar({
   systemStatus,
@@ -20,6 +21,7 @@ export default function Navbar({
 }) {
   const [scenarioOpen, setScenarioOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { theme, isDark, toggleTheme } = useTheme();
 
   const scenarios = [
     {
@@ -142,6 +144,7 @@ export default function Navbar({
         }}>
           {[
             { id: 'overview', label: 'Overview' },
+            { id: 'enclave', label: '3D Enclave', is3D: true },
             { id: 'planner', label: 'Payment Planner' },
             { id: 'invoices', label: 'Invoice & Risk Guard' },
             { id: 'voice', label: 'Voice Gateway', isVoice: true },
@@ -153,7 +156,7 @@ export default function Navbar({
               onClick={() => setActiveTab(tab.id)}
               style={{
                 background: activeTab === tab.id ? 'var(--secondary)' : 'transparent',
-                color: activeTab === tab.id ? '#fafafa' : 'var(--muted-foreground)',
+                color: activeTab === tab.id ? 'var(--foreground)' : 'var(--muted-foreground)',
                 border: activeTab === tab.id ? '1px solid var(--border)' : '1px solid transparent',
                 borderRadius: '6px',
                 padding: '6px 12px',
@@ -166,7 +169,8 @@ export default function Navbar({
                 gap: '6px'
               }}
             >
-              {tab.isSpecial && <Lock size={12} color={activeTab === tab.id ? '#ffffff' : '#71717a'} />}
+              {tab.is3D && <Box size={13} color={activeTab === tab.id ? '#6366f1' : 'var(--muted-foreground)'} />}
+              {tab.isSpecial && <Lock size={12} color={activeTab === tab.id ? 'var(--foreground)' : '#71717a'} />}
               {tab.label}
               {tab.isVoice && (
                 <span style={{
@@ -187,7 +191,7 @@ export default function Navbar({
                   padding: '1px 5px',
                   borderRadius: '9999px',
                   background: userSession?.authenticated ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255,255,255,0.06)',
-                  color: userSession?.authenticated ? '#34d399' : '#a1a1aa',
+                  color: userSession?.authenticated ? '#34d399' : 'var(--muted-foreground)',
                   border: '1px solid var(--border)',
                   fontWeight: 600
                 }}>
@@ -200,6 +204,37 @@ export default function Navbar({
 
         {/* Actions & Scenario Switcher */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Theme Toggle Button (Light/Dark Mode) */}
+          <button
+            onClick={toggleTheme}
+            className="btn btn-secondary btn-sm"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 10px',
+              border: '1px solid var(--border)',
+              background: 'var(--secondary)',
+              color: 'var(--foreground)',
+              borderRadius: '6px',
+              cursor: 'pointer'
+            }}
+            aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+            title={`Current theme: ${theme} (click to switch to ${isDark ? 'light' : 'dark'} mode)`}
+          >
+            {isDark ? (
+              <>
+                <Sun size={14} color="#fbbf24" />
+                <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>Light</span>
+              </>
+            ) : (
+              <>
+                <Moon size={14} color="#6366f1" />
+                <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>Dark</span>
+              </>
+            )}
+          </button>
+
           {/* Judge Video & Presentation Button */}
           <button
             onClick={onOpenJudgeExplainer}
@@ -210,11 +245,11 @@ export default function Navbar({
               gap: '6px',
               border: '1px solid rgba(255, 255, 255, 0.25)',
               background: 'rgba(255, 255, 255, 0.06)',
-              color: '#ffffff'
+              color: 'var(--foreground)'
             }}
             title="Open Judge Video Script, Veo 3 Prompts & Presentation Rubric"
           >
-            <Video size={13} color="#ffffff" />
+            <Video size={13} color="var(--foreground)" />
             <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>Judge Video & Demo</span>
           </button>
 
@@ -252,11 +287,11 @@ export default function Navbar({
                 position: 'absolute',
                 right: 0,
                 top: '115%',
-                background: '#09090b',
+                background: 'var(--card)',
                 border: '1px solid var(--border)',
                 borderRadius: '10px',
                 width: '360px',
-                boxShadow: '0 16px 36px rgba(0, 0, 0, 0.9)',
+                boxShadow: 'var(--card-shadow)',
                 zIndex: 150,
                 padding: '10px'
               }}>
@@ -387,11 +422,11 @@ export default function Navbar({
                   position: 'absolute',
                   right: 0,
                   top: '115%',
-                  background: '#09090b',
+                  background: 'var(--card)',
                   border: '1px solid var(--border)',
                   borderRadius: '8px',
                   width: '220px',
-                  boxShadow: '0 12px 30px rgba(0,0,0,0.8)',
+                  boxShadow: 'var(--card-shadow)',
                   zIndex: 150,
                   padding: '6px'
                 }}>
