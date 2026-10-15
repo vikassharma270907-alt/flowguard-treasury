@@ -17,11 +17,35 @@
     <meta name="twitter:title" content="Veratone | Verifiable Voice AI" />
     <meta name="twitter:description" content="Verifiable voice AI, cryptographically governed by ArmorIQ. Powered by ElevenLabs & ArmorIQ." />
     
+    <!-- Structured Data with Localized Indore Address -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "YourBrand",
+      "email": "beyondnothing01@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Indore",
+        "addressRegion": "Madhya Pradesh",
+        "addressCountry": "India"
+      }
+    }
+    </script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script>
       (function() {
+        try {
+          var cookieMatch = document.cookie.match(/(?:^|; )preferred-lang=([^;]*)/);
+          var lang = cookieMatch ? decodeURIComponent(cookieMatch[1]) : localStorage.getItem('preferred-lang');
+          if (lang === 'hi' || lang === 'en') {
+            document.documentElement.lang = lang;
+          }
+        } catch (e) {}
+
         try {
           var saved = localStorage.getItem('flowguard-theme');
           var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;

@@ -208,3 +208,65 @@ Two comprehensive technical architectural documents are generated and committed 
 - [EVIDENCE.md](EVIDENCE.md): Raw audit log evidence and cryptographic Merkle proof outputs from live test executions.
 - [ARMORIQ_ONBOARDING.md](ARMORIQ_ONBOARDING.md): Detailed step-by-step onboarding walkthrough for `platform.armoriq.ai`.
 - [LICENSE](LICENSE): MIT Open Source License.
+
+---
+
+## 🇮🇳 Indian Developer-Tools / SaaS Header & Footer System
+
+A responsive, production-ready Header and Footer architecture tailored for Indian developer tools, APIs, and B2B SaaS platforms serving engineering teams and Indian enterprises.
+
+### 🎨 Visual & Aesthetic Standards
+- **Clean Developer-Tool Palette**: Pure white header (`#ffffff`), light warm-gray footer (`#f7f7f5`), 1px subtle borders (`#e5e5e5`), deep neutral text (`#111111`), muted slate (`#6b6b6b`), and vibrant emerald green accent (`#16a34a`).
+- **Typography**: Inter for clean sans-serif UI, JetBrains Mono for monospace tokens/labels, and Noto Sans Devanagari for proper Hindi vernacular rendering.
+- **Header**: Sticky ~56px bar with max-width 1280px container, brand logo + wordmark, desktop navigation from `lg` (1024px) up, and an accessible mobile hamburger drawer below 1024px.
+- **Footer**: 5-column desktop layout (`lg: 1024px+`), transitioning into a balanced 2-column mobile grid.
+
+### ⚙️ Centralized Configuration (`client/src/siteConfig.js`)
+All branding, navigation links, business compliance data, and feature flags originate from a single source of truth:
+```javascript
+// Single source of truth for brand name
+export const PRODUCT_NAME = "YourBrand";
+
+export const siteConfig = {
+  name: PRODUCT_NAME,
+  legalEntityName: `${PRODUCT_NAME} Technologies Pvt. Ltd.`,
+  flags: {
+    // Disabled by default; enable ONLY if legally verified
+    trustBadges: false,
+    // Optional 2px tricolor line; disabled by default
+    tricolorLine: false,
+    // Optional header status/playground indicator
+    headerPlaygroundIndicator: false,
+  },
+  businessDetails: {
+    cin: "",
+    gstin: "",
+    incorporationAct: "Registered under the Companies Act, 2013"
+  },
+  contact: {
+    email: "beyondnothing01@gmail.com",
+    addressShort: "Indore, Madhya Pradesh, India"
+  }
+};
+```
+
+### 🌐 Dual-Locale i18n System (EN | हिन्दी)
+- **Cookie-Backed**: Active language choice stored in cookie `preferred-lang` (1-year TTL, `SameSite=Lax`) to completely eliminate hydration flash.
+- **HTML Attribute Synchronization**: Immediately synchronizes `<html lang="en">` or `<html lang="hi">` in `<head>` script and React context.
+- **Zero Missing Keys**: English (`en.json`) and Hindi (`hi.json`) dictionaries provide full key coverage with automatic English fallback.
+- **Human Review Note**: *Hindi translations in `hi.json` are draft translations and must be reviewed and certified by a native vernacular specialist before final production release.*
+
+### ⚖️ Indian Regulatory & Legal Stubs (Zero 404s)
+Dedicated stub routes with prominent `"Draft – replace with reviewed legal text"` warning banners:
+- `/privacy` — Privacy Policy (DPDP Act, 2023 alignment)
+- `/terms` — Terms of Service (Indian jurisdiction, Indore, Madhya Pradesh courts)
+- `/refund-policy` — Refund & Cancellation Policy (7-day evaluation, INR settlement)
+- `/grievance-officer` — Statutory Grievance Redressal Officer designation (IT Act 2000 & DPDP 2023)
+- `/dpdp-compliance` — Digital Personal Data Protection Act compliance notice
+- **Server Rewrites**: Configured in `vercel.json` and client-side history navigation to ensure direct deep-linking never produces 404 errors.
+
+### ♿ Accessibility & UX Features
+- **Focus Trap & Keyboard Navigation**: Mobile hamburger drawer traps Tab / Shift+Tab cycling within the open menu, listens to `Esc` key to close, and manages `aria-expanded` and `aria-controls`.
+- **WCAG AA Contrast**: Tested against WCAG AA standards (minimum 4.5:1 text contrast ratio).
+- **No External Images / Emoji Flags**: Social links use lightweight inline SVGs with `aria-label` attributes. "Made with ♥ in India" uses text formatting without emoji flags.
+
