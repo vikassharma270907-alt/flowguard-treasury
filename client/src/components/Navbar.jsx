@@ -85,28 +85,27 @@ export default function Navbar({
             width: '36px',
             height: '36px',
             borderRadius: '8px',
-            background: '#ffffff',
+            background: 'var(--secondary)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 15px rgba(255, 255, 255, 0.2)'
+            border: '1px solid var(--border)',
+            boxShadow: '0 0 15px rgba(16, 185, 129, 0.2)'
           }}>
-            <svg width="18" height="16" viewBox="0 0 76 65" fill="#000000">
-              <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" />
-            </svg>
+            <img src="/logo.svg" alt="Veratone Logo" style={{ width: '24px', height: '24px' }} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '1.15rem', fontWeight: 700, letterSpacing: '-0.02em', color: '#fafafa' }}>
-                Flow<span style={{ color: '#a1a1aa' }}>Guard</span>
+              <span style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--foreground)' }}>
+                Vera<span style={{ color: '#10b981' }}>tone</span>
               </span>
-              <span className={`badge ${systemStatus?.isLiveSandbox ? 'badge-live' : 'badge-mock'}`}>
-                <span className={`pulse-dot ${systemStatus?.isLiveSandbox ? 'green' : 'amber'}`}></span>
-                {systemStatus?.isLiveSandbox ? 'Airwallex Live' : 'Airwallex Mock'}
+              <span className="badge badge-live" style={{ fontSize: '0.62rem' }}>
+                <span className="pulse-dot green"></span>
+                ElevenLabs Voice
               </span>
-              <span className={`badge ${systemStatus?.armorIq?.isConfigured ? 'badge-live' : 'badge-neutral'}`} title="ArmorIQ Agent Intent Governance & Policy Assurance (Org: Vikas Sharma's Workspace)">
-                <Shield size={10} color={systemStatus?.armorIq?.isConfigured ? '#34d399' : '#a1a1aa'} />
-                {systemStatus?.armorIq?.isConfigured ? 'ArmorIQ Live API' : 'ArmorIQ Guard'}
+              <span className="badge badge-success" style={{ fontSize: '0.62rem' }} title="ArmorIQ Agent Intent Governance (Org: Vikas Sharma's Workspace)">
+                <Shield size={10} color="#10b981" />
+                ArmorIQ Live PEP
               </span>
               <span
                 onClick={() => setActiveTab('admin')}
@@ -127,7 +126,7 @@ export default function Navbar({
               </span>
             </div>
             <p style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)', marginTop: '1px' }}>
-              Adaptive Treasury Controller · Airwallex Sandbox + ArmorIQ Intent Security
+              Verifiable Voice AI Governed by ArmorIQ · Powered by ElevenLabs
             </p>
           </div>
         </div>

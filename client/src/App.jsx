@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import OverviewScreen from './components/OverviewScreen';
 import PlannerScreen from './components/PlannerScreen';
 import InvoiceGuardScreen from './components/InvoiceGuardScreen';
@@ -326,10 +327,8 @@ export default function App() {
         />
       )}
 
-      {/* Footer */}
-      <footer style={{ borderTop: '1px solid var(--border)', padding: '16px 24px', textAlign: 'center', fontSize: '0.78rem', color: 'var(--muted-foreground)' }}>
-        FlowGuard · Built for Airwallex Developer Hackathon · Sandbox Mode Only · Vercel & Shadcn Dark Theme · No real money moved
-      </footer>
+      {/* Global Responsive Footer */}
+      <Footer onNavigate={setActiveTab} />
     </div>
   );
 }
