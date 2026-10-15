@@ -27,6 +27,9 @@
   - Guaranteed FX Quotes (`/api/v1/fx/quotes/create`)
   - Multi-Currency Payout Transfers (`/api/v1/transfers/create`)
   - Deposit Simulation & Webhooks
+- **Model Context Protocol (MCP):** Official MCP Server (`@modelcontextprotocol/sdk`) governing treasury tools with live ArmorIQ intent verification (`server/mcpServer.js`). Run with `npm run mcp`.
+- **Voice AI:** ElevenLabs Conversational Voice Agent Support Gateway with 5s timeout protection.
+- **Platform Onboarding:** See [ARMORIQ_ONBOARDING.md](file:///d:/hackathon/New%20folder/ARMORIQ_ONBOARDING.md) for step-by-step registration on [platform.armoriq.ai](https://platform.armoriq.ai).
 - **Hosting:** Vercel Serverless Architecture (Static React build + Express Serverless API via `@vercel/node`)
 
 ---

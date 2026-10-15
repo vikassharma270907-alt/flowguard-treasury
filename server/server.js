@@ -19,6 +19,7 @@ const airwallexService = require('./airwallexService');
 const armorIqService = require('./armorIqService');
 const securityEngine = require('./securityEngine');
 const voiceGatewayService = require('./voiceGatewayService');
+const { flowguardMcpServer, FLOWGUARD_MCP_TOOLS } = require('./mcpServer');
 const { scanAllInvoices, inspectInvoice } = require('./duplicateDetector');
 const { planPayments } = require('./rulesEngine');
 const auditLedger = require('./auditLedger');
@@ -284,6 +285,58 @@ app.post('/api/voice/supervisor/decision', async (req, res) => {
 // DX Notes & ElevenLabs Agent Tool Schemas
 app.get('/api/voice/dx-notes', (req, res) => {
   res.json(voiceGatewayService.getDxNotes());
+});
+
+// --- FlowGuard Model Context Protocol (MCP) Server Endpoints ---
+app.get('/api/mcp/status', (req, res) => {
+  res.json({
+    name: 'flowguard-treasury-mcp',
+    version: '1.0.0',
+    protocolVersion: '2024-11-05',
+    status: 'ONLINE',
+    armorIqEnforced: armorIqService.isConfigured(),
+    armorIqMode: armorIqService.mode,
+    transport: ['stdio', 'http-sse', 'rest'],
+    toolsCount: FLOWGUARD_MCP_TOOLS.length,
+    onboardingPlatformUrl: 'https://platform.armoriq.ai'
+  });
+});
+
+app.get('/api/mcp/tools', (req, res) => {
+  res.json({ tools: FLOWGUARD_MCP_TOOLS });
+});
+
+app.post('/api/mcp/execute', async (req, res) => {
+  const { tool, name, arguments: toolArgs = {} } = req.body;
+  const toolName = tool || name;
+  try {
+    const result = await flowguardMcpServer.executeTool(toolName, toolArgs);
+    res.json({ success: true, tool: toolName, result });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+app.get('/api/mcp/config', (req, res) => {
+  res.json({
+    claudeDesktopConfig: {
+      mcpServers: {
+        'flowguard-treasury': {
+          command: 'node',
+          args: ['server/mcpServer.js', '--stdio'],
+          env: {
+            ARMORIQ_API_KEY: process.env.ARMORIQ_API_KEY || 'ak_live_your_key_here'
+          }
+        }
+      }
+    },
+    platformOnboarding: {
+      serverName: 'flowguard-treasury-mcp',
+      agentId: 'flowguard-treasury-agent-v1',
+      platformUrl: 'https://platform.armoriq.ai',
+      supportedTools: FLOWGUARD_MCP_TOOLS.map(t => t.name)
+    }
+  });
 });
 
 // --- System Status & Credentials Verification ---

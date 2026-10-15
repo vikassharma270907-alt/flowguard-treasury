@@ -9,6 +9,7 @@
     "client": "npm --prefix client run dev",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npm --prefix client run build",
+    "mcp": "node server/mcpServer.js --stdio",
     "postinstall": "npm --prefix client install",
     "install:all": "npm install && npm --prefix client install"
   },
@@ -18,6 +19,7 @@
   "type": "commonjs",
   "dependencies": {
     "@armoriq/sdk": "^0.6.10",
+    "@modelcontextprotocol/sdk": "^1.32.1",
     "concurrently": "^10.0.6",
     "cors": "^2.8.6",
     "dotenv": "^18.0.8",
