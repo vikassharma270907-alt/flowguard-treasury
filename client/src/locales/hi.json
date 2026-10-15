@@ -17,7 +17,11 @@
     "bookDemoAria": "डेमो बुक करें (शेड्यूलिंग विंडो खोलता है)",
     "toggleMenu": "नेविगेशन मेनू खोलें/बंद करें",
     "closeMenu": "नेविगेशन मेनू बंद करें",
-    "switchLanguage": "भाषा बदलें"
+    "switchLanguage": "भाषा बदलें",
+    "themeLight": "लाइट",
+    "themeDark": "डार्क",
+    "switchToLight": "लाइट मोड पर स्विच करें",
+    "switchToDark": "डार्क मोड पर स्विच करें"
   },
   "columns": {
     "product": "उत्पाद",

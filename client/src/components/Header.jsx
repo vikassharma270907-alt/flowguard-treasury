@@ -19,6 +19,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { siteConfig as defaultSiteConfig } from '../siteConfig';
 import { useI18n } from '../context/I18nContext';
+import { useTheme } from '../context/ThemeContext';
 import { loadCalendlyAssets, openCalendly } from '../utils/calendly';
 
 // Inline External Arrow ↗ SVG
@@ -39,8 +40,30 @@ const ExternalArrowIcon = () => (
   </svg>
 );
 
-// 24px Black Rounded-Square with White Geometric Brand Icon
-export const BrandLogoIcon = () => (
+// Inline Accessible Sun SVG Icon (Light mode trigger)
+const SunIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="5" />
+    <line x1="12" y1="1" x2="12" y2="3" />
+    <line x1="12" y1="21" x2="12" y2="23" />
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+    <line x1="1" y1="12" x2="3" y2="12" />
+    <line x1="21" y1="12" x2="23" y2="12" />
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+  </svg>
+);
+
+// Inline Accessible Moon SVG Icon (Dark mode trigger)
+const MoonIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+  </svg>
+);
+
+// 24px Rounded-Square with White Geometric Brand Icon
+export const BrandLogoIcon = ({ isDark = false }) => (
   <span
     style={{
       display: 'inline-flex',
@@ -49,8 +72,10 @@ export const BrandLogoIcon = () => (
       width: '24px',
       height: '24px',
       borderRadius: '6px',
-      backgroundColor: '#000000',
-      flexShrink: 0
+      backgroundColor: isDark ? '#18181b' : '#000000',
+      border: isDark ? '1px solid #3f3f46' : '1px solid #000000',
+      flexShrink: 0,
+      transition: 'background-color 0.15s ease, border-color 0.15s ease'
     }}
     aria-hidden="true"
   >
@@ -66,6 +91,7 @@ export default function Header({
   onNavigate
 }) {
   const { language, setLanguage, t } = useI18n();
+  const { theme, isDark, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
 
@@ -181,10 +207,12 @@ export default function Header({
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        backgroundColor: '#ffffff',
-        borderBottom: '1px solid #e5e5e5',
+        backgroundColor: isDark ? 'rgba(9, 9, 11, 0.95)' : '#ffffff',
+        backdropFilter: 'blur(12px)',
+        borderBottom: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
         width: '100%',
-        fontFamily: "'Inter', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif"
+        fontFamily: "'Inter', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif",
+        transition: 'background-color 0.2s ease, border-color 0.2s ease'
       }}
     >
       {/* Optional subtle 2px Indian Tricolor Accent Line - DISABLED by default */}
@@ -226,15 +254,16 @@ export default function Header({
               alignItems: 'center',
               gap: '10px',
               textDecoration: 'none',
-              color: '#111111',
+              color: isDark ? '#fafafa' : '#111111',
               fontWeight: 700,
               fontSize: '15px',
               letterSpacing: '-0.02em',
-              outlineOffset: '2px'
+              outlineOffset: '2px',
+              transition: 'color 0.15s ease'
             }}
             aria-label={`${config.name} home`}
           >
-            <BrandLogoIcon />
+            <BrandLogoIcon isDark={isDark} />
             <span>{config.name}</span>
           </a>
 
@@ -257,7 +286,7 @@ export default function Header({
                     rel={link.isExternal ? 'noopener noreferrer' : undefined}
                     style={{
                       fontSize: '14px',
-                      color: isActive ? '#111111' : '#6b6b6b',
+                      color: isActive ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'),
                       textDecoration: 'none',
                       fontWeight: isActive ? 600 : 400,
                       transition: 'color 0.15s ease',
@@ -265,8 +294,8 @@ export default function Header({
                       alignItems: 'center',
                       outlineOffset: '2px'
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#111111')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = isActive ? '#111111' : '#6b6b6b')}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = isDark ? '#ffffff' : '#111111')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = isActive ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'))}
                   >
                     <span>{label}</span>
                     {link.isExternal && <ExternalArrowIcon />}
@@ -277,8 +306,48 @@ export default function Header({
           )}
         </div>
 
-        {/* Right: Language Switcher, Optional Playground Indicator, CTA, Hamburger */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        {/* Right: Theme Toggle (Light/Dark Mode), Language Switcher, Optional Playground Indicator, CTA, Hamburger */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Light / Dark Mode Button on Top Right Corner */}
+          <button
+            onClick={toggleTheme}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '12px',
+              fontWeight: 500,
+              color: isDark ? '#f4f4f5' : '#111111',
+              backgroundColor: isDark ? '#18181b' : '#f7f7f5',
+              padding: '4px 9px',
+              borderRadius: '4px',
+              border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
+              cursor: 'pointer',
+              transition: 'background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease',
+              fontFamily: 'inherit',
+              outlineOffset: '2px',
+              lineHeight: 1.2
+            }}
+            aria-label={isDark ? t('nav.switchToLight') : t('nav.switchToDark')}
+            title={isDark ? t('nav.switchToLight') : t('nav.switchToDark')}
+          >
+            {isDark ? (
+              <>
+                <span style={{ color: '#fbbf24', display: 'inline-flex', alignItems: 'center' }} aria-hidden="true">
+                  <SunIcon />
+                </span>
+                <span>{t('nav.themeLight')}</span>
+              </>
+            ) : (
+              <>
+                <span style={{ color: '#4f46e5', display: 'inline-flex', alignItems: 'center' }} aria-hidden="true">
+                  <MoonIcon />
+                </span>
+                <span>{t('nav.themeDark')}</span>
+              </>
+            )}
+          </button>
+
           {/* Language Switcher: "EN | हिन्दी" */}
           <div
             style={{
@@ -286,11 +355,12 @@ export default function Header({
               alignItems: 'center',
               fontSize: '12px',
               fontWeight: 500,
-              color: '#6b6b6b',
-              backgroundColor: '#f7f7f5',
+              color: isDark ? '#a1a1aa' : '#6b6b6b',
+              backgroundColor: isDark ? '#18181b' : '#f7f7f5',
               padding: '3px 8px',
               borderRadius: '4px',
-              border: '1px solid #e5e5e5'
+              border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
+              transition: 'background-color 0.15s ease, border-color 0.15s ease'
             }}
             aria-label={t('nav.switchLanguage')}
           >
@@ -303,7 +373,7 @@ export default function Header({
                 padding: '2px 4px',
                 fontSize: '12px',
                 fontWeight: language === 'en' ? 700 : 400,
-                color: language === 'en' ? '#111111' : '#6b6b6b',
+                color: language === 'en' ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'),
                 fontFamily: 'inherit',
                 outlineOffset: '2px'
               }}
@@ -311,7 +381,7 @@ export default function Header({
             >
               EN
             </button>
-            <span style={{ color: '#d1d5db', padding: '0 2px' }} aria-hidden="true">|</span>
+            <span style={{ color: isDark ? '#3f3f46' : '#d1d5db', padding: '0 2px' }} aria-hidden="true">|</span>
             <button
               onClick={() => setLanguage('hi')}
               style={{
@@ -321,7 +391,7 @@ export default function Header({
                 padding: '2px 4px',
                 fontSize: '12px',
                 fontWeight: language === 'hi' ? 700 : 400,
-                color: language === 'hi' ? '#111111' : '#6b6b6b',
+                color: language === 'hi' ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'),
                 fontFamily: "'Noto Sans Devanagari', inherit",
                 outlineOffset: '2px'
               }}
@@ -360,7 +430,7 @@ export default function Header({
                   fontSize: '11px',
                   fontWeight: 600,
                   letterSpacing: '0.08em',
-                  color: '#333333',
+                  color: isDark ? '#d4d4d8' : '#333333',
                   textTransform: 'uppercase'
                 }}
               >
@@ -383,25 +453,25 @@ export default function Header({
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                backgroundColor: '#ffffff',
-                border: '1px solid #111111',
+                backgroundColor: isDark ? '#18181b' : '#ffffff',
+                border: isDark ? '1px solid #3f3f46' : '1px solid #111111',
                 borderRadius: '4px',
                 padding: '7px 14px',
                 fontFamily: "'Inter', sans-serif",
                 fontSize: '13px',
                 fontWeight: 600,
-                color: '#111111',
+                color: isDark ? '#fafafa' : '#111111',
                 textDecoration: 'none',
-                transition: 'background-color 0.15s ease, color 0.15s ease',
+                transition: 'background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease',
                 outlineOffset: '2px'
               }}
               onMouseEnterCapture={(e) => {
-                e.currentTarget.style.backgroundColor = '#111111';
+                e.currentTarget.style.backgroundColor = isDark ? '#27272a' : '#111111';
                 e.currentTarget.style.color = '#ffffff';
               }}
               onMouseLeaveCapture={(e) => {
-                e.currentTarget.style.backgroundColor = '#ffffff';
-                e.currentTarget.style.color = '#111111';
+                e.currentTarget.style.backgroundColor = isDark ? '#18181b' : '#ffffff';
+                e.currentTarget.style.color = isDark ? '#fafafa' : '#111111';
               }}
             >
               <span>{t('nav.bookDemo')}</span>
@@ -419,13 +489,14 @@ export default function Header({
                 justifyContent: 'center',
                 width: '34px',
                 height: '34px',
-                background: 'transparent',
-                border: '1px solid #e5e5e5',
+                background: isDark ? '#18181b' : 'transparent',
+                border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
                 borderRadius: '4px',
-                color: '#111111',
+                color: isDark ? '#fafafa' : '#111111',
                 cursor: 'pointer',
                 padding: 0,
-                outlineOffset: '2px'
+                outlineOffset: '2px',
+                transition: 'background-color 0.15s ease, border-color 0.15s ease'
               }}
               aria-label={mobileMenuOpen ? t('nav.closeMenu') : t('nav.toggleMenu')}
               aria-expanded={mobileMenuOpen}
@@ -456,14 +527,15 @@ export default function Header({
             top: '57px',
             left: 0,
             width: '100%',
-            backgroundColor: '#ffffff',
-            borderBottom: '1px solid #e5e5e5',
-            boxShadow: '0 12px 24px rgba(0, 0, 0, 0.08)',
+            backgroundColor: isDark ? '#0d0d11' : '#ffffff',
+            borderBottom: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
+            boxShadow: isDark ? '0 12px 24px rgba(0, 0, 0, 0.6)' : '0 12px 24px rgba(0, 0, 0, 0.08)',
             padding: '20px',
             display: 'flex',
             flexDirection: 'column',
             gap: '12px',
-            zIndex: 99
+            zIndex: 99,
+            transition: 'background-color 0.2s ease, border-color 0.2s ease'
           }}
         >
           {config.headerNav.map((link) => (
@@ -475,10 +547,10 @@ export default function Header({
               rel={link.isExternal ? 'noopener noreferrer' : undefined}
               style={{
                 fontSize: '15px',
-                color: '#111111',
+                color: isDark ? '#fafafa' : '#111111',
                 textDecoration: 'none',
                 padding: '10px 4px',
-                borderBottom: '1px solid #f5f5f5',
+                borderBottom: isDark ? '1px solid #1c1c22' : '1px solid #f5f5f5',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -506,12 +578,12 @@ export default function Header({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: '#111111',
+                  backgroundColor: isDark ? '#ffffff' : '#111111',
                   borderRadius: '4px',
                   padding: '12px 16px',
                   fontSize: '13px',
                   fontWeight: 600,
-                  color: '#ffffff',
+                  color: isDark ? '#09090b' : '#ffffff',
                   textDecoration: 'none',
                   outlineOffset: '2px'
                 }}

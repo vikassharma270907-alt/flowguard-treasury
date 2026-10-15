@@ -24,6 +24,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { siteConfig as defaultSiteConfig, SUPPORT_EMAIL } from '../siteConfig';
 import { useI18n } from '../context/I18nContext';
+import { useTheme } from '../context/ThemeContext';
 import { BrandLogoIcon } from './Header';
 import { loadCalendlyAssets, openCalendly } from '../utils/calendly';
 
@@ -76,6 +77,7 @@ export default function Footer({
   onNavigate
 }) {
   const { t, language } = useI18n();
+  const { isDark } = useTheme();
   const currentYear = new Date().getFullYear();
   const [isDesktop, setIsDesktop] = useState(true);
   const [mailtoHref, setMailtoHref] = useState('');
@@ -147,12 +149,13 @@ export default function Footer({
     <footer
       style={{
         width: '100%',
-        backgroundColor: '#f7f7f5',
-        borderTop: '1px solid #e5e5e5',
+        backgroundColor: isDark ? '#0d0d11' : '#f7f7f5',
+        borderTop: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
         fontFamily: "'Inter', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif",
-        color: '#111111',
+        color: isDark ? '#fafafa' : '#111111',
         padding: '64px 20px 32px 20px',
-        marginTop: '60px'
+        marginTop: '60px',
+        transition: 'background-color 0.2s ease, border-color 0.2s ease'
       }}
       aria-label="Site footer"
     >
@@ -177,13 +180,13 @@ export default function Footer({
           {/* Column 1: Brand + Contact & Indian Business Details */}
           <div style={{ gridColumn: isDesktop ? 'auto' : '1 / -1' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '9px', marginBottom: '12px' }}>
-              <BrandLogoIcon />
-              <span style={{ fontSize: '16px', fontWeight: 700, color: '#111111', letterSpacing: '-0.02em' }}>
+              <BrandLogoIcon isDark={isDark} />
+              <span style={{ fontSize: '16px', fontWeight: 700, color: isDark ? '#fafafa' : '#111111', letterSpacing: '-0.02em' }}>
                 {config.name}
               </span>
             </div>
 
-            <p style={{ fontSize: '13.5px', color: '#6b6b6b', lineHeight: 1.55, marginBottom: '16px', maxWidth: '340px' }}>
+            <p style={{ fontSize: '13.5px', color: isDark ? '#a1a1aa' : '#6b6b6b', lineHeight: 1.55, marginBottom: '16px', maxWidth: '340px' }}>
               {t(config.taglineKey)}
             </p>
 
@@ -197,7 +200,7 @@ export default function Footer({
                   rel="noopener noreferrer"
                   aria-label={social.name}
                   style={{
-                    color: '#6b6b6b',
+                    color: isDark ? '#a1a1aa' : '#6b6b6b',
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -205,8 +208,8 @@ export default function Footer({
                     textDecoration: 'none',
                     outlineOffset: '2px'
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#111111')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#6b6b6b')}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = isDark ? '#ffffff' : '#111111')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = isDark ? '#a1a1aa' : '#6b6b6b')}
                 >
                   <SocialIcon name={social.icon} />
                 </a>
@@ -216,17 +219,17 @@ export default function Footer({
             {/* Contact & Legal Entity Block */}
             <div
               style={{
-                backgroundColor: '#ffffff',
-                border: '1px solid #e5e5e5',
+                backgroundColor: isDark ? '#18181b' : '#ffffff',
+                border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
                 borderRadius: '6px',
                 padding: '14px',
                 fontSize: '12px',
-                color: '#4b5563',
+                color: isDark ? '#d4d4d8' : '#4b5563',
                 lineHeight: 1.6,
                 maxWidth: '340px'
               }}
             >
-              <div style={{ fontWeight: 600, color: '#111111', marginBottom: '4px' }}>
+              <div style={{ fontWeight: 600, color: isDark ? '#fafafa' : '#111111', marginBottom: '4px' }}>
                 {config.legalEntityName}
               </div>
               <div>{t(config.registrationTextKey)}</div>
@@ -245,14 +248,14 @@ export default function Footer({
                 </div>
               )}
 
-              <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #f0f0f0' }}>
+              <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: isDark ? '1px solid #27272a' : '1px solid #f0f0f0' }}>
                 {/* Render email as plain text in the HTML and build mailto link on client */}
                 <div>
                   <strong>{t('contact.email')}:</strong>{' '}
                   <a
                     href={mailtoHref || `mailto:${SUPPORT_EMAIL}`}
                     aria-label={`Send email to support at ${SUPPORT_EMAIL}`}
-                    style={{ color: '#111111', textDecoration: 'none', outlineOffset: '2px' }}
+                    style={{ color: isDark ? '#38bdf8' : '#111111', textDecoration: 'none', outlineOffset: '2px' }}
                     onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
                     onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
                   >
@@ -280,7 +283,7 @@ export default function Footer({
                       alignItems: 'center',
                       gap: '6px',
                       fontSize: '11px',
-                      color: '#374151',
+                      color: isDark ? '#d4d4d8' : '#374151',
                       fontFamily: "'JetBrains Mono', monospace"
                     }}
                   >
@@ -302,7 +305,7 @@ export default function Footer({
                   fontWeight: 600,
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
-                  color: '#6b6b6b',
+                  color: isDark ? '#a1a1aa' : '#6b6b6b',
                   marginBottom: '14px',
                   margin: '0 0 14px 0'
                 }}
@@ -340,18 +343,18 @@ export default function Footer({
                           aria-label={t('nav.bookDemoAria')}
                           style={{
                             fontSize: '14px',
-                            color: '#444444',
+                            color: isDark ? '#d4d4d8' : '#444444',
                             textDecoration: 'none',
                             transition: 'color 0.15s ease',
                             cursor: 'pointer',
                             outlineOffset: '2px'
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.color = '#111111';
+                            e.currentTarget.style.color = isDark ? '#ffffff' : '#111111';
                             e.currentTarget.style.textDecoration = 'underline';
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.color = '#444444';
+                            e.currentTarget.style.color = isDark ? '#d4d4d8' : '#444444';
                             e.currentTarget.style.textDecoration = 'none';
                           }}
                         >
@@ -370,18 +373,18 @@ export default function Footer({
                         rel={link.isExternal ? 'noopener noreferrer' : undefined}
                         style={{
                           fontSize: '14px',
-                          color: '#444444',
+                          color: isDark ? '#d4d4d8' : '#444444',
                           textDecoration: 'none',
                           transition: 'color 0.15s ease',
                           cursor: 'pointer',
                           outlineOffset: '2px'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.color = '#111111';
+                          e.currentTarget.style.color = isDark ? '#ffffff' : '#111111';
                           e.currentTarget.style.textDecoration = 'underline';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.color = '#444444';
+                          e.currentTarget.style.color = isDark ? '#d4d4d8' : '#444444';
                           e.currentTarget.style.textDecoration = 'none';
                         }}
                       >
@@ -401,7 +404,7 @@ export default function Footer({
         {/* Bottom Bar: Copyright, Made with Heart in India (No emoji flag), System Status */}
         <div
           style={{
-            borderTop: '1px solid #e5e5e5',
+            borderTop: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
             paddingTop: '20px',
             display: 'flex',
             alignItems: 'center',
@@ -409,7 +412,7 @@ export default function Footer({
             flexWrap: 'wrap',
             gap: '14px',
             fontSize: '12px',
-            color: '#6b6b6b'
+            color: isDark ? '#a1a1aa' : '#6b6b6b'
           }}
         >
           <div>
@@ -426,7 +429,7 @@ export default function Footer({
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  color: '#4b5563',
+                  color: isDark ? '#d4d4d8' : '#4b5563',
                   textDecoration: 'none',
                   fontSize: '11px',
                   fontFamily: "'JetBrains Mono', monospace",
@@ -448,7 +451,7 @@ export default function Footer({
             )}
 
             {/* "Made with ♥ in India" text representation - NEVER an emoji flag */}
-            <span style={{ fontWeight: 500, color: '#374151' }}>
+            <span style={{ fontWeight: 500, color: isDark ? '#d4d4d8' : '#374151' }}>
               {t('footer.madeInIndia')}
             </span>
           </div>

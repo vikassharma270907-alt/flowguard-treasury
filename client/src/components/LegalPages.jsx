@@ -14,6 +14,7 @@
 
 import React from 'react';
 import { useI18n } from '../context/I18nContext';
+import { useTheme } from '../context/ThemeContext';
 import { siteConfig } from '../siteConfig';
 
 const LEGAL_DOCS = {
@@ -124,6 +125,7 @@ const LEGAL_DOCS = {
 
 export default function LegalPages({ docKey = 'privacy', onBackToHome }) {
   const { t, language } = useI18n();
+  const { isDark } = useTheme();
   const doc = LEGAL_DOCS[docKey] || LEGAL_DOCS.privacy;
 
   return (
@@ -133,7 +135,8 @@ export default function LegalPages({ docKey = 'privacy', onBackToHome }) {
         margin: '0 auto',
         padding: '40px 20px 80px 20px',
         fontFamily: "'Inter', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif",
-        color: '#111111'
+        color: isDark ? '#fafafa' : '#111111',
+        transition: 'color 0.2s ease'
       }}
       aria-labelledby="legal-page-title"
     >
@@ -164,8 +167,8 @@ export default function LegalPages({ docKey = 'privacy', onBackToHome }) {
       <div
         role="alert"
         style={{
-          backgroundColor: '#fffbeb',
-          border: '1px solid #fde68a',
+          backgroundColor: isDark ? 'rgba(245, 158, 11, 0.12)' : '#fffbeb',
+          border: isDark ? '1px solid rgba(245, 158, 11, 0.3)' : '1px solid #fde68a',
           borderRadius: '8px',
           padding: '16px 20px',
           marginBottom: '32px'
@@ -178,7 +181,7 @@ export default function LegalPages({ docKey = 'privacy', onBackToHome }) {
               style={{
                 fontSize: '14px',
                 fontWeight: 700,
-                color: '#92400e',
+                color: isDark ? '#fcd34d' : '#92400e',
                 margin: '0 0 4px 0'
               }}
             >
@@ -187,7 +190,7 @@ export default function LegalPages({ docKey = 'privacy', onBackToHome }) {
             <p
               style={{
                 fontSize: '13px',
-                color: '#b45309',
+                color: isDark ? '#fbbf24' : '#b45309',
                 margin: 0,
                 lineHeight: 1.5
               }}
@@ -199,7 +202,7 @@ export default function LegalPages({ docKey = 'privacy', onBackToHome }) {
       </div>
 
       {/* Document Header */}
-      <header style={{ borderBottom: '1px solid #e5e5e5', paddingBottom: '20px', marginBottom: '28px' }}>
+      <header style={{ borderBottom: isDark ? '1px solid #27272a' : '1px solid #e5e5e5', paddingBottom: '20px', marginBottom: '28px' }}>
         <h1
           id="legal-page-title"
           style={{
@@ -207,12 +210,12 @@ export default function LegalPages({ docKey = 'privacy', onBackToHome }) {
             fontWeight: 800,
             letterSpacing: '-0.02em',
             margin: '0 0 8px 0',
-            color: '#111111'
+            color: isDark ? '#ffffff' : '#111111'
           }}
         >
           {language === 'hi' ? doc.titleHi : doc.title}
         </h1>
-        <p style={{ fontSize: '13px', color: '#6b6b6b', margin: 0 }}>
+        <p style={{ fontSize: '13px', color: isDark ? '#a1a1aa' : '#6b6b6b', margin: 0 }}>
           Last Updated: {doc.lastUpdated} · Entity: {siteConfig.legalEntityName}
         </p>
       </header>
@@ -225,7 +228,7 @@ export default function LegalPages({ docKey = 'privacy', onBackToHome }) {
               style={{
                 fontSize: '17px',
                 fontWeight: 600,
-                color: '#111111',
+                color: isDark ? '#f4f4f5' : '#111111',
                 marginBottom: '8px',
                 marginTop: 0
               }}
@@ -235,7 +238,7 @@ export default function LegalPages({ docKey = 'privacy', onBackToHome }) {
             <p
               style={{
                 fontSize: '14px',
-                color: '#374151',
+                color: isDark ? '#d4d4d8' : '#374151',
                 margin: 0,
                 whiteSpace: 'pre-line'
               }}
@@ -251,9 +254,9 @@ export default function LegalPages({ docKey = 'privacy', onBackToHome }) {
         style={{
           marginTop: '48px',
           paddingTop: '20px',
-          borderTop: '1px solid #f0f0f0',
+          borderTop: isDark ? '1px solid #27272a' : '1px solid #f0f0f0',
           fontSize: '12px',
-          color: '#6b6b6b'
+          color: isDark ? '#a1a1aa' : '#6b6b6b'
         }}
       >
         <div>{siteConfig.legalEntityName} · {siteConfig.contact.addressShort}</div>

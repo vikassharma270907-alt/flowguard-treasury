@@ -16,7 +16,11 @@
     "bookDemoAria": "Book a demo (opens scheduling window)",
     "toggleMenu": "Toggle navigation menu",
     "closeMenu": "Close navigation menu",
-    "switchLanguage": "Switch language"
+    "switchLanguage": "Switch language",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
   },
   "columns": {
     "product": "Product",
