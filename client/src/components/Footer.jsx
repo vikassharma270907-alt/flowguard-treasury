@@ -1,26 +1,33 @@
 /**
- * Reusable Responsive Footer Component
+ * Responsive Footer Component
  * Indian Developer-Tools / SaaS Product ("YourBrand")
- *
- * Features:
- * - 5-column layout on desktop, responsive stacked grid on mobile
- * - Column 1: Brand, Tagline, Socials (GitHub, X, LinkedIn, YouTube, Instagram, WhatsApp Business)
- * - Indian Corporate & Tax Compliance block: Registered Office, CIN, GSTIN, Companies Act 2013
- * - Trust Badges: Data stored in India, UPI & Razorpay supported, GST-compliant invoices
- * - Column 2: PRODUCT (Quickstart, How it works, API reference, Pricing in ₹, Changelog)
- * - Column 3: FOR BUSINESS (Contact Sales, GST Invoice & Billing, Enterprise, Partners, Case Studies)
- * - Column 4: DEVELOPERS (Docs, GitHub, npm, Community, Hackathons & Events)
- * - Column 5: COMPANY & LEGAL (Privacy, Terms, Refund Policy, Grievance Officer, DPDP Act)
- * - Bottom Bar: Legal entity copyright, "Made with ♥ in India 🇮🇳", live system status
- * - Subtle 2px Indian tricolor accent bar at bottom
+ * 
+ * Complies with strict Phase 2 & Booking requirements:
+ * - Background #f7f7f5, 1px top border (#e5e5e5), 64px vertical padding
+ * - 5 columns on desktop (>=1024px), 2 columns on mobile (<1024px)
+ *   1: Brand + contact, 2: Product, 3: For Business, 4: Developers, 5: Company & Legal
+ * - Headings: monospace, uppercase, 11px, letter-spacing 0.08em, muted gray
+ * - Links: 14px, #444, hover darker or underlined
+ * - Contact block:
+ *   - Plain text email rendered in HTML with client-built mailto link and aria-label
+ *   - Address: "Indore, Madhya Pradesh, India" (Hindi: "इंदौर, मध्य प्रदेश, भारत")
+ *   - No phone numbers, no telephone links, no empty rows/labels
+ *   - No WhatsApp or messaging links
+ * - Booking integration: "Book a call" opens scheduling window; hidden if booking URL is empty
+ * - CIN & GSTIN rendered ONLY if set
+ * - Trust badges and tricolor accent DISABLED by default
+ * - Bottom bar: © {currentYear} {legalName}. All rights reserved.
+ * - "Made with ♥ in India" text (no emoji flag)
+ * - Social icons: inline SVGs with aria-labels, no third-party brand dependencies
  */
 
-import React from 'react';
-import { siteConfig as defaultSiteConfig } from '../siteConfig';
+import React, { useState, useEffect, useRef } from 'react';
+import { siteConfig as defaultSiteConfig, SUPPORT_EMAIL } from '../siteConfig';
 import { useI18n } from '../context/I18nContext';
 import { BrandLogoIcon } from './Header';
+import { loadCalendlyAssets, openCalendly } from '../utils/calendly';
 
-// Lightweight SVGs for Social Platforms
+// Inline Accessible SVGs for Social Platforms (no third-party icon dependencies)
 const SocialIcon = ({ name }) => {
   switch (name) {
     case 'github':
@@ -59,12 +66,6 @@ const SocialIcon = ({ name }) => {
           <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
         </svg>
       );
-    case 'whatsapp':
-      return (
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-        </svg>
-      );
     default:
       return null;
   }
@@ -74,18 +75,73 @@ export default function Footer({
   config = defaultSiteConfig,
   onNavigate
 }) {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   const currentYear = new Date().getFullYear();
+  const [isDesktop, setIsDesktop] = useState(true);
+  const [mailtoHref, setMailtoHref] = useState('');
+  const bookingTriggerRef = useRef(null);
+
+  const bookingUrl = config.booking?.url?.trim();
+
+  // Build mailto href dynamically on client to reduce automated web scraping
+  useEffect(() => {
+    const email = SUPPORT_EMAIL;
+    const parts = email.split('@');
+    if (parts.length === 2) {
+      setMailtoHref(`mailto:${parts[0]}@${parts[1]}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleLinkClick = (e, link) => {
+    if (link.isBooking) {
+      e.preventDefault();
+      if (bookingUrl) {
+        openCalendly(bookingUrl, e.currentTarget);
+      }
+      return;
+    }
+
     if (link.isExternal) return;
     if (link.href && link.href.startsWith('mailto:')) return;
-    if (onNavigate && link.id) {
-      e.preventDefault();
-      onNavigate(link.id);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (link.href && link.href.startsWith('/')) {
+      if (onNavigate) {
+        e.preventDefault();
+        const routeKey = link.href === '/' ? 'overview' : link.href.replace('/', '');
+        onNavigate(routeKey);
+        window.history.pushState(null, '', link.href);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } else if (link.href && link.href.startsWith('#')) {
+      if (onNavigate && link.id) {
+        e.preventDefault();
+        onNavigate(link.id);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   };
+
+  const handleBookingHover = () => {
+    if (bookingUrl) {
+      loadCalendlyAssets();
+    }
+  };
+
+  // CIN and GSTIN condition: Render ONLY if valid string is set, never empty/placeholder
+  const hasCin = Boolean(config.businessDetails?.cin && config.businessDetails.cin.trim());
+  const hasGstin = Boolean(config.businessDetails?.gstin && config.businessDetails.gstin.trim());
+
+  // Localized address
+  const addressText = language === 'hi' ? 'इंदौर, मध्य प्रदेश, भारत' : 'Indore, Madhya Pradesh, India';
 
   return (
     <footer
@@ -106,20 +162,20 @@ export default function Footer({
           margin: '0 auto',
           display: 'flex',
           flexDirection: 'column',
-          gap: '48px'
+          gap: '40px'
         }}
       >
-        {/* Main 5-Column Grid */}
+        {/* Main Columns Grid: 2 columns on mobile, 5 on desktop */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
-            gap: '36px',
+            gridTemplateColumns: isDesktop ? '1.4fr 1fr 1fr 1fr 1.1fr' : 'repeat(2, minmax(0, 1fr))',
+            gap: isDesktop ? '36px' : '28px 20px',
             alignItems: 'start'
           }}
         >
-          {/* Column 1: Brand & Indian Business Compliance Details */}
-          <div style={{ maxWidth: '340px' }}>
+          {/* Column 1: Brand + Contact & Indian Business Details */}
+          <div style={{ gridColumn: isDesktop ? 'auto' : '1 / -1' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '9px', marginBottom: '12px' }}>
               <BrandLogoIcon />
               <span style={{ fontSize: '16px', fontWeight: 700, color: '#111111', letterSpacing: '-0.02em' }}>
@@ -127,12 +183,12 @@ export default function Footer({
               </span>
             </div>
 
-            <p style={{ fontSize: '13.5px', color: '#6b6b6b', lineHeight: 1.55, marginBottom: '16px' }}>
+            <p style={{ fontSize: '13.5px', color: '#6b6b6b', lineHeight: 1.55, marginBottom: '16px', maxWidth: '340px' }}>
               {t(config.taglineKey)}
             </p>
 
-            {/* Social Icons Bar including WhatsApp Business */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '22px' }}>
+            {/* Social Icons Bar (inline SVGs with aria-labels) */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
               {config.socials.map((social) => (
                 <a
                   key={social.name}
@@ -146,7 +202,8 @@ export default function Footer({
                     alignItems: 'center',
                     justifyContent: 'center',
                     transition: 'color 0.15s ease',
-                    textDecoration: 'none'
+                    textDecoration: 'none',
+                    outlineOffset: '2px'
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = '#111111')}
                   onMouseLeave={(e) => (e.currentTarget.style.color = '#6b6b6b')}
@@ -156,59 +213,83 @@ export default function Footer({
               ))}
             </div>
 
-            {/* Indian Corporate & Tax Compliance Details Block */}
+            {/* Contact & Legal Entity Block */}
             <div
               style={{
                 backgroundColor: '#ffffff',
                 border: '1px solid #e5e5e5',
                 borderRadius: '6px',
-                padding: '12px 14px',
-                fontSize: '11.5px',
-                color: '#555555',
+                padding: '14px',
+                fontSize: '12px',
+                color: '#4b5563',
                 lineHeight: 1.6,
-                marginBottom: '16px'
+                maxWidth: '340px'
               }}
             >
               <div style={{ fontWeight: 600, color: '#111111', marginBottom: '4px' }}>
                 {config.legalEntityName}
               </div>
               <div>{t(config.registrationTextKey)}</div>
-              {config.businessDetails?.cin && (
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10.5px' }}>
-                  CIN: {config.businessDetails.cin}
+
+              {/* CIN: Renders ONLY if configured, never placeholder */}
+              {hasCin && (
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', marginTop: '2px' }}>
+                  {t('contact.cin')}: {config.businessDetails.cin}
                 </div>
               )}
-              {config.businessDetails?.gstin && (
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10.5px' }}>
-                  GSTIN: {config.businessDetails.gstin}
+
+              {/* GSTIN: Renders ONLY if configured, never placeholder */}
+              {hasGstin && (
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px' }}>
+                  {t('contact.gstin')}: {config.businessDetails.gstin}
                 </div>
               )}
-              <div style={{ marginTop: '6px', paddingTop: '6px', borderTop: '1px solid #f0f0f0' }}>
-                <div><strong>Email:</strong> {config.contact.email}</div>
-                <div><strong>Phone:</strong> {config.contact.phoneDisplay}</div>
-                <div><strong>HQ:</strong> {config.contact.addressShort}</div>
+
+              <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #f0f0f0' }}>
+                {/* Render email as plain text in the HTML and build mailto link on client */}
+                <div>
+                  <strong>{t('contact.email')}:</strong>{' '}
+                  <a
+                    href={mailtoHref || `mailto:${SUPPORT_EMAIL}`}
+                    aria-label={`Send email to support at ${SUPPORT_EMAIL}`}
+                    style={{ color: '#111111', textDecoration: 'none', outlineOffset: '2px' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+                    onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
+                  >
+                    <span>{SUPPORT_EMAIL}</span>
+                  </a>
+                </div>
+                <div style={{ marginTop: '2px' }}>
+                  <strong>{t('contact.office')}:</strong> <span>{addressText}</span>
+                </div>
               </div>
             </div>
 
-            {/* Trust Badges Row (Indian Sovereign & Financial Assurance) */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              {config.trustBadges.map((badge, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '11px',
-                    color: '#444444',
-                    fontFamily: "'JetBrains Mono', monospace"
-                  }}
-                >
-                  <span style={{ color: '#16a34a', fontSize: '12px' }}>✓</span>
-                  <span>{t(badge.key)}</span>
-                </div>
-              ))}
-            </div>
+            {/*
+              Trust badges (Data stored in India, UPI/Razorpay supported, GST-compliant invoices)
+              are config-driven and DISABLED by default.
+              They MUST ONLY be enabled if verified true for the business entity.
+            */}
+            {config.flags?.trustBadges && config.trustBadges?.length > 0 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '16px' }}>
+                {config.trustBadges.map((badge, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      fontSize: '11px',
+                      color: '#374151',
+                      fontFamily: "'JetBrains Mono', monospace"
+                    }}
+                  >
+                    <span style={{ color: '#16a34a', fontSize: '12px' }} aria-hidden="true">✓</span>
+                    <span>{t(badge.key)}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Columns 2, 3, 4, 5: Navigation Columns */}
@@ -222,8 +303,8 @@ export default function Footer({
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
                   color: '#6b6b6b',
-                  marginBottom: '16px',
-                  margin: '0 0 16px 0'
+                  marginBottom: '14px',
+                  margin: '0 0 14px 0'
                 }}
               >
                 {t(col.titleKey)}
@@ -236,46 +317,92 @@ export default function Footer({
                   margin: 0,
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '12px'
+                  gap: '10px'
                 }}
               >
-                {col.links.map((link) => (
-                  <li key={link.labelKey}>
-                    <a
-                      href={link.href}
-                      onClick={(e) => handleLinkClick(e, link)}
-                      target={link.isExternal ? '_blank' : undefined}
-                      rel={link.isExternal ? 'noopener noreferrer' : undefined}
-                      style={{
-                        fontSize: '14px',
-                        color: '#444444',
-                        textDecoration: 'none',
-                        transition: 'color 0.15s ease, text-decoration 0.15s ease',
-                        cursor: 'pointer'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.color = '#111111';
-                        e.currentTarget.style.textDecoration = 'underline';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.color = '#444444';
-                        e.currentTarget.style.textDecoration = 'none';
-                      }}
-                    >
-                      {t(link.labelKey)}
-                    </a>
-                  </li>
-                ))}
+                {col.links.map((link) => {
+                  // If this is the booking link and bookingUrl is empty, hide it completely
+                  if (link.isBooking && !bookingUrl) {
+                    return null;
+                  }
+
+                  if (link.isBooking) {
+                    return (
+                      <li key={link.labelKey}>
+                        <a
+                          ref={bookingTriggerRef}
+                          href={bookingUrl}
+                          onClick={(e) => handleLinkClick(e, link)}
+                          onMouseEnter={handleBookingHover}
+                          onFocus={handleBookingHover}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={t('nav.bookDemoAria')}
+                          style={{
+                            fontSize: '14px',
+                            color: '#444444',
+                            textDecoration: 'none',
+                            transition: 'color 0.15s ease',
+                            cursor: 'pointer',
+                            outlineOffset: '2px'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.color = '#111111';
+                            e.currentTarget.style.textDecoration = 'underline';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.color = '#444444';
+                            e.currentTarget.style.textDecoration = 'none';
+                          }}
+                        >
+                          {t(link.labelKey)}
+                        </a>
+                      </li>
+                    );
+                  }
+
+                  return (
+                    <li key={link.labelKey}>
+                      <a
+                        href={link.href}
+                        onClick={(e) => handleLinkClick(e, link)}
+                        target={link.isExternal ? '_blank' : undefined}
+                        rel={link.isExternal ? 'noopener noreferrer' : undefined}
+                        style={{
+                          fontSize: '14px',
+                          color: '#444444',
+                          textDecoration: 'none',
+                          transition: 'color 0.15s ease',
+                          cursor: 'pointer',
+                          outlineOffset: '2px'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = '#111111';
+                          e.currentTarget.style.textDecoration = 'underline';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = '#444444';
+                          e.currentTarget.style.textDecoration = 'none';
+                        }}
+                      >
+                        {t(link.labelKey)}
+                        {link.isExternal && (
+                          <span style={{ marginLeft: '3px', fontSize: '10px', opacity: 0.7 }} aria-hidden="true">↗</span>
+                        )}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
         </div>
 
-        {/* Bottom Bar: Copyright, Made in India, Operational Status */}
+        {/* Bottom Bar: Copyright, Made with Heart in India (No emoji flag), System Status */}
         <div
           style={{
             borderTop: '1px solid #e5e5e5',
-            paddingTop: '24px',
+            paddingTop: '20px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -286,7 +413,7 @@ export default function Footer({
           }}
         >
           <div>
-            © {currentYear} {config.legalEntityName} {t('footer.allRights')}
+            © {currentYear} {config.legalEntityName}. {t('footer.allRights')}
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
@@ -299,8 +426,11 @@ export default function Footer({
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  color: '#444444',
-                  textDecoration: 'none'
+                  color: '#4b5563',
+                  textDecoration: 'none',
+                  fontSize: '11px',
+                  fontFamily: "'JetBrains Mono', monospace",
+                  outlineOffset: '2px'
                 }}
               >
                 <span
@@ -313,29 +443,30 @@ export default function Footer({
                   }}
                   aria-hidden="true"
                 />
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px' }}>
-                  {t(config.systemStatus.statusKey)}
-                </span>
+                <span>{t(config.systemStatus.statusKey)}</span>
               </a>
             )}
 
-            <span style={{ fontWeight: 500, color: '#333333' }}>
+            {/* "Made with ♥ in India" text representation - NEVER an emoji flag */}
+            <span style={{ fontWeight: 500, color: '#374151' }}>
               {t('footer.madeInIndia')}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Subtle 2px Indian Tricolor Accent Line at Base */}
-      <div
-        style={{
-          height: '2px',
-          width: '100%',
-          marginTop: '24px',
-          background: 'linear-gradient(90deg, #ff9933 0%, #ff9933 33.33%, #ffffff 33.33%, #ffffff 66.66%, #138808 66.66%, #138808 100%)'
-        }}
-        aria-hidden="true"
-      />
+      {/* Optional subtle 2px Indian Tricolor Accent Line - DISABLED by default */}
+      {config.flags?.tricolorLine && (
+        <div
+          style={{
+            height: '2px',
+            width: '100%',
+            marginTop: '24px',
+            background: 'linear-gradient(90deg, #ff9933 0%, #ff9933 33.33%, #ffffff 33.33%, #ffffff 66.66%, #138808 66.66%, #138808 100%)'
+          }}
+          aria-hidden="true"
+        />
+      )}
     </footer>
   );
 }
