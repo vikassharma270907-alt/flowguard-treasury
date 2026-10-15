@@ -287,6 +287,53 @@ app.get('/api/voice/dx-notes', (req, res) => {
   res.json(voiceGatewayService.getDxNotes());
 });
 
+// ElevenLabs Server-Side Speech Output (Key never exposed to client)
+app.post('/api/voice/synthesize', async (req, res) => {
+  const { text, voice_id = '21m00Tcm4TlvDq8ikWAM' } = req.body;
+  if (!text || typeof text !== 'string') {
+    return res.status(400).json({ error: 'Text prompt is required for voice synthesis' });
+  }
+
+  const apiKey = process.env.ELEVENLABS_API_KEY;
+  if (!apiKey || apiKey === 'elevenlabs_live_your_actual_api_key_here') {
+    // Return graceful simulation signal for client audio synthesis fallback
+    return res.status(200).json({
+      simulated: true,
+      provider: 'ElevenLabs (Simulated Mode)',
+      text,
+      message: 'ELEVENLABS_API_KEY not configured on server. Triggering browser Web Speech synthesis fallback.'
+    });
+  }
+
+  try {
+    const elRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voice_id}`, {
+      method: 'POST',
+      headers: {
+        'xi-api-key': apiKey,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        text,
+        model_id: 'eleven_turbo_v2_5',
+        voice_settings: { stability: 0.5, similarity_boost: 0.75 }
+      })
+    });
+
+    if (!elRes.ok) {
+      const errText = await elRes.text();
+      return res.status(elRes.status).json({ error: `ElevenLabs synthesis failed: ${errText}` });
+    }
+
+    const audioBuffer = await elRes.arrayBuffer();
+    res.setHeader('Content-Type', 'audio/mpeg');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    return res.send(Buffer.from(audioBuffer));
+  } catch (err) {
+    console.warn('ElevenLabs synthesis network error:', err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 // --- FlowGuard Model Context Protocol (MCP) Server Endpoints ---
 app.get('/api/mcp/status', (req, res) => {
   res.json({

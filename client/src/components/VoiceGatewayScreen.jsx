@@ -55,9 +55,7 @@ export default function VoiceGatewayScreen({ userSession }) {
     fetchDxNotes();
   }, []);
 
-  // Web Speech API synthesis for realistic voice agent
-  const speakText = (text, speaker = 'agent') => {
-    if (isAudioMuted) return;
+  const fallbackBrowserSpeech = (text, speaker) => {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
@@ -67,7 +65,6 @@ export default function VoiceGatewayScreen({ userSession }) {
       const voices = window.speechSynthesis.getVoices();
       if (voices.length > 0) {
         if (speaker === 'agent') {
-          // Look for a pleasant clear voice
           const femaleOrClean = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Google') || v.name.includes('Natural')));
           if (femaleOrClean) utterance.voice = femaleOrClean;
         } else if (speaker === 'caller') {
@@ -76,11 +73,42 @@ export default function VoiceGatewayScreen({ userSession }) {
         }
       }
       
-      setActiveSpeaker(speaker);
       utterance.onend = () => setActiveSpeaker(null);
       utterance.onerror = () => setActiveSpeaker(null);
       window.speechSynthesis.speak(utterance);
+    } else {
+      setActiveSpeaker(null);
     }
+  };
+
+  // ElevenLabs server-side synthesis with browser fallback
+  const speakText = async (text, speaker = 'agent') => {
+    if (isAudioMuted || !text) return;
+    setActiveSpeaker(speaker);
+
+    if (speaker === 'agent') {
+      try {
+        const res = await fetch('/api/voice/synthesize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+        const contentType = res.headers.get('content-type');
+        if (contentType && contentType.includes('audio/mpeg')) {
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          const audio = new Audio(url);
+          audio.onended = () => setActiveSpeaker(null);
+          audio.onerror = () => setActiveSpeaker(null);
+          audio.play().catch(() => fallbackBrowserSpeech(text, speaker));
+          return;
+        }
+      } catch (err) {
+        console.warn('ElevenLabs API server proxy notice:', err);
+      }
+    }
+
+    fallbackBrowserSpeech(text, speaker);
   };
 
   // Reset Session
