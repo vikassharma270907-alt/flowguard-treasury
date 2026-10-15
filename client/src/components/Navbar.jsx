@@ -127,6 +127,7 @@ export default function Navbar({
             { id: 'overview', label: 'Overview' },
             { id: 'planner', label: 'Payment Planner' },
             { id: 'invoices', label: 'Invoice & Risk Guard' },
+            { id: 'voice', label: 'Voice Gateway', isVoice: true },
             { id: 'audit', label: 'Audit Trail & API' },
             { id: 'admin', label: 'Admin & Governance', isSpecial: true }
           ].map(tab => (
@@ -150,6 +151,19 @@ export default function Navbar({
             >
               {tab.isSpecial && <Lock size={12} color={activeTab === tab.id ? '#ffffff' : '#71717a'} />}
               {tab.label}
+              {tab.isVoice && (
+                <span style={{
+                  fontSize: '0.6rem',
+                  padding: '1px 5px',
+                  borderRadius: '9999px',
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  color: '#34d399',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  fontWeight: 700
+                }}>
+                  ElevenLabs
+                </span>
+              )}
               {tab.isSpecial && (
                 <span style={{
                   fontSize: '0.62rem',

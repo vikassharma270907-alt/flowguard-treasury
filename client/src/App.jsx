@@ -5,6 +5,7 @@ import PlannerScreen from './components/PlannerScreen';
 import InvoiceGuardScreen from './components/InvoiceGuardScreen';
 import AuditLedgerScreen from './components/AuditLedgerScreen';
 import AdminPanel from './components/AdminPanel';
+import VoiceGatewayScreen from './components/VoiceGatewayScreen';
 import ApprovalModal from './components/ApprovalModal';
 import CredentialsModal from './components/CredentialsModal';
 import OAuthModal from './components/OAuthModal';
@@ -221,6 +222,10 @@ export default function App() {
             inspections={inspections}
             onRegisterInvoice={handleRegisterInvoice}
           />
+        )}
+
+        {activeTab === 'voice' && (
+          <VoiceGatewayScreen userSession={userSession} />
         )}
 
         {activeTab === 'audit' && (

@@ -65,6 +65,26 @@ npm run build
 
 ---
 
+## 🎙️ ElevenLabs Conversational Voice Agent Gateway & Supervisor Playground
+
+FlowGuard features a real-time conversational voice agent gateway integrated with **ElevenLabs Conversational AI** and **ArmorIQ Intent Assurance**.
+
+- **ArmorIQ-Signed Plan on Every Support Call:** Every incoming call session computes a canonical plan, canonicalizes its steps into a SHA-256 hash, and issues a cryptographic Ed25519 Intent Token before any financial tool can execute.
+- **Order Lookup:** Allowed directly by ArmorIQ read policy (0.2s latency) with zero human intervention required.
+- **Supervisor Role in the Playground ("You are the supervisor"):**
+  - When callers attempt to socially engineer or persuade the agent into modifying destination payout routing or bank accounts, the action is caught by ArmorIQ.
+  - On the playground, you press **[Deny]** and the agent speaks directly to the caller refusing the change.
+- **Dual-Approval Quorum for Refunds:** Refunds of freight or damaged goods require two supervisor approvals (Key 1 + Key 2 Compliance Lead) before executing payouts via Airwallex rails.
+- **45-Second End-to-End Guided Scenario:** Includes animated audio waveform visualizers, Web Speech API audio playback, live transcript streaming, and stepped interactive control.
+
+### 💡 Developer Experience (DX) Architectural Insights
+1. **5-Second Tool Call Timeout Window & Async Holding Pattern:**
+   The ElevenLabs Conversational Voice platform gives tool calls roughly 5 seconds before timing out. Human supervisor evaluation or multi-sig review takes longer than 5 seconds. The gateway solves this by returning an immediate holding utterance within the 5-second window: *"A supervisor has been notified. Please hold for supervisor review..."* and records the real decision asynchronously when the supervisor acts.
+2. **IntentGate Tool Prefix Mapping (`IntentGate_<tool>`):**
+   Tools are exposed to the ElevenLabs LLM with security namespaces (`IntentGate_orderLookup`, `IntentGate_payoutChange`, `IntentGate_issueRefund`) so the model reasons through intent governance. The FlowGuard Gateway transparently strips this prefix before dispatching to internal ArmorIQ policy validators and Airwallex services.
+
+---
+
 ## 🛡️ Sandbox Safety & Isolation Notice
 - Operates strictly against the Airwallex Sandbox environment (`api.sandbox.airwallex.com`).
 - No live banking credentials or real money movement are ever utilized.

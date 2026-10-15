@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wallet, ShieldCheck, ArrowUpRight, ArrowDownLeft, Clock, AlertTriangle, CheckCircle2, TrendingUp, DollarSign } from 'lucide-react';
+import { Wallet, ShieldCheck, ArrowUpRight, ArrowDownLeft, Clock, AlertTriangle, CheckCircle2, TrendingUp, DollarSign, PhoneCall, ArrowRight } from 'lucide-react';
 
 export default function OverviewScreen({
   planData,
@@ -83,6 +83,53 @@ export default function OverviewScreen({
           </button>
         </div>
       )}
+
+      {/* ElevenLabs Voice Agent Feature Spotlight Banner */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(99, 102, 241, 0.12) 100%)',
+        border: '1px solid rgba(16, 185, 129, 0.35)',
+        padding: '16px 20px',
+        borderRadius: '12px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '14px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '10px',
+            background: 'rgba(16, 185, 129, 0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            border: '1px solid rgba(16, 185, 129, 0.4)'
+          }}>
+            <PhoneCall size={20} color="#34d399" />
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontWeight: 800, fontSize: '0.96rem', color: '#ffffff' }}>
+                ElevenLabs Voice Agent Gateway & Supervisor Playground
+              </span>
+              <span className="badge badge-live">NEW FEATURE</span>
+            </div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginTop: '2px' }}>
+              Real-time voice support agent with ArmorIQ-signed plans, &lt;5s timeout protection, and interactive supervisor approval quorum.
+            </div>
+          </div>
+        </div>
+        <button
+          onClick={() => onNavigate('voice')}
+          className="btn btn-primary btn-sm"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px' }}
+        >
+          <span>Launch Voice Playground</span>
+          <ArrowRight size={14} />
+        </button>
+      </div>
 
       {/* Primary KPI Grid */}
       <div style={{

@@ -18,6 +18,7 @@ const { randomUUID: uuidv4 } = require('crypto');
 const airwallexService = require('./airwallexService');
 const armorIqService = require('./armorIqService');
 const securityEngine = require('./securityEngine');
+const voiceGatewayService = require('./voiceGatewayService');
 const { scanAllInvoices, inspectInvoice } = require('./duplicateDetector');
 const { planPayments } = require('./rulesEngine');
 const auditLedger = require('./auditLedger');
@@ -243,6 +244,46 @@ app.get('/api/security/merkle-proof', (req, res) => {
     algorithm: 'SHA-256 Binary Merkle Tree',
     verifiedAt: new Date().toISOString()
   });
+});
+
+// --- ElevenLabs Voice Agent Gateway & Supervisor Endpoints ---
+app.get('/api/voice/session', (req, res) => {
+  res.json(voiceGatewayService.getSessionState());
+});
+
+app.post('/api/voice/session/reset', (req, res) => {
+  const session = voiceGatewayService.resetCallSession();
+  res.json({ success: true, session });
+});
+
+// Incoming tool call webhook from ElevenLabs Conversational Voice Agent
+app.post('/api/voice/gateway/tool-call', async (req, res) => {
+  const { tool_name, rawToolName, parameters = {}, callerContext = {} } = req.body;
+  const tool = rawToolName || tool_name || req.body.tool;
+  const result = await voiceGatewayService.handleToolCall({
+    rawToolName: tool,
+    parameters,
+    callerContext
+  });
+  res.json(result);
+});
+
+// Supervisor decision endpoint: press Deny or Approve
+app.post('/api/voice/supervisor/decision', async (req, res) => {
+  const { toolCallId, decision, supervisorName, role, note } = req.body;
+  const result = await voiceGatewayService.recordSupervisorDecision({
+    toolCallId,
+    decision,
+    supervisorName: supervisorName || currentUserSession?.name || 'beyond_nothing',
+    role: role || currentUserSession?.role || 'SUPER_ADMIN',
+    note
+  });
+  res.json(result);
+});
+
+// DX Notes & ElevenLabs Agent Tool Schemas
+app.get('/api/voice/dx-notes', (req, res) => {
+  res.json(voiceGatewayService.getDxNotes());
 });
 
 // --- System Status & Credentials Verification ---
