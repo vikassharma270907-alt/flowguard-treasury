@@ -102,9 +102,26 @@ export default function Navbar({
                 <span className={`pulse-dot ${systemStatus?.isLiveSandbox ? 'green' : 'amber'}`}></span>
                 {systemStatus?.isLiveSandbox ? 'Airwallex Live' : 'Airwallex Mock'}
               </span>
-              <span className={`badge ${systemStatus?.armorIq?.isConfigured ? 'badge-live' : 'badge-neutral'}`} title="ArmorIQ Agent Intent Governance & Policy Assurance">
+              <span className={`badge ${systemStatus?.armorIq?.isConfigured ? 'badge-live' : 'badge-neutral'}`} title="ArmorIQ Agent Intent Governance & Policy Assurance (Org: Vikas Sharma's Workspace)">
                 <Shield size={10} color={systemStatus?.armorIq?.isConfigured ? '#34d399' : '#a1a1aa'} />
                 {systemStatus?.armorIq?.isConfigured ? 'ArmorIQ Live API' : 'ArmorIQ Guard'}
+              </span>
+              <span
+                onClick={() => setActiveTab('admin')}
+                className="badge"
+                style={{
+                  border: '1px solid rgba(192, 132, 252, 0.4)',
+                  color: '#e9d5ff',
+                  background: 'rgba(192, 132, 252, 0.12)',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}
+                title="Model Context Protocol Server Active (/mcp & stdio)"
+              >
+                <span className="pulse-dot" style={{ background: '#c084fc' }}></span>
+                MCP /mcp
               </span>
             </div>
             <p style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)', marginTop: '1px' }}>

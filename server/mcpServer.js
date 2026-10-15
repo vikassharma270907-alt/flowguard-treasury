@@ -176,12 +176,15 @@ class FlowGuardMcpServer {
     const startTime = Date.now();
 
     // Capture plan in Live ArmorIQ platform if client available
-    if (armorIqService.client && armorIqService.mode === 'ARMORIQ_LIVE') {
+    if (armorIqService && armorIqService.client) {
       try {
-        await armorIqService.client.capturePlan(
+        armorIqService.client.capturePlan(
           'flowguard-treasury-mcp-v1',
           `MCP execution of tool: ${name}`,
-          { tool: name, arguments: args }
+          {
+            goal: `Execute MCP tool ${name}`,
+            steps: [{ action: name, mcp: 'flowguard-treasury-mcp', params: args }]
+          }
         );
       } catch (e) {
         console.warn('ArmorIQ MCP capture plan note:', e.message);

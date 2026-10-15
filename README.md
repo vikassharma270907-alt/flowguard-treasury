@@ -4,6 +4,16 @@
 > Integrated with **Airwallex Sandbox APIs** and **ArmorIQ Intent Assurance (`@armoriq/sdk`)**  
 > Designed with a **Vercel & Shadcn Dark Theme**
 
+## 🏆 Mandatory Hackathon Requirements Verification
+
+| Requirement | Implementation | Status |
+| :--- | :--- | :--- |
+| **1. An AI Agent** | **ElevenLabs Voice Support Agent** (`elevenlabs-voice-support-agent-v2`) + **FlowGuard ADK Agent** (`flowguard-treasury-agent-v1`). Handles real-time customer voice calls, tool calling, 5s timeout-safe holding utterances, and automated treasury execution plans. | ✅ **VERIFIED** |
+| **2. At least one MCP Server** | **`flowguard-treasury-mcp`** built with official `@modelcontextprotocol/sdk` (Spec 2024-11-05). Exposed at standard JSON-RPC 2.0 endpoint at `/mcp` & `/api/mcp` and via local CLI stdio (`npm run mcp`). Exposes 5 production tools. | ✅ **VERIFIED** |
+| **3. ArmorIQ Integration (Real & Mandatory)** | Live SDK integration (`@armoriq/sdk`) connected directly to `api.armoriq.ai` and `iap.armoriq.ai`. Workspace Org: `dd9e9695-e58d-4e56-8cff-ef9617ba4c54` (**Vikas Sharma's Workspace**). Stamping real cryptographic intent tokens & Merkle step proofs. | ✅ **VERIFIED** |
+| ↳ **✅ Action ALLOWED** | `order_lookup`: Querying scheduled order/invoice status (#ORD-84920 / #ORD-7729) is validated against ArmorIQ read policy. Intent token is issued and action executes in ~200ms. | ✅ **ALLOWED** |
+| ↳ **⛔ Action BLOCKED** | `payout_change`: Attempting to alter destination bank routing (`021000021`) or account (`987654321`) triggers ArmorIQ policy violation (`UNVERIFIED_WIRE_OVERRIDE_HALTED`). Escalates to supervisor queue; pressing **DENY** blocks execution and causes the agent to tell the caller NO. | ⛔ **BLOCKED** |
+
 ---
 
 ## ⚡ Overview

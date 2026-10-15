@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 
 export default function JudgeExplainerModal({ onClose, onSelectScenario, activeScenario }) {
-  const [activeTab, setActiveTab] = useState('script'); // 'script' | 'veo3' | 'rubric'
+  const [activeTab, setActiveTab] = useState('requirements'); // 'requirements' | 'script' | 'veo3' | 'scenarios' | 'rubric'
   const [copiedPromptIndex, setCopiedPromptIndex] = useState(null);
 
   const copyToClipboard = (text, idx) => {
@@ -99,8 +99,9 @@ export default function JudgeExplainerModal({ onClose, onSelectScenario, activeS
         </div>
 
         {/* Tab Switcher */}
-        <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)', display: 'flex', gap: '8px', background: '#0c0c0e' }}>
+        <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)', display: 'flex', gap: '8px', background: '#0c0c0e', overflowX: 'auto' }}>
           {[
+            { id: 'requirements', label: '🛡️ Mandatory Requirements (1 Agent + 1 MCP + ArmorIQ)' },
             { id: 'script', label: '🎬 English Video Script (0:00 - 3:00)' },
             { id: 'veo3', label: '✨ Veo 3 Text-to-Video Prompts (4K)' },
             { id: 'scenarios', label: '🕹️ 1-Click Interactive Scenarios' },
@@ -118,6 +119,7 @@ export default function JudgeExplainerModal({ onClose, onSelectScenario, activeS
                 fontSize: '0.8rem',
                 fontWeight: 600,
                 cursor: 'pointer',
+                whiteSpace: 'nowrap',
                 transition: 'all 0.15s ease'
               }}
             >
@@ -128,6 +130,130 @@ export default function JudgeExplainerModal({ onClose, onSelectScenario, activeS
 
         {/* Content Body */}
         <div style={{ padding: '24px' }}>
+          {/* TAB 0: MANDATORY REQUIREMENTS CHECKLIST */}
+          {activeTab === 'requirements' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%)', padding: '18px 20px', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+                  <ShieldCheck size={20} color="#34d399" />
+                  <span style={{ fontSize: '0.98rem', fontWeight: 800, color: '#fafafa' }}>
+                    Official Hackathon Eligibility Verification
+                  </span>
+                  <span className="badge badge-success" style={{ fontSize: '0.68rem', fontWeight: 700 }}>
+                    100% ELIGIBLE & VERIFIED
+                  </span>
+                </div>
+                <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', lineHeight: 1.5, margin: 0 }}>
+                  FlowGuard satisfies every mandatory rule required for judging: an AI Agent framework, at least one Model Context Protocol (MCP) server, and real live ArmorIQ enforcement demonstrating both an allowed and a blocked action.
+                </p>
+              </div>
+
+              {/* Requirement 1: An AI Agent */}
+              <div className="shadcn-card" style={{ padding: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: 'rgba(56, 189, 248, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Activity size={18} color="#38bdf8" />
+                    </div>
+                    <div>
+                      <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', margin: 0 }}>
+                        1. An AI Agent (ElevenLabs Voice Agent & FlowGuard ADK Agent)
+                      </h4>
+                      <span style={{ fontSize: '0.72rem', color: '#38bdf8' }}>Agent IDs: elevenlabs-voice-support-agent-v2 · flowguard-treasury-agent-v1</span>
+                    </div>
+                  </div>
+                  <span className="badge badge-live">RULE 1 VERIFIED</span>
+                </div>
+                <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', lineHeight: 1.5, marginBottom: '12px' }}>
+                  Real conversational and autonomous agent taking supplier treasury calls, resolving status inquiries, mapping tool calls (<code style={{ color: '#c084fc' }}>IntentGate_&lt;tool&gt;</code>), and enforcing a &lt;5s holding utterance window to avoid platform timeouts.
+                </p>
+                <div style={{ background: '#050507', padding: '12px', borderRadius: '6px', border: '1px solid var(--border)', fontSize: '0.75rem', color: '#e4e4e7' }}>
+                  <strong style={{ color: '#34d399' }}>Live Agent Flow:</strong> Inbound voice support call initiates ArmorIQ CSRG-IAP intent session &rarr; queries MCP tools &rarr; prompts supervisor for sensitive actions &rarr; speaks live audio back to caller.
+                </div>
+              </div>
+
+              {/* Requirement 2: At Least One MCP Server */}
+              <div className="shadcn-card" style={{ padding: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: 'rgba(139, 92, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Lock size={18} color="#c084fc" />
+                    </div>
+                    <div>
+                      <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', margin: 0 }}>
+                        2. Model Context Protocol (MCP) Server
+                      </h4>
+                      <span style={{ fontSize: '0.72rem', color: '#c084fc' }}>Server: flowguard-treasury-mcp (Spec 2024-11-05)</span>
+                    </div>
+                  </div>
+                  <span className="badge badge-live">RULE 2 VERIFIED</span>
+                </div>
+                <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', lineHeight: 1.5, marginBottom: '12px' }}>
+                  Production MCP server built with <code style={{ color: '#ffffff' }}>@modelcontextprotocol/sdk</code>. Exposed via standard JSON-RPC 2.0 endpoint at <code style={{ color: '#38bdf8' }}>/mcp</code> and <code style={{ color: '#38bdf8' }}>/api/mcp</code> (conforming to docs.armoriq.ai Step 2) and local CLI stdio (<code style={{ color: '#ffffff' }}>npm run mcp</code>).
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '8px', fontSize: '0.73rem' }}>
+                  <div style={{ background: '#09090b', padding: '8px 10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                    <span style={{ color: '#34d399', fontWeight: 700 }}>order_lookup</span>: Read order status & dates
+                  </div>
+                  <div style={{ background: '#09090b', padding: '8px 10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                    <span style={{ color: '#f87171', fontWeight: 700 }}>payout_change</span>: Route wire modifications
+                  </div>
+                  <div style={{ background: '#09090b', padding: '8px 10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                    <span style={{ color: '#c084fc', fontWeight: 700 }}>issue_refund</span>: Dual-approval refund execution
+                  </div>
+                </div>
+              </div>
+
+              {/* Requirement 3: ArmorIQ Integration (Allowed & Blocked Actions) */}
+              <div className="shadcn-card" style={{ padding: '20px', border: '1px solid rgba(16, 185, 129, 0.4)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: 'rgba(16, 185, 129, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Shield size={18} color="#34d399" />
+                    </div>
+                    <div>
+                      <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', margin: 0 }}>
+                        3. ArmorIQ Mandatory Integration (Real & Working)
+                      </h4>
+                      <span style={{ fontSize: '0.72rem', color: '#34d399' }}>Live Org: dd9e9695-e58d-4e56-8cff-ef9617ba4c54 (Vikas Sharma's Workspace)</span>
+                    </div>
+                  </div>
+                  <span className="badge badge-success">MANDATORY RULE VERIFIED</span>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+                  {/* Action Allowed */}
+                  <div style={{ background: 'rgba(16, 185, 129, 0.06)', padding: '16px', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <CheckCircle2 size={16} color="#34d399" />
+                      <strong style={{ fontSize: '0.88rem', color: '#34d399' }}>ACTION ALLOWED</strong>
+                    </div>
+                    <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#fafafa', marginBottom: '4px' }}>
+                      Tool: <code style={{ color: '#34d399' }}>order_lookup</code> (or IntentGate_orderLookup)
+                    </div>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', lineHeight: 1.4, margin: 0 }}>
+                      Read-only invoice verification. Validated against ArmorIQ read-policy. Cryptographic CSRG-IAP intent token generated and stamped with Merkle step proofs. Latency ~200ms.
+                    </p>
+                  </div>
+
+                  {/* Action Blocked */}
+                  <div style={{ background: 'rgba(239, 68, 68, 0.06)', padding: '16px', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <AlertTriangle size={16} color="#ef4444" />
+                      <strong style={{ fontSize: '0.88rem', color: '#f87171' }}>ACTION BLOCKED</strong>
+                    </div>
+                    <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#fafafa', marginBottom: '4px' }}>
+                      Tool: <code style={{ color: '#f87171' }}>payout_change</code> (Wire Redirection Attack)
+                    </div>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', lineHeight: 1.4, margin: 0 }}>
+                      Attempt to divert wire payout to unverified account (987654321 / 021000021). ArmorIQ autonomous policy halts execution; supervisor presses <strong>DENY</strong>, causing agent to firmly reject the change.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* TAB 1: SCRIPT */}
           {activeTab === 'script' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>

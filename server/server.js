@@ -339,6 +339,69 @@ app.get('/api/mcp/config', (req, res) => {
   });
 });
 
+// --- Model Context Protocol (MCP) Standard JSON-RPC 2.0 Handler (/mcp & /api/mcp) ---
+// Compliant with MCP 2024-11-05 specification and docs.armoriq.ai cookbook requirements
+const handleMcpJsonRpc = async (req, res) => {
+  const { jsonrpc, id, method, params = {} } = req.body || {};
+  if (method === 'tools/list') {
+    return res.json({
+      jsonrpc: '2.0',
+      id: id ?? 1,
+      result: { tools: FLOWGUARD_MCP_TOOLS }
+    });
+  }
+  if (method === 'tools/call') {
+    const toolName = params.name || params.tool;
+    const toolArgs = params.arguments || params.args || {};
+    try {
+      const toolResult = await flowguardMcpServer.executeTool(toolName, toolArgs);
+      return res.json({
+        jsonrpc: '2.0',
+        id: id ?? 1,
+        result: {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(toolResult, null, 2)
+            }
+          ]
+        }
+      });
+    } catch (err) {
+      return res.status(400).json({
+        jsonrpc: '2.0',
+        id: id ?? 1,
+        error: { code: -32000, message: err.message }
+      });
+    }
+  }
+  if (method === 'initialize') {
+    return res.json({
+      jsonrpc: '2.0',
+      id: id ?? 1,
+      result: {
+        protocolVersion: '2024-11-05',
+        capabilities: { tools: {}, prompts: {}, resources: {} },
+        serverInfo: { name: 'flowguard-treasury-mcp', version: '1.0.0' }
+      }
+    });
+  }
+  return res.status(404).json({
+    jsonrpc: '2.0',
+    id: id ?? 1,
+    error: { code: -32601, message: `Method not found: ${method}` }
+  });
+};
+
+app.post('/mcp', handleMcpJsonRpc);
+app.post('/api/mcp', handleMcpJsonRpc);
+
+// --- ArmorIQ Platform Bootstrap & Diagnostics (docs.armoriq.ai Step 9) ---
+app.get('/api/armoriq/bootstrap', async (req, res) => {
+  const result = await armorIqService.bootstrap();
+  res.json(result);
+});
+
 // --- System Status & Credentials Verification ---
 app.get('/api/status', async (req, res) => {
   const isConfigured = airwallexService.isConfigured();

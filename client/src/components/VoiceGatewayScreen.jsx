@@ -393,6 +393,41 @@ export default function VoiceGatewayScreen({ userSession }) {
               </div>
             ))}
           </div>
+
+          {/* Hackathon Rules Compliance Quick-Reference */}
+          <div style={{
+            marginTop: '14px',
+            padding: '10px 14px',
+            borderRadius: '8px',
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '10px',
+            fontSize: '0.74rem'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <ShieldCheck size={14} color="#34d399" />
+              <span style={{ fontWeight: 700, color: '#fafafa' }}>Hackathon Rules Verification:</span>
+              <span style={{ color: '#a1a1aa' }}>1. AI Agent: <strong style={{ color: '#ffffff' }}>ElevenLabs Support Agent</strong></span>
+              <span style={{ color: '#71717a' }}>·</span>
+              <span style={{ color: '#a1a1aa' }}>2. MCP: <code style={{ color: '#c084fc', background: 'rgba(255,255,255,0.05)', padding: '2px 4px', borderRadius: '4px' }}>flowguard-treasury-mcp</code></span>
+              <span style={{ color: '#71717a' }}>·</span>
+              <span style={{ color: '#a1a1aa' }}>3. ArmorIQ:</span>
+              <span className="badge badge-success" style={{ fontSize: '0.65rem', padding: '2px 6px' }}>✅ Allowed: order_lookup</span>
+              <span className="badge badge-warning" style={{ fontSize: '0.65rem', padding: '2px 6px' }}>⛔ Blocked: payout_change</span>
+            </div>
+            <a
+              href="https://docs.armoriq.ai"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: '#38bdf8', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem' }}
+            >
+              docs.armoriq.ai <ExternalLink size={10} />
+            </a>
+          </div>
         </div>
       </div>
 

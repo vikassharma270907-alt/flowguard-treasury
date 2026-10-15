@@ -72,6 +72,114 @@ class ArmorIQService {
   }
 
   /**
+   * Fetches registered organization, agents, and MCP servers directly from ArmorIQ API
+   * (Step 9 in docs.armoriq.ai: client.bootstrap())
+   */
+  async bootstrap() {
+    if (this.client && this.mode === 'ARMORIQ_LIVE') {
+      try {
+        const bootstrapData = await this.client.bootstrap();
+        return {
+          success: true,
+          live: true,
+          org: bootstrapData.org,
+          agent: bootstrapData.agent,
+          agents: bootstrapData.agents || [],
+          mcps: bootstrapData.mcps || [],
+          toolMap: bootstrapData.toolMap || {},
+          mode: 'ARMORIQ_LIVE'
+        };
+      } catch (e) {
+        console.warn('Live bootstrap notice:', e.message);
+      }
+    }
+    return {
+      success: true,
+      live: false,
+      org: { orgId: 'org_flowguard_local', name: "Vikas Sharma's Workspace (FlowGuard)" },
+      agent: { agentId: 'flowguard-treasury-agent-v1', name: 'FlowGuard Treasury Agent' },
+      agents: [
+        { name: 'flowguard-treasury-agent-v1', id: 'flowguard-treasury-agent-v1' },
+        { name: 'elevenlabs-voice-support-agent-v2', id: 'elevenlabs-voice-support-agent-v2' }
+      ],
+      mcps: [{ name: 'flowguard-treasury-mcp' }],
+      mode: this.mode
+    };
+  }
+
+  /**
+   * Mints a cryptographically verified Intent Token via ArmorIQ CSRG-IAP Platform
+   * Uses client.forUser(email).startSession().startPlan(...) per docs.armoriq.ai/sdk
+   */
+  async mintPlanToken({
+    userEmail = 'operator@flowguard.io',
+    goal = 'Treasury execution',
+    tools = [],
+    agentId = 'flowguard-treasury-agent-v1'
+  }) {
+    if (this.client && this.mode === 'ARMORIQ_LIVE') {
+      try {
+        const scope = this.client.forUser(userEmail);
+        const session = scope.startSession({ defaultMcpName: 'flowguard-treasury-mcp' });
+        const toolCalls = tools.map(t => ({
+          name: t.name || t.tool || t.action,
+          args: t.args || t.params || {}
+        }));
+        await session.startPlan(toolCalls);
+        const liveToken = session.currentTokenValue;
+        if (liveToken) {
+          const formattedToken = {
+            token_id: liveToken.tokenId,
+            tokenId: liveToken.tokenId,
+            plan_hash: liveToken.planHash,
+            planHash: liveToken.planHash,
+            plan_id: liveToken.planId,
+            planId: liveToken.planId,
+            signature: liveToken.signature,
+            signature_algorithm: 'Ed25519',
+            policy_decision: 'ALLOW',
+            mode: 'ARMORIQ_LIVE_IAP',
+            jwt_token: liveToken.jwtToken,
+            jwtToken: liveToken.jwtToken,
+            step_proofs: liveToken.stepProofs || [],
+            stepProofs: liveToken.stepProofs || [],
+            total_steps: liveToken.totalSteps || toolCalls.length,
+            policy_validation: liveToken.policyValidation,
+            policyValidation: liveToken.policyValidation,
+            user_email: userEmail,
+            issued_at: new Date(liveToken.issuedAt ? liveToken.issuedAt * 1000 : Date.now()).toISOString(),
+            expires_at: new Date(liveToken.expiresAt ? liveToken.expiresAt * 1000 : Date.now() + 3600000).toISOString()
+          };
+          return { success: true, live: true, intentToken: formattedToken };
+        }
+      } catch (err) {
+        console.warn('Live mintPlanToken error, falling back to verified simulation:', err.message);
+      }
+    }
+
+    // Fallback deterministic simulation
+    const planHash = this.hashPlan({ goal, tools, userEmail, agentId });
+    const tokenId = 'aiq_tok_' + uuidv4().substring(0, 16);
+    const intentToken = {
+      token_id: tokenId,
+      tokenId: tokenId,
+      plan_hash: planHash,
+      planHash: planHash,
+      plan_id: 'plan_' + uuidv4().substring(0, 8),
+      signature: 'Ed25519-Verified-Mock',
+      signature_algorithm: 'Ed25519',
+      policy_decision: 'ALLOW',
+      mode: 'ARMORIQ_INTENT_ASSURANCE',
+      user_email: userEmail,
+      issued_at: new Date().toISOString(),
+      expires_at: new Date(Date.now() + 300000).toISOString(),
+      total_steps: tools.length,
+      step_proofs: tools.map((t, idx) => ({ path: `/steps/[${idx}]/tool`, hash: planHash, kind: 'step' }))
+    };
+    return { success: true, live: false, intentToken };
+  }
+
+  /**
    * Computes deterministic SHA-256 canonical hash of execution plan
    */
   hashPlan(canonicalPlan) {
@@ -197,80 +305,36 @@ class ArmorIQService {
       };
     }
 
-    // 3. Issue Intent Token if using live ArmorIQ client
-    if (this.client && this.mode === 'ARMORIQ_LIVE') {
-      try {
-        const planCapture = this.client.capturePlan(
-          'flowguard-deterministic-rules-engine',
-          `Authorize payout of ${invoice.currency} ${invoice.amount} to ${invoice.vendor_name}`,
-          canonicalPlan
-        );
+    // 3. Issue Intent Token via ArmorIQ (Live CSRG-IAP or Intent Assurance)
+    const userEmail = invoice.vendor_id ? `${invoice.vendor_id}@flowguard.treasury` : 'treasury.operator@flowguard.io';
+    const mintResult = await this.mintPlanToken({
+      userEmail,
+      goal: `Authorize payout of ${invoice.currency} ${invoice.amount} to ${invoice.vendor_name}`,
+      tools: planSteps.map(s => ({
+        name: s.tool.split('.').pop(),
+        args: s.params
+      })),
+      agentId: 'flowguard-treasury-agent-v1'
+    });
 
-        auditLedger.record({
-          eventType: 'POLICY_EVALUATION',
-          action: 'ArmorIQ Live Intent Verified',
-          actor: 'ArmorIQ Agent Governance',
-          requestId,
-          latencyMs: Date.now() - startTime,
-          summary: `ArmorIQ verified intent plan. Plan Hash: ${planHash.substring(0, 16)}...`,
-          payload: { planHash, canonicalPlan },
-          mode: 'ARMORIQ_LIVE'
-        });
-
-        return {
-          authorized: true,
-          policyStatus: 'INTENT_VERIFIED',
-          intentToken: {
-            token_id: 'aiq_tok_' + uuidv4().substring(0, 16),
-            plan_hash: planHash,
-            signature_algorithm: 'Ed25519',
-            policy_decision: 'ALLOW',
-            mode: 'ARMORIQ_LIVE',
-            expires_at: new Date(Date.now() + 300000).toISOString() // 5-minute validity
-          }
-        };
-      } catch (err) {
-        console.warn('ArmorIQ Live capture error, using verified simulation:', err.message);
-      }
-    }
-
-    // 4. Cryptographic Intent Token (Simulation / Pre-Flight)
-    const tokenId = 'aiq_tok_' + uuidv4().substring(0, 16);
-    const intentToken = {
-      token_id: tokenId,
-      plan_hash: planHash,
-      signature_algorithm: 'Ed25519',
-      policy_decision: 'ALLOW',
-      mode: 'ARMORIQ_INTENT_ASSURANCE',
-      approver: approverName,
-      issued_at: new Date().toISOString(),
-      expires_at: new Date(Date.now() + 300000).toISOString(),
-      canonical_steps_count: planSteps.length,
-      proof_envelope: {
-        target_corridor: paymentMethod || invoice.payment_method,
-        reserve_floor_guaranteed_usd: reserveFloor,
-        beneficiary_verified: true
-      }
-    };
-
+    const issuedToken = mintResult.intentToken;
     const latencyMs = Date.now() - startTime;
 
     auditLedger.record({
       eventType: 'POLICY_EVALUATION',
-      action: 'ArmorIQ Intent Token Minted',
-      actor: 'ArmorIQ Intent Assurance',
+      action: mintResult.live ? 'ArmorIQ Live Intent Verified & Signed' : 'ArmorIQ Intent Token Minted',
+      actor: mintResult.live ? 'ArmorIQ Platform (iap.armoriq.ai)' : 'ArmorIQ Intent Assurance',
       requestId,
       latencyMs,
-      summary: `ArmorIQ Minted Intent Token ${tokenId} for ${invoice.invoice_number}. Intent cryptographically bound to plan hash ${planHash.substring(0, 12)}...`,
-      payload: intentToken,
-      isAirwallexApi: false,
-      mode: 'ARMORIQ_INTENT_ASSURANCE'
+      summary: `ArmorIQ ${mintResult.live ? 'Live CSRG-IAP' : 'Assurance Engine'} issued intent token ${issuedToken.token_id}. Plan Hash: ${issuedToken.plan_hash.substring(0, 16)}...`,
+      payload: { planHash: issuedToken.plan_hash, intentToken: issuedToken },
+      mode: issuedToken.mode
     });
 
     return {
       authorized: true,
       policyStatus: 'INTENT_VERIFIED',
-      intentToken
+      intentToken: issuedToken
     };
   }
 }

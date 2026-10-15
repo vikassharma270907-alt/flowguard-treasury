@@ -132,7 +132,56 @@ class VoiceGatewayService {
       mode: 'ARMORIQ_INTENT_ASSURANCE'
     });
 
+    // Trigger live ArmorIQ CSRG-IAP token minting asynchronously
+    this.ensureLiveArmorIqToken();
+
     return this.activeSession;
+  }
+
+  /**
+   * Contacts ArmorIQ platform at https://iap.armoriq.ai via @armoriq/sdk to mint a live token
+   */
+  async ensureLiveArmorIqToken() {
+    if (!this.activeSession) return;
+    const session = this.activeSession;
+    try {
+      const userEmail = 'alex.vance@acme.com';
+      const mintResult = await armorIqService.mintPlanToken({
+        userEmail,
+        goal: `Support call with ${session.caller.name} (${session.caller.company}) regarding order ${session.caller.orderId}`,
+        tools: [
+          { name: 'orderLookup', args: { orderId: session.caller.orderId } },
+          { name: 'payoutChange', args: { routingNumber: '021000021', accountNumber: '987654321' } },
+          { name: 'issueRefund', args: { amount: 4200.00, orderId: session.caller.orderId } }
+        ],
+        agentId: 'elevenlabs-voice-support-agent-v2'
+      });
+
+      if (mintResult.success && mintResult.intentToken) {
+        session.intentToken = mintResult.intentToken;
+        session.planHash = mintResult.intentToken.plan_hash || mintResult.intentToken.planHash;
+        session.canonicalPlan.liveTokenId = mintResult.intentToken.token_id;
+        session.canonicalPlan.liveJwtToken = mintResult.intentToken.jwt_token;
+        session.canonicalPlan.stepProofs = mintResult.intentToken.step_proofs;
+        session.canonicalPlan.policyValidation = mintResult.intentToken.policy_validation;
+
+        auditLedger.record({
+          eventType: 'VOICE_GATEWAY_EVENT',
+          action: 'ArmorIQ CSRG-IAP Live Token Bound to Voice Call',
+          actor: 'ArmorIQ Platform (iap.armoriq.ai)',
+          summary: `Call ${session.callId} bound to live CSRG-IAP token ${mintResult.intentToken.token_id}. Mode: ${mintResult.intentToken.mode}`,
+          payload: {
+            callId: session.callId,
+            tokenId: mintResult.intentToken.token_id,
+            planHash: session.planHash,
+            stepProofsCount: (mintResult.intentToken.step_proofs || []).length
+          },
+          mode: mintResult.intentToken.mode
+        });
+      }
+    } catch (e) {
+      console.warn('ensureLiveArmorIqToken notice:', e.message);
+    }
   }
 
   /**
