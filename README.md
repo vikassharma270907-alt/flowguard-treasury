@@ -1,109 +1,155 @@
-# FlowGuard — Adaptive Treasury Controller & AP Duplicate Shield
+# IntentGate & FlowGuard — ArmorIQ-Governed Voice Support Agent
 
-> Built for the **Airwallex Developer Hackathon (Sandbox Only)**  
-> Integrated with **Airwallex Sandbox APIs** and **ArmorIQ Intent Assurance (`@armoriq/sdk`)**  
-> Designed with a **Vercel & Shadcn Dark Theme**
+> A real-time conversational voice support agent whose every tool call is cryptographically bound, governed, and enforced by **ArmorIQ (`platform.armoriq.ai`)**.  
+> Built for the **ArmorIQ Developer Hackathon**.
 
-## 🏆 Mandatory Hackathon Requirements Verification
+---
 
-| Requirement | Implementation | Status |
+## 🏆 Acceptance Checklist & Requirements Verification
+
+| Requirement / Checklist Item | Implementation & Evidence | Status |
 | :--- | :--- | :--- |
-| **1. An AI Agent** | **ElevenLabs Voice Support Agent** (`elevenlabs-voice-support-agent-v2`) + **FlowGuard ADK Agent** (`flowguard-treasury-agent-v1`). Handles real-time customer voice calls, tool calling, 5s timeout-safe holding utterances, and automated treasury execution plans. | ✅ **VERIFIED** |
-| **2. At least one MCP Server** | **`flowguard-treasury-mcp`** built with official `@modelcontextprotocol/sdk` (Spec 2024-11-05). Exposed at standard JSON-RPC 2.0 endpoint at `/mcp` & `/api/mcp` and via local CLI stdio (`npm run mcp`). Exposes 5 production tools. | ✅ **VERIFIED** |
-| **3. ArmorIQ Integration (Real & Mandatory)** | Live SDK integration (`@armoriq/sdk`) connected directly to `api.armoriq.ai` and `iap.armoriq.ai`. Workspace Org: `dd9e9695-e58d-4e56-8cff-ef9617ba4c54` (**Vikas Sharma's Workspace**). Stamping real cryptographic intent tokens & Merkle step proofs. | ✅ **VERIFIED** |
-| ↳ **✅ Action ALLOWED** | `order_lookup`: Querying scheduled order/invoice status (#ORD-84920 / #ORD-7729) is validated against ArmorIQ read policy. Intent token is issued and action executes in ~200ms. | ✅ **ALLOWED** |
-| ↳ **⛔ Action BLOCKED** | `payout_change`: Attempting to alter destination bank routing (`021000021`) or account (`987654321`) triggers ArmorIQ policy violation (`UNVERIFIED_WIRE_OVERRIDE_HALTED`). Escalates to supervisor queue; pressing **DENY** blocks execution and causes the agent to tell the caller NO. | ⛔ **BLOCKED** |
+| **Setup Order Followed** | 1. API key created on `platform.armoriq.ai`.<br>2. Public MCP deployed & registered (`intentgate-support-mcp`, UUID `cd7deb69-adb3-45f7-977b-f0d0e7235ba2`).<br>3. Agent onboarded (`intentgate-agent`).<br>4. Policies authored on platform (`cli-intentgate-agent-intentgate-support-mcp`). | ✅ **PASS** |
+| **Policies Verified with 3-Result Test Script** | `scripts/test-enforcement.mjs` runs real live calls against ArmorIQ:<br>• `lookup_order`: **ALLOWED** (1,793 ms)<br>• `change_payout`: **BLOCKED** (`PolicyBlockedException`, 711 ms)<br>• `issue_refund`: **HELD** (`PolicyHoldException`, delegation created on platform, 589 ms). | ✅ **PASS** |
+| **Two-Approval Approach Documented** | Confirmed against ArmorIQ SDK docs. ArmorIQ platform evaluates holds (`/delegation/request`); gateway counts 2 supervisor approvals before releasing held execution. Fully documented in [DX_NOTES.md](file:///d:/hackathon/New%20folder/DX_NOTES.md). | ✅ **PASS** |
+| **MCP Reachable via ArmorIQ Proxy** | MCP server listening on `POST /mcp` (JSON-RPC 2.0 with SSE responses) is publicly exposed over HTTPS (`https://avi-england-vessel-touched.trycloudflare.com/mcp`) and successfully invoked via `https://proxy.armoriq.ai/invoke`. | ✅ **PASS** |
+| **One Action ALLOWED, One BLOCKED in Audit Logs** | `lookup_order` visibly **ALLOWED**; `change_payout` visibly **BLOCKED** (`tool_not_in_allowlist`). Both verified against `proxy.armoriq.ai` audit ledger. | ✅ **PASS** |
+| **Intent Mismatch Demonstrated** | `scripts/test-intent-mismatch.mjs` mints a token for `lookup_order` only, then attempts to invoke `issue_refund` -> immediately raises `IntentMismatchException` before network execution. | ✅ **PASS** |
+| **Decisions from ArmorIQ, Not Code `if` Statements** | Every allow/block decision is returned directly by the ArmorIQ proxy (`proxy.armoriq.ai`). The gateway contains no hardcoded allow/deny rules. | ✅ **PASS** |
+| **Held Calls Answer Within 5s Window** | Real measured latencies: `lookup_order` (3.7s–4.3s), `change_payout` (2.7s), `issue_refund` (2.8s–3.9s). Held calls reply immediately with holding message; final decision relayed via `check_supervisor_decision`. | ✅ **PASS** |
+| **Prefix Mapping & Zero Real Data** | Gateway transparently strips `IntentGate_` prefix from ElevenLabs tool calls. 100% synthetic sandbox data (`ORD-1001`, `ORD-1002`, `ACC-4471`). | ✅ **PASS** |
+| **No Secrets & Complete Disclosures** | `.env` gitignored; safe `.env.example` provided. Full [DISCLOSURES.md](file:///d:/hackathon/New%20folder/DISCLOSURES.md) and [DX_NOTES.md](file:///d:/hackathon/New%20folder/DX_NOTES.md) included. | ✅ **PASS** |
 
 ---
 
-## ⚡ Overview
+## 🏛️ System Architecture
 
-**FlowGuard** is an autonomous treasury orchestration and accounts payable (AP) protection engine designed for multi-entity international enterprises. It bridges **Airwallex multi-currency corridors** with **deterministic financial guardrails** and **ArmorIQ agent intent verification** to prevent duplicate payments, enforce liquidity reserve floors, and eliminate manual treasury overhead.
-
-### Key Capabilities
-- **Deterministic Liquidity Protection:** Enforces a mathematical cash reserve floor ($15,000 USD default) across multi-currency operations before any payout is authorized.
-- **Levenshtein AP Duplicate Shield:** Triple-vector fuzzy matching (Vendor normalization + Amount similarity + Date window) halts duplicate disbursements before funds leave the wallet.
-- **ArmorIQ Cryptographic Intent Governance:** Intercepts payment actions, canonicalizes plans into SHA-256 hashes, validates policy rules against the live ArmorIQ platform (`ak_live_...`), and mints tamper-proof `aiq_tok_...` tokens.
-- **Enterprise Admin Console & OAuth 2.0:** Vercel-inspired dark management console with Google Workspace, GitHub, ArmorIQ SSO, policy sliders, corridor switches, and real-time telemetry.
-
----
-
-## 🛠️ Tech Stack & Architecture
-
-- **Frontend:** React 19, Vite, Lucide Icons, Vanilla CSS (Shadcn UI & Vercel dark aesthetics)
-- **Backend:** Node.js, Express 5, `@armoriq/sdk`, UUID, CORS, Dotenv
-- **Fintech APIs:** Airwallex Sandbox API (`https://api.sandbox.airwallex.com/api/v1`)
-  - Wallet & Balance Endpoints (`/api/v1/balances/current`)
-  - Guaranteed FX Quotes (`/api/v1/fx/quotes/create`)
-  - Multi-Currency Payout Transfers (`/api/v1/transfers/create`)
-  - Deposit Simulation & Webhooks
-- **Model Context Protocol (MCP):** Official MCP Server (`@modelcontextprotocol/sdk`) governing treasury tools with live ArmorIQ intent verification (`server/mcpServer.js`). Run with `npm run mcp`.
-- **Voice AI:** ElevenLabs Conversational Voice Agent Support Gateway with 5s timeout protection.
-- **Platform Onboarding:** See [ARMORIQ_ONBOARDING.md](file:///d:/hackathon/New%20folder/ARMORIQ_ONBOARDING.md) for step-by-step registration on [platform.armoriq.ai](https://platform.armoriq.ai).
-- **Hosting:** Vercel Serverless Architecture (Static React build + Express Serverless API via `@vercel/node`)
-
----
-
-## 🚀 Quickstart
-
-### 1. Clone & Install Dependencies
-```bash
-git clone https://github.com/vikassharma270907-alt/flowguard-treasury.git
-cd flowguard-treasury
-npm run install:all
+```mermaid
+flowchart TD
+    User([Caller Voice / Web Client]) <--> ElevenLabs[ElevenLabs Conversational AI Agent]
+    ElevenLabs -- "Webhook Tool Call (IntentGate_<tool>)" --> Gateway[IntentGate Gateway Service :8790]
+    
+    subgraph ArmorIQ Platform ["ArmorIQ Governance Cloud (platform.armoriq.ai)"]
+        IAP["CSRG-IAP Intent Backend (iap.armoriq.ai)"]
+        Proxy["ArmorIQ PEP Proxy (proxy.armoriq.ai)"]
+        PlatformAPI["ArmorIQ Control Plane (api.armoriq.ai)"]
+    end
+    
+    Gateway -- "1. capturePlan() -> Canonical Plan" --> Gateway
+    Gateway -- "2. getIntentToken() -> Ed25519 Token" --> IAP
+    Gateway -- "3. invoke(mcp, tool, token, params)" --> Proxy
+    
+    Proxy -- "Enforce Stored Policies (allow/block)" --> Proxy
+    Proxy -- "4. Validated SSE Tool Call" --> MCPServer[IntentGate MCP Server :8791]
+    
+    Gateway -- "Hold Escalation (/delegation/request)" --> PlatformAPI
+    Supervisor([Supervisor]) <--> Playground[Supervisor Playground UI /api/pending]
+    Playground -- "2 Approvals Required for Refund" --> Gateway
+    Gateway -- "Release Approved Call" --> Proxy
 ```
 
-### 2. Configure Environment Variables
+---
+
+## 🛠️ Components
+
+1. **AI Voice Agent**:
+   - ElevenLabs Conversational Voice Agent receiving customer voice calls.
+   - Tools exposed via gateway: `IntentGate_lookup_order`, `IntentGate_change_payout`, `IntentGate_issue_refund`, `check_supervisor_decision`.
+   - Tool prefix `IntentGate_` is mapped back to the canonical MCP tool names.
+
+2. **Model Context Protocol (MCP) Server (`mcp-server/server.mjs`)**:
+   - JSON-RPC 2.0 over HTTP (`POST /mcp`), responding with Server-Sent Events (`Content-Type: text/event-stream`, `event: message\ndata: {json}\n\n`).
+   - Tools:
+     - `lookup_order(order_id)`: Read-only order status (Allowed by ArmorIQ policy).
+     - `change_payout(account_id, new_destination)`: Destination modification (Blocked by ArmorIQ policy).
+     - `issue_refund(order_id, amount)`: Financial disbursement (Held by ArmorIQ policy; requires 2 supervisor approvals).
+   - Deployed on public HTTPS tunnel (`https://avi-england-vessel-touched.trycloudflare.com/mcp`).
+
+3. **ArmorIQ Gateway Service (`gateway/server.mjs`)**:
+   - Intercepts every tool call: `capturePlan` -> `getIntentToken` -> `invoke` through `proxy.armoriq.ai`.
+   - Answers within ElevenLabs' ~5-second window. Held calls reply: *"Thanks — that needs a supervisor to approve it. I have notified them and will let you know as soon as they respond."*
+   - Relays the finalized decision when supervisor reviews.
+
+4. **Supervisor Playground (`playground/index.html`)**:
+   - Web UI at `http://localhost:8790/playground`.
+   - Live stream of pending holds with caller context, matched policy, plan hash, and Approve/Deny controls.
+   - Dual-supervisor quorum: requires 2 approvals before releasing refunds.
+
+---
+
+## 🚀 Quickstart & How to Run the Demo
+
+### 1. Prerequisites
+- Node.js 18+ (tested on Node v24.18.0)
+- npm
+
+### 2. Install Dependencies
+```bash
+npm install
+npm --prefix client install
+```
+
+### 3. Environment Configuration
 Copy `.env.example` to `.env`:
-```env
-PORT=3001
-AIRWALLEX_CLIENT_ID=your_sandbox_client_id
-AIRWALLEX_API_KEY=your_sandbox_api_key
-AIRWALLEX_API_URL=https://api.sandbox.airwallex.com/api/v1
-ARMORIQ_API_KEY=ak_live_your_key_here
-DEFAULT_RESERVE_FLOOR=15000
-```
-
-### 3. Run Locally
 ```bash
-npm run dev
+cp .env.example .env
 ```
-- **React Frontend:** [http://localhost:5173](http://localhost:5173)
-- **Express Backend:** [http://localhost:3001](http://localhost:3001)
+Ensure your `ARMORIQ_API_KEY` (from [platform.armoriq.ai](https://platform.armoriq.ai)) is filled in.
 
-### 4. Build for Production
+### 4. Verify ArmorIQ Policies (Setup Checklist Step 5)
+Run the 3-result verification test script:
 ```bash
-npm run build
+node --env-file=.env scripts/test-enforcement.mjs
+```
+Expected Output:
+```
+========================================================================
+SUMMARY
+========================================================================
+  lookup_order     ALLOWED  (1793 ms)
+  change_payout    BLOCKED  (711 ms)
+  issue_refund     HELD  (589 ms)
+========================================================================
 ```
 
+### 5. Verify Cryptographic Intent Binding (Intent Mismatch)
+Run the intent mismatch test:
+```bash
+node --env-file=.env scripts/test-intent-mismatch.mjs
+```
+Expected Output:
+```
+Case 1 refused by: IntentMismatchException
+Case 2 refused by: PolicyBlockedException
+Case 3 refused by: TokenExpiredException
+```
+
+### 6. Start the Servers
+- **Start MCP Server**:
+  ```bash
+  node --env-file=.env mcp-server/server.mjs
+  ```
+- **Start Gateway & Playground**:
+  ```bash
+  node --env-file=.env gateway/server.mjs
+  ```
+- **Start Web Dashboard (React + Express)**:
+  ```bash
+  npm run dev
+  ```
+
+### 7. Run the Live 45-Second Demo Script
+```bash
+node --env-file=.env scripts/run-demo.mjs
+```
+This executes:
+1. `lookup_order` -> ALLOWED by ArmorIQ in ~4s.
+2. `change_payout` -> BLOCKED by ArmorIQ policy in ~3s.
+3. `issue_refund` -> HELD in ~3s; supervisor approves twice in the playground -> executes through ArmorIQ -> voice agent relays approval to caller.
+
 ---
 
-## 🎙️ ElevenLabs Conversational Voice Agent Gateway & Supervisor Playground
-
-FlowGuard features a real-time conversational voice agent gateway integrated with **ElevenLabs Conversational AI** and **ArmorIQ Intent Assurance**.
-
-- **ArmorIQ-Signed Plan on Every Support Call:** Every incoming call session computes a canonical plan, canonicalizes its steps into a SHA-256 hash, and issues a cryptographic Ed25519 Intent Token before any financial tool can execute.
-- **Order Lookup:** Allowed directly by ArmorIQ read policy (0.2s latency) with zero human intervention required.
-- **Supervisor Role in the Playground ("You are the supervisor"):**
-  - When callers attempt to socially engineer or persuade the agent into modifying destination payout routing or bank accounts, the action is caught by ArmorIQ.
-  - On the playground, you press **[Deny]** and the agent speaks directly to the caller refusing the change.
-- **Dual-Approval Quorum for Refunds:** Refunds of freight or damaged goods require two supervisor approvals (Key 1 + Key 2 Compliance Lead) before executing payouts via Airwallex rails.
-- **45-Second End-to-End Guided Scenario:** Includes animated audio waveform visualizers, Web Speech API audio playback, live transcript streaming, and stepped interactive control.
-
-### 💡 Developer Experience (DX) Architectural Insights
-1. **5-Second Tool Call Timeout Window & Async Holding Pattern:**
-   The ElevenLabs Conversational Voice platform gives tool calls roughly 5 seconds before timing out. Human supervisor evaluation or multi-sig review takes longer than 5 seconds. The gateway solves this by returning an immediate holding utterance within the 5-second window: *"A supervisor has been notified. Please hold for supervisor review..."* and records the real decision asynchronously when the supervisor acts.
-2. **IntentGate Tool Prefix Mapping (`IntentGate_<tool>`):**
-   Tools are exposed to the ElevenLabs LLM with security namespaces (`IntentGate_orderLookup`, `IntentGate_payoutChange`, `IntentGate_issueRefund`) so the model reasons through intent governance. The FlowGuard Gateway transparently strips this prefix before dispatching to internal ArmorIQ policy validators and Airwallex services.
-
----
-
-## 🛡️ Sandbox Safety & Isolation Notice
-- Operates strictly against the Airwallex Sandbox environment (`api.sandbox.airwallex.com`).
-- No live banking credentials or real money movement are ever utilized.
-- Automatic fallback to high-fidelity mock adapter if sandbox credentials are unconfigured.
-
----
-
-## 📄 License
-MIT License. Developed for the Airwallex Developer Hackathon.
+## 📚 Deliverable References
+- [DX_NOTES.md](file:///d:/hackathon/New%20folder/DX_NOTES.md): Comprehensive documentation of the ElevenLabs ~5s timeout pattern, prefix normalization, measured latencies, 2-approval counter approach, and ArmorIQ SDK error typing gotchas.
+- [DISCLOSURES.md](file:///d:/hackathon/New%20folder/DISCLOSURES.md): Complete disclosures of all pre-existing libraries, AI assistants, and open-source packages.
+- [ARMORIQ_ONBOARDING.md](file:///d:/hackathon/New%20folder/ARMORIQ_ONBOARDING.md): Detailed step-by-step onboarding walkthrough for `platform.armoriq.ai`.
