@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { Shield, Activity, RefreshCw, Key, ChevronDown, CheckCircle2, AlertTriangle, Play, Lock, User, LogOut, Sliders } from 'lucide-react';
+import {
+  Shield, Activity, RefreshCw, Key, ChevronDown, CheckCircle2,
+  AlertTriangle, Play, Lock, User, LogOut, Sliders, Video, X,
+  ShieldCheck, Clock, ArrowDownCircle
+} from 'lucide-react';
 
 export default function Navbar({
   systemStatus,
@@ -11,16 +15,45 @@ export default function Navbar({
   onRefresh,
   userSession,
   onOpenOAuth,
-  onLogout
+  onLogout,
+  onOpenJudgeExplainer
 }) {
   const [scenarioOpen, setScenarioOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const scenarios = [
-    { id: 'SCENARIO_A', label: 'Scenario A: Baseline Multi-Currency Run', desc: 'Standard operations, healthy cash reserve' },
-    { id: 'SCENARIO_B', label: 'Scenario B: Duplicate Invoice Attack', desc: 'Injects duplicate candidate INV-2024-884B' },
-    { id: 'SCENARIO_C', label: 'Scenario C: Delayed Receivable Shock', desc: 'Customer receipt delayed, auto-defers bills' },
-    { id: 'SCENARIO_D', label: 'Scenario D: Sandbox Deposit (+ $25,000)', desc: 'Replenishes wallet via Airwallex deposit simulator' }
+    {
+      id: 'SCENARIO_A',
+      title: 'Scenario A: Baseline Multi-Currency Run',
+      desc: 'Standard operations, healthy liquidity reserve ($15,000 floor), $0 local rails prioritized.',
+      badge: 'NORMAL OPS',
+      icon: ShieldCheck,
+      color: '#34d399'
+    },
+    {
+      id: 'SCENARIO_B',
+      title: 'Scenario B: Duplicate Invoice Attack',
+      desc: 'Injects candidate INV-2024-884B with 91.2% Levenshtein similarity to trigger the duplicate shield.',
+      badge: 'ATTACK SIM',
+      icon: AlertTriangle,
+      color: '#f87171'
+    },
+    {
+      id: 'SCENARIO_C',
+      title: 'Scenario C: Delayed Receivable Shock',
+      desc: 'Simulates a $14,500 customer receipt delay, auto-deferring low-priority vendor disbursements.',
+      badge: 'LIQUIDITY STRESS',
+      icon: Clock,
+      color: '#fbbf24'
+    },
+    {
+      id: 'SCENARIO_D',
+      title: 'Scenario D: Sandbox Deposit (+ $25,000)',
+      desc: 'Simulates Airwallex inbound deposit to replenish wallet balances and unlock held invoices.',
+      badge: 'REPLENISHMENT',
+      icon: ArrowDownCircle,
+      color: '#60a5fa'
+    }
   ];
 
   const currentScenarioObj = scenarios.find(s => s.id === systemStatus?.activeScenario) || scenarios[0];
@@ -136,19 +169,52 @@ export default function Navbar({
 
         {/* Actions & Scenario Switcher */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Judge Video & Presentation Button */}
+          <button
+            onClick={onOpenJudgeExplainer}
+            className="btn btn-secondary btn-sm"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
+              background: 'rgba(255, 255, 255, 0.06)',
+              color: '#ffffff'
+            }}
+            title="Open Judge Video Script, Veo 3 Prompts & Presentation Rubric"
+          >
+            <Video size={13} color="#ffffff" />
+            <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>Judge Video & Demo</span>
+          </button>
+
           {/* Scenario Selector Dropdown */}
           <div style={{ position: 'relative' }}>
             <button
               onClick={() => setScenarioOpen(!scenarioOpen)}
               className="btn btn-secondary btn-sm"
-              style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: '170px', justifyContent: 'space-between' }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                minWidth: '170px',
+                justifyContent: 'space-between',
+                background: scenarioOpen ? 'var(--secondary)' : undefined
+              }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Play size={12} color="#ffffff" />
-                <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>{currentScenarioObj.label.split(':')[0]}</span>
+                <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>{currentScenarioObj.title.split(':')[0]}</span>
               </div>
               <ChevronDown size={13} />
             </button>
+
+            {/* Click-away backdrop to fix popup dismissal */}
+            {scenarioOpen && (
+              <div
+                style={{ position: 'fixed', inset: 0, zIndex: 140 }}
+                onClick={() => setScenarioOpen(false)}
+              />
+            )}
 
             {scenarioOpen && (
               <div style={{
@@ -157,35 +223,70 @@ export default function Navbar({
                 top: '115%',
                 background: '#09090b',
                 border: '1px solid var(--border)',
-                borderRadius: '8px',
-                width: '320px',
-                boxShadow: '0 12px 30px rgba(0,0,0,0.8)',
-                zIndex: 200,
-                padding: '6px'
+                borderRadius: '10px',
+                width: '360px',
+                boxShadow: '0 16px 36px rgba(0, 0, 0, 0.9)',
+                zIndex: 150,
+                padding: '10px'
               }}>
-                <div style={{ padding: '6px 10px', fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--muted-foreground)', fontWeight: 700, letterSpacing: '0.05em' }}>
-                  Demo Presentation Scenarios
-                </div>
-                {scenarios.map(s => (
-                  <div
-                    key={s.id}
-                    onClick={() => {
-                      onSelectScenario(s.id);
-                      setScenarioOpen(false);
-                    }}
-                    style={{
-                      padding: '8px 10px',
-                      borderRadius: '6px',
-                      cursor: 'pointer',
-                      background: systemStatus?.activeScenario === s.id ? 'var(--secondary)' : 'transparent',
-                      borderLeft: systemStatus?.activeScenario === s.id ? '2px solid #ffffff' : '2px solid transparent',
-                      marginBottom: '2px'
-                    }}
-                  >
-                    <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#f8fafc' }}>{s.label}</div>
-                    <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)', marginTop: '2px' }}>{s.desc}</div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '6px 8px 10px 8px',
+                  borderBottom: '1px solid var(--border)'
+                }}>
+                  <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--muted-foreground)', fontWeight: 700, letterSpacing: '0.05em' }}>
+                    Hackathon Demo Scenarios
                   </div>
-                ))}
+                  <button
+                    onClick={() => setScenarioOpen(false)}
+                    style={{ background: 'transparent', border: 'none', color: '#a1a1aa', cursor: 'pointer', padding: '2px' }}
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '8px' }}>
+                  {scenarios.map(s => {
+                    const isSelected = systemStatus?.activeScenario === s.id;
+                    const Icon = s.icon;
+                    return (
+                      <div
+                        key={s.id}
+                        onClick={() => {
+                          onSelectScenario(s.id);
+                          setScenarioOpen(false);
+                        }}
+                        style={{
+                          padding: '10px 12px',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          background: isSelected ? 'var(--secondary)' : '#121215',
+                          border: isSelected ? '1px solid #ffffff' : '1px solid var(--border)',
+                          transition: 'all 0.15s ease'
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <Icon size={14} color={s.color} />
+                            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#f8fafc' }}>
+                              {s.title}
+                            </span>
+                          </div>
+                          {isSelected && (
+                            <span className="badge badge-live" style={{ fontSize: '0.62rem', padding: '1px 5px' }}>
+                              Active
+                            </span>
+                          )}
+                        </div>
+                        <div style={{ fontSize: '0.74rem', color: 'var(--muted-foreground)', lineHeight: 1.4 }}>
+                          {s.desc}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>
@@ -236,11 +337,19 @@ export default function Navbar({
                   fontWeight: 700,
                   color: '#ffffff'
                 }}>
-                  {userSession.user?.name ? userSession.user.name[0] : 'A'}
+                  {userSession.user?.name ? userSession.user.name[0].toUpperCase() : 'B'}
                 </div>
-                <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>{userSession.user?.name || 'Admin'}</span>
+                <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>{userSession.user?.name || 'beyond_nothing'}</span>
                 <ChevronDown size={12} color="#a1a1aa" />
               </button>
+
+              {/* Click-away backdrop for user menu */}
+              {userMenuOpen && (
+                <div
+                  style={{ position: 'fixed', inset: 0, zIndex: 140 }}
+                  onClick={() => setUserMenuOpen(false)}
+                />
+              )}
 
               {userMenuOpen && (
                 <div style={{
@@ -252,15 +361,15 @@ export default function Navbar({
                   borderRadius: '8px',
                   width: '220px',
                   boxShadow: '0 12px 30px rgba(0,0,0,0.8)',
-                  zIndex: 200,
+                  zIndex: 150,
                   padding: '6px'
                 }}>
                   <div style={{ padding: '8px 10px', borderBottom: '1px solid var(--border)' }}>
-                    <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#fafafa' }}>{userSession.user?.name}</div>
-                    <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>{userSession.user?.email}</div>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#fafafa' }}>{userSession.user?.name || 'beyond_nothing'}</div>
+                    <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>{userSession.user?.email || 'beyond_nothing@flowguard.io'}</div>
                     <div style={{ marginTop: '4px' }}>
                       <span className="badge badge-live" style={{ fontSize: '0.62rem', padding: '1px 6px' }}>
-                        {userSession.user?.role}
+                        {userSession.user?.role || 'SUPER_ADMIN'}
                       </span>
                     </div>
                   </div>

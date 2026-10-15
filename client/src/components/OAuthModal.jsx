@@ -59,13 +59,13 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
         <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {/* Quick Sandbox Admin Shortcut */}
           <button
-            onClick={() => handleOAuthLogin('Sandbox Admin SSO', 'alex.vance@flowguard.io', 'Alex Vance')}
+            onClick={() => handleOAuthLogin('Sandbox Admin SSO', 'beyond_nothing@flowguard.io', 'beyond_nothing')}
             disabled={!!loadingProvider}
             className="btn btn-primary"
             style={{ width: '100%', padding: '10px', display: 'flex', justifyContent: 'center', gap: '8px' }}
           >
             <User size={15} />
-            <span>1-Click Sign In as Alex Vance (Super Admin)</span>
+            <span>1-Click Sign In as beyond_nothing (Super Admin)</span>
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '10px 0' }}>

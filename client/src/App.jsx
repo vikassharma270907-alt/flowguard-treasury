@@ -8,6 +8,7 @@ import AdminPanel from './components/AdminPanel';
 import ApprovalModal from './components/ApprovalModal';
 import CredentialsModal from './components/CredentialsModal';
 import OAuthModal from './components/OAuthModal';
+import JudgeExplainerModal from './components/JudgeExplainerModal';
 import { Lock, Shield, ArrowRight } from 'lucide-react';
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
   const [selectedInvoiceForApproval, setSelectedInvoiceForApproval] = useState(null);
   const [showCredentialsModal, setShowCredentialsModal] = useState(false);
   const [showOAuthModal, setShowOAuthModal] = useState(false);
+  const [showJudgeExplainer, setShowJudgeExplainer] = useState(false);
   const [userSession, setUserSession] = useState({ authenticated: false, user: null });
 
   const loadData = async () => {
@@ -192,6 +194,7 @@ export default function App() {
         userSession={userSession}
         onOpenOAuth={() => setShowOAuthModal(true)}
         onLogout={handleLogout}
+        onOpenJudgeExplainer={() => setShowJudgeExplainer(true)}
       />
 
       <main style={{ maxWidth: '1440px', width: '100%', margin: '0 auto', padding: '24px', flex: 1 }}>
@@ -301,6 +304,15 @@ export default function App() {
         <OAuthModal
           onClose={() => setShowOAuthModal(false)}
           onLoginSuccess={handleOAuthSuccess}
+        />
+      )}
+
+      {/* Judge Explainer & Veo 3 Video Suite Modal */}
+      {showJudgeExplainer && (
+        <JudgeExplainerModal
+          onClose={() => setShowJudgeExplainer(false)}
+          onSelectScenario={handleSelectScenario}
+          activeScenario={systemStatus?.activeScenario}
         />
       )}
 

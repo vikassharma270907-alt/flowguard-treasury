@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import {
   Shield, Sliders, Globe, Users, Activity, CheckCircle2,
-  AlertTriangle, Lock, Save, RefreshCw, UserPlus, Server, Key, ExternalLink
+  AlertTriangle, Lock, Save, RefreshCw, UserPlus, Server, Key, ExternalLink,
+  ShieldCheck, Cpu, Flame, Zap, Database, Copy, Check
 } from 'lucide-react';
+import StepUpSecurityModal from './StepUpSecurityModal';
 
 export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
-  const [activeAdminTab, setActiveAdminTab] = useState('governance'); // 'governance' | 'corridors' | 'team' | 'telemetry'
+  const [activeAdminTab, setActiveAdminTab] = useState('governance'); // 'governance' | 'corridors' | 'team' | 'telemetry' | 'security'
   const [settings, setSettings] = useState(null);
   const [teamMembers, setTeamMembers] = useState([]);
   const [telemetry, setTelemetry] = useState(null);
+  const [securityStatus, setSecurityStatus] = useState(null);
+  const [merkleProof, setMerkleProof] = useState(null);
+  const [activeChallengeModal, setActiveChallengeModal] = useState(null);
+  const [isTogglingCircuit, setIsTogglingCircuit] = useState(false);
+  const [isGeneratingProof, setIsGeneratingProof] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -20,20 +27,70 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
 
   const loadAdminData = async () => {
     try {
-      const [settingsRes, usersRes, telemetryRes] = await Promise.all([
+      const [settingsRes, usersRes, telemetryRes, securityRes] = await Promise.all([
         fetch('/api/admin/settings'),
         fetch('/api/admin/users'),
-        fetch('/api/admin/telemetry')
+        fetch('/api/admin/telemetry'),
+        fetch('/api/security/status')
       ]);
       const sData = await settingsRes.json();
       const uData = await usersRes.json();
       const tData = await telemetryRes.json();
+      const secData = await securityRes.json();
 
       setSettings(sData.settings);
       setTeamMembers(uData.members || []);
       setTelemetry(tData);
+      setSecurityStatus(secData);
     } catch (err) {
       console.warn('Error fetching admin data:', err);
+    }
+  };
+
+  const handleToggleCircuitBreaker = async () => {
+    setIsTogglingCircuit(true);
+    try {
+      const res = await fetch('/api/security/circuit-breaker/toggle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason: 'Super Admin Security Intervention' })
+      });
+      const data = await res.json();
+      setSecurityStatus(data);
+      if (onRefreshStatus) onRefreshStatus();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsTogglingCircuit(false);
+    }
+  };
+
+  const handleGenerateMerkleProof = async () => {
+    setIsGeneratingProof(true);
+    try {
+      const res = await fetch('/api/security/merkle-proof');
+      const data = await res.json();
+      setMerkleProof(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsGeneratingProof(false);
+    }
+  };
+
+  const handleIssue2FAChallenge = async () => {
+    try {
+      const res = await fetch('/api/security/challenge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'Treasury Parameter Modification & Corridor Overwrite' })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setActiveChallengeModal(data.challenge);
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -119,7 +176,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
               style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }}
             />
             <div style={{ fontSize: '0.8rem' }}>
-              <span style={{ fontWeight: 600, color: '#ffffff' }}>{userSession?.name || 'Alex Vance'}</span>
+              <span style={{ fontWeight: 600, color: '#ffffff' }}>{userSession?.name || 'beyond_nothing'}</span>
               <span style={{ color: '#71717a', marginLeft: '6px' }}>({userSession?.role || 'SUPER_ADMIN'})</span>
             </div>
           </div>
@@ -142,6 +199,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
         {[
           { id: 'governance', label: 'Policy & Guardrails', icon: Shield },
           { id: 'corridors', label: 'Airwallex Corridors', icon: Globe },
+          { id: 'security', label: 'Zero-Trust Security & Proofs', icon: ShieldCheck },
           { id: 'team', label: 'Team & Roles (OAuth)', icon: Users },
           { id: 'telemetry', label: 'System Telemetry', icon: Activity }
         ].map(tab => {
@@ -481,6 +539,167 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             </div>
           </div>
         </div>
+      )}
+
+      {/* TAB 5: ZERO-TRUST SECURITY & MERKLE PROOFS */}
+      {activeAdminTab === 'security' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {/* Emergency Zero-Trust Circuit Breaker Card */}
+          <div className="shadcn-card" style={{ padding: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <h3 style={{ fontSize: '1.15rem' }}>Zero-Trust Treasury Circuit Breaker</h3>
+                  <span className={`badge ${securityStatus?.circuitBreakerTripped ? 'badge-mock' : 'badge-live'}`}>
+                    {securityStatus?.circuitBreakerTripped ? 'EMERGENCY LOCKDOWN' : 'ALL RAILS OPERATIONAL'}
+                  </span>
+                </div>
+                <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginTop: '4px' }}>
+                  Emergency kill-switch that instantly suspends all Airwallex payouts (ACH, Faster Payments, SWIFT) if anomaly velocity or agent prompt injection is detected.
+                </p>
+              </div>
+              <button
+                onClick={handleToggleCircuitBreaker}
+                disabled={isTogglingCircuit}
+                className={securityStatus?.circuitBreakerTripped ? "btn btn-primary btn-sm" : "btn btn-secondary btn-sm"}
+                style={{
+                  background: securityStatus?.circuitBreakerTripped ? '#10b981' : '#ef4444',
+                  color: '#ffffff',
+                  border: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <Flame size={14} />
+                <span>{securityStatus?.circuitBreakerTripped ? 'Reset Circuit Breaker (Restore Normal)' : 'Trip Circuit Breaker (Emergency Halt)'}</span>
+              </button>
+            </div>
+
+            {securityStatus?.circuitBreakerTripped && (
+              <div style={{
+                background: 'rgba(239, 68, 68, 0.12)',
+                border: '1px solid #ef4444',
+                borderRadius: '8px',
+                padding: '14px',
+                color: '#f87171',
+                fontSize: '0.82rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px'
+              }}>
+                <AlertTriangle size={18} />
+                <div>
+                  <strong>CIRCUIT BREAKER ENGAGED:</strong> {securityStatus.circuitBreakerReason || 'Emergency halt active'}. All payment approvals and sandbox transfers are hard-blocked.
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Cryptographic Merkle Tree Proof Card */}
+          <div className="shadcn-card" style={{ padding: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <h3 style={{ fontSize: '1.15rem' }}>Immutable Audit Merkle Tree Proof</h3>
+                  <span className="badge badge-neutral" style={{ fontSize: '0.65rem' }}>
+                    SHA-256 Binary Tree
+                  </span>
+                </div>
+                <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginTop: '4px' }}>
+                  Computes a cryptographic Merkle root hash over all audit trail transactions to mathematically prove the integrity of historical records.
+                </p>
+              </div>
+              <button
+                onClick={handleGenerateMerkleProof}
+                disabled={isGeneratingProof}
+                className="btn btn-secondary btn-sm"
+                style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+              >
+                <Database size={14} />
+                <span>{isGeneratingProof ? 'Computing Proof...' : 'Compute Merkle Root Proof'}</span>
+              </button>
+            </div>
+
+            {merkleProof && (
+              <div style={{ background: '#050507', padding: '16px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#a1a1aa', fontWeight: 700 }}>
+                    Cryptographic Merkle Root (SHA-256):
+                  </span>
+                  <span className="badge badge-live" style={{ fontSize: '0.62rem' }}>
+                    <CheckCircle2 size={10} /> Verified {merkleProof.eventsCount} Ledger Events
+                  </span>
+                </div>
+                <div className="mono" style={{ fontSize: '0.82rem', color: '#34d399', wordBreak: 'break-all', padding: '8px', background: '#111827', borderRadius: '4px' }}>
+                  {merkleProof.merkleRoot}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#71717a', marginTop: '8px' }}>
+                  Algorithm: {merkleProof.algorithm} · Timestamp: {new Date(merkleProof.verifiedAt).toLocaleString()}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Step-Up 2FA & Perimeter Defenses Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px' }}>
+            {/* Step-Up 2FA Simulator */}
+            <div className="shadcn-card" style={{ padding: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                <Key size={16} color="#ffffff" />
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>Step-Up 2FA Challenge</h4>
+              </div>
+              <p style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', marginBottom: '16px', lineHeight: 1.5 }}>
+                Enforces hardware passkey or 6-digit cryptographic authenticator challenge before high-risk changes (e.g. reserve floor decrease or single transfer &gt; $50,000).
+              </p>
+              <button
+                onClick={handleIssue2FAChallenge}
+                className="btn btn-outline btn-sm"
+                style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '6px' }}
+              >
+                <Lock size={13} />
+                <span>Simulate Step-Up 2FA Verification</span>
+              </button>
+            </div>
+
+            {/* Perimeter & Signature Verification */}
+            <div className="shadcn-card" style={{ padding: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                <Cpu size={16} color="#ffffff" />
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>HMAC Webhook & Perimeter Security</h4>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.78rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#a1a1aa' }}>
+                  <span>Signature Algorithm:</span>
+                  <strong style={{ color: '#ffffff' }}>HMAC-SHA256</strong>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#a1a1aa' }}>
+                  <span>Anti-Replay Protection:</span>
+                  <strong style={{ color: '#34d399' }}>±300s Timestamp + Nonces</strong>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#a1a1aa' }}>
+                  <span>Zero-Trust IP Whitelist:</span>
+                  <strong style={{ color: '#ffffff' }}>52.88.0.0/16 (Airwallex Gateway)</strong>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#a1a1aa' }}>
+                  <span>Security Standard:</span>
+                  <strong style={{ color: '#38bdf8' }}>SAIF Fintech Tier 3</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Step-Up Security Challenge Modal */}
+      {activeChallengeModal && (
+        <StepUpSecurityModal
+          challenge={activeChallengeModal}
+          onClose={() => setActiveChallengeModal(null)}
+          onSuccess={() => {
+            alert('Step-Up 2FA Challenge Verified successfully by beyond_nothing!');
+          }}
+        />
       )}
 
       {/* Invite Member Modal */}

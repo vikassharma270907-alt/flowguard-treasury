@@ -17,6 +17,7 @@ const { randomUUID: uuidv4 } = require('crypto');
 
 const airwallexService = require('./airwallexService');
 const armorIqService = require('./armorIqService');
+const securityEngine = require('./securityEngine');
 const { scanAllInvoices, inspectInvoice } = require('./duplicateDetector');
 const { planPayments } = require('./rulesEngine');
 const auditLedger = require('./auditLedger');
@@ -44,8 +45,8 @@ let activeScenario = 'SCENARIO_A';
 // --- In-memory OAuth & Admin State ---
 let currentUserSession = {
   id: 'usr_admin_01',
-  name: 'Alex Vance',
-  email: 'alex.vance@flowguard.io',
+  name: 'beyond_nothing',
+  email: 'beyond_nothing@flowguard.io',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
   role: 'SUPER_ADMIN',
   provider: 'Google Workspace OAuth',
@@ -72,7 +73,7 @@ let adminGovernanceSettings = {
 };
 
 let adminOrgMembers = [
-  { id: 'usr_01', name: 'Alex Vance', email: 'alex.vance@flowguard.io', role: 'SUPER_ADMIN', department: 'Treasury & Risk', status: 'ACTIVE', lastLogin: 'Just now' },
+  { id: 'usr_01', name: 'beyond_nothing', email: 'beyond_nothing@flowguard.io', role: 'SUPER_ADMIN', department: 'Treasury & Risk', status: 'ACTIVE', lastLogin: 'Just now' },
   { id: 'usr_02', name: 'Sarah Chen', email: 'sarah.chen@flowguard.io', role: 'FINANCE_DIRECTOR', department: 'Accounts Payable', status: 'ACTIVE', lastLogin: '2 hours ago' },
   { id: 'usr_03', name: 'Marcus Sterling', email: 'm.sterling@flowguard.io', role: 'COMPLIANCE_AUDITOR', department: 'Internal Audit', status: 'ACTIVE', lastLogin: '1 day ago' },
   { id: 'usr_04', name: 'Airwallex Agent Bot', email: 'agent@flowguard.bot', role: 'AUTONOMOUS_AGENT', department: 'Automated Operations', status: 'MANAGED_BY_ARMORIQ', lastLogin: 'Continuous' }
@@ -88,7 +89,7 @@ app.get('/api/auth/session', (req, res) => {
 });
 
 app.post('/api/auth/oauth/login', (req, res) => {
-  const { provider = 'Google Workspace OAuth', email = 'alex.vance@flowguard.io', name = 'Alex Vance' } = req.body;
+  const { provider = 'Google Workspace OAuth', email = 'beyond_nothing@flowguard.io', name = 'beyond_nothing' } = req.body;
   currentUserSession = {
     id: 'usr_' + uuidv4().substring(0, 8),
     name: name,
@@ -170,6 +171,43 @@ app.get('/api/admin/telemetry', (req, res) => {
     intentTokensMinted: auditLedger.events.filter(e => e.eventType === 'POLICY_EVALUATION').length,
     activeSecurityRules: 6,
     errorBudgetPercent: 99.98
+  });
+});
+
+// --- Zero-Trust Security & HMAC Endpoints ---
+app.get('/api/security/status', (req, res) => {
+  res.json(securityEngine.getStatus());
+});
+
+app.post('/api/security/circuit-breaker/toggle', (req, res) => {
+  const { reason = 'Manual Super Admin Trigger' } = req.body;
+  if (securityEngine.circuitBreakerTripped) {
+    securityEngine.resetCircuitBreaker(currentUserSession?.name || 'beyond_nothing');
+  } else {
+    securityEngine.tripCircuitBreaker(reason, currentUserSession?.name || 'beyond_nothing');
+  }
+  res.json(securityEngine.getStatus());
+});
+
+app.post('/api/security/challenge', (req, res) => {
+  const { action = 'Sensitive Policy Modification' } = req.body;
+  const challenge = securityEngine.createStepUpChallenge(action, currentUserSession?.name || 'beyond_nothing');
+  res.json({ success: true, challenge });
+});
+
+app.post('/api/security/verify-challenge', (req, res) => {
+  const { challengeId, code } = req.body;
+  const result = securityEngine.verifyStepUpChallenge(challengeId, code);
+  res.json(result);
+});
+
+app.get('/api/security/merkle-proof', (req, res) => {
+  const root = securityEngine.computeAuditMerkleRoot(auditLedger.events);
+  res.json({
+    merkleRoot: root,
+    eventsCount: auditLedger.events.length,
+    algorithm: 'SHA-256 Binary Merkle Tree',
+    verifiedAt: new Date().toISOString()
   });
 });
 
@@ -369,6 +407,14 @@ app.post('/api/payments/approve-and-pay', async (req, res) => {
 
   if (!targetInvoice) {
     return res.status(404).json({ error: 'Invoice not found' });
+  }
+
+  // Pre-flight check: Zero-Trust Circuit Breaker
+  if (securityEngine.circuitBreakerTripped) {
+    return res.status(403).json({
+      error: 'CIRCUIT_BREAKER_ACTIVE',
+      message: `Zero-Trust Circuit Breaker is active in LOCKDOWN mode: ${securityEngine.circuitBreakerReason || 'Emergency halt engaged'}. All disbursements suspended.`
+    });
   }
 
   // Pre-flight check: duplicate protection
