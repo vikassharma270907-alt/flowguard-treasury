@@ -13,10 +13,29 @@ import ApprovalModal from './components/ApprovalModal';
 import CredentialsModal from './components/CredentialsModal';
 import OAuthModal from './components/OAuthModal';
 import JudgeExplainerModal from './components/JudgeExplainerModal';
+import LegalPages from './components/LegalPages';
+import PricingSection from './components/PricingSection';
 import { Lock, Shield, ArrowRight } from 'lucide-react';
 
+const LEGAL_ROUTES = ['privacy', 'terms', 'refund-policy', 'grievance-officer', 'dpdp-compliance', 'dpdp-act'];
+
+function getInitialTabFromUrl() {
+  if (typeof window === 'undefined') return 'overview';
+  const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  if (LEGAL_ROUTES.includes(path)) {
+    return path === 'dpdp-act' ? 'dpdp-compliance' : path;
+  }
+  if (window.location.hash) {
+    const hash = window.location.hash.replace('#', '');
+    if (hash === 'pricing') return 'pricing';
+    if (hash === 'how-it-works') return 'enclave';
+    if (hash === 'quickstart') return 'overview';
+  }
+  return 'overview';
+}
+
 export default function App() {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState(getInitialTabFromUrl);
   const [systemStatus, setSystemStatus] = useState(null);
   const [planData, setPlanData] = useState(null);
   const [inspections, setInspections] = useState(null);
@@ -65,7 +84,31 @@ export default function App() {
   useEffect(() => {
     loadData();
     checkAuthSession();
+
+    const handleLocationChange = () => {
+      setActiveTab(getInitialTabFromUrl());
+    };
+    window.addEventListener('popstate', handleLocationChange);
+    window.addEventListener('hashchange', handleLocationChange);
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', handleLocationChange);
+    };
   }, []);
+
+  const handleNavigate = (tab) => {
+    setActiveTab(tab);
+    if (LEGAL_ROUTES.includes(tab)) {
+      window.history.pushState(null, '', `/${tab}`);
+    } else if (tab === 'pricing') {
+      window.history.pushState(null, '', '/#pricing');
+    } else if (tab === 'enclave') {
+      window.history.pushState(null, '', '/#how-it-works');
+    } else if (tab === 'overview') {
+      window.history.pushState(null, '', '/');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleOAuthSuccess = (sessionData) => {
     const session = sessionData?.authenticated !== undefined
@@ -185,24 +228,41 @@ export default function App() {
     return data;
   };
 
+  const isLegalOrPricing = LEGAL_ROUTES.includes(activeTab) || activeTab === 'pricing';
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Header activeTab={activeTab} onNavigate={setActiveTab} />
-      <Navbar
-        systemStatus={systemStatus}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onOpenCredentials={() => setShowCredentialsModal(true)}
-        onSelectScenario={handleSelectScenario}
-        isRefreshing={isRefreshing}
-        onRefresh={loadData}
-        userSession={userSession}
-        onOpenOAuth={() => setShowOAuthModal(true)}
-        onLogout={handleLogout}
-        onOpenJudgeExplainer={() => setShowJudgeExplainer(true)}
-      />
+      <Header activeTab={activeTab} onNavigate={handleNavigate} />
+      {!isLegalOrPricing && (
+        <Navbar
+          systemStatus={systemStatus}
+          activeTab={activeTab}
+          setActiveTab={handleNavigate}
+          onOpenCredentials={() => setShowCredentialsModal(true)}
+          onSelectScenario={handleSelectScenario}
+          isRefreshing={isRefreshing}
+          onRefresh={loadData}
+          userSession={userSession}
+          onOpenOAuth={() => setShowOAuthModal(true)}
+          onLogout={handleLogout}
+          onOpenJudgeExplainer={() => setShowJudgeExplainer(true)}
+        />
+      )}
 
       <main style={{ maxWidth: '1440px', width: '100%', margin: '0 auto', padding: '24px', flex: 1 }}>
+        {LEGAL_ROUTES.includes(activeTab) && (
+          <LegalPages
+            docKey={activeTab}
+            onBackToHome={() => handleNavigate('overview')}
+          />
+        )}
+
+        {activeTab === 'pricing' && (
+          <PricingSection
+            onBackToHome={() => handleNavigate('overview')}
+          />
+        )}
+
         {activeTab === 'overview' && (
           <OverviewScreen
             planData={planData}
@@ -330,7 +390,7 @@ export default function App() {
       )}
 
       {/* Global Responsive Footer */}
-      <Footer onNavigate={setActiveTab} />
+      <Footer onNavigate={handleNavigate} />
     </div>
   );
 }
