@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
 import OverviewScreen from './components/OverviewScreen';
 import PlannerScreen from './components/PlannerScreen';
@@ -6,6 +6,7 @@ import InvoiceGuardScreen from './components/InvoiceGuardScreen';
 import AuditLedgerScreen from './components/AuditLedgerScreen';
 import AdminPanel from './components/AdminPanel';
 import VoiceGatewayScreen from './components/VoiceGatewayScreen';
+import EnclaveScreen from './components/EnclaveScreen';
 import ApprovalModal from './components/ApprovalModal';
 import CredentialsModal from './components/CredentialsModal';
 import OAuthModal from './components/OAuthModal';
@@ -206,6 +207,10 @@ export default function App() {
             onNavigate={setActiveTab}
             onSimulateDeposit={handleSimulateDeposit}
           />
+        )}
+
+        {activeTab === 'enclave' && (
+          <EnclaveScreen />
         )}
 
         {activeTab === 'planner' && (

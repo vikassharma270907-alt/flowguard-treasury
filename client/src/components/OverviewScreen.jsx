@@ -1,5 +1,7 @@
-import React from 'react';
-import { Wallet, ShieldCheck, ArrowUpRight, ArrowDownLeft, Clock, AlertTriangle, CheckCircle2, TrendingUp, DollarSign, PhoneCall, ArrowRight, Shield, Server, ExternalLink, Activity } from 'lucide-react';
+import React, { Suspense, lazy } from 'react';
+import { Wallet, ShieldCheck, ArrowUpRight, ArrowDownLeft, Clock, AlertTriangle, CheckCircle2, TrendingUp, DollarSign, PhoneCall, ArrowRight, Shield, Server, ExternalLink, Activity, Box, Sparkles } from 'lucide-react';
+
+const RotatingHeroVault = lazy(() => import('./3d/RotatingHeroVault'));
 
 export default function OverviewScreen({
   planData,
@@ -234,6 +236,71 @@ export default function OverviewScreen({
           <span>Launch Voice Playground</span>
           <ArrowRight size={14} />
         </button>
+      </div>
+
+      {/* Interactive 3D Hero Vault Showcase */}
+      <div className="glass-card" style={{
+        padding: '20px 24px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+        gap: '24px',
+        alignItems: 'center',
+        background: 'var(--card)',
+        border: '1px solid var(--border)',
+        boxShadow: 'var(--card-shadow)'
+      }}>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+            <span className="badge badge-live" style={{ fontSize: '0.68rem' }}>
+              <Box size={11} />
+              THREE.JS 3D CRYPTOGRAPHIC MODEL
+            </span>
+            <span className="badge badge-success" style={{ fontSize: '0.68rem' }}>60 FPS ACCELERATED</span>
+          </div>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, margin: '0 0 8px 0', letterSpacing: '-0.02em', color: 'var(--foreground)' }}>
+            FlowGuard & ArmorIQ Intent Vault 3D
+          </h2>
+          <p style={{ fontSize: '0.84rem', color: 'var(--muted-foreground)', lineHeight: 1.6, marginBottom: '16px' }}>
+            Interactive spatial representation of the cryptographic treasury boundary. Every tool request executes within an isolated plan enclave validated against stored OPA security policies before token minting.
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+            <button
+              onClick={() => onNavigate('enclave')}
+              className="btn btn-primary btn-sm"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+            >
+              <Sparkles size={13} />
+              <span>Explore All 3D Enclaves</span>
+            </button>
+            <button
+              onClick={() => onNavigate('voice')}
+              className="btn btn-secondary btn-sm"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+            >
+              <Shield size={13} color="#10b981" />
+              <span>Test Voice Agent Governance</span>
+            </button>
+          </div>
+        </div>
+
+        <div style={{
+          height: '240px',
+          background: 'var(--background)',
+          borderRadius: '10px',
+          border: '1px solid var(--border)',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <Suspense fallback={
+            <div style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)' }}>
+              Loading 3D Hero Vault...
+            </div>
+          }>
+            <RotatingHeroVault height={235} interactive={true} />
+          </Suspense>
+        </div>
       </div>
 
       {/* Primary KPI Grid */}
