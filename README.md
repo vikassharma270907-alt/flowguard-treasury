@@ -149,7 +149,64 @@ This executes:
 
 ---
 
+## 🎨 3D Interactive Elements (Three.js 60 FPS)
+
+FlowGuard Treasury features three interactive, hardware-accelerated 3D elements built with Three.js (located in `client/src/components/3d/`):
+
+1. **`RotatingHeroVault.jsx` (Hero Object)**:
+   - Visualizes the FlowGuard Cryptographic Treasury Vault.
+   - Inner crystalline icosahedron core surrounded by an outer holographic protective wireframe cage and an equatorial intent verification ring.
+   - Interactive: Tracks cursor hover and drag to tilt perspective; dynamically speeds up on interaction.
+
+2. **`ParticleBackgroundField.jsx` (Constellation Intent Field)**:
+   - 1,200 particle vertices rendered via `THREE.BufferGeometry` representing distributed ArmorIQ verification nodes.
+   - Interactive: Cursor motion exerts an electromagnetic gravity drift on nearby particles.
+
+3. **`InteractiveIntentGyroscope.jsx` (Mouse & Scroll Reactive Model)**:
+   - Three nested gimbal rings representing ArmorIQ's 3 Layers of Defense (Outer = Stored Policy, Middle = Merkle Proof, Inner = MCP Bound Action Token).
+   - High Interactivity: Rings independently tilt following cursor pitch/yaw; window/container scroll expands the rings into an exploded enclave view.
+
+### 3D Performance & Accessibility Compliance
+- **60 FPS Performance**: RequestAnimationFrame animation loops use delta time for steady 60 FPS.
+- **Lazy Loaded**: All 3D components use `React.lazy()` with Suspense fallbacks for zero main-bundle bloat.
+- **GPU Cleanup**: Every geometry, material, texture, context, and event listener is disposed on unmount.
+- **Accessibility**: Checks `prefers-reduced-motion` and damps rotations to static or gentle micro-drifts.
+- **WebGL Fallback**: If hardware WebGL is unavailable, renders an accessible, elegant SVG fallback card.
+- **Theme-Adaptive**: 3D scene lighting, specular reflections, and wireframe colors dynamically adapt when toggling between light and dark modes.
+
+---
+
+## 🌓 Light & Dark Theme System
+
+FlowGuard implements an adaptive theme engine with strict WCAG AA contrast compliance:
+- **Design Tokens**: Standardized CSS variables defined in `client/src/index.css` for both `:root, [data-theme="dark"]` and `[data-theme="light"]`.
+- **Theme Toggle**: Accessible Sun/Moon toggle button in the top navigation bar with `aria-label`.
+- **Zero-Flash First Load**: Inline blocking script in `client/index.html` checks `localStorage` and `prefers-color-scheme` before rendering body.
+- **3D Synchronization**: Dispatches custom events and state changes so Three.js materials and scene lighting switch instantaneously.
+
+---
+
+## 📖 PDF Technical User Guide
+
+A 9-page technical user guide and architectural blueprint is generated and committed to the repository:
+- **File**: [`docs/USER_GUIDE.pdf`](file:///d:/hackathon/New%20folder/docs/USER_GUIDE.pdf)
+- **Regenerate via script**:
+  ```bash
+  npm run docs:pdf
+  ```
+- **Sections Included**:
+  1. *How to Use the Project* (Installation, local execution, 3D controls, theme tokens, troubleshooting).
+  2. *The Major Role of ArmorIQ* (The autonomous agent security crisis, 4-stage cryptographic intent lifecycle, ASCII architecture diagram).
+  3. *How ArmorIQ Changes Typical Industry Standards* (Comparison table: static API keys vs. cryptographic enforcement, official citations).
+  4. *Why It Matters* (Prompt injection mitigation, runaway financial tool prevention, compliance readiness).
+  5. *Summary & Verification Checklist* (All acceptance items verified).
+
+---
+
 ## 📚 Deliverable References
+- [docs/USER_GUIDE.pdf](file:///d:/hackathon/New%20folder/docs/USER_GUIDE.pdf): Complete 9-page printed technical architectural guide.
 - [DX_NOTES.md](file:///d:/hackathon/New%20folder/DX_NOTES.md): Comprehensive documentation of the ElevenLabs ~5s timeout pattern, prefix normalization, measured latencies, 2-approval counter approach, and ArmorIQ SDK error typing gotchas.
 - [DISCLOSURES.md](file:///d:/hackathon/New%20folder/DISCLOSURES.md): Complete disclosures of all pre-existing libraries, AI assistants, and open-source packages.
+- [EVIDENCE.md](file:///d:/hackathon/New%20folder/EVIDENCE.md): Raw audit log evidence and cryptographic Merkle proof outputs from live test executions.
 - [ARMORIQ_ONBOARDING.md](file:///d:/hackathon/New%20folder/ARMORIQ_ONBOARDING.md): Detailed step-by-step onboarding walkthrough for `platform.armoriq.ai`.
+- [LICENSE](file:///d:/hackathon/New%20folder/LICENSE): MIT Open Source License.

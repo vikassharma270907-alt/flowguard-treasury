@@ -16,7 +16,8 @@ The following open-source packages and frameworks were utilized:
 - **Node.js Built-in Modules**: `node:http`, `node:crypto`, `node:fs`, `node:path`, `node:url` for zero-overhead JSON-RPC over HTTP/SSE server and async timeout handling.
 - **Express.js (v5.3.0) & CORS (v2.8.6)**: Lightweight HTTP server for REST endpoints and web app integration.
 - **React (v18.x) & Vite (v5.x)**: Frontend client framework for the reactive web dashboard and supervisor playground.
-- **Lucide React & Tailwind CSS**: UI icons and responsive styling tokens for the dashboard.
+- **`three` (v0.183.x)**: Three.js library for hardware-accelerated 60 FPS 3D cryptographic models, orbital vaults, particle fields, and gyroscopic enclaves with WebGL cleanup and reduced-motion compliance.
+- **`pdfkit` (v0.20.x)**: Server-side PDF generation engine used to compile the technical architectural user guide (`docs/USER_GUIDE.pdf`).
 - **Cloudflare Tunnel (`cloudflared`)**: Tunneling agent used to expose local development ports to public HTTPS (`trycloudflare.com`) for ArmorIQ proxy reachability.
 
 ## 4. Starter Templates & Prior Prototypes
