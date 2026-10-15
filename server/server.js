@@ -13,7 +13,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { v4: uuidv4 } = require('uuid');
+const { randomUUID: uuidv4 } = require('crypto');
 
 const airwallexService = require('./airwallexService');
 const armorIqService = require('./armorIqService');

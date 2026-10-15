@@ -17,7 +17,7 @@
  * gracefully operates via the Sandbox Mock Adapter, clearly labeling all outputs as synthetic.
  */
 
-const { v4: uuidv4 } = require('uuid');
+const { randomUUID: uuidv4 } = require('crypto');
 const auditLedger = require('./auditLedger');
 const { INITIAL_BALANCES, INDICATIVE_FX_RATES } = require('./mockData');
 
