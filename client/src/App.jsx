@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
+import Header from './components/Header';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import OverviewScreen from './components/OverviewScreen';
@@ -186,6 +187,7 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Header activeTab={activeTab} onNavigate={setActiveTab} />
       <Navbar
         systemStatus={systemStatus}
         activeTab={activeTab}
