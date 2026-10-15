@@ -1,8 +1,8 @@
 {
   "brand": {
     "name": "YourBrand",
-    "tagline": "Built for Indian developers and businesses.",
-    "registeredText": "Registered under the Companies Act, 2013"
+    "tagline": "Developer-first infrastructure and treasury tooling built for Indian innovators and global teams.",
+    "registeredText": "Incorporated under the Companies Act, 2013"
   },
   "nav": {
     "home": "Home",
@@ -12,22 +12,25 @@
     "github": "GitHub",
     "contactSales": "Contact Sales",
     "playground": "PLAYGROUND",
-    "bookDemo": "BOOK A DEMO",
+    "bookDemo": "Book a Demo",
+    "bookDemoAria": "Book a demo (opens scheduling window)",
     "toggleMenu": "Toggle navigation menu",
-    "switchLanguage": "Switch to Hindi"
+    "closeMenu": "Close navigation menu",
+    "switchLanguage": "Switch language"
   },
   "columns": {
-    "product": "PRODUCT",
-    "forBusiness": "FOR BUSINESS",
-    "developers": "DEVELOPERS",
-    "companyLegal": "COMPANY & LEGAL"
+    "product": "Product",
+    "forBusiness": "For Business",
+    "developers": "Developers",
+    "companyLegal": "Company & Legal"
   },
   "links": {
     "quickstart": "Quickstart",
     "howItWorks": "How it works",
     "apiReference": "API reference",
-    "pricingInr": "Pricing in ₹",
+    "pricingInr": "Pricing (₹)",
     "changelog": "Changelog",
+    "bookCall": "Book a call",
     "contactSales": "Contact Sales",
     "gstBilling": "GST Invoice & Billing",
     "enterprise": "Enterprise",
@@ -36,7 +39,7 @@
     "docs": "Docs",
     "github": "GitHub",
     "npm": "npm package",
-    "community": "Community (Discord/Telegram)",
+    "community": "Community",
     "hackathons": "Hackathons & Events",
     "about": "About Us",
     "careers": "Careers",
@@ -45,22 +48,27 @@
     "termsOfService": "Terms of Service",
     "refundPolicy": "Refund & Cancellation Policy",
     "grievanceOfficer": "Grievance Officer",
-    "dpdpAct": "DPDP Act Compliance"
+    "dpdpAct": "DPDP Act Notice"
   },
   "trustBadges": {
     "dataIndia": "Data stored in India",
-    "upiRazorpay": "UPI & Razorpay supported",
+    "upiRazorpay": "UPI/Razorpay supported",
     "gstCompliant": "GST-compliant invoices"
   },
   "contact": {
-    "support": "Support:",
-    "phone": "Phone:",
-    "address": "Office:"
+    "email": "Email",
+    "office": "Office",
+    "cin": "CIN",
+    "gstin": "GSTIN"
   },
   "footer": {
     "allRights": "All rights reserved.",
-    "madeInIndia": "Made with ♥ in India 🇮🇳",
-    "systemsOperational": "Status: All systems operational",
-    "whatsappChat": "Chat on WhatsApp"
+    "madeInIndia": "Made with ♥ in India",
+    "systemsOperational": "Systems Operational"
+  },
+  "legal": {
+    "draftNoticeTitle": "Draft – replace with reviewed legal text",
+    "draftNoticeBody": "This is a placeholder document template for compliance demonstration. Before production launch, this policy must be reviewed, customized, and approved by qualified legal counsel in accordance with applicable Indian laws.",
+    "backToHome": "← Back to Home"
   }
 }
