@@ -1,7 +1,8 @@
-# IntentGate & FlowGuard — ArmorIQ-Governed Voice Support Agent
+# Veratone — Verifiable Voice AI Governed by ArmorIQ & Powered by ElevenLabs
 
-> A real-time conversational voice support agent whose every tool call is cryptographically bound, governed, and enforced by **ArmorIQ (`platform.armoriq.ai`)**.  
-> Built for the **ArmorIQ Developer Hackathon**.
+> **Tagline**: *Verifiable voice AI, cryptographically governed by ArmorIQ.*  
+> **Description**: An autonomous conversational voice support and treasury agent where ElevenLabs delivers lifelike speech and ArmorIQ cryptographically enforces every real-world action against declared intent.  
+> **Live Production**: [https://flowguard-treasury.vercel.app](https://flowguard-treasury.vercel.app) · **Technical Blueprint**: [`docs/Veratone_Overview.pdf`](docs/Veratone_Overview.pdf)
 
 ---
 
@@ -186,27 +187,24 @@ FlowGuard implements an adaptive theme engine with strict WCAG AA contrast compl
 
 ---
 
-## 📖 PDF Technical User Guide
+## 📖 PDF Technical Architectural Guides
 
-A 9-page technical user guide and architectural blueprint is generated and committed to the repository:
-- **File**: [`docs/USER_GUIDE.pdf`](file:///d:/hackathon/New%20folder/docs/USER_GUIDE.pdf)
-- **Regenerate via script**:
+Two comprehensive technical architectural documents are generated and committed to the repository:
+- **`Veratone_Overview.pdf`**: [`docs/Veratone_Overview.pdf`](docs/Veratone_Overview.pdf) — Complete 9-page guide covering the ElevenLabs voice layer, ArmorIQ cryptographic intent enforcement, sub-5s timeout protection, comparative tables, and production roadmap.
+- **`USER_GUIDE.pdf`**: [`docs/USER_GUIDE.pdf`](docs/USER_GUIDE.pdf) — Complete operator manual for local deployment, 3D controls, theme tokens, and troubleshooting.
+- **Regenerate via scripts**:
   ```bash
-  npm run docs:pdf
+  npm run docs:overview   # Generates docs/Veratone_Overview.pdf
+  npm run docs:pdf        # Generates docs/USER_GUIDE.pdf
   ```
-- **Sections Included**:
-  1. *How to Use the Project* (Installation, local execution, 3D controls, theme tokens, troubleshooting).
-  2. *The Major Role of ArmorIQ* (The autonomous agent security crisis, 4-stage cryptographic intent lifecycle, ASCII architecture diagram).
-  3. *How ArmorIQ Changes Typical Industry Standards* (Comparison table: static API keys vs. cryptographic enforcement, official citations).
-  4. *Why It Matters* (Prompt injection mitigation, runaway financial tool prevention, compliance readiness).
-  5. *Summary & Verification Checklist* (All acceptance items verified).
 
 ---
 
 ## 📚 Deliverable References
-- [docs/USER_GUIDE.pdf](file:///d:/hackathon/New%20folder/docs/USER_GUIDE.pdf): Complete 9-page printed technical architectural guide.
-- [DX_NOTES.md](file:///d:/hackathon/New%20folder/DX_NOTES.md): Comprehensive documentation of the ElevenLabs ~5s timeout pattern, prefix normalization, measured latencies, 2-approval counter approach, and ArmorIQ SDK error typing gotchas.
-- [DISCLOSURES.md](file:///d:/hackathon/New%20folder/DISCLOSURES.md): Complete disclosures of all pre-existing libraries, AI assistants, and open-source packages.
-- [EVIDENCE.md](file:///d:/hackathon/New%20folder/EVIDENCE.md): Raw audit log evidence and cryptographic Merkle proof outputs from live test executions.
-- [ARMORIQ_ONBOARDING.md](file:///d:/hackathon/New%20folder/ARMORIQ_ONBOARDING.md): Detailed step-by-step onboarding walkthrough for `platform.armoriq.ai`.
-- [LICENSE](file:///d:/hackathon/New%20folder/LICENSE): MIT Open Source License.
+- [docs/Veratone_Overview.pdf](docs/Veratone_Overview.pdf): Official technical overview of ElevenLabs + ArmorIQ integration.
+- [docs/USER_GUIDE.pdf](docs/USER_GUIDE.pdf): Complete 9-page printed technical architectural guide.
+- [DX_NOTES.md](DX_NOTES.md): Comprehensive documentation of the ElevenLabs ~5s timeout pattern, prefix normalization, measured latencies, 2-approval counter approach, and ArmorIQ SDK error typing gotchas.
+- [DISCLOSURES.md](DISCLOSURES.md): Complete disclosures of all pre-existing libraries, AI assistants, and open-source packages.
+- [EVIDENCE.md](EVIDENCE.md): Raw audit log evidence and cryptographic Merkle proof outputs from live test executions.
+- [ARMORIQ_ONBOARDING.md](ARMORIQ_ONBOARDING.md): Detailed step-by-step onboarding walkthrough for `platform.armoriq.ai`.
+- [LICENSE](LICENSE): MIT Open Source License.
