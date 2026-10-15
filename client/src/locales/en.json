@@ -1,0 +1,66 @@
+{
+  "brand": {
+    "name": "YourBrand",
+    "tagline": "Built for Indian developers and businesses.",
+    "registeredText": "Registered under the Companies Act, 2013"
+  },
+  "nav": {
+    "home": "Home",
+    "howItWorks": "How it works",
+    "pricing": "Pricing (₹)",
+    "docs": "Docs",
+    "github": "GitHub",
+    "contactSales": "Contact Sales",
+    "playground": "PLAYGROUND",
+    "bookDemo": "BOOK A DEMO",
+    "toggleMenu": "Toggle navigation menu",
+    "switchLanguage": "Switch to Hindi"
+  },
+  "columns": {
+    "product": "PRODUCT",
+    "forBusiness": "FOR BUSINESS",
+    "developers": "DEVELOPERS",
+    "companyLegal": "COMPANY & LEGAL"
+  },
+  "links": {
+    "quickstart": "Quickstart",
+    "howItWorks": "How it works",
+    "apiReference": "API reference",
+    "pricingInr": "Pricing in ₹",
+    "changelog": "Changelog",
+    "contactSales": "Contact Sales",
+    "gstBilling": "GST Invoice & Billing",
+    "enterprise": "Enterprise",
+    "partners": "Partners",
+    "caseStudies": "Case Studies",
+    "docs": "Docs",
+    "github": "GitHub",
+    "npm": "npm package",
+    "community": "Community (Discord/Telegram)",
+    "hackathons": "Hackathons & Events",
+    "about": "About Us",
+    "careers": "Careers",
+    "blog": "Blog",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "refundPolicy": "Refund & Cancellation Policy",
+    "grievanceOfficer": "Grievance Officer",
+    "dpdpAct": "DPDP Act Compliance"
+  },
+  "trustBadges": {
+    "dataIndia": "Data stored in India",
+    "upiRazorpay": "UPI & Razorpay supported",
+    "gstCompliant": "GST-compliant invoices"
+  },
+  "contact": {
+    "support": "Support:",
+    "phone": "Phone:",
+    "address": "Office:"
+  },
+  "footer": {
+    "allRights": "All rights reserved.",
+    "madeInIndia": "Made with ♥ in India 🇮🇳",
+    "systemsOperational": "Status: All systems operational",
+    "whatsappChat": "Chat on WhatsApp"
+  }
+}

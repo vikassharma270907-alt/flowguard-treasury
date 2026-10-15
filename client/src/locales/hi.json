@@ -1,0 +1,66 @@
+{
+  "brand": {
+    "name": "YourBrand",
+    "tagline": "भारतीय डेवलपर्स और उद्यमों के लिए विशेष रूप से निर्मित।",
+    "registeredText": "कंपनी अधिनियम, 2013 के अंतर्गत पंजीकृत"
+  },
+  "nav": {
+    "home": "मुख्य पृष्ठ",
+    "howItWorks": "यह कैसे काम करता है",
+    "pricing": "मूल्य निर्धारण (₹)",
+    "docs": "दस्तावेज़",
+    "github": "गिटहब",
+    "contactSales": "सेल्स से संपर्क करें",
+    "playground": "प्लेग्राउंड",
+    "bookDemo": "डेमो बुक करें",
+    "toggleMenu": "नेविगेशन मेनू खोलें/बंद करें",
+    "switchLanguage": "अंग्रेजी में बदलें"
+  },
+  "columns": {
+    "product": "उत्पाद",
+    "forBusiness": "व्यवसायों के लिए",
+    "developers": "डेवलपर्स",
+    "companyLegal": "कंपनी और कानूनी"
+  },
+  "links": {
+    "quickstart": "त्वरित शुरुआत",
+    "howItWorks": "यह कैसे काम करता है",
+    "apiReference": "एपीआई संदर्भ",
+    "pricingInr": "मूल्य निर्धारण (₹ में)",
+    "changelog": "परिवर्तन सूची",
+    "contactSales": "सेल्स से संपर्क करें",
+    "gstBilling": "जीएसटी चालान और बिलिंग",
+    "enterprise": "एंटरप्राइज समाधान",
+    "partners": "भागीदार",
+    "caseStudies": "केस स्टडीज",
+    "docs": "दस्तावेज़",
+    "github": "गिटहब रिपॉजिटरी",
+    "npm": "एनपीएम पैकेज",
+    "community": "समुदाय (डिस्कॉर्ड/टेलीग्राम)",
+    "hackathons": "हैकाथॉन और कार्यक्रम",
+    "about": "हमारे बारे में",
+    "careers": "करियर",
+    "blog": "ब्लॉग",
+    "privacyPolicy": "गोपनीयता नीति",
+    "termsOfService": "सेवा की शर्तें",
+    "refundPolicy": "धनवापसी और रद्दीकरण नीति",
+    "grievanceOfficer": "शिकायत निवारण अधिकारी",
+    "dpdpAct": "डीपीडीपी अधिनियम अनुपालन"
+  },
+  "trustBadges": {
+    "dataIndia": "डेटा भारत में सुरक्षित",
+    "upiRazorpay": "यूपीआई और रेजरपे समर्थित",
+    "gstCompliant": "जीएसटी-अनुरूप इनवॉइस"
+  },
+  "contact": {
+    "support": "सहायता:",
+    "phone": "फ़ोन:",
+    "address": "कार्यालय:"
+  },
+  "footer": {
+    "allRights": "सर्वाधिकार सुरक्षित।",
+    "madeInIndia": "भारत में सप्रेम निर्मित 🇮🇳",
+    "systemsOperational": "स्थिति: सभी प्रणालियां सक्रिय",
+    "whatsappChat": "व्हाट्सएप पर चैट करें"
+  }
+}
