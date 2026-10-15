@@ -152,10 +152,10 @@ This executes:
 
 ## 🎨 3D Interactive Elements (Three.js 60 FPS)
 
-FlowGuard Treasury features three interactive, hardware-accelerated 3D elements built with Three.js (located in `client/src/components/3d/`):
+Veratone features three interactive, hardware-accelerated 3D elements built with Three.js (located in `client/src/components/3d/`):
 
 1. **`RotatingHeroVault.jsx` (Hero Object)**:
-   - Visualizes the FlowGuard Cryptographic Treasury Vault.
+   - Visualizes the Veratone Cryptographic Treasury Vault.
    - Inner crystalline icosahedron core surrounded by an outer holographic protective wireframe cage and an equatorial intent verification ring.
    - Interactive: Tracks cursor hover and drag to tilt perspective; dynamically speeds up on interaction.
 
@@ -179,7 +179,7 @@ FlowGuard Treasury features three interactive, hardware-accelerated 3D elements 
 
 ## 🌓 Light & Dark Theme System
 
-FlowGuard implements an adaptive theme engine with strict WCAG AA contrast compliance:
+Veratone implements an adaptive theme engine with strict WCAG AA contrast compliance:
 - **Design Tokens**: Standardized CSS variables defined in `client/src/index.css` for both `:root, [data-theme="dark"]` and `[data-theme="light"]`.
 - **Theme Toggle**: Accessible Sun/Moon toggle button in the top navigation bar with `aria-label`.
 - **Zero-Flash First Load**: Inline blocking script in `client/index.html` checks `localStorage` and `prefers-color-scheme` before rendering body.

@@ -17,11 +17,11 @@ The following open-source packages and frameworks were utilized:
 - **Express.js (v5.3.0) & CORS (v2.8.6)**: Lightweight HTTP server for REST endpoints and web app integration.
 - **React (v18.x) & Vite (v5.x)**: Frontend client framework for the reactive web dashboard and supervisor playground.
 - **`three` (v0.183.x)**: Three.js library for hardware-accelerated 60 FPS 3D cryptographic models, orbital vaults, particle fields, and gyroscopic enclaves with WebGL cleanup and reduced-motion compliance.
-- **`pdfkit` (v0.20.x)**: Server-side PDF generation engine used to compile the technical architectural user guide (`docs/USER_GUIDE.pdf`).
+- **`pdfkit` (v0.20.x)**: Server-side PDF generation engine used to compile the technical architectural guides ([docs/Veratone_Overview.pdf](docs/Veratone_Overview.pdf) and [docs/USER_GUIDE.pdf](docs/USER_GUIDE.pdf)).
 - **Cloudflare Tunnel (`cloudflared`)**: Tunneling agent used to expose local development ports to public HTTPS (`trycloudflare.com`) for ArmorIQ proxy reachability.
 
 ## 4. Starter Templates & Prior Prototypes
-- **Airwallex Sandbox Adapter & FlowGuard Treasury Concept**: Earlier sandbox fintech UI components and prototype data structures for duplicate invoice detection and treasury buffer monitoring were adapted to showcase how voice agents execute financial payouts and refunds under zero-trust ArmorIQ governance.
+- **Airwallex Sandbox Adapter & FlowGuard Treasury Concept**: Earlier sandbox fintech UI components and prototype data structures for duplicate invoice detection and treasury buffer monitoring were adapted into the Veratone project to showcase how voice agents execute financial payouts and refunds under zero-trust ArmorIQ governance.
 - **IntentGate Gateway Service**: Architecture developed specifically for governing ElevenLabs Conversational Voice Agent tool calls with strict sub-5-second timeout holding utterances and dual-key supervisor authorization.
 
 ## 5. Security & Synthetic Data Attestation
