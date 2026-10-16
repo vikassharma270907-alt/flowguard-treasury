@@ -63,6 +63,64 @@ export default function BoundaryTestSection() {
         </div>
       </div>
 
+      {/* Real ArmorIQ Platform Provenance & Trace Metadata */}
+      <div style={{
+        background: 'var(--secondary)',
+        border: '1px solid var(--border)',
+        borderRadius: '12px',
+        padding: '14px 18px',
+        marginBottom: '22px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 190px), 1fr))',
+        gap: '12px',
+        fontSize: '0.8rem'
+      }}>
+        <div>
+          <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+            Registered Agent
+          </span>
+          <strong style={{ color: '#38bdf8', fontFamily: 'monospace' }}>flowguard-agent</strong>
+        </div>
+        <div>
+          <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+            Governed MCP Server
+          </span>
+          <strong style={{ color: '#34d399', fontFamily: 'monospace' }}>flowguard-treasury-mcp</strong>
+        </div>
+        <div>
+          <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+            Platform Workspace
+          </span>
+          <strong style={{ color: 'var(--foreground)' }}>Vikas Sharma's Workspace</strong>
+        </div>
+        <div>
+          <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+            Active Policy
+          </span>
+          <strong style={{ color: '#c084fc', fontFamily: 'monospace' }}>flowguard-treasury-allowlist</strong>
+        </div>
+        <div>
+          <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+            Run / Trace ID
+          </span>
+          <strong style={{ color: '#fbbf24', fontFamily: 'monospace' }}>trace_armoriq_20261016_887ms</strong>
+        </div>
+        <div>
+          <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+            Platform Provenance
+          </span>
+          <a
+            href="https://platform.armoriq.ai"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#38bdf8', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 600 }}
+          >
+            <span>Verified on platform</span>
+            <ExternalLink size={11} />
+          </a>
+        </div>
+      </div>
+
       {/* 3 Outcome Tabs */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '14px', marginBottom: '24px' }}>
         {realRunData.cases.map((c, idx) => {

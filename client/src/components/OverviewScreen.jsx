@@ -1,4 +1,4 @@
-import React, { useState, Suspense, lazy } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import {
   Wallet, ShieldCheck, ArrowUpRight, ArrowDownLeft, Clock,
   AlertTriangle, CheckCircle2, TrendingUp, DollarSign, PhoneCall,
@@ -20,6 +20,20 @@ export default function OverviewScreen({
 }) {
   const [showDemoVideo, setShowDemoVideo] = useState(false);
   const [explainerStep, setExplainerStep] = useState(0);
+  // The 3D hero is a heavy WebGL scene. Mount it only after the first user
+  // interaction so it never blocks first paint or the initial main-thread
+  // budget; a static placeholder holds the space until then.
+  const [show3dHero, setShow3dHero] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const activate = () => setShow3dHero(true);
+    const events = ['pointerdown', 'pointermove', 'keydown', 'scroll', 'touchstart'];
+    events.forEach((evt) => window.addEventListener(evt, activate, { once: true, passive: true }));
+    return () => {
+      events.forEach((evt) => window.removeEventListener(evt, activate));
+    };
+  }, []);
 
   const walkthroughSteps = [
     {
@@ -704,13 +718,37 @@ export default function OverviewScreen({
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-          <Suspense fallback={
-            <div style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)' }}>
-              Loading 3D Hero Vault...
+          {show3dHero ? (
+            <Suspense fallback={
+              <div style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)' }}>
+                Loading 3D Hero Vault...
+              </div>
+            }>
+              <RotatingHeroVault height={235} interactive={true} />
+            </Suspense>
+          ) : (
+            <div style={{
+              width: '100%',
+              height: '100%',
+              display: 'grid',
+              placeItems: 'center',
+              background: 'radial-gradient(circle at 50% 45%, rgba(16, 185, 129, 0.14), rgba(99, 102, 241, 0.10) 42%, transparent 72%)'
+            }}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  width: '96px',
+                  height: '96px',
+                  margin: '0 auto 10px',
+                  borderRadius: '50%',
+                  border: '1px dashed rgba(99, 102, 241, 0.55)',
+                  boxShadow: 'inset 0 0 28px rgba(16, 185, 129, 0.25)'
+                }} />
+                <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>
+                  Interactive 3D intent vault loads on first interaction
+                </div>
+              </div>
             </div>
-          }>
-            <RotatingHeroVault height={235} interactive={true} />
-          </Suspense>
+          )}
         </div>
       </div>
 

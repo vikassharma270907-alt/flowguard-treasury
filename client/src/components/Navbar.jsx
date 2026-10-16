@@ -147,7 +147,7 @@ export default function Navbar({
           {[
             { id: 'overview', label: 'Overview' },
             { id: 'scenarios', label: 'Demo Scenarios', isScenario: true },
-            { id: 'enclave', label: '3D Enclave', is3D: true },
+            { id: 'enclave', label: 'How It Works', is3D: true },
             { id: 'planner', label: 'Payment Planner' },
             { id: 'invoices', label: 'Invoice & Risk Guard' },
             { id: 'voice', label: 'Voice Gateway', isVoice: true },

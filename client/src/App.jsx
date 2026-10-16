@@ -3,19 +3,22 @@ import Header from './components/Header';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import OverviewScreen from './components/OverviewScreen';
-import PlannerScreen from './components/PlannerScreen';
-import InvoiceGuardScreen from './components/InvoiceGuardScreen';
-import AuditLedgerScreen from './components/AuditLedgerScreen';
-import AdminPanel from './components/AdminPanel';
-import VoiceGatewayScreen from './components/VoiceGatewayScreen';
-import EnclaveScreen from './components/EnclaveScreen';
-import ApprovalModal from './components/ApprovalModal';
-import CredentialsModal from './components/CredentialsModal';
-import OAuthModal from './components/OAuthModal';
-import LegalPages from './components/LegalPages';
-import PricingSection from './components/PricingSection';
-import JudgesPage from './components/JudgesPage';
-import ScenariosScreen from './components/ScenariosScreen';
+
+// Route-level code splitting: only the overview screen ships in the initial
+// bundle; every other screen (and the modals) loads on first navigation.
+const PlannerScreen = lazy(() => import('./components/PlannerScreen'));
+const InvoiceGuardScreen = lazy(() => import('./components/InvoiceGuardScreen'));
+const AuditLedgerScreen = lazy(() => import('./components/AuditLedgerScreen'));
+const AdminPanel = lazy(() => import('./components/AdminPanel'));
+const VoiceGatewayScreen = lazy(() => import('./components/VoiceGatewayScreen'));
+const EnclaveScreen = lazy(() => import('./components/EnclaveScreen'));
+const ApprovalModal = lazy(() => import('./components/ApprovalModal'));
+const CredentialsModal = lazy(() => import('./components/CredentialsModal'));
+const OAuthModal = lazy(() => import('./components/OAuthModal'));
+const LegalPages = lazy(() => import('./components/LegalPages'));
+const PricingSection = lazy(() => import('./components/PricingSection'));
+const JudgesPage = lazy(() => import('./components/JudgesPage'));
+const ScenariosScreen = lazy(() => import('./components/ScenariosScreen'));
 import { Lock, Shield, ArrowRight } from 'lucide-react';
 
 const LEGAL_ROUTES = ['privacy', 'terms', 'refund-policy', 'grievance-officer', 'dpdp-compliance', 'dpdp-act'];
@@ -28,7 +31,8 @@ function getInitialTabFromUrl() {
   if (LEGAL_ROUTES.includes(path)) {
     return path === 'dpdp-act' ? 'dpdp-compliance' : path;
   }
-  if (path === 'how-it-works') return 'enclave';
+  if (path === 'how-it-works' || path === 'enclave') return 'enclave';
+  if (path === 'boundary-test' || path === 'boundary') return 'overview';
   if (path === 'pricing') return 'pricing';
 
   if (window.location.hash) {
@@ -36,7 +40,8 @@ function getInitialTabFromUrl() {
     if (hash === 'judges') return 'judges';
     if (hash === 'scenarios') return 'scenarios';
     if (hash === 'pricing') return 'pricing';
-    if (hash === 'how-it-works') return 'enclave';
+    if (hash === 'how-it-works' || hash === 'enclave') return 'enclave';
+    if (hash === 'boundary-test' || hash === 'boundary') return 'overview';
     if (hash === 'quickstart') return 'overview';
   }
   return 'overview';
@@ -105,7 +110,53 @@ export default function App() {
     };
   }, []);
 
+  // Smooth scroll handler for #boundary-test with prominent focus effect
+  useEffect(() => {
+    const scrollToBoundaryTest = () => {
+      const hash = window.location.hash;
+      const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+      if (hash === '#boundary-test' || hash === '#boundary' || path === 'boundary-test') {
+        setTimeout(() => {
+          const el = document.getElementById('boundary-test');
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            el.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+            el.style.borderColor = '#38bdf8';
+            el.style.boxShadow = '0 0 0 2px #38bdf8, 0 10px 30px rgba(56, 189, 248, 0.25)';
+            setTimeout(() => {
+              el.style.boxShadow = 'var(--card-shadow)';
+              el.style.borderColor = 'var(--border)';
+            }, 3000);
+          }
+        }, 120);
+      }
+    };
+
+    scrollToBoundaryTest();
+    window.addEventListener('hashchange', scrollToBoundaryTest);
+    return () => window.removeEventListener('hashchange', scrollToBoundaryTest);
+  }, [activeTab]);
+
   const handleNavigate = (tab) => {
+    if (tab === 'boundary' || tab === 'boundary-test') {
+      setActiveTab('overview');
+      window.history.pushState(null, '', '/#boundary-test');
+      setTimeout(() => {
+        const el = document.getElementById('boundary-test');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          el.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+          el.style.borderColor = '#38bdf8';
+          el.style.boxShadow = '0 0 0 2px #38bdf8, 0 10px 30px rgba(56, 189, 248, 0.25)';
+          setTimeout(() => {
+            el.style.boxShadow = 'var(--card-shadow)';
+            el.style.borderColor = 'var(--border)';
+          }, 3000);
+        }
+      }, 100);
+      return;
+    }
+
     setActiveTab(tab);
     if (LEGAL_ROUTES.includes(tab)) {
       window.history.pushState(null, '', `/${tab}`);
@@ -115,8 +166,8 @@ export default function App() {
       window.history.pushState(null, '', '/scenarios');
     } else if (tab === 'pricing') {
       window.history.pushState(null, '', '/#pricing');
-    } else if (tab === 'enclave') {
-      window.history.pushState(null, '', '/#how-it-works');
+    } else if (tab === 'enclave' || tab === 'how-it-works') {
+      window.history.pushState(null, '', '/how-it-works');
     } else if (tab === 'overview') {
       window.history.pushState(null, '', '/');
     }
@@ -266,6 +317,11 @@ export default function App() {
       )}
 
       <main style={{ maxWidth: '1440px', width: '100%', margin: '0 auto', padding: '24px', flex: 1 }}>
+        <Suspense fallback={
+          <div style={{ minHeight: '60vh', display: 'grid', placeItems: 'center', color: 'var(--muted-foreground)', fontSize: '0.9rem' }}>
+            Loading…
+          </div>
+        }>
         {activeTab === 'judges' && (
           <JudgesPage onNavigate={handleNavigate} />
         )}
@@ -301,7 +357,7 @@ export default function App() {
         )}
 
         {activeTab === 'enclave' && (
-          <EnclaveScreen />
+          <EnclaveScreen onNavigate={handleNavigate} />
         )}
 
         {activeTab === 'planner' && (
@@ -379,8 +435,11 @@ export default function App() {
             </div>
           )
         )}
+        </Suspense>
       </main>
 
+      {/* Modals: lazy-loaded in a shared boundary */}
+      <Suspense fallback={null}>
       {/* Human Approval Modal */}
       {selectedInvoiceForApproval && (
         <ApprovalModal
@@ -407,6 +466,7 @@ export default function App() {
           onLoginSuccess={handleOAuthSuccess}
         />
       )}
+      </Suspense>
 
       {/* Global Responsive Footer */}
       <Footer onNavigate={handleNavigate} />

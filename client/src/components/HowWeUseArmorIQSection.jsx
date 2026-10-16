@@ -43,8 +43,7 @@ export default function HowWeUseArmorIQSection() {
         <svg
           viewBox="0 0 960 420"
           width="100%"
-          height="auto"
-          style={{ minWidth: 'min(100%, 700px)', display: 'block' }}
+          style={{ minWidth: 'min(100%, 700px)', height: 'auto', display: 'block' }}
           role="img"
           aria-labelledby="svg-arch-title svg-arch-desc"
         >
