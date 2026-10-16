@@ -239,3 +239,16 @@ Intent-binding run (same revision):
 - **Case 3 — expired token:** token `4efb997e4b854b44a803f3ed85b2c9e6` (5 s validity) → `TokenExpiredException`, refused before any network call.
 
 Every call above ran against `intentgate-treasury-mcp` at `https://flowguard-treasury.vercel.app/mcp` (deployment hostname predates the rename and stays pinned) with `decision_source: "opa"`.
+
+---
+
+## 7. Post-deploy production-path verification (2026-10-17, 03:44 IST · 2026-10-16 22:14 UTC)
+
+After the IntentGate build was promoted to production, the **deployed app itself** was exercised through its public voice-gateway webhook (`POST https://flowguard-treasury.vercel.app/api/voice/gateway/tool-call`) so the live deployment — not only the local scripts — is on record as being governed by ArmorIQ. Both verdicts returned `decision_source: "opa"` with both policies matched.
+
+| Call (deployed webhook) | Verdict | tokenId | Notes |
+| :--- | :--- | :--- | :--- |
+| `IntentGate_orderLookup` (`ORD-1001`) | **ALLOWED** | `faf4e0d4faf0403aae85f95c158d4d60` | Spoken response cited the real sandbox order (delivered · USD 89 · refundable 89); 2,252 ms total; plan `b3e6889fe267adb6…` |
+| `IntentGate_payoutChange` (`ACC-4471` → GB29…) | **BLOCKED** | `35dcb60cbe164f20bddb8723aec3e4dc` | `tool_not_in_allowlist` — routed to the supervisor hold ("A supervisor has been notified…"); plan `b086c9aeb8da1343…` |
+
+Raw HTTP responses: [`docs/evidence/prod-verification-2026-10-17-orderlookup.json`](docs/evidence/prod-verification-2026-10-17-orderlookup.json) · [`docs/evidence/prod-verification-2026-10-17-payoutchange.json`](docs/evidence/prod-verification-2026-10-17-payoutchange.json). Two deployment fixes shipped with this verification: `2311a0e` — sanitize `ARMORIQ_API_KEY` (strip quotes/whitespace) before SDK init in the enforcement module, which previously reported `NOT_CONNECTED` on a format-rejected raw value; `7a2893d` — unwrap the MCP tool-result envelope before building the spoken response.

@@ -1,7 +1,8 @@
 # Evidence captures — live ArmorIQ enforcement runs
 
-Raw, unedited stdout of the two verification scripts, captured against the live
-ArmorIQ platform and the production MCP endpoint. Nothing here is mocked: every
+Raw, unedited stdout of the verification scripts plus raw HTTP responses from
+the deployed webhook, captured against the live ArmorIQ platform and the
+production MCP endpoint. Nothing here is mocked: every
 verdict, token id, hash and delegation id below was returned by
 `iap.armoriq.ai` / `proxy.armoriq.ai` / `api.armoriq.ai` during the runs.
 
@@ -15,6 +16,9 @@ verdict, token id, hash and delegation id below was returned by
 | `test-intent-mismatch-2026-10-17-pre-rename.txt` | same scripts | Same-day pre-rename run, kept verbatim |
 | `test-enforcement-2026-10-16.txt` | same scripts | Baseline production run: `lookup_order` **ALLOWED** (887 ms), `change_payout` **BLOCKED** (HTTP 403), `issue_refund` **HELD** (`eb63aac7-...`) |
 | `test-intent-mismatch-2026-10-16.txt` | same scripts | Baseline production run: SDK action-level intent binding and token expiration verification |
+| `keyboard-pass-2026-10-17.txt` | `node scripts/verify-keyboard.mjs` | Post-promotion keyboard-only pass on the final production build: 14/14 checks, exit code 0 (see A11y section) |
+| `keyboard-pass-2026-10-17-pre-rename.txt` | same | The same-day keyboard pass on the pre-rename build, kept verbatim |
+| `prod-verification-2026-10-17-*.json` | `curl` (deployed webhook) | Post-deploy production-path run: governed `orderLookup` **ALLOWED**, `payoutChange` **BLOCKED** (see section below) |
 
 Times: the 16 Oct file was written at 19:06 UTC; the 17 Oct files were written
 at 02:18 IST (pre-rename) and 03:10 IST (final) — filenames use the IST day of
@@ -96,6 +100,45 @@ and the matching `ARMORIQ_MCP_INTENTGATE_TREASURY_MCP_*` credential.
   superseded pre-rename policy record still attached and matching (see Platform
   objects above).
 
+## Post-deploy production-path verification (2026-10-17)
+
+After the IntentGate build was promoted to production, the deployed app itself —
+not the local scripts — was exercised through its public voice-gateway webhook
+so the live deployment is on record as governed by ArmorIQ:
+
+```bash
+curl -X POST https://flowguard-treasury.vercel.app/api/voice/gateway/tool-call \
+  -H "Content-Type: application/json" \
+  --data-binary '{"rawToolName":"IntentGate_orderLookup","parameters":{"order_id":"ORD-1001"}}'
+
+curl -X POST https://flowguard-treasury.vercel.app/api/voice/gateway/tool-call \
+  -H "Content-Type: application/json" \
+  --data-binary '{"rawToolName":"IntentGate_payoutChange","parameters":{"account_id":"ACC-4471","new_destination":"GB29 NWBK 6016 1331 9268 19"}}'
+```
+
+Both calls were decided by ArmorIQ (`decision_source: "opa"`, both policies
+matched, `domain` = `flowguard-treasury.vercel.app`):
+
+| Call | Verdict | Run identifiers |
+| --- | --- | --- |
+| `IntentGate_orderLookup` | **ALLOWED** — the agent spoke the real sandbox order back (delivered · USD 89 · refundable 89) | token `faf4e0d4faf0403aae85f95c158d4d60`, plan `b3e6889fe267adb6…`, 2,252 ms |
+| `IntentGate_payoutChange` | **BLOCKED** — `tool_not_in_allowlist`, routed to supervisor hold | token `35dcb60cbe164f20bddb8723aec3e4dc`, plan `b086c9aeb8da1343…` |
+
+Raw HTTP responses are stored byte-for-byte as
+`prod-verification-2026-10-17-orderlookup.json` and
+`prod-verification-2026-10-17-payoutchange.json`.
+
+Two deployment fixes shipped with this verification:
+
+- `2311a0e` — `armorIqEnforcement` now sanitizes `ARMORIQ_API_KEY` (strip
+  surrounding quotes/whitespace) before SDK init, exactly like `armorIqService`
+  does; the deployed status previously reported `NOT_CONNECTED` because the
+  stored value failed the SDK's key-format check while the platform was
+  reachable with the cleaned key.
+- `7a2893d` — the voice gateway unwraps the MCP tool-result envelope
+  (`{content:[{type:'text',text:'…'}]}`) before building the spoken response, so
+  an ALLOWED lookup cites the real order fields instead of "unknown".
+
 ## Accessibility & performance verification (2026-10-17)
 
 - **Keyboard-only pass** — `node scripts/verify-keyboard.mjs
@@ -103,8 +146,10 @@ and the matching `ARMORIQ_MCP_INTENTGATE_TREASURY_MCP_*` credential.
   headless) with keyboard input only: 12 distinct Tab stops with a visible
   focus ring each, Enter activates the focused “For Judges” nav link, and the
   mobile drawer opens with Enter, traps Tab, and closes with Escape returning
-  focus to the toggle. Result: 14/14 checks pass, exit code 0. Raw output:
-  `keyboard-pass-2026-10-17.txt`.
+  focus to the toggle. Result: 14/14 checks pass, exit code 0 — run twice: on
+  the pre-rename build, and re-run post-promotion on the final IntentGate build.
+  Raw outputs: `keyboard-pass-2026-10-17-pre-rename.txt` (2026-10-16 19:58 UTC)
+  and `keyboard-pass-2026-10-17.txt` (2026-10-16 22:14 UTC; 17 Oct IST).
 - **Lighthouse mobile** (production URL, `--form-factor=mobile`, Chrome
   `--headless=new`): Accessibility **100**, SEO **92**, Performance **81** and
   **91** across two consecutive runs — after route-level code splitting,
