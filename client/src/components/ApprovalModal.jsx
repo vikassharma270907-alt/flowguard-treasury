@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, CheckCircle2, ArrowRight, ShieldCheck, DollarSign, Clock, AlertTriangle, Send } from 'lucide-react';
+import { formatINR } from '../utils/currency';
 
 export default function ApprovalModal({
   invoice,
@@ -161,7 +162,7 @@ export default function ApprovalModal({
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: '6px' }}>
                   <span style={{ color: 'var(--text-muted)' }}>Airwallex Corridor Fee:</span>
                   <span className="mono" style={{ color: invoice.payment_method === 'SWIFT' ? '#fbbf24' : '#34d399', fontWeight: 600 }}>
-                    {invoice.payment_method === 'SWIFT' ? `+${invoice.corridorFee?.fee_currency} ${invoice.corridorFee?.fee_amount?.toFixed(2)} (EUR SWIFT Flat)` : 'Free ($0.00 LOCAL)'}
+                    {invoice.payment_method === 'SWIFT' ? `+${invoice.corridorFee?.fee_currency} ${formatINR(invoice.corridorFee?.fee_amount || 0)} (EUR SWIFT Flat)` : 'Free (₹0 LOCAL)'}
                   </span>
                 </div>
 
@@ -169,15 +170,15 @@ export default function ApprovalModal({
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: '6px' }}>
                     <span style={{ color: 'var(--text-muted)' }}>Locked Client Rate:</span>
                     <span className="mono" style={{ color: '#ffffff', fontWeight: 600 }}>
-                      {loadingQuote ? 'Fetching live quote...' : fxQuote ? `1 ${invoice.currency} = ${(1 / fxQuote.client_rate).toFixed(4)} USD` : 'Indicative market rate'}
+                      {loadingQuote ? 'Fetching live quote...' : fxQuote ? `1 ${invoice.currency} = ${new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format((1 / fxQuote.client_rate) * 86.5)} INR` : 'Indicative market rate'}
                     </span>
                   </div>
                 )}
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '6px', marginTop: '6px' }}>
-                  <span style={{ color: 'var(--text-muted)' }}>Total Net Outflow (USD Eq.):</span>
+                  <span style={{ color: 'var(--text-muted)' }}>Total Net Outflow (INR Eq.):</span>
                   <span className="mono" style={{ fontWeight: 700, color: '#f8fafc' }}>
-                    ${invoice.totalOutflowUsd?.toFixed(2)} USD
+                    {formatINR(Math.round((invoice.totalOutflowUsd || 0) * 86.5))}
                   </span>
                 </div>
               </div>

@@ -27,7 +27,7 @@ export default function Navbar({
     {
       id: 'SCENARIO_A',
       title: 'Scenario A: Baseline Multi-Currency Run',
-      desc: 'Standard operations, healthy liquidity reserve ($15,000 floor), $0 local rails prioritized.',
+      desc: 'Standard operations, healthy liquidity reserve (₹12,97,500 floor), ₹0 local rails prioritized.',
       badge: 'NORMAL OPS',
       icon: ShieldCheck,
       color: '#34d399'
@@ -43,14 +43,14 @@ export default function Navbar({
     {
       id: 'SCENARIO_C',
       title: 'Scenario C: Delayed Receivable Shock',
-      desc: 'Simulates a $14,500 customer receipt delay, auto-deferring low-priority vendor disbursements.',
+      desc: 'Simulates a ₹12,54,250 customer receipt delay, auto-deferring low-priority vendor disbursements.',
       badge: 'LIQUIDITY STRESS',
       icon: Clock,
       color: '#fbbf24'
     },
     {
       id: 'SCENARIO_D',
-      title: 'Scenario D: Sandbox Deposit (+ $25,000)',
+      title: 'Scenario D: Sandbox Deposit (+ ₹20,00,000)',
       desc: 'Simulates Airwallex inbound deposit to replenish wallet balances and unlock held invoices.',
       badge: 'REPLENISHMENT',
       icon: ArrowDownCircle,

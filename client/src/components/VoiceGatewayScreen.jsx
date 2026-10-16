@@ -241,7 +241,7 @@ export default function VoiceGatewayScreen({ userSession }) {
       // Step 3: ~32s - Caller requests partial refund
       if (currentSec === 32 && !sessionData?.pendingSupervisorAction) {
         setGuidedStep(5);
-        speakText("Understood. Then could we please issue a partial refund of $4,200 for the damaged freight charges?", 'caller');
+        speakText("Understood. Then could we please issue a partial refund of ₹3,50,000 for the damaged freight charges?", 'caller');
       }
       if (currentSec === 36 && !sessionData?.pendingSupervisorAction) {
         setGuidedStep(6);
@@ -544,7 +544,7 @@ export default function VoiceGatewayScreen({ userSession }) {
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', paddingBottom: '6px' }}>
                 <span style={{ color: 'var(--muted-foreground)' }}>Disbursement</span>
-                <span style={{ fontWeight: 700, color: '#34d399' }}>$18,500.00 USD</span>
+                <span style={{ fontWeight: 700, color: '#34d399' }}>₹15,40,000</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: 'var(--muted-foreground)' }}>Bank on File</span>
@@ -790,7 +790,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: 'var(--muted-foreground)' }}>Disbursement:</span>
-                    <span style={{ fontWeight: 600 }}>$18,500.00 USD</span>
+                    <span style={{ fontWeight: 600 }}>₹15,40,000</span>
                   </div>
                 </div>
 
@@ -853,7 +853,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                       Refund Requires Dual Approval (2 Keys)
                     </div>
                     <div style={{ fontSize: '0.7rem', color: '#c4b5fd' }}>
-                      Amount: ${pendingAction.amount.toLocaleString()} USD · Policy Quorum
+                      Amount: ₹{((pendingAction.amount || 0) * 86.5).toLocaleString('en-IN', { maximumFractionDigits: 0 })} · Policy Quorum
                     </div>
                   </div>
                 </div>
@@ -995,7 +995,7 @@ export default function VoiceGatewayScreen({ userSession }) {
 
               {selectedToolToTrigger === 'IntentGate_issueRefund' && (
                 <div>
-                  <label style={{ color: 'var(--muted-foreground)', fontSize: '0.7rem' }}>Refund Amount (USD)</label>
+                  <label style={{ color: 'var(--muted-foreground)', fontSize: '0.7rem' }}>Refund Amount (₹)</label>
                   <input
                     type="number"
                     value={manualRefundAmount}

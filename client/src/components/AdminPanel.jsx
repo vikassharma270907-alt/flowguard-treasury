@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Shield, Sliders, Globe, Users, Activity, CheckCircle2,
   AlertTriangle, Lock, Save, RefreshCw, UserPlus, Server, Key, ExternalLink,
-  ShieldCheck, Cpu, Flame, Zap, Database, Copy, Check
+  ShieldCheck, Cpu, Flame, Zap, Database, Copy, Check, Terminal
 } from 'lucide-react';
 import StepUpSecurityModal from './StepUpSecurityModal';
 
@@ -345,7 +345,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                   <strong style={{ fontSize: '0.9rem', color: '#ffffff' }}>Single Payout Limit</strong>
                   <span className="mono" style={{ fontWeight: 700, color: '#38bdf8' }}>
-                    ${settings.singlePayoutLimitUsd?.toLocaleString()} USD
+                    ₹{((settings.singlePayoutLimitUsd || 0) * 86.5).toLocaleString('en-IN')}
                   </span>
                 </div>
                 <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '12px' }}>
@@ -367,7 +367,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                 <div>
                   <strong style={{ fontSize: '0.9rem', color: '#ffffff' }}>Strict Reserve Floor Inviolability</strong>
                   <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginTop: '2px' }}>
-                    Hard block on any payment that violates the $15,000 reserve buffer.
+                    Hard block on any payment that violates the ₹12,97,500 reserve buffer.
                   </p>
                 </div>
                 <div
@@ -418,7 +418,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             <div style={{ background: '#121215', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                 <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#ffffff' }}>United States (USD)</div>
-                <span className="badge badge-success">LOCAL $0.00 FEE</span>
+                <span className="badge badge-success">LOCAL ₹0 FEE</span>
               </div>
               <div style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', marginBottom: '12px' }}>
                 Corridor: ACH / Fedwire · Instant settlement · Checking & Savings accounts
@@ -435,7 +435,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             <div style={{ background: '#121215', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                 <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#ffffff' }}>United Kingdom (GBP)</div>
-                <span className="badge badge-success">LOCAL $0.00 FEE</span>
+                <span className="badge badge-success">LOCAL ₹0 FEE</span>
               </div>
               <div style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', marginBottom: '12px' }}>
                 Corridor: UK Faster Payments · Sort Code & Account Number validation
@@ -677,7 +677,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                 <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>Step-Up 2FA Challenge</h4>
               </div>
               <p style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', marginBottom: '16px', lineHeight: 1.5 }}>
-                Enforces hardware passkey or 6-digit cryptographic authenticator challenge before high-risk changes (e.g. reserve floor decrease or single transfer &gt; $50,000).
+                Enforces hardware passkey or 6-digit cryptographic authenticator challenge before high-risk changes (e.g. reserve floor decrease or single transfer &gt; ₹40,00,000).
               </p>
               <button
                 onClick={handleIssue2FAChallenge}
@@ -840,7 +840,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                   { name: 'order_lookup', label: '1. order_lookup', desc: 'Read-only order status check. Allowed automatically by ArmorIQ read policy.', badge: 'ArmorIQ Allowed', color: '#34d399', sampleArgs: { orderId: 'ORD-84920' } },
                   { name: 'payout_change', label: '2. payout_change', desc: 'Attempts to modify destination wire account. High risk; halted & escalated to supervisor.', badge: 'ArmorIQ Halted & Escalated', color: '#f87171', sampleArgs: { routingNumber: '021000021', accountNumber: '987654321', reason: 'Unverified phone change' } },
                   { name: 'issue_refund', label: '3. issue_refund', desc: 'Issues freight refund. ArmorIQ enforces 2 supervisor approvals before execution.', badge: 'Dual Approval Quorum (2)', color: '#c084fc', sampleArgs: { amount: 4200.00, orderId: 'ORD-84920' } },
-                  { name: 'assert_reserve_floor', label: '4. assert_reserve_floor', desc: 'Asserts liquidity satisfies $15,000 USD protected cash floor.', badge: 'Floor Protection', color: '#60a5fa', sampleArgs: { minimumReserveUsd: 15000 } },
+                  { name: 'assert_reserve_floor', label: '4. assert_reserve_floor', desc: 'Asserts liquidity satisfies ₹12,97,500 protected cash floor.', badge: 'Floor Protection', color: '#60a5fa', sampleArgs: { minimumReserveUsd: 15000 } },
                   { name: 'verify_audit_merkle', label: '5. verify_audit_merkle', desc: 'Computes cryptographic SHA-256 Merkle root across all ledger events.', badge: 'Immutable Proof', color: '#34d399', sampleArgs: {} }
                 ].map(tool => (
                   <div key={tool.name} style={{ background: '#09090b', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>

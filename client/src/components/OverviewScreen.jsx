@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { Wallet, ShieldCheck, ArrowUpRight, ArrowDownLeft, Clock, AlertTriangle, CheckCircle2, TrendingUp, DollarSign, PhoneCall, ArrowRight, Shield, Server, ExternalLink, Activity, Box, Sparkles } from 'lucide-react';
+import { formatINR } from '../utils/currency';
 
 const RotatingHeroVault = lazy(() => import('./3d/RotatingHeroVault'));
 
@@ -172,10 +173,10 @@ export default function OverviewScreen({
             <AlertTriangle size={22} color="#f59e0b" />
             <div>
               <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#fde68a' }}>
-                Scenario C Active: Customer Receivable Delayed ($14,500 Inbound Postponed)
+                Scenario C Active: Customer Receivable Delayed ({formatINR(14500 * 86.5)} Inbound Postponed)
               </div>
               <div style={{ fontSize: '0.82rem', color: '#fef3c7' }}>
-                Treasury rules engine automatically deferred non-critical obligations to safeguard the $15,000 reserve floor.
+                Treasury rules engine automatically deferred non-critical obligations to safeguard the {formatINR(15000 * 86.5)} reserve floor.
               </div>
             </div>
           </div>
@@ -311,14 +312,14 @@ export default function OverviewScreen({
         <div className="glass-card" style={{ padding: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
             <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '0.04em' }}>
-              Total Liquid Cash (USD Base)
+              Total Liquid Cash (INR Eq.)
             </span>
             <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(99, 102, 241, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Wallet size={16} color="#818cf8" />
             </div>
           </div>
           <div className="mono" style={{ fontSize: '1.85rem', fontWeight: 800, color: '#ffffff' }}>
-            ${totalLiquid.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {formatINR(Math.round(totalLiquid * 86.5))}
           </div>
           <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', marginTop: '6px' }}>
             Across 4 multi-currency sandbox wallets
@@ -336,7 +337,7 @@ export default function OverviewScreen({
             </div>
           </div>
           <div className="mono" style={{ fontSize: '1.85rem', fontWeight: 800, color: '#818cf8' }}>
-            ${reserveFloor.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {formatINR(Math.round(reserveFloor * 86.5))}
           </div>
           <div style={{ fontSize: '0.78rem', color: '#10b981', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <CheckCircle2 size={13} /> Strict policy floor enforced by rules engine
@@ -354,7 +355,7 @@ export default function OverviewScreen({
             </div>
           </div>
           <div className="mono" style={{ fontSize: '1.85rem', fontWeight: 800, color: '#34d399' }}>
-            ${freeBuffer.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {formatINR(Math.round(freeBuffer * 86.5))}
           </div>
           <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', marginTop: '6px' }}>
             Funds clear for immediate supplier disbursement
@@ -372,7 +373,7 @@ export default function OverviewScreen({
             </div>
           </div>
           <div className="mono" style={{ fontSize: '1.85rem', fontWeight: 800, color: '#22d3ee' }}>
-            ${(plan?.forecastRunway?.incomingReceivablesUsd || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            {formatINR(Math.round((plan?.forecastRunway?.incomingReceivablesUsd || 0) * 86.5))}
           </div>
           <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', marginTop: '6px' }}>
             2 customer receipts tracked on ledger
@@ -394,7 +395,7 @@ export default function OverviewScreen({
             className="btn btn-secondary btn-sm"
             style={{ border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399' }}
           >
-            <DollarSign size={14} /> + Simulate $25k Deposit (POST /simulation/deposit/create)
+            <DollarSign size={14} /> + Simulate ₹20,00,000 Deposit (POST /simulation/deposit/create)
           </button>
         </div>
 
@@ -418,11 +419,11 @@ export default function OverviewScreen({
                 </span>
               </div>
               <div className="mono" style={{ fontSize: '1.45rem', fontWeight: 700 }}>
-                {b.currency === 'USD' ? '$' : b.currency === 'EUR' ? '€' : b.currency === 'GBP' ? '£' : 'A$'}
+                {b.currency === 'INR' ? '₹' : b.currency === 'USD' ? '$' : b.currency === 'EUR' ? '€' : b.currency === 'GBP' ? '£' : 'A$'}
                 {b.available_amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '4px' }}>
-                ≈ ${b.usd_equivalent.toLocaleString('en-US', { minimumFractionDigits: 2 })} USD
+                ≈ {formatINR(Math.round(b.usd_equivalent * 86.5))}
               </div>
             </div>
           ))}
@@ -435,7 +436,7 @@ export default function OverviewScreen({
           Liquidity Allocation & Reserve Floor Protection
         </h3>
         <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginBottom: '18px' }}>
-          Deterministic boundary: FlowGuard guarantees the ${reserveFloor.toLocaleString()} reserve floor remains inviolable.
+          Deterministic boundary: FlowGuard guarantees the {formatINR(Math.round(reserveFloor * 86.5))} reserve floor remains inviolable.
         </p>
 
         {/* Visual Bar */}
@@ -455,7 +456,7 @@ export default function OverviewScreen({
               background: 'linear-gradient(90deg, #6366f1, #4f46e5)',
               height: '100%'
             }}
-            title={`Protected Floor: $${reserveFloor}`}
+            title={`Protected Floor: ${formatINR(Math.round(reserveFloor * 86.5))}`}
           />
           {/* Approved Outflow segment */}
           <div
@@ -464,7 +465,7 @@ export default function OverviewScreen({
               background: 'linear-gradient(90deg, #10b981, #059669)',
               height: '100%'
             }}
-            title={`Approved Outflows: $${approvedOutflow.toFixed(2)}`}
+            title={`Approved Outflows: ${formatINR(Math.round(approvedOutflow * 86.5))}`}
           />
           {/* Remaining buffer */}
           <div
@@ -480,15 +481,15 @@ export default function OverviewScreen({
         <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', fontSize: '0.82rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#6366f1' }}></span>
-            <span>Protected Floor: <strong>${reserveFloor.toLocaleString()}</strong></span>
+            <span>Protected Floor: <strong>{formatINR(Math.round(reserveFloor * 86.5))}</strong></span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#10b981' }}></span>
-            <span>Approved Immediate Payments: <strong>${approvedOutflow.toLocaleString('en-US', { minimumFractionDigits: 2 })}</strong></span>
+            <span>Approved Immediate Payments: <strong>{formatINR(Math.round(approvedOutflow * 86.5))}</strong></span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#f59e0b' }}></span>
-            <span>Deferred to Safeguard Floor: <strong>${deferredOutflow.toLocaleString('en-US', { minimumFractionDigits: 2 })}</strong></span>
+            <span>Deferred to Safeguard Floor: <strong>{formatINR(Math.round(deferredOutflow * 86.5))}</strong></span>
           </div>
         </div>
       </div>

@@ -11,6 +11,12 @@ export default defineConfig(({ mode }) => {
     define: {
       'process.env.NEXT_PUBLIC_CALENDLY_URL': JSON.stringify(
         process.env.NEXT_PUBLIC_CALENDLY_URL || env.NEXT_PUBLIC_CALENDLY_URL || ''
+      ),
+      'process.env.NEXT_PUBLIC_GST_RATE': JSON.stringify(
+        process.env.NEXT_PUBLIC_GST_RATE || env.NEXT_PUBLIC_GST_RATE || ''
+      ),
+      'process.env.FALLBACK_USD_INR': JSON.stringify(
+        process.env.FALLBACK_USD_INR || env.FALLBACK_USD_INR || '86.50'
       )
     },
     server: {

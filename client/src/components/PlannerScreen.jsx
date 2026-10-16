@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Sliders, CheckCircle2, Clock, AlertOctagon, ArrowRight, ShieldCheck, DollarSign } from 'lucide-react';
+import { formatINR } from '../utils/currency';
 
 export default function PlannerScreen({
   planData,
@@ -42,7 +43,7 @@ export default function PlannerScreen({
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Target Floor:</span>
             <div className="mono" style={{ fontSize: '1.5rem', fontWeight: 800, color: '#818cf8' }}>
-              ${sliderVal.toLocaleString('en-US')}
+              {formatINR(sliderVal)}
             </div>
           </div>
         </div>
@@ -68,7 +69,7 @@ export default function PlannerScreen({
           />
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>$5,000 (Aggressive)</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>₹5,000 (Aggressive)</span>
             <div style={{ display: 'flex', gap: '8px' }}>
               {[10000, 15000, 20000, 25000].map(val => (
                 <button
@@ -82,11 +83,11 @@ export default function PlannerScreen({
                     padding: '4px 10px'
                   }}
                 >
-                  ${(val / 1000)}k {val === 15000 ? '(Default)' : ''}
+                  ₹{(val / 1000)}k {val === 15000 ? '(Default)' : ''}
                 </button>
               ))}
             </div>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>$30,000 (Conservative)</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>₹30,000 (Conservative)</span>
           </div>
         </div>
       </div>
@@ -164,11 +165,11 @@ export default function PlannerScreen({
                     </div>
                     <div style={{ fontSize: '0.73rem', color: 'var(--text-dim)', marginTop: '2px' }}>
                       {inv.payment_method === 'SWIFT' ? (
-                        <span style={{ color: '#f59e0b' }}>SWIFT +{inv.corridorFee.fee_currency} {inv.corridorFee.fee_amount.toFixed(2)}</span>
+                        <span style={{ color: '#f59e0b' }}>SWIFT +{inv.corridorFee.fee_currency} {formatINR(inv.corridorFee.fee_amount)}</span>
                       ) : (
-                        <span style={{ color: '#10b981' }}>LOCAL $0.00 fee</span>
+                        <span style={{ color: '#10b981' }}>LOCAL Free (₹0)</span>
                       )}
-                      <span> (≈ ${inv.totalOutflowUsd.toFixed(2)} USD)</span>
+                      <span> (≈ {formatINR(Math.round(inv.totalOutflowUsd * 86.5))})</span>
                     </div>
                   </td>
 

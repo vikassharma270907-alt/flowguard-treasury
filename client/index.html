@@ -17,19 +17,36 @@
     <meta name="twitter:title" content="Veratone | Verifiable Voice AI" />
     <meta name="twitter:description" content="Verifiable voice AI, cryptographically governed by ArmorIQ. Powered by ElevenLabs & ArmorIQ." />
     
-    <!-- Structured Data with Localized Indore Address -->
+    <!-- Structured Data with Localized Indore Address & INR Pricing -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "YourBrand",
-      "email": "beyondnothing01@gmail.com",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Indore",
-        "addressRegion": "Madhya Pradesh",
-        "addressCountry": "India"
-      }
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "YourBrand",
+          "email": "beyondnothing01@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Indore",
+            "addressRegion": "Madhya Pradesh",
+            "addressCountry": "India"
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "YourBrand",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Cloud, Linux, macOS, Windows",
+          "offers": {
+            "@type": "AggregateOffer",
+            "priceCurrency": "INR",
+            "lowPrice": "0",
+            "highPrice": "2499",
+            "offerCount": "3"
+          }
+        }
+      ]
     }
     </script>
     

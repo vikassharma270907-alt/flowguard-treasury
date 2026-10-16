@@ -32,6 +32,82 @@ export const siteConfig = {
   taglineKey: "brand.tagline",
   registrationTextKey: "brand.registeredText",
 
+  // India-First Currency Configuration
+  // siteConfig is the single source of truth for currency
+  currency: {
+    base: "INR",
+    locale: "en-IN",
+    symbol: "₹",
+    showGstNote: true,
+    gstRate:
+      (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_GST_RATE) ||
+      (typeof import.meta !== 'undefined' && (import.meta.env?.NEXT_PUBLIC_GST_RATE || import.meta.env?.VITE_NEXT_PUBLIC_GST_RATE)) ||
+      "",
+    taxMode: "exclusive", // "exclusive" or "inclusive"
+    enableCurrencySwitcher: false // OFF by default; INR is always primary & default
+  },
+
+  // Pricing Plans (All amounts stored in integer paise; convert only for display)
+  plans: [
+    {
+      id: "sandbox",
+      nameKey: "pricing.sandboxName",
+      name: "Developer Sandbox",
+      amountPaise: 0,
+      periodKey: "pricing.foreverFree",
+      descriptionKey: "pricing.sandboxDesc",
+      description: "Ideal for local MCP testing, hackathons, and individual open-source developers.",
+      featuresKeys: [
+        "pricing.sandboxF1",
+        "pricing.sandboxF2",
+        "pricing.sandboxF3",
+        "pricing.sandboxF4"
+      ],
+      ctaKey: "pricing.startFree",
+      ctaHref: GITHUB_REPO_URL,
+      popular: false
+    },
+    {
+      id: "growth",
+      nameKey: "pricing.growthName",
+      name: "Growth & Startup",
+      amountPaise: 249900, // ₹2,499 in paise (249900)
+      periodKey: "pricing.perMonth",
+      descriptionKey: "pricing.growthDesc",
+      description: "Production voice-agent intent governance for fast-growing Indian tech startups.",
+      featuresKeys: [
+        "pricing.growthF1",
+        "pricing.growthF2",
+        "pricing.growthF3",
+        "pricing.growthF4",
+        "pricing.growthF5"
+      ],
+      ctaKey: "pricing.getStarted",
+      ctaHref: CALENDLY_URL,
+      popular: true
+    },
+    {
+      id: "enterprise",
+      nameKey: "pricing.enterpriseName",
+      name: "Sovereign Enterprise",
+      amountPaise: null,
+      isCustom: true,
+      periodKey: "pricing.annualAgreement",
+      descriptionKey: "pricing.enterpriseDesc",
+      description: "Dedicated VPC deployment inside Indian cloud regions with DPDP Act compliance.",
+      featuresKeys: [
+        "pricing.enterpriseF1",
+        "pricing.enterpriseF2",
+        "pricing.enterpriseF3",
+        "pricing.enterpriseF4",
+        "pricing.enterpriseF5"
+      ],
+      ctaKey: "pricing.contactSales",
+      ctaHref: `mailto:${SUPPORT_EMAIL}?subject=Enterprise%20Plan%20Inquiry`,
+      popular: false
+    }
+  ],
+
   // Booking & Demo scheduling configuration
   booking: {
     provider: "calendly",

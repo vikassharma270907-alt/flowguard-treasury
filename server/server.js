@@ -819,6 +819,104 @@ app.get('/api/audit-logs', (req, res) => {
   res.json({ events });
 });
 
+// --- Server-Side Cached Currency Exchange Rate API ---
+// Cached with 6-hour TTL, Frankfurter API with timeout, fallback to FALLBACK_USD_INR env var
+let exchangeRateCache = {
+  rate: null,
+  cachedAt: 0,
+  source: null
+};
+
+app.get('/api/currency/rate', async (req, res) => {
+  const TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
+  const now = Date.now();
+  const fallbackEnvRate = Number(process.env.FALLBACK_USD_INR) || 86.50;
+
+  // Check valid cache
+  if (exchangeRateCache.rate && (now - exchangeRateCache.cachedAt) < TTL_MS) {
+    return res.json({
+      success: true,
+      from: 'USD',
+      to: 'INR',
+      rate: exchangeRateCache.rate,
+      isApproximate: Boolean(exchangeRateCache.isApproximate),
+      isFallback: Boolean(exchangeRateCache.isFallback),
+      source: exchangeRateCache.source,
+      cachedAt: new Date(exchangeRateCache.cachedAt).toISOString()
+    });
+  }
+
+  // Fetch live rate from free no-key provider (Frankfurter)
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+    const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=INR', {
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`Frankfurter API returned HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    const liveRate = data?.rates?.INR;
+
+    if (typeof liveRate === 'number' && !isNaN(liveRate) && liveRate > 0) {
+      exchangeRateCache = {
+        rate: liveRate,
+        cachedAt: now,
+        isApproximate: false,
+        isFallback: false,
+        source: 'frankfurter'
+      };
+
+      return res.json({
+        success: true,
+        from: 'USD',
+        to: 'INR',
+        rate: liveRate,
+        isApproximate: false,
+        isFallback: false,
+        source: 'frankfurter',
+        cachedAt: new Date(now).toISOString()
+      });
+    }
+    throw new Error('Invalid rate payload from Frankfurter API');
+  } catch (err) {
+    console.warn(`[Currency API] Live exchange rate fetch failed (${err.message}). Using fallback.`);
+
+    // If previously cached rate exists (even if stale), use it with isApproximate: true
+    if (exchangeRateCache.rate) {
+      return res.json({
+        success: true,
+        from: 'USD',
+        to: 'INR',
+        rate: exchangeRateCache.rate,
+        isApproximate: true,
+        isFallback: false,
+        source: 'stale_cache',
+        warning: 'Live exchange rate unavailable, serving stale cached rate',
+        cachedAt: new Date(exchangeRateCache.cachedAt).toISOString()
+      });
+    }
+
+    // Fall back to FALLBACK_USD_INR from environment
+    return res.json({
+      success: true,
+      from: 'USD',
+      to: 'INR',
+      rate: fallbackEnvRate,
+      isApproximate: true,
+      isFallback: true,
+      source: 'fallback_env',
+      warning: 'Live exchange rate unavailable, serving configured fallback rate',
+      cachedAt: new Date(now).toISOString()
+    });
+  }
+});
+
 // --- Serve Frontend Client Build on Port 3001 ---
 const path = require('path');
 const distPath = path.join(__dirname, '../client/dist');

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  X, Video, Play, Shield, CheckCircle2, AlertTriangle,
+  X, Video, Play, Shield, CheckCircle2, AlertTriangle, ShieldCheck,
   Lock, Copy, Check, Sparkles, ExternalLink, Activity, ArrowRight
 } from 'lucide-react';
 
@@ -35,9 +35,9 @@ export default function JudgeExplainerModal({ onClose, onSelectScenario, activeS
     },
     {
       scene: 'Scene 4 (1:55 - 2:30) — ArmorIQ Cryptographic Intent Security',
-      visual: 'The payment decision is passed to the ArmorIQ Agent Intent Governance platform. The plan is canonicalized into a SHA-256 hash, validated against a $15,000 cash reserve floor, and stamped with an immutable intent token.',
+      visual: 'The payment decision is passed to the ArmorIQ Agent Intent Governance platform. The plan is canonicalized into a SHA-256 hash, validated against a ₹12,97,500 cash reserve floor, and stamped with an immutable intent token.',
       prompt: 'Futuristic cryptographic vault animation. A complex JSON execution plan transforms into a glowing cryptographic hash block. A solid steel digital lock snaps shut with a bright emerald green pulse, stamping an Ed25519 cryptographic token. Dark tech aesthetic, glowing emerald lasers, 4K cinematic VFX, hyper-detailed security hardware visualization.',
-      narration: "To prevent agent drift and prompt injection, FlowGuard integrates the live ArmorIQ SDK. Every payout plan is canonicalized, cryptographically hashed, and verified against immutable policy guardrails. If a payment would breach our $15,000 reserve floor, the intent token is rejected instantly."
+      narration: "To prevent agent drift and prompt injection, FlowGuard integrates the live ArmorIQ SDK. Every payout plan is canonicalized, cryptographically hashed, and verified against immutable policy guardrails. If a payment would breach our ₹12,97,500 reserve floor, the intent token is rejected instantly."
     },
     {
       scene: 'Scene 5 (2:30 - 3:00) — Enterprise Governance & Zero-Trust Lockdown',
@@ -360,10 +360,10 @@ export default function JudgeExplainerModal({ onClose, onSelectScenario, activeS
               </div>
 
               {[
-                { id: 'SCENARIO_A', title: 'Scenario A: Baseline Multi-Currency Run', desc: 'Standard operations, healthy liquidity reserve, $0 local rails prioritized.', badge: 'NORMAL OPS' },
+                { id: 'SCENARIO_A', title: 'Scenario A: Baseline Multi-Currency Run', desc: 'Standard operations, healthy liquidity reserve, ₹0 local rails prioritized.', badge: 'NORMAL OPS' },
                 { id: 'SCENARIO_B', title: 'Scenario B: Duplicate Invoice Attack', desc: 'Injects invoice INV-2024-884B with 91.2% Levenshtein similarity to trigger the shield.', badge: 'ATTACK SIMULATION' },
-                { id: 'SCENARIO_C', title: 'Scenario C: Delayed Receivable Shock', desc: 'Simulates a $14,500 customer receipt delay, causing auto-deferral of low-priority bills.', badge: 'LIQUIDITY STRESS' },
-                { id: 'SCENARIO_D', title: 'Scenario D: Sandbox Deposit (+ $25,000)', desc: 'Calls Airwallex Sandbox deposit simulation to replenish wallets and re-authorize payouts.', badge: 'REPLENISHMENT' }
+                { id: 'SCENARIO_C', title: 'Scenario C: Delayed Receivable Shock', desc: 'Simulates a ₹12,54,250 customer receipt delay, causing auto-deferral of low-priority bills.', badge: 'LIQUIDITY STRESS' },
+                { id: 'SCENARIO_D', title: 'Scenario D: Sandbox Deposit (+ ₹20,00,000)', desc: 'Calls Airwallex Sandbox deposit simulation to replenish wallets and re-authorize payouts.', badge: 'REPLENISHMENT' }
               ].map(s => {
                 const isCurrent = activeScenario === s.id;
                 return (

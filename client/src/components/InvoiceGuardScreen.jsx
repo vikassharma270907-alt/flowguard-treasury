@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ShieldAlert, CheckCircle2, AlertTriangle, FileText, Plus, Eye, X, ArrowRight, CornerDownRight } from 'lucide-react';
+import { formatINR } from '../utils/currency';
 
 export default function InvoiceGuardScreen({
   invoices,
@@ -72,7 +73,7 @@ export default function InvoiceGuardScreen({
             Duplicates Prevented Loss
           </div>
           <div className="mono" style={{ fontSize: '1.85rem', fontWeight: 800, color: '#34d399', marginTop: '6px' }}>
-            ${preventedLossUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {formatINR(Math.round(preventedLossUsd * 86.5))}
           </div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '4px' }}>
             Working capital saved from double-billing
@@ -242,7 +243,7 @@ export default function InvoiceGuardScreen({
                     {selectedInspection.vendorName}
                   </div>
                   <div className="mono" style={{ fontSize: '0.9rem', fontWeight: 600, marginTop: '4px', color: '#f87171' }}>
-                    {selectedInspection.currency} {selectedInspection.amount.toFixed(2)}
+                    {selectedInspection.currency} {new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(selectedInspection.amount)}
                   </div>
                 </div>
 
@@ -257,7 +258,7 @@ export default function InvoiceGuardScreen({
                     {selectedInspection.vendorName}
                   </div>
                   <div className="mono" style={{ fontSize: '0.9rem', fontWeight: 600, marginTop: '4px', color: '#60a5fa' }}>
-                    {selectedInspection.matchedWith?.currency} {selectedInspection.matchedWith?.amount?.toFixed(2)}
+                    {selectedInspection.matchedWith?.currency} {new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(selectedInspection.matchedWith?.amount || 0)}
                   </div>
                 </div>
               </div>
