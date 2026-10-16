@@ -11,30 +11,30 @@ lookup_order  (intentgate-treasury-mcp -> lookup_order)
 ========================================================================
 Requesting intent token for plan with 1 steps
 ✅ API key validated successfully
-Intent token issued: id=035d8057d24842a29e67d50e7de22b72, plan_hash=b3e6889fe267adb6..., expires=57.1s, stepProofs=1
+Intent token issued: id=6301fb8c52c4404e90912db634752f77, plan_hash=b3e6889fe267adb6..., expires=56.9s, stepProofs=1
 planHash : b3e6889fe267adb661881333d488307f0263e0c2baf3efb3866bf136a62ac1ec
-tokenId  : 035d8057d24842a29e67d50e7de22b72
-steps    : 1  expiresAt: 2026-10-16T21:22:51.000Z
-policyValidation: {"domain":"flowguard-treasury.vercel.app","requested_tools":["lookup_order"],"allowed_tools":["issue_refund","lookup_order"],"denied_tools":[],"denied_reasons":[],"matched_policies":[{"policyId":"23f8f304-0f6b-44a0-9bba-fa9886ca611b","policyName":"flowguard-treasury-allowlist","priority":100,"defaultEnforcementAction":"block","rules":{}},{"policyId":"cd50b382-4983-456e-a1a9-c30b09668ef5","policyName":"cli-intentgate-agent-intentgate-treasury-mcp","priority":100,"defaultEnforcementAction":"block","rules":{}}],"default_enforcement_action":"block","decision_source":"opa","policy_ref":"armoriq:5081adc84221:1a14697c3ae"}
-mint     : 2456 ms
+tokenId  : 6301fb8c52c4404e90912db634752f77
+steps    : 1  expiresAt: 2026-10-16T21:40:34.000Z
+policyValidation: {"domain":"flowguard-treasury.vercel.app","requested_tools":["lookup_order"],"allowed_tools":["issue_refund","lookup_order"],"denied_tools":[],"denied_reasons":[],"matched_policies":[{"policyId":"23f8f304-0f6b-44a0-9bba-fa9886ca611b","policyName":"flowguard-treasury-allowlist","priority":100,"defaultEnforcementAction":"block","rules":{}},{"policyId":"cd50b382-4983-456e-a1a9-c30b09668ef5","policyName":"cli-intentgate-agent-intentgate-treasury-mcp","priority":100,"defaultEnforcementAction":"block","rules":{}}],"default_enforcement_action":"block","decision_source":"opa","policy_ref":"armoriq:5081adc84221:1a146a7fcb9"}
+mint     : 2729 ms
 Invoking MCP action: mcp=intentgate-treasury-mcp, action=lookup_order
 Using Merkle proof from CSRG-IAP for step 0
-MCP invocation succeeded: lookup_order in 1.18s
+MCP invocation succeeded: lookup_order in 1.20s
 
   RESULT   : ALLOWED by ArmorIQ
-  status   : success   verified: true   exec: 1.177s   round-trip: 1178 ms
+  status   : success   verified: true   exec: 1.198s   round-trip: 1200 ms
   payload  : {"content":[{"type":"text","text":"{\"found\":true,\"order\":{\"order_id\":\"ORD-1001\",\"customer\":\"Dana Whitfield\",\"status\":\"delivered\",\"placed_on\":\"2026-09-28\",\"delivered_on\":\"2026-10-03\",\"items\":[{\"sku\":\"SB-220\",\"name\":\"Studio Boom Arm\",\"qty\":1,\"unit_price\":89}],\"total\":89,\"currency\":\"USD\",\"refunded\":0,\"refundable\":89,\"payout_account_id\":\"ACC-4471\"}}"}]}
 
 ========================================================================
 change_payout  (intentgate-treasury-mcp -> change_payout)
 ========================================================================
 Requesting intent token for plan with 1 steps
-Intent token issued: id=bc8f2f49797648c08881318a13a9f963, plan_hash=b086c9aeb8da1343..., expires=57.7s, stepProofs=1
+Intent token issued: id=c2046e23139f41ff9962b670ed7c7401, plan_hash=b086c9aeb8da1343..., expires=57.2s, stepProofs=1
 planHash : b086c9aeb8da13433d03ae96a34433d6c5af56a6e1019c4bd77ef62846b791a8
-tokenId  : bc8f2f49797648c08881318a13a9f963
-steps    : 1  expiresAt: 2026-10-16T21:22:55.000Z
-policyValidation: {"domain":"flowguard-treasury.vercel.app","requested_tools":["change_payout"],"allowed_tools":["issue_refund","lookup_order"],"denied_tools":[],"denied_reasons":[],"matched_policies":[{"policyId":"23f8f304-0f6b-44a0-9bba-fa9886ca611b","policyName":"flowguard-treasury-allowlist","priority":100,"defaultEnforcementAction":"block","rules":{}},{"policyId":"cd50b382-4983-456e-a1a9-c30b09668ef5","policyName":"cli-intentgate-agent-intentgate-treasury-mcp","priority":100,"defaultEnforcementAction":"block","rules":{}}],"default_enforcement_action":"block","decision_source":"opa","policy_ref":"armoriq:5081adc84221:1a14697d13e"}
-mint     : 2283 ms
+tokenId  : c2046e23139f41ff9962b670ed7c7401
+steps    : 1  expiresAt: 2026-10-16T21:40:38.000Z
+policyValidation: {"domain":"flowguard-treasury.vercel.app","requested_tools":["change_payout"],"allowed_tools":["issue_refund","lookup_order"],"denied_tools":[],"denied_reasons":[],"matched_policies":[{"policyId":"23f8f304-0f6b-44a0-9bba-fa9886ca611b","policyName":"flowguard-treasury-allowlist","priority":100,"defaultEnforcementAction":"block","rules":{}},{"policyId":"cd50b382-4983-456e-a1a9-c30b09668ef5","policyName":"cli-intentgate-agent-intentgate-treasury-mcp","priority":100,"defaultEnforcementAction":"block","rules":{}}],"default_enforcement_action":"block","decision_source":"opa","policy_ref":"armoriq:5081adc84221:1a146a80b51"}
+mint     : 2441 ms
 Invoking MCP action: mcp=intentgate-treasury-mcp, action=change_payout
 Using Merkle proof from CSRG-IAP for step 0
 
@@ -49,22 +49,22 @@ Using Merkle proof from CSRG-IAP for step 0
 issue_refund  (intentgate-treasury-mcp -> issue_refund)
 ========================================================================
 Requesting intent token for plan with 1 steps
-Intent token issued: id=e4d18265a37f425ea17bb05d7942dade, plan_hash=5ed2b4ec3d598c42..., expires=57.9s, stepProofs=1
+Intent token issued: id=f18882afb2b04411b5fd56ec28157c00, plan_hash=5ed2b4ec3d598c42..., expires=57.0s, stepProofs=1
 planHash : 5ed2b4ec3d598c4234398e2d6b27ce6bff71dbc206c8033209fd148e165e6f9d
-tokenId  : e4d18265a37f425ea17bb05d7942dade
-steps    : 1  expiresAt: 2026-10-16T21:22:58.000Z
-policyValidation: {"domain":"flowguard-treasury.vercel.app","requested_tools":["issue_refund"],"allowed_tools":["issue_refund","lookup_order"],"denied_tools":[],"denied_reasons":[],"matched_policies":[{"policyId":"23f8f304-0f6b-44a0-9bba-fa9886ca611b","policyName":"flowguard-treasury-allowlist","priority":100,"defaultEnforcementAction":"block","rules":{}},{"policyId":"cd50b382-4983-456e-a1a9-c30b09668ef5","policyName":"cli-intentgate-agent-intentgate-treasury-mcp","priority":100,"defaultEnforcementAction":"block","rules":{}}],"default_enforcement_action":"block","decision_source":"opa","policy_ref":"armoriq:5081adc84221:1a14697dc00"}
-mint     : 2132 ms
+tokenId  : f18882afb2b04411b5fd56ec28157c00
+steps    : 1  expiresAt: 2026-10-16T21:40:41.000Z
+policyValidation: {"domain":"flowguard-treasury.vercel.app","requested_tools":["issue_refund"],"allowed_tools":["issue_refund","lookup_order"],"denied_tools":[],"denied_reasons":[],"matched_policies":[{"policyId":"23f8f304-0f6b-44a0-9bba-fa9886ca611b","policyName":"flowguard-treasury-allowlist","priority":100,"defaultEnforcementAction":"block","rules":{}},{"policyId":"cd50b382-4983-456e-a1a9-c30b09668ef5","policyName":"cli-intentgate-agent-intentgate-treasury-mcp","priority":100,"defaultEnforcementAction":"block","rules":{}}],"default_enforcement_action":"block","decision_source":"opa","policy_ref":"armoriq:5081adc84221:1a146a817ec"}
+mint     : 2590 ms
 
   RESULT   : HELD — delegation request created on the ArmorIQ platform
   mechanism: platform delegation API (POST /delegation/request) — releases only after supervisor approval
   reason   : Delegation request created. Awaiting approval from senior officer.
-  delegationId: 18f3681f-46bb-4a27-99f2-3739f555dffa  status: pending
+  delegationId: 2c61ec81-1434-464f-907a-1748618e3d10  status: pending
 
 ========================================================================
 SUMMARY
 ========================================================================
-  lookup_order     ALLOWED  (1178 ms)
-  change_payout    BLOCKED  (628 ms)
-  issue_refund     HELD  (638 ms)
+  lookup_order     ALLOWED  (1200 ms)
+  change_payout    BLOCKED  (649 ms)
+  issue_refund     HELD  (598 ms)
 ArmorIQ SDK client closed
