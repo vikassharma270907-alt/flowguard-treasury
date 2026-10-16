@@ -6,6 +6,8 @@ This document provides cryptographically verified evidence of **ArmorIQ policy e
 3. **One action visibly HELD by ArmorIQ** (`issue_refund`)
 4. **Cryptographic Intent Mismatch Refusal** (`IntentMismatchException`)
 
+> **Migration & latest run (2026-10-16):** sections 1–4 below are the first accepted run, captured against a local tunnel (platform record then named `intentgate-support-mcp`). The record has since been recreated as **`flowguard-treasury-mcp`** (`7540cd0a-7d76-414a-a849-96b337a0c6ed`) at `https://flowguard-treasury.vercel.app/mcp`, governed by policy **`flowguard-treasury-allowlist`** (`23f8f304-0f6b-44a0-9bba-fa9886ca611b`). Fresh captures on the production endpoint: **section 5 below** and [`docs/evidence/`](docs/evidence/README.md). Historical sections are left exactly as recorded.
+
 ---
 
 ## 1. Action ALLOWED by ArmorIQ (`lookup_order`)
@@ -194,3 +196,24 @@ This document provides cryptographically verified evidence of **ArmorIQ policy e
 - **Refused by**: `IntentMismatchException`
 - **Reason**: *"Action 'issue_refund' not found in the original plan. Plan contains actions: [\"lookup_order\"]. You can only invoke actions that were included in the plan when you called capturePlan()."*
 - Refusal occurs immediately prior to any proxy transmission, demonstrating cryptographic intent binding.
+
+---
+
+## 5. Re-verified on Production (2026-10-16, 19:06 UTC)
+
+Full raw captures (committed at revision `11de761`): [`docs/evidence/test-enforcement-2026-10-16.txt`](docs/evidence/test-enforcement-2026-10-16.txt) · [`docs/evidence/test-intent-mismatch-2026-10-16.txt`](docs/evidence/test-intent-mismatch-2026-10-16.txt) · metadata: [`docs/evidence/README.md`](docs/evidence/README.md).
+
+Every call below ran against the registered record `flowguard-treasury-mcp` (`7540cd0a-…`) at `https://flowguard-treasury.vercel.app/mcp` and matched policy **`flowguard-treasury-allowlist`** (`23f8f304-…`, `decision_source: "opa"`).
+
+| Case | Verdict | tokenId | policy_ref | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| `lookup_order` | **ALLOWED** | `951f7625efe24fb18039b62fadfed910` | `armoriq:5081adc84221:1a1461bc656` | Real payload: order ORD-1001 (Dana Whitfield, delivered, USD 89); exec 0.885 s; `verified: true` |
+| `change_payout` | **BLOCKED** | `3a280ab1a5f74beea90b4b459b71b498` | `armoriq:5081adc84221:1a1461bd394` | `PolicyBlockedException` HTTP 403 — `tool_not_in_allowlist` |
+| `issue_refund` | **HELD** | `df327b9275b74d43b008c4e1e10ccf00` | `armoriq:5081adc84221:1a1461be00c` | Delegation `eb63aac7-349a-4cf0-a156-a2f3c469f427` (status `pending`) created via the platform delegation API — releases only after supervisor approval |
+
+Intent-binding run:
+
+- **Case 1 — wrong action:** token minted for `lookup_order` (`90916da4116f4900bcd85e588714e785`) used to invoke `issue_refund` → `IntentMismatchException`, refused before any network call.
+- **Case 2 — swapped amount:** token minted for a refund of 89 (`86401740b0e8428fa5807abd4676dc84`) used to invoke a refund of 5,000 → **NOT REFUSED**; the platform binds declared actions and token freshness, not call arguments. The sandbox tool's own bounds check rejected it (`Refund of 5000 exceeds refundable balance 89 for ORD-1001.`). Reported exactly as observed rather than presented as an interception.
+- **Case 3 — expired token:** token `464314b10ac44edd8c20da15adde40b2` (5 s validity) → `TokenExpiredException`, refused before any network call.
+- **Mechanism for HELD:** refunds are held by FlowGuard's designed control — a real ArmorIQ platform delegation request (`POST /delegation/request`). The platform's response ("Delegation request created. Awaiting approval from senior officer.") and the delegation id are captured verbatim.

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Shield, Activity, RefreshCw, Key, ChevronDown, CheckCircle2,
   AlertTriangle, Play, Lock, User, LogOut, Sliders, X,
-  ShieldCheck, Clock, ArrowDownCircle, Sun, Moon, Box
+  ShieldCheck, Clock, ArrowDownCircle, Sun, Moon, Box, ArrowRight
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
@@ -146,6 +146,7 @@ export default function Navbar({
         }}>
           {[
             { id: 'overview', label: 'Overview' },
+            { id: 'scenarios', label: 'Demo Scenarios', isScenario: true },
             { id: 'enclave', label: '3D Enclave', is3D: true },
             { id: 'planner', label: 'Payment Planner' },
             { id: 'invoices', label: 'Invoice & Risk Guard' },
@@ -174,6 +175,7 @@ export default function Navbar({
                 minHeight: '38px'
               }}
             >
+              {tab.isScenario && <Play size={12} color={activeTab === tab.id ? '#10b981' : 'var(--muted-foreground)'} />}
               {tab.is3D && <Box size={13} color={activeTab === tab.id ? '#6366f1' : 'var(--muted-foreground)'} />}
               {tab.isSpecial && <Lock size={12} color={activeTab === tab.id ? 'var(--foreground)' : '#71717a'} />}
               {tab.label}
@@ -340,6 +342,20 @@ export default function Navbar({
                       </div>
                     );
                   })}
+                </div>
+
+                <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid var(--border)' }}>
+                  <button
+                    onClick={() => {
+                      setScenarioOpen(false);
+                      setActiveTab('scenarios');
+                    }}
+                    className="btn btn-secondary btn-sm"
+                    style={{ width: '100%', justifyContent: 'center', fontSize: '0.75rem', padding: '7px 10px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                  >
+                    <span>Open Full Scenarios Matrix</span>
+                    <ArrowRight size={13} />
+                  </button>
                 </div>
               </div>
             )}

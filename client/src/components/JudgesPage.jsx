@@ -19,7 +19,7 @@ export default function JudgesPage({ onNavigate }) {
     {
       rule: "1. Functional ArmorIQ Integration",
       requirement: "Intent and policy enforcement must be demonstrated through platform.armoriq.ai. API keys from platform, agents and MCP servers onboarded.",
-      evidence: "Onboarded agent 'intentgate-agent' (c8bcbe51-dea4-4459-9fd8-38f88ebc714e), MCP server 'intentgate-support-mcp' (UUID: cd7deb69-adb3-45f7-977b-f0d0e7235ba2), and policies 'cli-intentgate-agent-intentgate-support-mcp' in the operator workspace (org dd9e9695-e58d-4e56-8cff-ef9617ba4c54). Tokens minted at iap.armoriq.ai; calls invoked via proxy.armoriq.ai.",
+      evidence: "Onboarded agent 'flowguard-agent' (c8bcbe51-dea4-4459-9fd8-38f88ebc714e), MCP server 'flowguard-treasury-mcp' (UUID: 7540cd0a-7d76-414a-a849-96b337a0c6ed), and policy 'flowguard-treasury-allowlist' (23f8f304-0f6b-44a0-9bba-fa9886ca611b) in the operator workspace (org dd9e9695-e58d-4e56-8cff-ef9617ba4c54). Tokens minted at iap.armoriq.ai; calls invoked via proxy.armoriq.ai.",
       status: "PASS",
       verified: true
     },
@@ -33,14 +33,14 @@ export default function JudgesPage({ onNavigate }) {
     {
       rule: "3. At Least One MCP Server",
       requirement: "The project must implement and utilize at least one functional MCP server.",
-      evidence: "One MCP server implementation, onboarded to the ArmorIQ platform as 'intentgate-support-mcp' with 3 governed tools (lookup_order, change_payout, issue_refund). Transports: JSON-RPC 2.0 over HTTP (deployed /mcp endpoint) and stdio (server/mcpServer.js) for local CLI use. Two further helper checks (reserve floor, audit Merkle root) are labelled app-side in the UI.",
+      evidence: "One MCP server implementation, onboarded to the ArmorIQ platform as 'flowguard-treasury-mcp' with 3 governed tools (lookup_order, change_payout, issue_refund). Transports: JSON-RPC 2.0 over HTTP with SSE responses (deployed /mcp endpoint at flowguard-treasury.vercel.app) and stdio (server/mcpServer.js) for local CLI use. Two further helper checks (reserve floor, audit Merkle root) are labelled app-side in the UI.",
       status: "PASS",
       verified: true
     },
     {
       rule: "4. Official Window Development",
       requirement: "Core development must take place within official hackathon window (10 to 17 Oct 2026).",
-      evidence: "Git history runs from first commit ac099d0 (2026-10-15) through 2026-10-16 — inside the official Oct 10-17, 2026 window. Verified against github.com/vikassharma270907-alt/flowguard-treasury (ac099d0 … cc46417).",
+      evidence: "Git history runs from first commit ac099d0 (2026-10-15) through the current HEAD — inside the official Oct 10-17, 2026 window. Verified against github.com/vikassharma270907-alt/flowguard-treasury/commits/main (first commit ac099d0 … current HEAD).",
       status: "PASS",
       verified: true
     },
@@ -54,7 +54,7 @@ export default function JudgesPage({ onNavigate }) {
     {
       rule: "6. Real ArmorIQ Enforcement",
       requirement: "Demos must show actual ArmorIQ enforcement, never simulated or hardcoded results.",
-      evidence: "scripts/test-enforcement.mjs runs live calls against ArmorIQ: change_payout BLOCKED (PolicyBlockedException, reason 'tool_not_in_allowlist'), issue_refund HELD (PolicyHoldException, delegation 390e0448-b1bf-4679-85d4-b1ddc735e2c7), and lookup_order allowed by platform policy. Raw capture (16 Oct 2026): docs/evidence/test-enforcement-2026-10-16.txt; end-to-end allow with response payload: EVIDENCE.md.",
+      evidence: "scripts/test-enforcement.mjs runs live calls against ArmorIQ: change_payout BLOCKED (PolicyBlockedException, reason 'tool_not_in_allowlist', HTTP 403), issue_refund HELD — real pending delegation eb63aac7-349a-4cf0-a156-a2f3c469f427 on the platform — and lookup_order ALLOWED end-to-end (real payload, verified: true). Raw captures re-run 16 Oct 2026 against the production endpoint: docs/evidence/test-enforcement-2026-10-16.txt; audit-log detail: EVIDENCE.md.",
       status: "PASS",
       verified: true
     },
@@ -87,15 +87,15 @@ export default function JudgesPage({ onNavigate }) {
       status: "Recorded (16 Oct 2026)"
     },
     {
-      claim: "Refund disbursements are held for human approval by ArmorIQ",
+      claim: "Refund disbursements are held for human approval through a real ArmorIQ platform delegation",
       where: "Boundary Test -> issue_refund card & Supervisor Playground",
-      verification: "Creates a real delegation on the ArmorIQ platform (delegationId: 390e0448-b1bf-4679-85d4-b1ddc735e2c7, status pending). Release flow runs through the app-side dual-supervisor playground.",
+      verification: "The refund path creates a real delegation via the platform API (delegationId: eb63aac7-349a-4cf0-a156-a2f3c469f427, status pending). Release flow runs through the app-side dual-supervisor playground.",
       status: "Recorded (16 Oct 2026)"
     },
     {
-      claim: "Cryptographic intent mismatch prevented before network execution",
+      claim: "Action-level intent binding: a token minted for one action cannot be used for another",
       where: "Boundary Test Intent Mismatch box & scripts/test-intent-mismatch.mjs",
-      verification: "Run 'node --env-file=.env scripts/test-intent-mismatch.mjs'. Throws IntentMismatchException locally.",
+      verification: "Run 'node --env-file=.env scripts/test-intent-mismatch.mjs'. Wrong-action and expired tokens are refused before any network call (IntentMismatchException / TokenExpiredException). Call arguments are not bound end-to-end by the platform today — the swapped-amount case is reported honestly as NOT REFUSED in docs/evidence/.",
       status: "Live & Verified"
     },
     {
@@ -265,6 +265,100 @@ export default function JudgesPage({ onNavigate }) {
         </div>
       </section>
 
+      {/* Reproducible Hackathon Demo Scenarios */}
+      <section style={{ marginBottom: '40px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+          <div>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--foreground)', margin: 0 }}>
+              🕹️ 4 Reproducible Hackathon Demo Scenarios
+            </h2>
+            <p style={{ fontSize: '0.85rem', color: 'var(--muted-foreground)', marginTop: '4px' }}>
+              Trigger each hackathon preset with live multi-currency dynamics, duplicate invoice attacks, and reserve floor calculations.
+            </p>
+          </div>
+          <button
+            onClick={() => onNavigate('scenarios')}
+            className="btn btn-secondary btn-sm"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+          >
+            <span>Open Interactive Scenarios Matrix</span>
+            <ArrowRight size={13} />
+          </button>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '14px' }}>
+          {[
+            {
+              code: 'Scenario A',
+              title: 'Baseline Multi-Currency Run',
+              desc: '$33,110 cash across 4 wallets, $15,000 reserve floor, 5 supplier bills. Normal operations preserved.',
+              badge: 'NORMAL OPS',
+              color: '#10b981'
+            },
+            {
+              code: 'Scenario B',
+              title: 'Duplicate Invoice Attack',
+              desc: 'Injects invoice INV-2024-884B (€4,250) with 91.2% similarity. Caught by duplicate shield & blocked.',
+              badge: 'ATTACK SIM',
+              color: '#ef4444'
+            },
+            {
+              code: 'Scenario C',
+              title: 'Delayed Receivable Shock',
+              desc: '$14,500 customer receipt delayed by 14 days. Rules engine defers low-priority bills to protect floor.',
+              badge: 'STRESS SHOCK',
+              color: '#f59e0b'
+            },
+            {
+              code: 'Scenario D',
+              title: 'Sandbox Deposit (+ $25,000)',
+              desc: 'Calls Airwallex sandbox deposit to inject +$25,000 USD, unlocking held obligations automatically.',
+              badge: 'REPLENISHMENT',
+              color: '#38bdf8'
+            }
+          ].map((item, idx) => (
+            <div
+              key={idx}
+              onClick={() => onNavigate('scenarios')}
+              style={{
+                background: 'var(--card)',
+                padding: '18px',
+                borderRadius: '12px',
+                border: '1px solid var(--border)',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 800, color: item.color }}>
+                    {item.code}
+                  </span>
+                  <span className="badge badge-neutral" style={{ fontSize: '0.62rem' }}>
+                    {item.badge}
+                  </span>
+                </div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--foreground)', marginBottom: '6px' }}>
+                  {item.title}
+                </div>
+                <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', lineHeight: 1.45, margin: 0 }}>
+                  {item.desc}
+                </p>
+              </div>
+              <div style={{ marginTop: '14px', paddingTop: '10px', borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: item.color }}>
+                  Launch in Matrix
+                </span>
+                <ArrowRight size={12} color={item.color} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Rules Compliance Table */}
       <section style={{ marginBottom: '40px' }}>
         <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--foreground)', marginBottom: '16px' }}>
@@ -351,8 +445,9 @@ export default function JudgesPage({ onNavigate }) {
         </p>
         <ul style={{ paddingLeft: '18px', color: 'var(--muted-foreground)', fontSize: '0.85rem', lineHeight: 1.9, margin: 0 }}>
           <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-enforcement-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-enforcement-2026-10-16.txt</a> — allow / block / hold verdicts with real token and delegation IDs.</li>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-intent-mismatch-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-intent-mismatch-2026-10-16.txt</a> — intent-binding refusals (wrong action, expired token).</li>
+          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-intent-mismatch-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-intent-mismatch-2026-10-16.txt</a> — intent-binding refusals (wrong action, expired token); the swapped-amount case is reported as NOT REFUSED.</li>
           <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/EVIDENCE.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>EVIDENCE.md</a> — full audit-log entries for each verdict, including the end-to-end allowed call.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/README.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>docs/evidence/README.md</a> — run metadata: repo revision, platform object IDs, per-case token and policy refs.</li>
         </ul>
       </section>
 
@@ -410,7 +505,8 @@ export default function JudgesPage({ onNavigate }) {
         </h2>
         <ul style={{ paddingLeft: '18px', color: 'var(--muted-foreground)', fontSize: '0.85rem', lineHeight: 1.6, margin: 0 }}>
           <li><strong>Sandbox Isolation</strong>: Airwallex transfers and FX conversions run against synthetic sandbox accounts. Real money is never moved.</li>
-          <li><strong>Cloudflare Public Tunnel for MCP</strong>: In local development, the HTTP MCP server requires a public HTTPS tunnel (e.g. Cloudflare tunnel) to be invoked by ArmorIQ's cloud PEP proxy.</li>
+          <li><strong>MCP Endpoint Hosting</strong>: The registered MCP server is served at <code>https://flowguard-treasury.vercel.app/mcp</code> (SSE transport). During local development the same server can be exposed via a Cloudflare tunnel so ArmorIQ's cloud PEP proxy can reach it.</li>
+          <li><strong>Argument-Level Intent Binding</strong>: The platform binds declared actions and token freshness; call arguments are validated by the sandbox tool itself (see the honest Case 2 note in docs/evidence/README.md).</li>
           <li><strong>Delegation Polling</strong>: Held calls currently release when supervisors approve via the playground web UI; real-time push webhooks for delegation events will be added in the post-hackathon roadmap.</li>
         </ul>
       </section>

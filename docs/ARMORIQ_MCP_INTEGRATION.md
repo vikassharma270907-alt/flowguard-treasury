@@ -15,7 +15,7 @@ Rather than trusting LLMs to invoke sensitive financial tools directly or relyin
 
 ## 2. Active Model Context Protocol (MCP) Servers
 
-The repository contains two prototype MCP server implementations:
+The repository contains one ArmorIQ-registered MCP server plus a local/stdio implementation for development:
 
 ```
                                   +---------------------------------------+
@@ -38,38 +38,38 @@ The repository contains two prototype MCP server implementations:
                         (Allowed via SSE)   |                   |   (Stdio / REST)
                                             v                   v
 +-------------------------------------------------+   +-------------------------------------------------+
-| 1. intentgate-support-mcp (Port 8791)           |   | 2. flowguard-treasury-mcp (Port 3001)           |
-| Server ID: cd7deb69-adb3-45f7-977b-f0d0e7235ba2 |   | Standard: MCP 2024-11-05 Stdio + JSON-RPC       |
-| Transport: JSON-RPC 2.0 HTTP + SSE Stream       |   | Endpoints: POST /mcp, POST /api/mcp             |
-| File: mcp-server/server.mjs                     |   | File: server/mcpServer.js                       |
+| 1. flowguard-treasury-mcp (Production, Vercel)  |   | 2. Local MCP server (stdio + JSON-RPC HTTP)     |
+| Server ID: 7540cd0a-7d76-414a-a849-96b337a0c6ed |   | Standard: MCP 2024-11-05 Stdio + JSON-RPC       |
+| URL: https://flowguard-treasury.vercel.app/mcp  |   | Endpoints: POST /mcp, POST /api/mcp             |
+| Transport: JSON-RPC 2.0 HTTP + SSE Stream       |   | Files: server/mcpServer.js, mcp-server/server.mjs|
 +-------------------------------------------------+   +-------------------------------------------------+
 ```
 
-### A. `intentgate-support-mcp` (Voice Support & Enclave MCP)
-* **Registered UUID on ArmorIQ Platform**: `cd7deb69-adb3-45f7-977b-f0d0e7235ba2`
-* **Source File**: [`mcp-server/server.mjs`](../mcp-server/server.mjs)
-* **Transport**: HTTP POST (`/mcp`) accepting JSON-RPC 2.0 payloads and replying via Server-Sent Events (`Content-Type: text/event-stream; event: message\ndata: {json}\n\n`).
-* **Tunnel URL**: Accessible to ArmorIQ's PEP proxy via public HTTPS tunnel (`https://avi-england-vessel-touched.trycloudflare.com/mcp`).
-* **Authentication**: Enforces bearer token verification via `Authorization` / `X-Armoriq-MCP-Auth`.
+### A. `flowguard-treasury-mcp` (Registered Production MCP Server)
+* **Registered UUID on ArmorIQ Platform**: `7540cd0a-7d76-414a-a849-96b337a0c6ed`
+* **Source Files**: [`server/server.js`](../server/server.js) (production Express app serving `/mcp` on Vercel) and [`mcp-server/server.mjs`](../mcp-server/server.mjs) (standalone local server, same SSE protocol).
+* **Transport**: HTTP POST (`/mcp`) accepting JSON-RPC 2.0 payloads and replying via Server-Sent Events (`Content-Type: text/event-stream; event: message\ndata: {json}\n\n`) — the framing the ArmorIQ PEP proxy expects.
+* **Production URL**: `https://flowguard-treasury.vercel.app/mcp`. During local development the same server can be exposed via a Cloudflare tunnel for the PEP proxy to reach.
+* **Authentication**: Supports bearer token verification via `Authorization` / `X-Armoriq-MCP-Auth`; the deployed sandbox currently runs as an open sandbox endpoint (no `MCP_AUTH_TOKEN` set) — see `DISCLOSURES.md`.
 
-### B. `flowguard-treasury-mcp` (Treasury Controller MCP)
-* **Source File**: [`server/mcpServer.js`](../server/mcpServer.js)
+### B. Local / stdio MCP Server (Development & IDE Use)
+* **Source File**: [`server/mcpServer.js`](../server/mcpServer.js) — the same 3 governed tools and schemas.
 * **Transports**:
   * **Stdio Transport**: Compatible with Claude Desktop, Cursor, and IDEs via `npm run mcp` (`node server/mcpServer.js --stdio`).
-  * **JSON-RPC 2.0 HTTP Endpoint**: `POST /mcp` and `POST /api/mcp` on port 3001.
+  * **JSON-RPC 2.0 HTTP Endpoint**: `POST /mcp` and `POST /api/mcp` on the local Express app (port 3001; the standalone `mcp-server/server.mjs` listens on 8791).
   * **Interactive REST Discovery**: `GET /api/mcp/status`, `GET /api/mcp/tools`, and `POST /api/mcp/execute`.
 
 ---
 
 ## 3. Governed MCP Tool Definitions & Schemas
 
-| Tool Name | Risk Level | Target Action | ArmorIQ Stored Policy | Real Outcome |
+| Tool Name | Risk Level | Target Action | Governance Path | Observed Outcome (16 Oct 2026 run) |
 | :--- | :--- | :--- | :--- | :--- |
-| `lookup_order` / `order_lookup` | **Low (Read-only)** | Query order status, invoice date, delivery details | `allow_read_policy` | **ALLOWED** (~1,700 ms) |
-| `change_payout` / `payout_change` | **Critical Security Risk** | Modifies beneficiary ABA routing / bank account | `block_payout_override` | **BLOCKED** (`PolicyBlockedException`) |
-| `issue_refund` | **High Financial Risk** | Authorizes monetary disbursement / refund | `dual_approval_quorum` | **HELD** (`PolicyHoldException`, 2 Approvals) |
-| `assert_reserve_floor` | **Treasury Invariant** | Asserts total wallet balance >= $15,000 USD reserve | `reserve_floor_check` | **EVALUATED** against ledger |
-| `verify_audit_merkle` | **Zero-Trust Audit** | Calculates SHA-256 Merkle root across all events | `audit_integrity` | **VERIFIED** cryptographically |
+| `lookup_order` / `order_lookup` | **Low (Read-only)** | Query order status, invoice date, delivery details | ArmorIQ policy `flowguard-treasury-allowlist` | **ALLOWED** (887 ms round-trip, real payload, `verified: true`) |
+| `change_payout` / `payout_change` | **Critical Security Risk** | Modifies beneficiary ABA routing / bank account | Same policy — tool not in allowlist | **BLOCKED** (`PolicyBlockedException`, HTTP 403 `tool_not_in_allowlist`) |
+| `issue_refund` | **High Financial Risk** | Authorizes monetary disbursement / refund | FlowGuard hold path → real ArmorIQ platform delegation | **HELD** (delegation `eb63aac7-…`, pending, 2 supervisor approvals) |
+| `assert_reserve_floor` | **Treasury Invariant** | Asserts total wallet balance >= $15,000 USD reserve | App-side tool (not registered on ArmorIQ) | **EVALUATED** against the sandbox ledger |
+| `verify_audit_merkle` | **Zero-Trust Audit** | Calculates SHA-256 Merkle root across all events | App-side tool (not registered on ArmorIQ) | **VERIFIED** over the audit log (tamper-evident SHA-256 tree) |
 
 ### Detailed Tool Input Schemas
 
@@ -134,19 +134,19 @@ sequenceDiagram
     autonumber
     actor Caller as Customer Voice / User
     participant Agent as ElevenLabs Agent
-    participant Gateway as IntentGate Gateway (:8790)
+    participant Gateway as FlowGuard Gateway (:8790)
     participant SDK as @armoriq/sdk Client
     participant IAP as ArmorIQ IAP (iap.armoriq.ai)
     participant PEP as ArmorIQ Proxy (proxy.armoriq.ai)
-    participant MCP as MCP Server (:8791)
+    participant MCP as MCP Server (prod: Vercel /mcp)
     actor Supervisor as Supervisor Playground
 
     Caller->>Agent: "Where is my order ORD-1001?"
-    Agent->>Gateway: POST /webhook (IntentGate_lookup_order)
+    Agent->>Gateway: POST /webhook (FlowGuard_lookup_order)
     
     rect rgb(240, 248, 255)
         note over Gateway,SDK: Phase 1: Canonical Intent Capture
-        Gateway->>Gateway: Strip "IntentGate_" prefix -> "lookup_order"
+        Gateway->>Gateway: Strip "FlowGuard_" prefix -> "lookup_order"
         Gateway->>SDK: capturePlan('elevenlabs-voice-agent', prompt, canonicalPlan)
     end
 
@@ -219,12 +219,13 @@ const token = await client.getIntentToken(capture);
 // - stepProofs: Cryptographic proofs binding each individual tool step
 ```
 
-#### Cryptographic Intent Mismatch Protection
-If an agent mints a token declaring intent to query order status (`lookup_order`), but then attempts to call `issue_refund`, ArmorIQ's SDK and platform reject the invocation locally and upstream before any network traffic reaches the MCP server:
+#### Action-Level Intent Binding
+If an agent mints a token declaring intent to query order status (`lookup_order`), but then attempts to call `issue_refund`, the ArmorIQ SDK refuses the invocation before any network traffic leaves the client:
 ```
 Refused by: IntentMismatchException
-Reason: Action 'issue_refund' does not match declared plan 'lookup_order'
+Reason: Action 'issue_refund' not found in the original plan. Plan contains actions: ["lookup_order"]. You can only invoke actions that were included in the plan when you called capturePlan().
 ```
+> **Honest boundary:** the platform binds the *declared action set* and token freshness — call *arguments* are not bound end-to-end today. A swapped-amount attempt reaches the upstream tool and is rejected by the tool's own bounds check. Raw captures: [`docs/evidence/`](evidence/README.md).
 
 ### Phase 3: Governed Proxy Invocation (`proxy.armoriq.ai`)
 The tool call is transmitted to ArmorIQ's cloud Policy Enforcement Point (PEP):
@@ -234,14 +235,14 @@ The tool call is transmitted to ArmorIQ's cloud Policy Enforcement Point (PEP):
 const result = await client.invoke(MCP_ID, tool, token, args ?? {});
 ```
 
-The PEP proxy verifies:
+The PEP proxy and SDK verify:
 1. **Signature Integrity**: Token was signed by the official ArmorIQ platform authority.
-2. **Plan Immutability**: Tool arguments strictly match the hashed canonical plan steps.
+2. **Action Binding**: The invoked tool must be one of the actions declared in the hashed canonical plan — the SDK refuses mismatched actions locally, before any network call. Call arguments are not bound end-to-end today (see the honest boundary note above).
 3. **Freshness**: Current timestamp < `token.expiresAt`.
 4. **Stored Organization Policies**: Evaluates policies stored in your ArmorIQ organization:
    * **ALLOWED**: Invocation is forwarded over HTTPS to the registered MCP endpoint.
-   * **BLOCKED**: Returns `PolicyBlockedException` with policy metadata.
-   * **HELD**: Requires human approval via delegation before execution can release.
+   * **BLOCKED**: Returns `PolicyBlockedException` with policy metadata (`tool_not_in_allowlist`).
+   * **HELD**: FlowGuard's refund path creates a real platform delegation (`POST /delegation/request`) that only releases after supervisor approval.
 
 ---
 
@@ -251,7 +252,7 @@ The PEP proxy verifies:
 ElevenLabs conversational voice agents time out webhooks after approximately 5 seconds. High-stakes financial operations requiring human intervention cannot complete in 5 seconds.
 
 **Solution implemented in [`gateway/server.mjs`](../gateway/server.mjs)**:
-1. When `issue_refund` triggers a `PolicyHoldException`, the gateway registers the delegation on ArmorIQ.
+1. When `issue_refund` is invoked, the gateway holds the call and registers a real delegation on the ArmorIQ platform (`POST /delegation/request`).
 2. The gateway replies to ElevenLabs **in under 3.5 seconds**:
    > *"Thanks — that refund needs a supervisor to approve it. I have notified them and will let you know as soon as they respond."*
 3. The call session remains open while the user is prompted to check status via `check_supervisor_decision`.
@@ -262,8 +263,8 @@ ElevenLabs conversational voice agents time out webhooks after approximately 5 s
   * Supervisor 1 approves: State changes to `awaiting_approvals (1/2)`.
   * Supervisor 2 approves: Quorum satisfied -> Gateway triggers `releaseHeldCall()` through ArmorIQ with a freshly minted, supervisor-backed token.
 
-### C. Zero Hardcoded Code `if` Statements
-No allow, block, or hold decisions are hardcoded in application logic. Every decision represents the live verdict rendered by ArmorIQ's policy evaluation engine.
+### C. Decision Provenance
+No allow/block verdict is hardcoded in application logic — those verdicts are exceptions raised by ArmorIQ's policy engine on the platform (`PolicyBlockedException` / `tool_not_in_allowlist`). Refunds are held by FlowGuard's designed control: a real ArmorIQ platform delegation that releases only after two supervisor approvals.
 
 ---
 

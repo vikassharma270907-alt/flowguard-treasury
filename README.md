@@ -10,15 +10,15 @@
 
 | Requirement / Checklist Item | Implementation & Evidence | Status |
 | :--- | :--- | :--- |
-| **Setup Order Followed** | 1. API key created on `platform.armoriq.ai`.<br>2. Public MCP deployed & registered (`intentgate-support-mcp`, UUID `cd7deb69-adb3-45f7-977b-f0d0e7235ba2`).<br>3. Agent onboarded (`intentgate-agent`).<br>4. Policies authored on platform (`cli-intentgate-agent-intentgate-support-mcp`). | ✅ **PASS** |
-| **Policies Verified with 3-Result Test Script** | `scripts/test-enforcement.mjs` runs real live calls against ArmorIQ:<br>• `lookup_order`: **ALLOWED** (1,793 ms)<br>• `change_payout`: **BLOCKED** (`PolicyBlockedException`, 711 ms)<br>• `issue_refund`: **HELD** (`PolicyHoldException`, delegation created on platform, 589 ms). | ✅ **PASS** |
+| **Setup Order Followed** | 1. API key created on `platform.armoriq.ai`.<br>2. Public MCP deployed & registered (`flowguard-treasury-mcp`, UUID `7540cd0a-7d76-414a-a849-96b337a0c6ed`, at `https://flowguard-treasury.vercel.app/mcp`).<br>3. Agent onboarded (`flowguard-agent`).<br>4. Policy authored on platform (`flowguard-treasury-allowlist`). | ✅ **PASS** |
+| **Policies Verified with 3-Result Test Script** | `scripts/test-enforcement.mjs` runs real live calls against ArmorIQ (latest run 16 Oct 2026, raw capture in [docs/evidence/](docs/evidence/README.md)):<br>• `lookup_order`: **ALLOWED** (887 ms, real payload, `verified: true`)<br>• `change_payout`: **BLOCKED** (`PolicyBlockedException`, HTTP 403 `tool_not_in_allowlist`, 764 ms)<br>• `issue_refund`: **HELD** (real pending platform delegation `eb63aac7-…` created via the delegation API, 604 ms). | ✅ **PASS** |
 | **Two-Approval Approach Documented** | Confirmed against ArmorIQ SDK docs. ArmorIQ platform evaluates holds (`/delegation/request`); gateway counts 2 supervisor approvals before releasing held execution. Fully documented in [DX_NOTES.md](DX_NOTES.md). | ✅ **PASS** |
-| **MCP Reachable via ArmorIQ Proxy** | MCP server listening on `POST /mcp` (JSON-RPC 2.0 with SSE responses) is publicly exposed over HTTPS (`https://avi-england-vessel-touched.trycloudflare.com/mcp`) and successfully invoked via `https://proxy.armoriq.ai/invoke`. | ✅ **PASS** |
+| **MCP Reachable via ArmorIQ Proxy** | MCP server listening on `POST /mcp` (JSON-RPC 2.0 with SSE responses) is served over HTTPS at `https://flowguard-treasury.vercel.app/mcp` and successfully invoked via `https://proxy.armoriq.ai/invoke`. | ✅ **PASS** |
 | **One Action ALLOWED, One BLOCKED in Audit Logs** | `lookup_order` visibly **ALLOWED**; `change_payout` visibly **BLOCKED** (`tool_not_in_allowlist`). Both verified against `proxy.armoriq.ai` audit ledger. | ✅ **PASS** |
 | **Intent Mismatch Demonstrated** | `scripts/test-intent-mismatch.mjs` mints a token for `lookup_order` only, then attempts to invoke `issue_refund` -> immediately raises `IntentMismatchException` before network execution. | ✅ **PASS** |
 | **Decisions from ArmorIQ, Not Code `if` Statements** | Every allow/block decision is returned directly by the ArmorIQ proxy (`proxy.armoriq.ai`). The gateway contains no hardcoded allow/deny rules. | ✅ **PASS** |
 | **Held Calls Answer Within 5s Window** | Real measured latencies: `lookup_order` (3.7s–4.3s), `change_payout` (2.7s), `issue_refund` (2.8s–3.9s). Held calls reply immediately with holding message; final decision relayed via `check_supervisor_decision`. | ✅ **PASS** |
-| **Prefix Mapping & Zero Real Data** | Gateway transparently strips `IntentGate_` prefix from ElevenLabs tool calls. 100% synthetic sandbox data (`ORD-1001`, `ORD-1002`, `ACC-4471`). | ✅ **PASS** |
+| **Prefix Mapping & Zero Real Data** | Gateway transparently strips the `FlowGuard_` prefix from ElevenLabs tool calls (legacy `IntentGate_` still accepted). 100% synthetic sandbox data (`ORD-1001`, `ORD-1002`, `ACC-4471`). | ✅ **PASS** |
 | **No Secrets & Complete Disclosures** | `.env` gitignored; safe `.env.example` provided. Full [DISCLOSURES.md](DISCLOSURES.md) and [DX_NOTES.md](DX_NOTES.md) included. | ✅ **PASS** |
 
 ---
@@ -28,7 +28,7 @@
 ```mermaid
 flowchart TD
     User([Caller Voice / Web Client]) <--> ElevenLabs[ElevenLabs Conversational AI Agent]
-    ElevenLabs -- "Webhook Tool Call (IntentGate_<tool>)" --> Gateway[IntentGate Gateway Service :8790]
+    ElevenLabs -- "Webhook Tool Call (FlowGuard_<tool>)" --> Gateway[FlowGuard Gateway Service :8790]
     
     subgraph ArmorIQ Platform ["ArmorIQ Governance Cloud (platform.armoriq.ai)"]
         IAP["CSRG-IAP Intent Backend (iap.armoriq.ai)"]
@@ -41,7 +41,7 @@ flowchart TD
     Gateway -- "3. invoke(mcp, tool, token, params)" --> Proxy
     
     Proxy -- "Enforce Stored Policies (allow/block)" --> Proxy
-    Proxy -- "4. Validated SSE Tool Call" --> MCPServer[IntentGate MCP Server :8791]
+    Proxy -- "4. Validated SSE Tool Call" --> MCPServer[FlowGuard MCP Server (Vercel /mcp, SSE)]
     
     Gateway -- "Hold Escalation (/delegation/request)" --> PlatformAPI
     Supervisor([Supervisor]) <--> Playground[Supervisor Playground UI /api/pending]
@@ -55,8 +55,8 @@ flowchart TD
 
 1. **AI Voice Agent**:
    - ElevenLabs Conversational Voice Agent receiving customer voice calls.
-   - Tools exposed via gateway: `IntentGate_lookup_order`, `IntentGate_change_payout`, `IntentGate_issue_refund`, `check_supervisor_decision`.
-   - Tool prefix `IntentGate_` is mapped back to the canonical MCP tool names.
+   - Tools exposed via gateway: `FlowGuard_orderLookup`, `FlowGuard_payoutChange`, `FlowGuard_issueRefund`, `check_supervisor_decision`.
+   - Tool prefix `FlowGuard_` is mapped back to the canonical MCP tool names (legacy `IntentGate_` still accepted).
 
 2. **Model Context Protocol (MCP) Server (`mcp-server/server.mjs`)**:
    - JSON-RPC 2.0 over HTTP (`POST /mcp`), responding with Server-Sent Events (`Content-Type: text/event-stream`, `event: message\ndata: {json}\n\n`).
@@ -64,7 +64,7 @@ flowchart TD
      - `lookup_order(order_id)`: Read-only order status (Allowed by ArmorIQ policy).
      - `change_payout(account_id, new_destination)`: Destination modification (Blocked by ArmorIQ policy).
      - `issue_refund(order_id, amount)`: Financial disbursement (Held by ArmorIQ policy; requires 2 supervisor approvals).
-   - Deployed on public HTTPS tunnel (`https://avi-england-vessel-touched.trycloudflare.com/mcp`).
+   - Production endpoint: `https://flowguard-treasury.vercel.app/mcp` (Vercel, SSE transport). During local development the same server can be exposed via a Cloudflare tunnel.
 
 3. **ArmorIQ Gateway Service (`gateway/server.mjs`)**:
    - Intercepts every tool call: `capturePlan` -> `getIntentToken` -> `invoke` through `proxy.armoriq.ai`.
@@ -107,10 +107,9 @@ Expected Output:
 ========================================================================
 SUMMARY
 ========================================================================
-  lookup_order     ALLOWED  (1793 ms)
-  change_payout    BLOCKED  (711 ms)
-  issue_refund     HELD  (589 ms)
-========================================================================
+  lookup_order     ALLOWED  (887 ms)
+  change_payout    BLOCKED  (764 ms)
+  issue_refund     HELD  (604 ms)
 ```
 
 ### 5. Verify Cryptographic Intent Binding (Intent Mismatch)
@@ -120,9 +119,9 @@ node --env-file=.env scripts/test-intent-mismatch.mjs
 ```
 Expected Output:
 ```
-Case 1 refused by: IntentMismatchException
-Case 2 refused by: PolicyBlockedException
-Case 3 refused by: TokenExpiredException
+Case 1 — wrong action   : IntentMismatchException
+Case 2 — swapped amount : NOT REFUSED (reached upstream)
+Case 3 — expired token  : TokenExpiredException
 ```
 
 ### 6. Start the Servers

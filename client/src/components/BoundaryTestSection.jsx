@@ -43,7 +43,7 @@ export default function BoundaryTestSection() {
             ArmorIQ Boundary Test: 3-Result Verification
           </h2>
           <p style={{ color: 'var(--muted-foreground)', fontSize: '0.92rem', marginTop: '6px', maxWidth: '780px', lineHeight: 1.5 }}>
-            Demonstrates real enforcement decisions rendered directly by ArmorIQ's cloud PEP Proxy (<code style={{ color: '#38bdf8' }}>proxy.armoriq.ai</code>) and CSRG-IAP Platform. Zero code-level <code style={{ color: '#f87171' }}>if</code> statements.
+            Demonstrates real enforcement decisions rendered by ArmorIQ's cloud PEP Proxy (<code style={{ color: '#38bdf8' }}>proxy.armoriq.ai</code>) and CSRG-IAP Platform. Allow and block verdicts come from the platform's policy engine; refunds are held through a real platform delegation — no code-level allow/block <code style={{ color: '#f87171' }}>if</code> statements.
           </p>
         </div>
 
@@ -102,7 +102,7 @@ export default function BoundaryTestSection() {
                 </span>
               </div>
               <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', margin: 0, lineHeight: 1.4 }}>
-                {isAllowed && "Read-only query allowed automatically by ArmorIQ policy in ~1.9s."}
+                {isAllowed && `Read-only query allowed automatically by ArmorIQ policy in ~${(c.latencyMs / 1000).toFixed(1)}s.`}
                 {isBlocked && "Beneficiary account change refused by PolicyBlockedException (403)."}
                 {isHeld && "Financial disbursement requires 2 supervisor approvals via delegation."}
               </p>
@@ -162,7 +162,7 @@ export default function BoundaryTestSection() {
               <span>ALLOWED by ArmorIQ Stored Policy</span>
             </div>
             <p style={{ fontSize: '0.85rem', color: 'var(--foreground)', margin: '0 0 10px 0' }}>
-              Verified through ArmorIQ PEP Proxy. The tool was matched against allowlist rule <code style={{ color: '#34d399' }}>allow_read_policy</code> and forwarded downstream to the MCP server.
+              Verified through ArmorIQ PEP Proxy. The tool was matched against allowlist policy <code style={{ color: '#34d399' }}>{realRunData.policyName}</code> and forwarded downstream to the MCP server.
             </p>
             <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', marginBottom: '4px' }}>Returned Payload:</div>
             <pre style={{ margin: 0, padding: '10px', background: 'rgba(0, 0, 0, 0.5)', borderRadius: '6px', fontSize: '0.78rem', color: '#38bdf8', overflowX: 'auto', fontFamily: 'monospace' }}>
@@ -190,10 +190,10 @@ export default function BoundaryTestSection() {
           <div style={{ background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.25)', borderRadius: '8px', padding: '16px', marginBottom: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#fbbf24', fontWeight: 700, marginBottom: '6px' }}>
               <AlertTriangle size={18} />
-              <span>HELD by ArmorIQ Policy — 2 Supervisor Approvals Required</span>
+              <span>HELD for Human Approval — 2 Supervisor Approvals Required</span>
             </div>
             <p style={{ fontSize: '0.85rem', color: 'var(--foreground)', margin: '0 0 8px 0' }}>
-              <strong>Exception:</strong> <code style={{ color: '#fbbf24' }}>{activeCase.exception}</code> · Delegation ID: <code style={{ color: '#38bdf8' }}>{activeCase.delegationId}</code>
+              <strong>Mechanism:</strong> <code style={{ color: '#fbbf24' }}>{activeCase.mechanism || 'ArmorIQ platform delegation'}</code> · Delegation ID: <code style={{ color: '#38bdf8' }}>{activeCase.delegationId}</code>
             </p>
             <p style={{ fontSize: '0.82rem', color: 'var(--muted-foreground)', margin: 0 }}>
               Financial disbursement of ${activeCase.params.amount} USD cannot be executed autonomously. A delegation request was registered on ArmorIQ platform (<code style={{ color: '#fbbf24' }}>status: {activeCase.delegationStatus}</code>), awaiting dual supervisor quorum.

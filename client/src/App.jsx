@@ -15,6 +15,7 @@ import OAuthModal from './components/OAuthModal';
 import LegalPages from './components/LegalPages';
 import PricingSection from './components/PricingSection';
 import JudgesPage from './components/JudgesPage';
+import ScenariosScreen from './components/ScenariosScreen';
 import { Lock, Shield, ArrowRight } from 'lucide-react';
 
 const LEGAL_ROUTES = ['privacy', 'terms', 'refund-policy', 'grievance-officer', 'dpdp-compliance', 'dpdp-act'];
@@ -23,6 +24,7 @@ function getInitialTabFromUrl() {
   if (typeof window === 'undefined') return 'overview';
   const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
   if (path === 'judges') return 'judges';
+  if (path === 'scenarios') return 'scenarios';
   if (LEGAL_ROUTES.includes(path)) {
     return path === 'dpdp-act' ? 'dpdp-compliance' : path;
   }
@@ -32,6 +34,7 @@ function getInitialTabFromUrl() {
   if (window.location.hash) {
     const hash = window.location.hash.replace('#', '');
     if (hash === 'judges') return 'judges';
+    if (hash === 'scenarios') return 'scenarios';
     if (hash === 'pricing') return 'pricing';
     if (hash === 'how-it-works') return 'enclave';
     if (hash === 'quickstart') return 'overview';
@@ -108,6 +111,8 @@ export default function App() {
       window.history.pushState(null, '', `/${tab}`);
     } else if (tab === 'judges') {
       window.history.pushState(null, '', '/judges');
+    } else if (tab === 'scenarios') {
+      window.history.pushState(null, '', '/scenarios');
     } else if (tab === 'pricing') {
       window.history.pushState(null, '', '/#pricing');
     } else if (tab === 'enclave') {
@@ -263,6 +268,14 @@ export default function App() {
       <main style={{ maxWidth: '1440px', width: '100%', margin: '0 auto', padding: '24px', flex: 1 }}>
         {activeTab === 'judges' && (
           <JudgesPage onNavigate={handleNavigate} />
+        )}
+
+        {activeTab === 'scenarios' && (
+          <ScenariosScreen
+            systemStatus={systemStatus}
+            onSelectScenario={handleSelectScenario}
+            onNavigate={handleNavigate}
+          />
         )}
 
         {LEGAL_ROUTES.includes(activeTab) && (
