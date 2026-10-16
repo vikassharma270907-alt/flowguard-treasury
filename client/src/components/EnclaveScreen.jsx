@@ -274,7 +274,7 @@ export default function EnclaveScreen() {
                 Levenshtein Duplicate Shield
               </div>
               <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', margin: 0 }}>
-                Normalized string distance halts duplicate invoices before execution with immutable audit logs.
+                Normalized string distance halts duplicate invoices before execution with tamper-evident audit logs.
               </p>
             </div>
           </div>

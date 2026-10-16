@@ -40,14 +40,14 @@ export default function JudgesPage({ onNavigate }) {
     {
       rule: "4. Official Window Development",
       requirement: "Core development must take place within official hackathon window (10 to 17 Oct 2026).",
-      evidence: "Git history runs from first commit ac099d0 (2026-10-15) through 2026-10-16 \u2014 inside the official Oct 10-17, 2026 window. Verified against github.com/vikassharma270907-alt/flowguard-treasury (ac099d0 \u2026 cc46417).",
+      evidence: "Git history runs from first commit ac099d0 (2026-10-15) through 2026-10-16 — inside the official Oct 10-17, 2026 window. Verified against github.com/vikassharma270907-alt/flowguard-treasury (ac099d0 … cc46417).",
       status: "PASS",
       verified: true
     },
     {
       rule: "5. Sandbox / Test Data Only",
       requirement: "Sensitive operations use sandbox or test environments only. No real customer data or production payment systems.",
-      evidence: "100% synthetic sandbox data: payout accounts (ACC-4471, ACC-9002), orders (ORD-1001 \u2026 ORD-1004), and an Airwallex sandbox client with a clearly-labelled synthetic mock adapter when credentials are absent. Sandbox disclaimers appear on every money screen.",
+      evidence: "100% synthetic sandbox data: payout accounts (ACC-4471, ACC-9002), orders (ORD-1001 … ORD-1004), and an Airwallex sandbox client with a clearly-labelled synthetic mock adapter when credentials are absent. Sandbox disclaimers appear on every money screen.",
       status: "PASS",
       verified: true
     },
@@ -350,9 +350,9 @@ export default function JudgesPage({ onNavigate }) {
           Unedited console output from live runs of the verification scripts, committed to the repository (no secrets are printed):
         </p>
         <ul style={{ paddingLeft: '18px', color: 'var(--muted-foreground)', fontSize: '0.85rem', lineHeight: 1.9, margin: 0 }}>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-enforcement-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-enforcement-2026-10-16.txt</a> \u2014 allow / block / hold verdicts with real token and delegation IDs.</li>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-intent-mismatch-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-intent-mismatch-2026-10-16.txt</a> \u2014 intent-binding refusals (wrong action, expired token).</li>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/EVIDENCE.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>EVIDENCE.md</a> \u2014 full audit-log entries for each verdict, including the end-to-end allowed call.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-enforcement-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-enforcement-2026-10-16.txt</a> — allow / block / hold verdicts with real token and delegation IDs.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-intent-mismatch-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-intent-mismatch-2026-10-16.txt</a> — intent-binding refusals (wrong action, expired token).</li>
+          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/EVIDENCE.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>EVIDENCE.md</a> — full audit-log entries for each verdict, including the end-to-end allowed call.</li>
         </ul>
       </section>
 
@@ -396,7 +396,7 @@ export default function JudgesPage({ onNavigate }) {
           📜 Open Disclosures & Lineage
         </h2>
         <p style={{ fontSize: '0.88rem', color: 'var(--muted-foreground)', lineHeight: 1.6, margin: '0 0 14px 0' }}>
-         <strong>Developer Statement:</strong> FlowGuard was assembled during the hackathon window and reuses the developer's earlier MIT-licensed IntentGate prototype components (gateway, sandbox adapter) \u2014 disclosed in DISCLOSURES.md below. Third-party open-source libraries: <code>@armoriq/sdk</code>, <code>@modelcontextprotocol/sdk</code>, <code>three</code>, <code>react</code>, <code>express</code>. All sensitive operations use synthetic sandbox data only \u2014 no live banking rails, no real funds.
+         <strong>Developer Statement:</strong> FlowGuard was assembled during the hackathon window and reuses the developer's earlier MIT-licensed IntentGate prototype components (gateway, sandbox adapter) — disclosed in DISCLOSURES.md below. Third-party open-source libraries: <code>@armoriq/sdk</code>, <code>@modelcontextprotocol/sdk</code>, <code>three</code>, <code>react</code>, <code>express</code>. All sensitive operations use synthetic sandbox data only — no live banking rails, no real funds.
         </p>
         <p style={{ fontSize: '0.82rem', color: '#94a3b8', margin: 0 }}>
           Detailed dependency disclosures and licensing notices are documented in <a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/DISCLOSURES.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>DISCLOSURES.md</a>.

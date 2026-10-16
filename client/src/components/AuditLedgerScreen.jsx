@@ -96,7 +96,7 @@ export default function AuditLedgerScreen() {
           <div>
             <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Searchable Financial Audit Trail</h3>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginTop: '2px' }}>
-              Immutable record of every policy evaluation, risk inspection, and Airwallex sandbox request.
+              Append-only record of every policy evaluation, risk inspection, and Airwallex sandbox request.
             </p>
           </div>
           <span className="badge badge-neutral">{logs.length} Logged Entries</span>

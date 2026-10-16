@@ -580,7 +580,7 @@ export default function VoiceGatewayScreen({ userSession }) {
             </div>
 
             <div style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px solid rgba(139, 92, 246, 0.2)', fontSize: '0.68rem', color: 'var(--muted-foreground)' }}>
-              Every support call mints an immutable plan binding caller identity to permitted corridor policies.
+              Every support call mints a tamper-evident plan binding caller identity to permitted corridor policies.
             </div>
           </div>
         </div>

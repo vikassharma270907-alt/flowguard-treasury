@@ -28,7 +28,7 @@ export default function OverviewScreen({
       badgeColor: "#38bdf8",
       title: "1. Intent Plan Capture & SHA-256 Merkle Hashing",
       headline: "The agent formally declares its goal and tool parameters before execution begins.",
-      explanation: "When an operator or voice caller triggers an operation (e.g. checking order status, changing payout destination, or issuing a refund), FlowGuard intercepts the intent. The client invokes client.capturePlan(agentId, goal, plan). The plan binds every step, target MCP server, and parameter. FlowGuard computes an immutable SHA-256 Merkle hash, locking the agent's intent in place.",
+      explanation: "When an operator or voice caller triggers an operation (e.g. checking order status, changing payout destination, or issuing a refund), FlowGuard intercepts the intent. The client invokes client.capturePlan(agentId, goal, plan). The plan binds every step, target MCP server, and parameter. FlowGuard computes a SHA-256 Merkle hash that binds every step of the plan.",
       keyPoints: [
         "Prevents prompt injection, tool poisoning, and agent drift at the source",
         "Deterministic Plan Hash: b3e6889fe267adb6c3a64790176...",
@@ -68,13 +68,13 @@ export default function OverviewScreen({
       time: "45s - 60s",
       badge: "Quorum & Audit Ledger",
       badgeColor: "#f59e0b",
-      title: "4. Multi-Supervisor Quorum & Immutable Ledger",
+      title: "4. Multi-Supervisor Quorum & Tamper-Evident Ledger",
       headline: "Dual-sign-off for high-value funds and tamper-evident Merkle auditing.",
       explanation: "When an action is held, ArmorIQ returns a delegationId (e.g. 65b502cb-6cb0-4e50-b392-934c6dba5bd7). In the FlowGuard Supervisor Playground, designated treasury officers perform step-up authentication. When the 2-approval threshold is satisfied, the action executes against the Airwallex sandbox adapter, and every event is sealed into the cryptographic audit trail.",
       keyPoints: [
         "Auth-gated: MCP tools reject unauthenticated requests without ArmorIQ token",
         "Dual authorization: Multi-signature approval quorum for high-risk payouts",
-        "Immutable ledger: Searchable audit log with SHA-256 Merkle proofs"
+        "Audit ledger: searchable log with SHA-256 Merkle proofs"
       ],
       codeSnippet: "// 4. Resolve delegation with dual quorum\nconst delegation = await client.createDelegationRequest({\n  delegationId: '65b502cb-6cb0-4e50-b392-934c6dba5bd7',\n  requiredApprovals: 2,\n  receivedApprovals: 2\n});\n// Executed in sandbox with cryptographic audit log entry"
     }
@@ -340,7 +340,7 @@ export default function OverviewScreen({
       {/* TIER 1 ITEM 5: Centerpiece Boundary Test Section */}
       <BoundaryTestSection />
 
-      {/* TIER 1 ITEM 7: Architecture & Zero-Bypass Flow Section */}
+      {/* TIER 1 ITEM 7: Architecture & Enforcement Flow Section */}
       <HowWeUseArmorIQSection />
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '12px' }}>

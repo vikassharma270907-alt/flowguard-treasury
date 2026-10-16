@@ -190,18 +190,18 @@ FlowGuard implements an adaptive theme engine with strict WCAG AA contrast compl
 ## 📖 PDF Technical Architectural Guides
 
 Two comprehensive technical architectural documents are generated and committed to the repository:
-- **`FlowGuard_Overview.pdf`**: [`docs/Veratone_Overview.pdf`](docs/Veratone_Overview.pdf) — Complete 9-page guide covering the ElevenLabs voice layer, ArmorIQ cryptographic intent enforcement, sub-5s timeout protection, comparative tables, and production roadmap.
+- **`FlowGuard_Overview.pdf`**: [`docs/FlowGuard_Overview.pdf`](docs/FlowGuard_Overview.pdf) — Complete 9-page guide covering the ElevenLabs voice layer, ArmorIQ cryptographic intent enforcement, sub-5s timeout protection, comparative tables, and production roadmap.
 - **`USER_GUIDE.pdf`**: [`docs/USER_GUIDE.pdf`](docs/USER_GUIDE.pdf) — Complete operator manual for local deployment, 3D controls, theme tokens, and troubleshooting.
 - **Regenerate via scripts**:
   ```bash
-  npm run docs:overview   # Generates docs/Veratone_Overview.pdf
+  npm run docs:overview   # Generates docs/FlowGuard_Overview.pdf
   npm run docs:pdf        # Generates docs/USER_GUIDE.pdf
   ```
 
 ---
 
 ## 📚 Deliverable References
-- [docs/Veratone_Overview.pdf](docs/Veratone_Overview.pdf): Technical overview of ElevenLabs + ArmorIQ integration.
+- [docs/FlowGuard_Overview.pdf](docs/FlowGuard_Overview.pdf): Technical overview of ElevenLabs + ArmorIQ integration.
 - [docs/USER_GUIDE.pdf](docs/USER_GUIDE.pdf): Complete 9-page printed technical architectural guide.
 - [DX_NOTES.md](DX_NOTES.md): Comprehensive documentation of the ElevenLabs ~5s timeout pattern, prefix normalization, measured latencies, 2-approval counter approach, and ArmorIQ SDK error typing gotchas.
 - [DISCLOSURES.md](DISCLOSURES.md): Complete disclosures of all pre-existing libraries, AI assistants, and open-source packages.
