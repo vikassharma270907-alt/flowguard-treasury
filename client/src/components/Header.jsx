@@ -165,17 +165,15 @@ export default function Header({
     if (link.isExternal) return;
     if (link.href && link.href.startsWith('mailto:')) return;
 
-    if (link.href && link.href.startsWith('/')) {
-      if (onNavigate) {
-        e.preventDefault();
-        const routeKey = link.href === '/' ? 'overview' : link.href.replace('/', '');
-        onNavigate(routeKey);
-        window.history.pushState(null, '', link.href);
-      }
-    } else if (link.href && link.href.startsWith('#')) {
-      if (onNavigate && link.id) {
-        e.preventDefault();
+    if (onNavigate) {
+      e.preventDefault();
+      if (link.id) {
         onNavigate(link.id);
+      } else if (link.href === '/') {
+        onNavigate('overview');
+      } else {
+        const clean = link.href.replace(/^\/+|\/?#|\/+$/g, '');
+        onNavigate(clean || 'overview');
       }
     }
     setMobileMenuOpen(false);

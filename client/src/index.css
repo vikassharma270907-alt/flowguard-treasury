@@ -725,3 +725,12 @@ pre, code, .code-panel, .transcript-scroll {
     padding-top: 10px !important;
   }
 }
+
+/* Mobile performance: skip style, layout, and paint work for large offscreen
+   sections so initial renders and re-renders stay cheap. Sections render
+   normally as they approach the viewport; browsers without content-visibility
+   support simply ignore this rule. */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}

@@ -352,12 +352,16 @@ export default function OverviewScreen({
       </div>
 
       {/* TIER 1 ITEM 5: Centerpiece Boundary Test Section */}
-      <BoundaryTestSection />
+      <div className="cv-auto">
+        <BoundaryTestSection />
+      </div>
 
       {/* TIER 1 ITEM 7: Architecture & Enforcement Flow Section */}
-      <HowWeUseArmorIQSection />
+      <div className="cv-auto">
+        <HowWeUseArmorIQSection />
+      </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '12px' }}>
+        <div className="cv-auto" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '12px' }}>
           {/* Card 1: AI Agent */}
           <div style={{ background: 'var(--muted)', padding: '14px', borderRadius: '8px', border: '1px solid var(--border)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
@@ -481,7 +485,7 @@ export default function OverviewScreen({
       )}
 
       {/* 4 Reproducible Demo Scenarios (2x2 Balanced Grid on Desktop) */}
-      <section style={{
+      <section className="cv-auto" style={{
         background: 'var(--card)',
         border: '1px solid var(--border)',
         borderRadius: '16px',
@@ -617,7 +621,7 @@ export default function OverviewScreen({
       </section>
 
       {/* ElevenLabs Voice Agent Feature Spotlight Banner */}
-      <div style={{
+      <div className="cv-auto" style={{
         background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(99, 102, 241, 0.12) 100%)',
         border: '1px solid rgba(16, 185, 129, 0.35)',
         padding: '16px 20px',
@@ -664,7 +668,7 @@ export default function OverviewScreen({
       </div>
 
       {/* Interactive 3D Hero Vault Showcase */}
-      <div className="glass-card" style={{
+      <div className="glass-card cv-auto" style={{
         padding: 'clamp(16px, 3vw, 24px)',
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
@@ -753,7 +757,7 @@ export default function OverviewScreen({
       </div>
 
       {/* Primary KPI Grid */}
-      <div style={{
+      <div className="cv-auto" style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
         gap: '16px'
@@ -832,7 +836,7 @@ export default function OverviewScreen({
       </div>
 
       {/* Multi-Currency Sandbox Wallets */}
-      <div className="glass-card" style={{ padding: '24px' }}>
+      <div className="glass-card cv-auto" style={{ padding: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px', flexWrap: 'wrap', gap: '12px' }}>
           <div>
             <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Airwallex Sandbox Multi-Currency Wallets</h3>
@@ -881,7 +885,7 @@ export default function OverviewScreen({
       </div>
 
       {/* Liquidity Runway Gauge */}
-      <div className="glass-card" style={{ padding: '24px' }}>
+      <div className="glass-card cv-auto" style={{ padding: '24px' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '6px' }}>
           Liquidity Allocation & Reserve Floor Protection
         </h3>

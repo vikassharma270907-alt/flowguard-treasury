@@ -138,7 +138,9 @@ export default function App() {
   }, [activeTab]);
 
   const handleNavigate = (tab) => {
-    if (tab === 'boundary' || tab === 'boundary-test') {
+    const rawTab = (tab || '').replace(/^\/+|\/?#|\/+$/g, '');
+
+    if (rawTab === 'boundary' || rawTab === 'boundary-test') {
       setActiveTab('overview');
       window.history.pushState(null, '', '/#boundary-test');
       setTimeout(() => {
@@ -157,18 +159,20 @@ export default function App() {
       return;
     }
 
-    setActiveTab(tab);
-    if (LEGAL_ROUTES.includes(tab)) {
-      window.history.pushState(null, '', `/${tab}`);
-    } else if (tab === 'judges') {
+    const targetTab = (rawTab === 'how-it-works' || rawTab === 'howitworks' || rawTab === 'enclave') ? 'enclave' : rawTab;
+    setActiveTab(targetTab);
+
+    if (LEGAL_ROUTES.includes(targetTab)) {
+      window.history.pushState(null, '', `/${targetTab}`);
+    } else if (targetTab === 'judges') {
       window.history.pushState(null, '', '/judges');
-    } else if (tab === 'scenarios') {
+    } else if (targetTab === 'scenarios') {
       window.history.pushState(null, '', '/scenarios');
-    } else if (tab === 'pricing') {
+    } else if (targetTab === 'pricing') {
       window.history.pushState(null, '', '/#pricing');
-    } else if (tab === 'enclave' || tab === 'how-it-works') {
+    } else if (targetTab === 'enclave') {
       window.history.pushState(null, '', '/how-it-works');
-    } else if (tab === 'overview') {
+    } else if (targetTab === 'overview') {
       window.history.pushState(null, '', '/');
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -356,7 +360,7 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'enclave' && (
+        {(activeTab === 'enclave' || activeTab === 'how-it-works') && (
           <EnclaveScreen onNavigate={handleNavigate} />
         )}
 

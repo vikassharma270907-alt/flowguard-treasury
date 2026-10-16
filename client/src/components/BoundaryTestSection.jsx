@@ -28,7 +28,8 @@ export default function BoundaryTestSection() {
         borderRadius: '16px',
         background: 'var(--card)',
         border: '1px solid var(--border)',
-        boxShadow: 'var(--card-shadow)'
+        boxShadow: 'var(--card-shadow)',
+        scrollMarginTop: '140px'
       }}
       aria-labelledby="boundary-test-heading"
     >
