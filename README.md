@@ -270,3 +270,25 @@ Dedicated stub routes with prominent `"Draft – replace with reviewed legal tex
 - **WCAG AA Contrast**: Tested against WCAG AA standards (minimum 4.5:1 text contrast ratio).
 - **No External Images / Emoji Flags**: Social links use lightweight inline SVGs with `aria-label` attributes. "Made with ♥ in India" uses text formatting without emoji flags.
 
+### 📄 FlowGuard Guide (PDF) Configuration & Maintenance
+- **File Location**: The static guide PDF is stored at `client/public/docs/flowguard-guide.pdf` (and mirrored at `public/docs/flowguard-guide.pdf`). It is served at route `/docs/flowguard-guide.pdf`.
+- **Single Source of Truth**: Configured in `client/src/siteConfig.js` under `siteConfig.guidePdf`:
+  ```javascript
+  guidePdf: {
+    enabled: true,
+    path: "/docs/flowguard-guide.pdf",
+    pages: 7,
+    sizeLabel: typeof __GUIDE_PDF_SIZE_LABEL__ !== 'undefined' ? __GUIDE_PDF_SIZE_LABEL__ : "23 KB"
+  }
+  ```
+- **Build-Time Validation & Calculation**: During `npm run build`, `client/vite.config.js` inspects the real file size, computes the `sizeLabel` dynamically (e.g., `23 KB`), and injects it. If `guidePdf.enabled` is `true` and the PDF file is missing, the build fails with a clear error message. If `guidePdf.enabled` is `false`, the links do not render anywhere in the application.
+- **How to Replace the Guide PDF**:
+  1. Overwrite `client/public/docs/flowguard-guide.pdf` with the updated PDF file.
+  2. If the page count changes, update `siteConfig.guidePdf.pages` in `client/src/siteConfig.js`.
+  3. Run `npm run build` to re-calculate the `sizeLabel` and verify the build.
+- **Review Items Before Public Release**:
+  - **Review Item 1**: Page 1 of the PDF has a "Scope and assumptions" box written for internal use, and every page footer says "Draft guide... Verify against current docs before publishing". Remove both before the PDF goes public.
+  - **Review Item 2**: The quickstart commands come from the open-source IntentGate project (MIT). If FlowGuard has its own commands, update them. If the code is derived from IntentGate, keep the MIT notice and credit the author.
+  - **Review Item 3**: Every statement in the PDF must match what FlowGuard really does.
+
+
