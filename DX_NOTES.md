@@ -15,13 +15,13 @@ This document records the developer experience findings, architectural decisions
   - The pending case is stored in the gateway's supervisor queue with its `case_id`, canonical plan hash, and ArmorIQ token ID.
   - The agent is equipped with a follow-up tool (`check_supervisor_decision`), allowing it to check back and relay the supervisor's decision to the caller once rendered.
 
-### Gotcha 2: Tool Name Prefix Normalization (`FlowGuard_<tool>`)
-- **The Challenge**: To prevent namespace collisions across multiple tool providers in ElevenLabs, tool definitions are presented to LLMs with namespaces or prefixes such as `FlowGuard_<tool>` (e.g. `FlowGuard_orderLookup`, `FlowGuard_payoutChange`, `FlowGuard_issueRefund`; the legacy `IntentGate_` prefix is still accepted for backward compatibility).
+### Gotcha 2: Tool Name Prefix Normalization (`IntentGate_<tool>`)
+- **The Challenge**: To prevent namespace collisions across multiple tool providers in ElevenLabs, tool definitions are presented to LLMs with namespaces or prefixes such as `IntentGate_<tool>` (e.g. `IntentGate_orderLookup`, `IntentGate_payoutChange`, `IntentGate_issueRefund`; the legacy `FlowGuard_` prefix from the pre-rename configuration is still accepted for backward compatibility).
 - **Our Solution**:
   - The ArmorIQ plan must match the exact onboarded MCP tool names (`lookup_order`, `change_payout`, `issue_refund`). If the plan is captured with the raw prefixed name, Merkle tree verification against the onboarded MCP schema will fail.
   - The gateway applies transparent prefix normalization via `canonicalToolName(raw)`:
     ```javascript
-    export const TOOL_PREFIXES = ['FlowGuard_', 'IntentGate_'];
+    export const TOOL_PREFIXES = ['IntentGate_', 'FlowGuard_'];
     export function canonicalToolName(raw) {
       for (const prefix of TOOL_PREFIXES) {
         if (raw.startsWith(prefix)) return raw.slice(prefix.length);
@@ -40,14 +40,14 @@ ElevenLabs requires tool execution well under 5 seconds. All operations were tes
 | Action | ArmorIQ Step | Measured Latency | ElevenLabs Budget | Status |
 | :--- | :--- | :--- | :--- | :--- |
 | **`lookup_order`** | Plan Capture | ~0.5 ms | — | Fast |
-| **`lookup_order`** | Intent Token Mint (CSRG-IAP) | 2,400 – 2,600 ms | — | Verified |
-| **`lookup_order`** | Proxy Invocation (`proxy.armoriq.ai`) | 600 – 900 ms | — | Verified |
-| **`lookup_order` (Total Allowed)** | **Full End-to-End Roundtrip** | **3,200 – 3,600 ms** | **< 5,000 ms** | **PASS** |
+| **`lookup_order`** | Intent Token Mint (CSRG-IAP) | 2,400 – 2,800 ms | — | Verified |
+| **`lookup_order`** | Proxy Invocation (`proxy.armoriq.ai`) | 600 – 1,200 ms | — | Verified |
+| **`lookup_order` (Total Allowed)** | **Full End-to-End Roundtrip** | **3,200 – 4,000 ms** | **< 5,000 ms** | **PASS** |
 | **`change_payout` (Blocked)** | Token Mint + Proxy Policy Block | **3,200 – 3,600 ms** | **< 5,000 ms** | **PASS** |
 | **`issue_refund` (Hold Initial)** | Token Mint + Delegation Hold | **3,000 – 3,400 ms** | **< 5,000 ms** | **PASS** |
 | **`issue_refund` (Release)** | Delegation release after 2 approvals | **Async (outside the voice turn budget)** | **N/A (Async)** | **Documented** |
 
-> **Key Takeaway**: Both the allowed path (`lookup_order`) and the blocked path (`change_payout`) consistently complete within ~3.0s – 3.6s, honoring the ~5-second voice turn constraint.
+> **Key Takeaway**: Both the allowed path (`lookup_order`) and the blocked path (`change_payout`) consistently complete within ~3.0s – 3.9s, honoring the ~5-second voice turn constraint.
 
 ---
 

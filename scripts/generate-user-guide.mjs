@@ -152,7 +152,7 @@ const metadata = [
   ['Project Name', 'IntentGate Treasury & Voice Gateway'],
   ['Repository', 'https://github.com/vikassharma270907-alt/flowguard-treasury'],
   ['ArmorIQ Organization', "Vikas Sharma's Workspace (dd9e9695-e58d-4e56-8cff-ef9617ba4c54)"],
-  ['Agent ID', 'intentgate-agent (c8bcbe51-dea4-4459-9fd8-38f88ebc714e)'],
+  ['Agent ID', 'intentgate-agent (b50e7e3f-8d11-4a35-816a-2dc30b7cf760)'],
   ['MCP Server ID', 'intentgate-treasury-mcp (7540cd0a-7d76-414a-a849-96b337a0c6ed)'],
   ['Frontend Stack', 'React 19 + Vite 8 + Three.js 0.186 (Hardware 60 FPS)'],
   ['Security SDK', '@armoriq/sdk v0.6.10 (Production Platform API)']
@@ -368,7 +368,7 @@ p('1. The intent token supplies the exact Merkle path proving that the current a
   '3. Tokens lapse within 60 seconds. Replaying captured tokens triggers `TokenExpiredException`.');
 
 callout('Verified Hackathon Audit Trail Evidence',
-  'During verification testing on our onboarded workspace, lookup_order produced planHash b3e6889f... and verified end-to-end in 887 ms. Attempting to invoke issue_refund using the lookup token was refused before network egress with IntentMismatchException. Action binding covers the declared action set; call arguments are validated by each tool (see docs/evidence/README.md).',
+  'During verification testing on our onboarded workspace, lookup_order produced planHash b3e6889f... and verified end-to-end in 1,200 ms. Attempting to invoke issue_refund using the lookup token was refused before network egress with IntentMismatchException. Action binding covers the declared action set; call arguments are validated by each tool (see docs/evidence/README.md).',
   'security'
 );
 

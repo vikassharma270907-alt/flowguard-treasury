@@ -64,7 +64,7 @@ export default function EnclaveScreen({ onNavigate }) {
       explanation: "When an operator or voice caller triggers an operation (e.g. checking order status, changing payout destination, or issuing a refund), IntentGate intercepts the intent. The client invokes client.capturePlan(agentId, goal, plan). The plan binds every step, target MCP server, and parameter. IntentGate computes a SHA-256 Merkle hash that binds every step of the plan.",
       keyPoints: [
         "Prevents prompt injection, tool poisoning, and agent drift at the source",
-        "Deterministic Plan Hash: b3e6889fe267adb6c3a64790176...",
+        "Deterministic Plan Hash: b3e6889fe267adb661881333d488307f...",
         "Zero tool access or banking API execution permitted prior to validation"
       ],
       codeSnippet: "// 1. Declare intent & capture deterministic plan\nconst capture = client.capturePlan(\n  'intentgate-agent',\n  'Check order status ORD-1001',\n  {\n    goal: 'Check order status ORD-1001',\n    steps: [{\n      action: 'lookup_order',\n      mcp: 'intentgate-treasury-mcp',\n      params: { order_id: 'ORD-1001' }\n    }]\n  }\n);"
@@ -75,13 +75,13 @@ export default function EnclaveScreen({ onNavigate }) {
       badgeColor: "#818cf8",
       title: "2. Ed25519 Intent Token Minting at iap.armoriq.ai",
       headline: "ArmorIQ verifies policy permissions and issues a single-use authorization token.",
-      explanation: "IntentGate submits the captured plan to ArmorIQ's Identity & Policy Assertion (IAP) service at https://iap.armoriq.ai. ArmorIQ evaluates the registered agent identity (intentgate-agent), user permissions, and the active workspace policy (intentgate-treasury-allowlist). If approved, ArmorIQ mints an Ed25519 cryptographically signed Intent Token containing the plan hash and step Merkle root.",
+      explanation: "IntentGate submits the captured plan to ArmorIQ's Identity & Policy Assertion (IAP) service at https://iap.armoriq.ai. ArmorIQ evaluates the registered agent identity (intentgate-agent), user permissions, and the active workspace policy (cli-intentgate-agent-intentgate-treasury-mcp). If approved, ArmorIQ mints an Ed25519 cryptographically signed Intent Token containing the plan hash and step Merkle root.",
       keyPoints: [
-        "Real platform token ID: 951f7625efe24fb18039b62fadfed910",
+        "Real platform token ID: 6301fb8c52c4404e90912db634752f77",
         "Asymmetrically signed by ArmorIQ private key; verifiable by public key",
-        "Strict TTL expiration (e.g. 3600s) preventing replay attacks"
+        "Strict short TTL (about 60s; 5s in the expiry test) preventing replay attacks"
       ],
-      codeSnippet: "// 2. Request Ed25519 token from ArmorIQ IAP\nconst token = await client.getIntentToken(capture);\n// Output from real run:\n// token.id = \"951f7625efe24fb18039b62fadfed910\"\n// token.plan_hash = \"b3e6889fe267adb6...\"\n// token.expires = 3600 (seconds)"
+      codeSnippet: "// 2. Request Ed25519 token from ArmorIQ IAP\nconst token = await client.getIntentToken(capture);\n// Output from real run:\n// token.id = \"6301fb8c52c4404e90912db634752f77\"\n// token.plan_hash = \"b3e6889fe267adb661881333d488307f...\"\n// token.expires = ~60 (seconds; 5s in the expiry test)"
     },
     {
       time: "Stage 3",
@@ -91,9 +91,9 @@ export default function EnclaveScreen({ onNavigate }) {
       headline: "Every tool call passes through ArmorIQ's Policy Enforcement Point.",
       explanation: "Tool invocations never communicate with the banking MCP server directly. Instead, client.invoke() routes every call through proxy.armoriq.ai. The proxy verifies the Ed25519 token, validates step compliance against the plan hash, and applies the policy. Safe inquiries (lookup_order) pass with 200 OK. Unauthorized wire changes (change_payout) are blocked immediately with PolicyBlockedException. Large disbursements (issue_refund) are held with PolicyHoldException.",
       keyPoints: [
-        "ALLOWED: lookup_order executed in ~887ms verification latency",
-        "BLOCKED: change_payout blocked in 764ms with tool_not_in_allowlist",
-        "HELD: issue_refund halted in 604ms requiring 2 supervisor approvals"
+        "ALLOWED: lookup_order round-trip 1,200 ms (final run, 17 Oct 2026)",
+        "BLOCKED: change_payout blocked in 649 ms with tool_not_in_allowlist",
+        "HELD: issue_refund halted in 598 ms requiring 2 supervisor approvals"
       ],
       codeSnippet: "// 3. PEP enforces policy on tool call\ntry {\n  const res = await client.invoke(\n    token.id, 'intentgate-treasury-mcp',\n    'change_payout', { new_destination: 'GB29 NWBK...' }\n  );\n} catch (err) {\n  // Throws PolicyBlockedException: tool_not_in_allowlist (HTTP 403)\n  // Wire diversion rejected; $0.00 lost!\n}"
     },
@@ -103,7 +103,7 @@ export default function EnclaveScreen({ onNavigate }) {
       badgeColor: "#f59e0b",
       title: "4. Governed MCP Server Execution & Flight Recorder",
       headline: "Approved tools run inside the governed MCP server; all proof records append to audit log.",
-      explanation: "Only after ArmorIQ's proxy approves the request does the tool execute on the registered intentgate-treasury-mcp server over JSON-RPC 2.0. Every intent token, policy verdict, plan hash, supervisor signature, and bank acknowledgment is appended immutably to the flight recorder audit ledger for regulatory compliance.",
+      explanation: "Only after ArmorIQ's proxy approves the request does the tool execute on the registered intentgate-treasury-mcp server over JSON-RPC 2.0. Every intent token, policy verdict, plan hash, supervisor signature, and bank acknowledgment is appended immutably to the flight recorder audit ledger for auditability.",
       keyPoints: [
         "Dual-supervisor authorization for payments exceeding reserve limits",
         "Deterministic audit trail with SHA-256 cryptographic binding",

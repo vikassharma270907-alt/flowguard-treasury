@@ -37,10 +37,10 @@
 IntentGate registers one governed agent on the ArmorIQ platform; the same identity is used by the voice gateway and the verification scripts.
 
 ### Agent: `intentgate-agent` (IntentGate Operator Identity)
-* **Agent UUID:** `c8bcbe51-dea4-4459-9fd8-38f88ebc714e`
+* **Agent UUID:** `b50e7e3f-8d11-4a35-816a-2dc30b7cf760` (supersedes the earlier `c8bcbe51-…` registration, retained in the workspace)
 * **Description:** Represents the IntentGate operator (`intentgate-operator`) when plans are captured and intent tokens are minted.
 * **Attached MCP Server:** `intentgate-treasury-mcp` (`7540cd0a-7d76-414a-a849-96b337a0c6ed`) at `https://flowguard-treasury.vercel.app/mcp`.
-* **Governing Policy:** `intentgate-treasury-allowlist` (`23f8f304-0f6b-44a0-9bba-fa9886ca611b`) — allowed tools `issue_refund` + `lookup_order`, default enforcement `block`, priority 100.
+* **Governing Policy:** `cli-intentgate-agent-intentgate-treasury-mcp` (`cd50b382-4983-456e-a1a9-c30b09668ef5`) — allowed tools `issue_refund` + `lookup_order`, default enforcement `block`, priority 100 (the superseded pre-rename record `flowguard-treasury-allowlist`, `23f8f304-…`, remains attached with the same allow-list).
 * **Tools exposed to the voice agent (via the IntentGate gateway):**
   - `IntentGate_orderLookup`: Allowed automatically by the stored read policy.
   - `IntentGate_payoutChange`: Blocked by the stored policy (`tool_not_in_allowlist`).

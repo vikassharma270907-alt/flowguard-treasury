@@ -10,14 +10,14 @@
 
 | Requirement / Checklist Item | Implementation & Evidence | Status |
 | :--- | :--- | :--- |
-| **Setup Order Followed** | 1. API key created on `platform.armoriq.ai`.<br>2. Public MCP deployed & registered (`intentgate-treasury-mcp`, UUID `7540cd0a-7d76-414a-a849-96b337a0c6ed`, at `https://flowguard-treasury.vercel.app/mcp`).<br>3. Agent onboarded (`intentgate-agent`).<br>4. Policy authored on platform (`intentgate-treasury-allowlist`). | ✅ **PASS** |
-| **Policies Verified with 3-Result Test Script** | `scripts/test-enforcement.mjs` runs real live calls against ArmorIQ (latest run 16 Oct 2026, raw capture in [docs/evidence/](docs/evidence/README.md)):<br>• `lookup_order`: **ALLOWED** (887 ms, real payload, `verified: true`)<br>• `change_payout`: **BLOCKED** (`PolicyBlockedException`, HTTP 403 `tool_not_in_allowlist`, 764 ms)<br>• `issue_refund`: **HELD** (real pending platform delegation `eb63aac7-…` created via the delegation API, 604 ms). | ✅ **PASS** |
+| **Setup Order Followed** | 1. API key created on `platform.armoriq.ai`.<br>2. Public MCP deployed & registered (`intentgate-treasury-mcp`, UUID `7540cd0a-7d76-414a-a849-96b337a0c6ed`, at `https://flowguard-treasury.vercel.app/mcp`).<br>3. Agent onboarded (`intentgate-agent`).<br>4. Policy authored on platform (`cli-intentgate-agent-intentgate-treasury-mcp`). | ✅ **PASS** |
+| **Policies Verified with 3-Result Test Script** | `scripts/test-enforcement.mjs` runs real live calls against ArmorIQ (latest run 17 Oct 2026, post-rename — raw capture in [docs/evidence/](docs/evidence/README.md)):<br>• `lookup_order`: **ALLOWED** (1,200 ms round-trip, real payload, `verified: true`)<br>• `change_payout`: **BLOCKED** (`PolicyBlockedException`, HTTP 403 `tool_not_in_allowlist`, 649 ms)<br>• `issue_refund`: **HELD** (real pending platform delegation `2c61ec81-…` created via the delegation API, 598 ms). | ✅ **PASS** |
 | **Two-Approval Approach Documented** | Confirmed against ArmorIQ SDK docs. ArmorIQ platform evaluates holds (`/delegation/request`); gateway counts 2 supervisor approvals before releasing held execution. Fully documented in [DX_NOTES.md](DX_NOTES.md). | ✅ **PASS** |
 | **MCP Reachable via ArmorIQ Proxy** | MCP server listening on `POST /mcp` (JSON-RPC 2.0 with SSE responses) is served over HTTPS at `https://flowguard-treasury.vercel.app/mcp` and successfully invoked via `https://proxy.armoriq.ai/invoke`. | ✅ **PASS** |
 | **One Action ALLOWED, One BLOCKED in Audit Logs** | `lookup_order` visibly **ALLOWED**; `change_payout` visibly **BLOCKED** (`tool_not_in_allowlist`). Both verified against `proxy.armoriq.ai` audit ledger. | ✅ **PASS** |
 | **Intent Mismatch Demonstrated** | `scripts/test-intent-mismatch.mjs` mints a token for `lookup_order` only, then attempts to invoke `issue_refund` -> immediately raises `IntentMismatchException` before network execution. | ✅ **PASS** |
 | **Decisions from ArmorIQ, Not Code `if` Statements** | Every allow/block decision is returned directly by the ArmorIQ proxy (`proxy.armoriq.ai`). The gateway contains no hardcoded allow/deny rules. | ✅ **PASS** |
-| **Held Calls Answer Within 5s Window** | Real measured latencies: `lookup_order` (3.7s–4.3s), `change_payout` (2.7s), `issue_refund` (2.8s–3.9s). Held calls reply immediately with holding message; final decision relayed via `check_supervisor_decision`. | ✅ **PASS** |
+| **Held Calls Answer Within 5s Window** | Real measured end-to-end latencies (final 17 Oct run): `lookup_order` ≈ 3.9s (incl. token mint), `change_payout` ≈ 3.1s, `issue_refund` ≈ 3.2s — all under the ~5s voice-turn budget. Held calls reply immediately with a holding message; the final decision is relayed via `check_supervisor_decision`. | ✅ **PASS** |
 | **Prefix Mapping & Zero Real Data** | Gateway transparently strips the `IntentGate_` prefix from ElevenLabs tool calls (legacy `FlowGuard_` still accepted). 100% synthetic sandbox data (`ORD-1001`, `ORD-1002`, `ACC-4471`). | ✅ **PASS** |
 | **No Secrets & Complete Disclosures** | `.env` gitignored; safe `.env.example` provided. Full [DISCLOSURES.md](DISCLOSURES.md) and [DX_NOTES.md](DX_NOTES.md) included. | ✅ **PASS** |
 
@@ -107,9 +107,9 @@ Expected Output:
 ========================================================================
 SUMMARY
 ========================================================================
-  lookup_order     ALLOWED  (887 ms)
-  change_payout    BLOCKED  (764 ms)
-  issue_refund     HELD  (604 ms)
+  lookup_order     ALLOWED  (1200 ms)
+  change_payout    BLOCKED  (649 ms)
+  issue_refund     HELD  (598 ms)
 ```
 
 ### 5. Verify Cryptographic Intent Binding (Intent Mismatch)
@@ -224,11 +224,11 @@ A responsive, production-ready Header and Footer architecture tailored for India
 All branding, navigation links, business compliance data, and feature flags originate from a single source of truth:
 ```javascript
 // Single source of truth for brand name
-export const PRODUCT_NAME = "YourBrand";
+export const PRODUCT_NAME = "IntentGate";
 
 export const siteConfig = {
   name: PRODUCT_NAME,
-  legalEntityName: `${PRODUCT_NAME} Technologies Pvt. Ltd.`,
+  legalEntityName: PRODUCT_NAME,
   flags: {
     // Disabled by default; enable ONLY if legally verified
     trustBadges: false,

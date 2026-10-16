@@ -63,11 +63,11 @@ The repository contains one ArmorIQ-registered MCP server plus a local/stdio imp
 
 ## 3. Governed MCP Tool Definitions & Schemas
 
-| Tool Name | Decision Authority | Risk Level | Target Action | Governance Mechanism | Observed Outcome (16 Oct 2026 run) |
+| Tool Name | Decision Authority | Risk Level | Target Action | Governance Mechanism | Observed Outcome (17 Oct 2026 run) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `lookup_order` / `order_lookup` | **ArmorIQ decision** | Low (Read-only) | Query order status, invoice date, delivery details | Policy `intentgate-treasury-allowlist` on platform.armoriq.ai | **ALLOWED** (887 ms round-trip, real payload, `verified: true`) |
+| `lookup_order` / `order_lookup` | **ArmorIQ decision** | Low (Read-only) | Query order status, invoice date, delivery details | Policy `cli-intentgate-agent-intentgate-treasury-mcp` on platform.armoriq.ai | **ALLOWED** (1,200 ms round-trip, real payload, `verified: true`) |
 | `change_payout` / `payout_change` | **ArmorIQ decision** | Critical Security Risk | Modifies beneficiary ABA routing / bank account | Platform policy enforcement (tool not in allowlist) | **BLOCKED** (`PolicyBlockedException`, HTTP 403 `tool_not_in_allowlist`) |
-| `issue_refund` | **ArmorIQ decision** | High Financial Risk | Authorizes monetary disbursement / refund | Platform delegation request (`/delegation/request`) | **HELD** (delegation `eb63aac7-…`, pending, 2 supervisor approvals) |
+| `issue_refund` | **ArmorIQ decision** | High Financial Risk | Authorizes monetary disbursement / refund | Platform delegation request (`/delegation/request`) | **HELD** (delegation `2c61ec81-…`, pending, 2 supervisor approvals) |
 | `assert_reserve_floor` | **app-side check** | Treasury Invariant | Asserts total wallet balance >= $15,000 USD reserve | Local sandbox state check (not registered on ArmorIQ) | **EVALUATED** against the sandbox ledger |
 | `verify_audit_merkle` | **app-side check** | Zero-Trust Audit | Calculates SHA-256 Merkle root across all events | Local SHA-256 tree check (not registered on ArmorIQ) | **VERIFIED** over the audit log (tamper-evident SHA-256 tree) |
 

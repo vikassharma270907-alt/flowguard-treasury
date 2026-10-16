@@ -50,7 +50,7 @@ export default function BoundaryTestSection() {
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
           <span style={{ fontSize: '0.78rem', color: '#10b981', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '4px 10px', borderRadius: '6px', fontWeight: 600 }}>
-            Recorded from a real ArmorIQ run on 16 Oct 2026
+            Recorded from a real ArmorIQ run on 17 Oct 2026
           </span>
           <a
             href="https://platform.armoriq.ai"
@@ -98,13 +98,13 @@ export default function BoundaryTestSection() {
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
             Active Policy
           </span>
-          <strong style={{ color: '#c084fc', fontFamily: 'monospace' }}>intentgate-treasury-allowlist</strong>
+          <strong style={{ color: '#c084fc', fontFamily: 'monospace' }}>cli-intentgate-agent-intentgate-treasury-mcp</strong>
         </div>
         <div>
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
-            Run / Trace ID
+            Lookup Run Token
           </span>
-          <strong style={{ color: '#fbbf24', fontFamily: 'monospace' }}>trace_armoriq_20261016_887ms</strong>
+          <strong style={{ color: '#fbbf24', fontFamily: 'monospace' }}>6301fb8c52c4404e…</strong>
         </div>
         <div>
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
@@ -286,7 +286,7 @@ export default function BoundaryTestSection() {
           <div style={{ marginTop: '16px', borderTop: '1px solid var(--border)', paddingTop: '14px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
               <span style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', fontFamily: 'monospace' }}>
-                docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json
+                docs/recorded-runs/real-armoriq-enforcement-2026-10-17.json
               </span>
               <button
                 onClick={handleCopyJson}

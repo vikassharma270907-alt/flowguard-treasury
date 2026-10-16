@@ -70,8 +70,8 @@ test('5. ArmorIQ Device Approval Flow', () => {
   assert.ok(req.deviceCode, 'Device code must be generated');
   assert.equal(req.verificationUrl, '/auth/device');
 
-  const approveRes = authService.approveDeviceCode(req.userCode, 'ak_live_b4f92a10c83d4e7f');
+  const approveRes = authService.approveDeviceCode(req.userCode, 'ak_test_b4f92a10c83d4e7f');
   assert.equal(approveRes.success, true);
   assert.equal(approveRes.status, 'approved');
-  assert.equal(approveRes.entry.approvedApiKey, 'ak_live_b4f92a10c83d4e7f');
+  assert.equal(approveRes.entry.approvedApiKey, 'ak_test_b4f92a10c83d4e7f');
 });

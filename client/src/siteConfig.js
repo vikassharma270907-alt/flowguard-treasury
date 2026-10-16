@@ -28,7 +28,7 @@ const CALENDLY_URL =
 
 export const siteConfig = {
   name: PRODUCT_NAME,
-  legalEntityName: `${PRODUCT_NAME} Technologies Pvt. Ltd.`,
+  legalEntityName: PRODUCT_NAME, // hackathon project — no registered corporate entity
   taglineKey: "brand.tagline",
   registrationTextKey: "brand.registeredText",
 
@@ -82,8 +82,8 @@ export const siteConfig = {
   businessDetails: {
     cin: "", // Leave empty until issued by Ministry of Corporate Affairs
     gstin: "", // Leave empty until GSTIN is verified
-    incorporationAct: "Registered under the Companies Act, 2013",
-    dataResidency: "India (AWS ap-south-1 / GCP asia-south1)"
+    incorporationAct: "", // no corporate-registration claims for this hackathon project
+    dataResidency: "Vercel (platform-managed regions)"
   },
 
   // Contact & Office Details in India (Indore, Madhya Pradesh)

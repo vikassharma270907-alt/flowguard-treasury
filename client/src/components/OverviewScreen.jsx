@@ -45,7 +45,7 @@ export default function OverviewScreen({
       explanation: "When an operator or voice caller triggers an operation (e.g. checking order status, changing payout destination, or issuing a refund), IntentGate intercepts the intent. The client invokes client.capturePlan(agentId, goal, plan). The plan binds every step, target MCP server, and parameter. IntentGate computes a SHA-256 Merkle hash that binds every step of the plan.",
       keyPoints: [
         "Prevents prompt injection, tool poisoning, and agent drift at the source",
-        "Deterministic Plan Hash: b3e6889fe267adb6c3a64790176...",
+        "Deterministic Plan Hash: b3e6889fe267adb661881333d488307f...",
         "Zero tool access or banking API execution permitted prior to validation"
       ],
       codeSnippet: "// 1. Declare intent & capture deterministic plan\nconst capture = client.capturePlan(\n  'intentgate-agent',\n  'Check order status ORD-1001',\n  {\n    goal: 'Check order status ORD-1001',\n    steps: [{\n      action: 'lookup_order',\n      mcp: 'intentgate-treasury-mcp',\n      params: { order_id: 'ORD-1001' }\n    }]\n  }\n);"
@@ -56,13 +56,13 @@ export default function OverviewScreen({
       badgeColor: "#818cf8",
       title: "2. Ed25519 Intent Token Minting at iap.armoriq.ai",
       headline: "ArmorIQ verifies policy permissions and issues a single-use authorization token.",
-      explanation: "IntentGate submits the captured plan to ArmorIQ's Identity & Policy Assertion (IAP) service at https://iap.armoriq.ai. ArmorIQ evaluates the registered agent identity (intentgate-agent), user permissions, and the active workspace policy (intentgate-treasury-allowlist). If approved, ArmorIQ mints an Ed25519 cryptographically signed Intent Token containing the plan hash and step Merkle root.",
+      explanation: "IntentGate submits the captured plan to ArmorIQ's Identity & Policy Assertion (IAP) service at https://iap.armoriq.ai. ArmorIQ evaluates the registered agent identity (intentgate-agent), user permissions, and the active workspace policy (cli-intentgate-agent-intentgate-treasury-mcp). If approved, ArmorIQ mints an Ed25519 cryptographically signed Intent Token containing the plan hash and step Merkle root.",
       keyPoints: [
-        "Real platform token ID: 4f53c348a1104f1cbfb463fbad0ee1b1",
+        "Real platform token ID: 6301fb8c52c4404e90912db634752f77",
         "Asymmetrically signed by ArmorIQ private key; verifiable by public key",
-        "Strict TTL expiration (e.g. 3600s) preventing replay attacks"
+        "Strict short TTL (about 60s; 5s in the expiry test) preventing replay attacks"
       ],
-      codeSnippet: "// 2. Request Ed25519 token from ArmorIQ IAP\nconst token = await client.getIntentToken(capture);\n// Output from real run:\n// token.id = \"4f53c348a1104f1cbfb463fbad0ee1b1\"\n// token.plan_hash = \"b3e6889fe267adb6c3a64790176...\"\n// token.expires = 3600 (seconds)"
+      codeSnippet: "// 2. Request Ed25519 token from ArmorIQ IAP\nconst token = await client.getIntentToken(capture);\n// Output from real run:\n// token.id = \"6301fb8c52c4404e90912db634752f77\"\n// token.plan_hash = \"b3e6889fe267adb661881333d488307f...\"\n// token.expires = ~60 (seconds; 5s in the expiry test)"
     },
     {
       time: "30s - 45s",
@@ -72,9 +72,9 @@ export default function OverviewScreen({
       headline: "Every tool call passes through ArmorIQ's Policy Enforcement Point.",
       explanation: "Tool invocations never communicate with the banking MCP server directly. Instead, client.invoke() routes every call through proxy.armoriq.ai. The proxy verifies the Ed25519 token, validates step compliance against the plan hash, and applies the policy. Safe inquiries (lookup_order) pass with 200 OK. Unauthorized wire changes (change_payout) are blocked immediately with PolicyBlockedException. Large disbursements (issue_refund) are held with PolicyHoldException.",
       keyPoints: [
-        "ALLOWED: lookup_order executed in ~1911ms total verification latency",
-        "BLOCKED: change_payout blocked in 685ms with tool_not_in_allowlist",
-        "HELD: issue_refund halted in 594ms requiring 2 supervisor approvals"
+        "ALLOWED: lookup_order round-trip 1,200 ms (final run, 17 Oct 2026)",
+        "BLOCKED: change_payout blocked in 649 ms with tool_not_in_allowlist",
+        "HELD: issue_refund halted in 598 ms requiring 2 supervisor approvals"
       ],
       codeSnippet: "// 3. PEP enforces policy on tool call\ntry {\n  const res = await client.invoke(\n    token.id, 'intentgate-treasury-mcp',\n    'change_payout', { new_routing: '021000021' }\n  );\n} catch (err) {\n  // Throws PolicyBlockedException: tool_not_in_allowlist\n  // Wire diversion rejected; $0.00 lost!\n}"
     },
@@ -84,13 +84,13 @@ export default function OverviewScreen({
       badgeColor: "#f59e0b",
       title: "4. Multi-Supervisor Quorum & Tamper-Evident Ledger",
       headline: "Dual-sign-off for high-value funds and tamper-evident Merkle auditing.",
-      explanation: "When an action is held, ArmorIQ returns a delegationId (e.g. 65b502cb-6cb0-4e50-b392-934c6dba5bd7). In the IntentGate Supervisor Playground, designated treasury officers perform step-up authentication. When the 2-approval threshold is satisfied, the action executes against the Airwallex sandbox adapter, and every event is sealed into the cryptographic audit trail.",
+      explanation: "When an action is held, ArmorIQ returns a delegationId (e.g. 2c61ec81-1434-464f-907a-1748618e3d10). In the IntentGate Supervisor Playground, designated treasury officers perform step-up authentication. When the 2-approval threshold is satisfied, the action executes against the Airwallex sandbox adapter, and every event is sealed into the cryptographic audit trail.",
       keyPoints: [
         "Auth-gated: MCP tools reject unauthenticated requests without ArmorIQ token",
         "Dual authorization: Multi-signature approval quorum for high-risk payouts",
         "Audit ledger: searchable log with SHA-256 Merkle proofs"
       ],
-      codeSnippet: "// 4. Resolve delegation with dual quorum\nconst delegation = await client.createDelegationRequest({\n  delegationId: '65b502cb-6cb0-4e50-b392-934c6dba5bd7',\n  requiredApprovals: 2,\n  receivedApprovals: 2\n});\n// Executed in sandbox with cryptographic audit log entry"
+      codeSnippet: "// 4. Resolve delegation with dual quorum\nconst delegation = await client.createDelegationRequest({\n  delegationId: '2c61ec81-1434-464f-907a-1748618e3d10',\n  requiredApprovals: 2,\n  receivedApprovals: 2\n});\n// Executed in sandbox with cryptographic audit log entry"
     }
   ];
 
@@ -386,7 +386,7 @@ export default function OverviewScreen({
               <code style={{ color: '#c084fc' }}>intentgate-treasury-mcp</code> (Spec 2024-11-05)
             </div>
             <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>
-              5 governed tools exposed via JSON-RPC 2.0 at <code style={{ color: '#38bdf8' }}>/mcp</code> & CLI stdio (<code style={{ color: '#a1a1aa' }}>npm run mcp</code>).
+              3 ArmorIQ-governed tools (+ 2 app-side helper checks) exposed via JSON-RPC 2.0 at <code style={{ color: '#38bdf8' }}>/mcp</code> & CLI stdio (<code style={{ color: '#a1a1aa' }}>npm run mcp</code>).
             </div>
           </div>
 

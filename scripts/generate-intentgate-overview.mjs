@@ -151,7 +151,7 @@ const metaRows = [
   ['Production URL', 'https://flowguard-treasury.vercel.app'],
   ['Voice Engine', 'ElevenLabs Conversational AI & Text-to-Speech API'],
   ['Governance Platform', "ArmorIQ Platform (Org: Vikas Sharma's Workspace, dd9e9695-e58d)"],
-  ['Agent ID', 'intentgate-agent (UUID c8bcbe51-dea4-4459-9fd8-38f88ebc714e)'],
+  ['Agent ID', 'intentgate-agent (UUID b50e7e3f-8d11-4a35-816a-2dc30b7cf760)'],
   ['MCP Server ID', 'intentgate-treasury-mcp (UUID 7540cd0a-7d76-414a-a849-96b337a0c6ed)'],
   ['License', 'MIT Open Source License']
 ];
@@ -303,9 +303,9 @@ GATEWAY_SHARED_SECRET=intentgate-dev-secret`);
 p('Step 3: Run the 3-Result Verification Suite:');
 codeBlock(`npm run test:enforcement
 # Output confirms:
-# lookup_order  -> ALLOWED (887 ms)
-# change_payout -> BLOCKED (764 ms, tool_not_in_allowlist)
-# issue_refund  -> HELD (604 ms, real pending platform delegation)`);
+# lookup_order  -> ALLOWED (1200 ms)
+# change_payout -> BLOCKED (649 ms, tool_not_in_allowlist)
+# issue_refund  -> HELD (598 ms, real pending platform delegation)`);
 
 p('Step 4: Launch the Live Demo Simulation:');
 codeBlock(`npm run demo
