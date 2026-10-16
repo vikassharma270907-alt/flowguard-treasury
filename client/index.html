@@ -7,12 +7,12 @@
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f8fafc" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#09090b" />
-    <title>FlowGuard | Autonomous Treasury & Intent Vault Governed by ArmorIQ</title>
-    <meta name="description" content="FlowGuard is an autonomous treasury agent and intent vault where ArmorIQ cryptographically enforces every real-world action against declared intent." />
+    <title>IntentGate | Autonomous Treasury & Intent Vault Governed by ArmorIQ</title>
+    <meta name="description" content="IntentGate is an autonomous treasury agent and intent vault where ArmorIQ cryptographically enforces every real-world action against declared intent." />
     
     <!-- Open Graph & Social Cards (1200x630 PNG) -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="FlowGuard | Autonomous Treasury & Intent Vault Governed by ArmorIQ" />
+    <meta property="og:title" content="IntentGate | Autonomous Treasury & Intent Vault Governed by ArmorIQ" />
     <meta property="og:description" content="Cryptographically governed autonomous treasury and MCP intent vault powered by ArmorIQ. Prevents prompt injection, agent drift, and unauthorized disbursements." />
     <meta property="og:url" content="https://flowguard-treasury.vercel.app" />
     <meta property="og:image" content="/og-image.png" />
@@ -20,16 +20,16 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="FlowGuard | Autonomous Treasury & Intent Vault" />
+    <meta name="twitter:title" content="IntentGate | Autonomous Treasury & Intent Vault" />
     <meta name="twitter:description" content="Cryptographically governed autonomous treasury and MCP intent vault powered by ArmorIQ." />
     <meta name="twitter:image" content="/og-image.png" />
     
-    <!-- Structured Data with FlowGuard Organization -->
+    <!-- Structured Data with IntentGate Organization -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "FlowGuard",
+      "name": "IntentGate",
       "url": "https://flowguard-treasury.vercel.app",
       "logo": "https://flowguard-treasury.vercel.app/og-image.png",
       "email": "beyondnothing01@gmail.com",
@@ -58,8 +58,8 @@
         } catch (e) {}
 
         try {
-          var themeCookie = document.cookie.match(/(?:^|; )flowguard-theme=([^;]*)/);
-          var saved = themeCookie ? decodeURIComponent(themeCookie[1]) : localStorage.getItem('flowguard-theme');
+          var themeCookie = document.cookie.match(/(?:^|; )intentgate-theme=([^;]*)/);
+          var saved = themeCookie ? decodeURIComponent(themeCookie[1]) : localStorage.getItem('intentgate-theme');
           var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
           var theme = (saved === 'light' || saved === 'dark') ? saved : (prefersLight ? 'light' : 'dark');
           document.documentElement.setAttribute('data-theme', theme);

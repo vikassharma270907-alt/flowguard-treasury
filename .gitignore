@@ -4,8 +4,8 @@ client/node_modules
 
 # Environment Variables & Secrets
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
 # Build Outputs
 dist

@@ -7,7 +7,7 @@ const ThemeContext = createContext({
   setTheme: () => {},
 });
 
-const STORAGE_KEY = 'flowguard-theme';
+const STORAGE_KEY = 'intentgate-theme';
 
 /**
  * Reads initial theme avoiding flash: checks HTML attribute first, then localStorage, then OS media query.
@@ -19,7 +19,7 @@ function getInitialTheme() {
   if (fromAttr === 'light' || fromAttr === 'dark') return fromAttr;
   
   try {
-    const themeCookie = document.cookie.match(/(?:^|; )flowguard-theme=([^;]*)/);
+    const themeCookie = document.cookie.match(/(?:^|; )intentgate-theme=([^;]*)/);
     if (themeCookie && (themeCookie[1] === 'light' || themeCookie[1] === 'dark')) {
       return themeCookie[1];
     }
@@ -46,9 +46,9 @@ export function ThemeProvider({ children }) {
       document.documentElement.classList.add(nextTheme);
       document.documentElement.style.colorScheme = nextTheme;
       localStorage.setItem(STORAGE_KEY, nextTheme);
-      document.cookie = `flowguard-theme=${nextTheme}; path=/; max-age=31536000; SameSite=Lax`;
+      document.cookie = `intentgate-theme=${nextTheme}; path=/; max-age=31536000; SameSite=Lax`;
       // Dispatch custom event for vanilla JS or WebGL canvas components
-      window.dispatchEvent(new CustomEvent('flowguard-theme-change', { detail: { theme: nextTheme } }));
+      window.dispatchEvent(new CustomEvent('intentgate-theme-change', { detail: { theme: nextTheme } }));
     } catch (err) {
       console.warn('Could not persist theme:', err);
     }

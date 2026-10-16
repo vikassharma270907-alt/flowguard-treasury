@@ -120,7 +120,7 @@ doc.y = 120;
 doc.fillColor(SECONDARY).font('Helvetica-Bold').fontSize(12).text('OFFICIAL HACKATHON PROJECT DOCUMENTATION', { align: 'center', characterSpacing: 2 });
 doc.moveDown(0.8);
 
-doc.fillColor(PRIMARY).font('Helvetica-Bold').fontSize(32).text('FLOWGUARD TREASURY', { align: 'center', letterSpacing: -0.5 });
+doc.fillColor(PRIMARY).font('Helvetica-Bold').fontSize(32).text('INTENTGATE TREASURY', { align: 'center', letterSpacing: -0.5 });
 doc.fillColor(ACCENT_EMERALD).font('Helvetica-Bold').fontSize(22).text('GOVERNED BY ARMORIQ', { align: 'center' });
 doc.moveDown(0.5);
 
@@ -149,11 +149,11 @@ doc.fillColor(PRIMARY).font('Helvetica-Bold').fontSize(10).text('METADATA & ENVI
 doc.moveDown(0.5);
 
 const metadata = [
-  ['Project Name', 'FlowGuard Treasury & Voice Gateway'],
+  ['Project Name', 'IntentGate Treasury & Voice Gateway'],
   ['Repository', 'https://github.com/vikassharma270907-alt/flowguard-treasury'],
   ['ArmorIQ Organization', "Vikas Sharma's Workspace (dd9e9695-e58d-4e56-8cff-ef9617ba4c54)"],
-  ['Agent ID', 'flowguard-agent (c8bcbe51-dea4-4459-9fd8-38f88ebc714e)'],
-  ['MCP Server ID', 'flowguard-treasury-mcp (7540cd0a-7d76-414a-a849-96b337a0c6ed)'],
+  ['Agent ID', 'intentgate-agent (b50e7e3f-8d11-4a35-816a-2dc30b7cf760)'],
+  ['MCP Server ID', 'intentgate-treasury-mcp (7540cd0a-7d76-414a-a849-96b337a0c6ed)'],
   ['Frontend Stack', 'React 19 + Vite 8 + Three.js 0.186 (Hardware 60 FPS)'],
   ['Security SDK', '@armoriq/sdk v0.6.10 (Production Platform API)']
 ];
@@ -231,18 +231,18 @@ p('• Node.js: v18.0.0 or higher (Tested and certified on Node.js v24.18.0 LTS)
 subHeading('1.2 Installation & Environment Configuration');
 p('Clone the repository and install dependencies for both the root governance gateway and the React frontend:');
 codeBlock(`git clone https://github.com/vikassharma270907-alt/flowguard-treasury.git
-cd flowguard-treasury
+cd intentgate-treasury
 npm install
 cd client && npm install && cd ..
 cp .env.example .env`);
 
 p('Populate `.env` with your ArmorIQ credentials generated at platform.armoriq.ai:');
 codeBlock(`ARMORIQ_API_KEY=ak_live_your_armoriq_api_key_here
-ARMORIQ_AGENT_ID=flowguard-agent
-ARMORIQ_MCP_ID=flowguard-treasury-mcp
+ARMORIQ_AGENT_ID=intentgate-agent
+ARMORIQ_MCP_ID=intentgate-treasury-mcp
 GATEWAY_PORT=8790
-GATEWAY_SHARED_SECRET=flowguard-dev-secret
-PLAYGROUND_TOKEN=flowguard-local`);
+GATEWAY_SHARED_SECRET=intentgate-dev-secret
+PLAYGROUND_TOKEN=intentgate-local`);
 
 subHeading('1.3 Running Locally');
 p('The project includes orchestrators for running the MCP server, ArmorIQ Voice Gateway, and React frontend simultaneously:');
@@ -254,7 +254,7 @@ npm run gateway
 
 # Terminal 3: Launch React 19 + Three.js Frontend
 cd client && npm run dev`);
-p('Navigate to http://localhost:5173 for the FlowGuard Treasury Dashboard or http://localhost:8790/playground for the standalone Supervisor Playground.');
+p('Navigate to http://localhost:5173 for the IntentGate Treasury Dashboard or http://localhost:8790/playground for the standalone Supervisor Playground.');
 
 subHeading('1.4 Building for Production');
 p('To bundle the client with Vite and code-split the 3D Three.js chunks:');
@@ -266,7 +266,7 @@ codeBlock(`cd client && npm run build
    ========================================================================== */
 doc.addPage();
 subHeading('1.5 Using & Customizing 3D Elements');
-p('FlowGuard Treasury features three interactive, hardware-accelerated 3D elements in `client/src/components/3d/`:');
+p('IntentGate Treasury features three interactive, hardware-accelerated 3D elements in `client/src/components/3d/`:');
 
 p('1. RotatingHeroVault.jsx (Hero Object):\n' +
   '   • Renders an inner crystalline icosahedron with an outer holographic cage and orbital intent ring.\n' +
@@ -288,14 +288,14 @@ callout('Resource Cleanup & Accessibility',
 );
 
 subHeading('1.6 Switching Light/Dark Mode & Customizing Tokens');
-p('FlowGuard implements a theme system using CSS variables with persistent localStorage storage and zero-flash inline script execution in `index.html`.');
+p('IntentGate implements a theme system using CSS variables with persistent localStorage storage and zero-flash inline script execution in `index.html`.');
 p('• Toggle Theme: Click the Sun/Moon button in the top navigation bar, or call `useTheme().toggleTheme()` in React.\n' +
   '• Customizing Tokens: Edit `client/src/index.css`. Both `:root, [data-theme="dark"]` and `[data-theme="light"]` define design tokens (e.g. `--background`, `--card`, `--border`, `--3d-vault-core`).\n' +
   '• 3D Theme Synchronization: When theme flips, Three.js lighting, specular materials, and particle colors instantly update.');
 
 subHeading('1.7 Troubleshooting & FAQ');
 p('• "Tool call times out after 5 seconds": ElevenLabs voice models mandate quick tool responses. The gateway answers with a holding message in ~3.8s, persists the case, and allows the agent to relay the final decision via `check_supervisor_decision`.\n' +
-  '• "Tool not found / FlowGuard_ prefix error": ElevenLabs surfaces tools as `FlowGuard_<tool>`. The gateway strips this prefix via `canonicalToolName()` so action names match onboarded platform MCP names.\n' +
+  '• "Tool not found / IntentGate_ prefix error": ElevenLabs surfaces tools as `IntentGate_<tool>`. The gateway strips this prefix via `canonicalToolName()` so action names match onboarded platform MCP names.\n' +
   '• "IntentMismatchException": Occurs when an agent mints a token for one tool (e.g. `lookup_order`) and attempts to invoke an unauthorized tool (e.g. `issue_refund`). This is ArmorIQ cryptographic binding working as intended.');
 
 /* ==========================================================================
@@ -325,11 +325,11 @@ codeBlock(`                  +--------------------------------------------------
                   |      ElevenLabs Conversational Voice Agent        |
                   +---------------------------------------------------+
                                             |
-                            Tool Call: FlowGuard_<tool>
+                            Tool Call: IntentGate_<tool>
                                             v
                   +---------------------------------------------------+
                   |            ArmorIQ Voice Gateway (8790)           |
-                  |  - Strips FlowGuard_ prefix                       |
+                  |  - Strips IntentGate_ prefix                       |
                   |  - Enforces <5s holding replies                   |
                   |  - Dual-supervisor quorum aggregator (2 approvals)|
                   +---------------------------------------------------+
@@ -368,7 +368,7 @@ p('1. The intent token supplies the exact Merkle path proving that the current a
   '3. Tokens lapse within 60 seconds. Replaying captured tokens triggers `TokenExpiredException`.');
 
 callout('Verified Hackathon Audit Trail Evidence',
-  'During verification testing on our onboarded workspace, lookup_order produced planHash b3e6889f... and verified end-to-end in 887 ms. Attempting to invoke issue_refund using the lookup token was refused before network egress with IntentMismatchException. Action binding covers the declared action set; call arguments are validated by each tool (see docs/evidence/README.md).',
+  'During verification testing on our onboarded workspace, lookup_order produced planHash b3e6889f... and verified end-to-end in 1,200 ms. Attempting to invoke issue_refund using the lookup token was refused before network egress with IntentMismatchException. Action binding covers the declared action set; call arguments are validated by each tool (see docs/evidence/README.md).',
   'security'
 );
 
@@ -483,7 +483,7 @@ p('1. Production Webhook Integration: Connect the Voice Gateway holding endpoint
 // Final signoff
 doc.moveDown(1);
 hr();
-doc.fillColor(MUTED).font('Helvetica-Bold').fontSize(9).text('FlowGuard Treasury · ArmorIQ Flow State Hackathon Project Submission', { align: 'center' });
+doc.fillColor(MUTED).font('Helvetica-Bold').fontSize(9).text('IntentGate Treasury · ArmorIQ Flow State Hackathon Project Submission', { align: 'center' });
 
 /* ==========================================================================
    PAGE NUMBERING (FOOTER ON ALL PAGES)
@@ -495,7 +495,7 @@ for (let i = 0; i < range.count; i++) {
   // Footer text
   doc.fillColor('#94a3b8').font('Helvetica').fontSize(7.5);
   doc.text(
-    `FlowGuard Treasury | ArmorIQ Governed Voice Agent | Page ${i + 1} of ${range.count}`,
+    `IntentGate Treasury | ArmorIQ Governed Voice Agent | Page ${i + 1} of ${range.count}`,
     54,
     795,
     { align: 'center', width: 487 }
@@ -512,8 +512,8 @@ writeStream.on('finish', () => {
   // Mirror the final guide to the public download locations used by the web app,
   // so the shipped guide and the repo document can never drift apart.
   const PUBLIC_COPIES = [
-    path.resolve('client/public/docs/flowguard-guide.pdf'),
-    path.resolve('public/docs/flowguard-guide.pdf')
+    path.resolve('client/public/docs/intentgate-guide.pdf'),
+    path.resolve('public/docs/intentgate-guide.pdf')
   ];
   for (const dest of PUBLIC_COPIES) {
     fs.mkdirSync(path.dirname(dest), { recursive: true });

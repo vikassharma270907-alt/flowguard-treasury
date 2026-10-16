@@ -11,15 +11,15 @@
  *
  * Nothing in this file decides allow/block: those verdicts are the exception
  * (or the success) ArmorIQ returns. For issue_refund the script creates a real
- * platform delegation (backend /delegation/request) — FlowGuard's designed
+ * platform delegation (backend /delegation/request) — IntentGate's designed
  * hold path for refunds — and reports the returned delegation ID.
  */
 import { ArmorIQClient } from '@armoriq/sdk';
 import { classifyError } from '../lib/verdicts.mjs';
 
 const MCP = process.env.ARMORIQ_MCP_ID;
-const AGENT = process.env.ARMORIQ_AGENT_ID || 'flowguard-agent';
-const USER = process.env.USER_ID || 'flowguard-operator';
+const AGENT = process.env.ARMORIQ_AGENT_ID || 'intentgate-agent';
+const USER = process.env.USER_ID || 'intentgate-operator';
 
 if (!process.env.ARMORIQ_API_KEY || !MCP) {
   console.error('Need ARMORIQ_API_KEY and ARMORIQ_MCP_ID in .env');

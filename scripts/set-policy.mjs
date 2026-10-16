@@ -23,8 +23,8 @@ import { classifyError } from '../lib/verdicts.mjs';
 const KEY = process.env.ARMORIQ_API_KEY;
 const BASE = process.env.BACKEND_ENDPOINT || 'https://api.armoriq.ai';
 const MCP = process.env.ARMORIQ_MCP_ID;
-const AGENT = process.env.ARMORIQ_AGENT_ID || 'flowguard-agent';
-const USER = process.env.USER_ID || 'flowguard-operator';
+const AGENT = process.env.ARMORIQ_AGENT_ID || 'intentgate-agent';
+const USER = process.env.USER_ID || 'intentgate-operator';
 
 const ALLOW = (process.argv[2] || process.env.POLICY_ALLOW || 'lookup_order').split(',').map((s) => s.trim()).filter(Boolean);
 

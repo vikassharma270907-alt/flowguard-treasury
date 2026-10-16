@@ -423,7 +423,7 @@ export default function App() {
                 Admin Portal Access Required
               </h2>
               <p style={{ fontSize: '0.88rem', color: 'var(--muted-foreground)', lineHeight: 1.6, marginBottom: '24px' }}>
-                The FlowGuard Treasury Admin Console governs liquidity reserve floors, Airwallex multi-currency corridors, ArmorIQ intent assurance policies, and team permissions.
+                The IntentGate Treasury Admin Console governs liquidity reserve floors, Airwallex multi-currency corridors, ArmorIQ intent assurance policies, and team permissions.
               </p>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
                 <button

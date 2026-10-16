@@ -1,5 +1,5 @@
 /**
- * Provision the ElevenLabs side of FlowGuard:
+ * Provision the ElevenLabs side of IntentGate:
  *
  *   1. four webhook tools (three MCP tools + one supervisor-status check),
  *      each pointing at the gateway with the shared-secret header
@@ -18,7 +18,7 @@ import fs from 'node:fs';
 const KEY = process.env.ELEVENLABS_API_KEY;
 const GATEWAY = (process.env.GATEWAY_PUBLIC_URL || '').replace(/\/$/, '');
 const SHARED_SECRET = process.env.GATEWAY_SHARED_SECRET || '';
-const PREFIX = 'FlowGuard_';
+const PREFIX = 'IntentGate_';
 
 if (!KEY) {
   console.error('ELEVENLABS_API_KEY is not set. Add it to .env (see .env.example).');
@@ -49,7 +49,7 @@ async function api(method, path, body) {
 
 /* --------------------------------------------------------------------------
  * Tool definitions. Each maps 1:1 onto a gateway route, which again maps onto
- * an ArmorIQ-governed MCP tool. The FlowGuard_ prefix is deliberate: the task
+ * an ArmorIQ-governed MCP tool. The IntentGate_ prefix is deliberate: the task
  * spec requires the gateway to strip it before building the plan.
  * ------------------------------------------------------------------------ */
 
@@ -104,7 +104,7 @@ function toolPayload(def) {
         url: `${GATEWAY}/tools/${def.name}`,
         method: 'POST',
         content_type: 'application/json',
-        request_headers: SHARED_SECRET ? { 'x-flowguard-token': SHARED_SECRET } : {},
+        request_headers: SHARED_SECRET ? { 'x-intentgate-token': SHARED_SECRET } : {},
         request_body_schema: {
           type: 'object',
           required: def.required,
@@ -171,7 +171,7 @@ const systemPrompt = [
 ].join('\n');
 
 const agentPayload = {
-  name: 'FlowGuard Support (ArmorIQ-governed)',
+  name: 'IntentGate Support (ArmorIQ-governed)',
   conversation_config: {
     agent: {
       first_message: 'Hi, thanks for calling Northwind Traders support. This is Riley. What can I help you with today?',

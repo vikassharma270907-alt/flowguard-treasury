@@ -1,4 +1,4 @@
-# FlowGuard — ArmorIQ Platform Onboarding & Hackathon Compliance Guide
+# IntentGate — ArmorIQ Platform Onboarding & Hackathon Compliance Guide
 
 > **Official Portal:** [https://platform.armoriq.ai](https://platform.armoriq.ai)  
 > **Repository:** [github.com/vikassharma270907-alt/flowguard-treasury](https://github.com/vikassharma270907-alt/flowguard-treasury)  
@@ -8,12 +8,12 @@
 
 ## 📜 Hackathon Rules Compliance Matrix
 
-| Rule | Requirement | FlowGuard Treasury Implementation | Status |
+| Rule | Requirement | IntentGate Treasury Implementation | Status |
 | :--- | :--- | :--- | :--- |
 | **Rule 1** | **Mandatory ArmorIQ Integration** | Integrated `@armoriq/sdk` in production mode connected to `api.armoriq.ai` and `iap.armoriq.ai`. |  **COMPLIANT** |
 | **Rule 2** | **ElevenLabs with ArmorIQ** | Every ElevenLabs support call session mints an ArmorIQ-signed plan with Ed25519 token & SHA-256 hash. |  **COMPLIANT** |
 | **Rule 3** | **AI Models & Frameworks** | Utilizes ElevenLabs Flash/Turbo for voice, Node.js + Express 5, React 19, and ArmorIQ SDK. |  **COMPLIANT** |
-| **Rule 4** | **At Least One MCP Server** | Built official Model Context Protocol (MCP) server `flowguard-treasury-mcp` with stdio & REST modes. |  **COMPLIANT** |
+| **Rule 4** | **At Least One MCP Server** | Built official Model Context Protocol (MCP) server `intentgate-treasury-mcp` with stdio & REST modes. |  **COMPLIANT** |
 | **Rule 7** | **Sandbox Environments Only** | Exclusively targets Airwallex Sandbox API (`api.sandbox.airwallex.com`). No real money moved. |  **COMPLIANT** |
 | **Rule 8** | **Actual ArmorIQ Enforcement** | Live platform plan capture (`capturePlan`), Ed25519 token minting, and policy validation. |  **COMPLIANT** |
 
@@ -34,26 +34,26 @@
 
 ## 🤖 2. Onboarding Agents to platform.armoriq.ai
 
-FlowGuard registers one governed agent on the ArmorIQ platform; the same identity is used by the voice gateway and the verification scripts.
+IntentGate registers one governed agent on the ArmorIQ platform; the same identity is used by the voice gateway and the verification scripts.
 
-### Agent: `flowguard-agent` (FlowGuard Operator Identity)
-* **Agent UUID:** `c8bcbe51-dea4-4459-9fd8-38f88ebc714e`
-* **Description:** Represents the FlowGuard operator (`flowguard-operator`) when plans are captured and intent tokens are minted.
-* **Attached MCP Server:** `flowguard-treasury-mcp` (`7540cd0a-7d76-414a-a849-96b337a0c6ed`) at `https://flowguard-treasury.vercel.app/mcp`.
-* **Governing Policy:** `flowguard-treasury-allowlist` (`23f8f304-0f6b-44a0-9bba-fa9886ca611b`) — allowed tools `issue_refund` + `lookup_order`, default enforcement `block`, priority 100.
-* **Tools exposed to the voice agent (via the FlowGuard gateway):**
-  - `FlowGuard_orderLookup`: Allowed automatically by the stored read policy.
-  - `FlowGuard_payoutChange`: Blocked by the stored policy (`tool_not_in_allowlist`).
-  - `FlowGuard_issueRefund`: Held for dual-supervisor approval via a real platform delegation.
+### Agent: `intentgate-agent` (IntentGate Operator Identity)
+* **Agent UUID:** `b50e7e3f-8d11-4a35-816a-2dc30b7cf760` (supersedes the earlier `c8bcbe51-…` registration, retained in the workspace)
+* **Description:** Represents the IntentGate operator (`intentgate-operator`) when plans are captured and intent tokens are minted.
+* **Attached MCP Server:** `intentgate-treasury-mcp` (`7540cd0a-7d76-414a-a849-96b337a0c6ed`) at `https://flowguard-treasury.vercel.app/mcp`.
+* **Governing Policy:** `cli-intentgate-agent-intentgate-treasury-mcp` (`cd50b382-4983-456e-a1a9-c30b09668ef5`) — allowed tools `issue_refund` + `lookup_order`, default enforcement `block`, priority 100 (the superseded pre-rename record `flowguard-treasury-allowlist`, `23f8f304-…`, remains attached with the same allow-list).
+* **Tools exposed to the voice agent (via the IntentGate gateway):**
+  - `IntentGate_orderLookup`: Allowed automatically by the stored read policy.
+  - `IntentGate_payoutChange`: Blocked by the stored policy (`tool_not_in_allowlist`).
+  - `IntentGate_issueRefund`: Held for dual-supervisor approval via a real platform delegation.
 
 ---
 
 ## 🔌 3. Onboarding the Model Context Protocol (MCP) Server
 
-FlowGuard implements a full MCP server compliant with the **Model Context Protocol spec (2024-11-05)**.
+IntentGate implements a full MCP server compliant with the **Model Context Protocol spec (2024-11-05)**.
 
 ### MCP Server Registration Details
-* **Server Name:** `flowguard-treasury-mcp`
+* **Server Name:** `intentgate-treasury-mcp`
 * **Version:** `1.0.0`
 * **Supported Transports:** `stdio` (CLI) and `HTTP-SSE / REST` (Cloud)
 * **Execution Command:**
@@ -67,7 +67,7 @@ FlowGuard implements a full MCP server compliant with the **Model Context Protoc
 ```json
 {
   "mcpServers": {
-    "flowguard-treasury": {
+    "intentgate-treasury": {
       "command": "node",
       "args": ["server/mcpServer.js", "--stdio"],
       "env": {

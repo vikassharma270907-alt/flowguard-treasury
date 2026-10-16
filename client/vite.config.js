@@ -18,10 +18,10 @@ function guidePdfPlugin() {
       }
 
       if (enabled) {
-        const pdfPath = path.resolve(import.meta.dirname, 'public/docs/flowguard-guide.pdf')
+        const pdfPath = path.resolve(import.meta.dirname, 'public/docs/intentgate-guide.pdf')
         if (!fs.existsSync(pdfPath)) {
           throw new Error(
-            "BUILD FAILED: siteConfig.guidePdf is enabled, but '/docs/flowguard-guide.pdf' is missing at client/public/docs/flowguard-guide.pdf! Please provide the guide PDF before building."
+            "BUILD FAILED: siteConfig.guidePdf is enabled, but '/docs/intentgate-guide.pdf' is missing at client/public/docs/intentgate-guide.pdf! Please provide the guide PDF before building."
           )
         }
       }
@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
   // Resolve guide PDF build-time size label
-  const pdfPath = path.resolve(import.meta.dirname, 'public/docs/flowguard-guide.pdf')
+  const pdfPath = path.resolve(import.meta.dirname, 'public/docs/intentgate-guide.pdf')
   const pdfExists = fs.existsSync(pdfPath)
   let computedSizeLabel = '32 KB'
   if (pdfExists) {

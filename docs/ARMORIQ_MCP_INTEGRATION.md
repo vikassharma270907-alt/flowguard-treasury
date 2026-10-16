@@ -1,4 +1,4 @@
-# FlowGuard — MCP Servers & ArmorIQ Governance Architecture
+# IntentGate — MCP Servers & ArmorIQ Governance Architecture
 
 > **Official Technical Specification & Architecture Blueprint**  
 > Covers: Model Context Protocol (MCP) server implementations, tool schemas, and end-to-end cryptographic intent governance with ArmorIQ.
@@ -38,14 +38,14 @@ The repository contains one ArmorIQ-registered MCP server plus a local/stdio imp
                         (Allowed via SSE)   |                   |   (Stdio / REST)
                                             v                   v
 +-------------------------------------------------+   +-------------------------------------------------+
-| 1. flowguard-treasury-mcp (Production, Vercel)  |   | 2. Local MCP server (stdio + JSON-RPC HTTP)     |
+| 1. intentgate-treasury-mcp (Production, Vercel)  |   | 2. Local MCP server (stdio + JSON-RPC HTTP)     |
 | Server ID: 7540cd0a-7d76-414a-a849-96b337a0c6ed |   | Standard: MCP 2024-11-05 Stdio + JSON-RPC       |
 | URL: https://flowguard-treasury.vercel.app/mcp  |   | Endpoints: POST /mcp, POST /api/mcp             |
 | Transport: JSON-RPC 2.0 HTTP + SSE Stream       |   | Files: server/mcpServer.js, mcp-server/server.mjs|
 +-------------------------------------------------+   +-------------------------------------------------+
 ```
 
-### A. `flowguard-treasury-mcp` (Registered Production MCP Server)
+### A. `intentgate-treasury-mcp` (Registered Production MCP Server)
 * **Registered UUID on ArmorIQ Platform**: `7540cd0a-7d76-414a-a849-96b337a0c6ed`
 * **Source Files**: [`server/server.js`](../server/server.js) (production Express app serving `/mcp` on Vercel) and [`mcp-server/server.mjs`](../mcp-server/server.mjs) (standalone local server, same SSE protocol).
 * **Transport**: HTTP POST (`/mcp`) accepting JSON-RPC 2.0 payloads and replying via Server-Sent Events (`Content-Type: text/event-stream; event: message\ndata: {json}\n\n`) — the framing the ArmorIQ PEP proxy expects.
@@ -63,11 +63,11 @@ The repository contains one ArmorIQ-registered MCP server plus a local/stdio imp
 
 ## 3. Governed MCP Tool Definitions & Schemas
 
-| Tool Name | Decision Authority | Risk Level | Target Action | Governance Mechanism | Observed Outcome (16 Oct 2026 run) |
+| Tool Name | Decision Authority | Risk Level | Target Action | Governance Mechanism | Observed Outcome (17 Oct 2026 run) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `lookup_order` / `order_lookup` | **ArmorIQ decision** | Low (Read-only) | Query order status, invoice date, delivery details | Policy `flowguard-treasury-allowlist` on platform.armoriq.ai | **ALLOWED** (887 ms round-trip, real payload, `verified: true`) |
+| `lookup_order` / `order_lookup` | **ArmorIQ decision** | Low (Read-only) | Query order status, invoice date, delivery details | Policy `cli-intentgate-agent-intentgate-treasury-mcp` on platform.armoriq.ai | **ALLOWED** (1,200 ms round-trip, real payload, `verified: true`) |
 | `change_payout` / `payout_change` | **ArmorIQ decision** | Critical Security Risk | Modifies beneficiary ABA routing / bank account | Platform policy enforcement (tool not in allowlist) | **BLOCKED** (`PolicyBlockedException`, HTTP 403 `tool_not_in_allowlist`) |
-| `issue_refund` | **ArmorIQ decision** | High Financial Risk | Authorizes monetary disbursement / refund | Platform delegation request (`/delegation/request`) | **HELD** (delegation `eb63aac7-…`, pending, 2 supervisor approvals) |
+| `issue_refund` | **ArmorIQ decision** | High Financial Risk | Authorizes monetary disbursement / refund | Platform delegation request (`/delegation/request`) | **HELD** (delegation `2c61ec81-…`, pending, 2 supervisor approvals) |
 | `assert_reserve_floor` | **app-side check** | Treasury Invariant | Asserts total wallet balance >= $15,000 USD reserve | Local sandbox state check (not registered on ArmorIQ) | **EVALUATED** against the sandbox ledger |
 | `verify_audit_merkle` | **app-side check** | Zero-Trust Audit | Calculates SHA-256 Merkle root across all events | Local SHA-256 tree check (not registered on ArmorIQ) | **VERIFIED** over the audit log (tamper-evident SHA-256 tree) |
 
@@ -134,7 +134,7 @@ sequenceDiagram
     autonumber
     actor Caller as Customer Voice / User
     participant Agent as ElevenLabs Agent
-    participant Gateway as FlowGuard Gateway (:8790)
+    participant Gateway as IntentGate Gateway (:8790)
     participant SDK as @armoriq/sdk Client
     participant IAP as ArmorIQ IAP (iap.armoriq.ai)
     participant PEP as ArmorIQ Proxy (proxy.armoriq.ai)
@@ -142,11 +142,11 @@ sequenceDiagram
     actor Supervisor as Supervisor Playground
 
     Caller->>Agent: "Where is my order ORD-1001?"
-    Agent->>Gateway: POST /webhook (FlowGuard_lookup_order)
+    Agent->>Gateway: POST /webhook (IntentGate_lookup_order)
     
     rect rgb(240, 248, 255)
         note over Gateway,SDK: Phase 1: Canonical Intent Capture
-        Gateway->>Gateway: Strip "FlowGuard_" prefix -> "lookup_order"
+        Gateway->>Gateway: Strip "IntentGate_" prefix -> "lookup_order"
         Gateway->>SDK: capturePlan('elevenlabs-voice-agent', prompt, canonicalPlan)
     end
 
@@ -242,7 +242,7 @@ The PEP proxy and SDK verify:
 4. **Stored Organization Policies**: Evaluates policies stored in your ArmorIQ organization:
    * **ALLOWED**: Invocation is forwarded over HTTPS to the registered MCP endpoint.
    * **BLOCKED**: Returns `PolicyBlockedException` with policy metadata (`tool_not_in_allowlist`).
-   * **HELD**: FlowGuard's refund path creates a real platform delegation (`POST /delegation/request`) that only releases after supervisor approval.
+   * **HELD**: IntentGate's refund path creates a real platform delegation (`POST /delegation/request`) that only releases after supervisor approval.
 
 ---
 
@@ -264,7 +264,7 @@ ElevenLabs conversational voice agents time out webhooks after approximately 5 s
   * Supervisor 2 approves: Quorum satisfied -> Gateway triggers `releaseHeldCall()` through ArmorIQ with a freshly minted, supervisor-backed token.
 
 ### C. Decision Provenance
-No allow/block verdict is hardcoded in application logic — those verdicts are exceptions raised by ArmorIQ's policy engine on the platform (`PolicyBlockedException` / `tool_not_in_allowlist`). Refunds are held by FlowGuard's designed control: a real ArmorIQ platform delegation that releases only after two supervisor approvals.
+No allow/block verdict is hardcoded in application logic — those verdicts are exceptions raised by ArmorIQ's policy engine on the platform (`PolicyBlockedException` / `tool_not_in_allowlist`). Refunds are held by IntentGate's designed control: a real ArmorIQ platform delegation that releases only after two supervisor approvals.
 
 ---
 

@@ -1,6 +1,6 @@
 /**
  * Responsive Footer Component
- * Indian Developer-Tools / SaaS Product ("YourBrand")
+ * IntentGate — responsive site footer (branding via siteConfig.js)
  * 
  * Complies with strict Phase 2 & Booking requirements:
  * - Background #f7f7f5, 1px top border (#e5e5e5), 64px vertical padding
@@ -366,7 +366,7 @@ export default function Footer({
                     );
                   }
 
-                  // FlowGuard Guide (PDF) link
+                  // IntentGate Guide (PDF) link
                   if (link.isGuidePdf) {
                     if (!config.guidePdf?.enabled || link.enabled === false) {
                       return null;

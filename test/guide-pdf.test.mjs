@@ -4,12 +4,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
 
-test('1. FlowGuard guide PDF file exists and is valid', () => {
-  const clientPdfPath = path.resolve('client/public/docs/flowguard-guide.pdf');
-  const rootPdfPath = path.resolve('public/docs/flowguard-guide.pdf');
+test('1. IntentGate guide PDF file exists and is valid', () => {
+  const clientPdfPath = path.resolve('client/public/docs/intentgate-guide.pdf');
+  const rootPdfPath = path.resolve('public/docs/intentgate-guide.pdf');
 
-  assert.ok(fs.existsSync(clientPdfPath), 'client/public/docs/flowguard-guide.pdf must exist');
-  assert.ok(fs.existsSync(rootPdfPath), 'public/docs/flowguard-guide.pdf must exist');
+  assert.ok(fs.existsSync(clientPdfPath), 'client/public/docs/intentgate-guide.pdf must exist');
+  assert.ok(fs.existsSync(rootPdfPath), 'public/docs/intentgate-guide.pdf must exist');
 
   const stats = fs.statSync(clientPdfPath);
   assert.ok(stats.size > 0, 'PDF size must be greater than 0');
@@ -31,7 +31,7 @@ test('2. siteConfig has guidePdf single source of truth', async () => {
 
   assert.ok(siteConfig.guidePdf, 'siteConfig.guidePdf must exist');
   assert.equal(siteConfig.guidePdf.enabled, true, 'guidePdf.enabled must be true');
-  assert.equal(siteConfig.guidePdf.path, '/docs/flowguard-guide.pdf', 'guidePdf.path must be /docs/flowguard-guide.pdf');
+  assert.equal(siteConfig.guidePdf.path, '/docs/intentgate-guide.pdf', 'guidePdf.path must be /docs/intentgate-guide.pdf');
   assert.equal(siteConfig.guidePdf.pages, 24, 'guidePdf.pages must be 24');
   assert.equal(siteConfig.guidePdf.sizeLabel, '32 KB', 'guidePdf.sizeLabel must be 32 KB');
 
@@ -51,7 +51,7 @@ test('3. i18n dictionaries contain English and Hindi guide keys', () => {
 
   assert.equal(en.links.guidePdf, 'Guide (PDF)');
   assert.equal(en.links.downloadGuide, 'Download the guide (PDF)');
-  assert.ok(en.links.guidePdfAria.includes('FlowGuard guide, PDF'));
+  assert.ok(en.links.guidePdfAria.includes('IntentGate guide, PDF'));
 
   assert.equal(hi.links.guidePdf, 'गाइड (PDF)');
   assert.equal(hi.links.downloadGuide, 'गाइड डाउनलोड करें (PDF)');
@@ -67,7 +67,7 @@ test('4. Backend Express server delivers PDF with required headers', async () =>
   const port = server.address().port;
 
   try {
-    const res = await fetch(`http://127.0.0.1:${port}/docs/flowguard-guide.pdf`);
+    const res = await fetch(`http://127.0.0.1:${port}/docs/intentgate-guide.pdf`);
     assert.equal(res.status, 200, 'HTTP status must be 200');
     assert.equal(res.headers.get('content-type'), 'application/pdf');
     assert.equal(res.headers.get('content-disposition'), 'inline');
@@ -75,7 +75,7 @@ test('4. Backend Express server delivers PDF with required headers', async () =>
     assert.equal(res.headers.get('x-robots-tag'), 'noindex');
 
     const arrayBuffer = await res.arrayBuffer();
-    assert.equal(arrayBuffer.byteLength, 33075, 'Downloaded PDF size must match exactly');
+    assert.equal(arrayBuffer.byteLength, 33067, 'Downloaded PDF size must match exactly');
   } finally {
     server.close();
   }

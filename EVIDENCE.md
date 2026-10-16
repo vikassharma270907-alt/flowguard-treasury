@@ -6,7 +6,7 @@ This document provides cryptographically verified evidence of **ArmorIQ policy e
 3. **One action visibly HELD by ArmorIQ** (`issue_refund`)
 4. **Cryptographic Intent Mismatch Refusal** (`IntentMismatchException`)
 
-> **Migration & latest run (2026-10-16):** sections 1–4 below are the first accepted run, captured against a local tunnel (platform record then named `intentgate-support-mcp`). The record has since been recreated as **`flowguard-treasury-mcp`** (`7540cd0a-7d76-414a-a849-96b337a0c6ed`) at `https://flowguard-treasury.vercel.app/mcp`, governed by policy **`flowguard-treasury-allowlist`** (`23f8f304-0f6b-44a0-9bba-fa9886ca611b`). Fresh captures on the production endpoint: **section 5 below** and [`docs/evidence/`](docs/evidence/README.md). Historical sections are left exactly as recorded.
+> **Migrations (this document is append-only for history):** sections 1–4 are the first accepted run (15–16 Oct, local tunnel; platform record then named `intentgate-support-mcp`). The record was recreated on the production endpoint as **`flowguard-treasury-mcp`** (`7540cd0a-7d76-414a-a849-96b337a0c6ed`) on 16 Oct, governed by policy **`flowguard-treasury-allowlist`** (`23f8f304-0f6b-44a0-9bba-fa9886ca611b`) — see **section 5**. On 17 Oct the project was renamed to **IntentGate**: the MCP record was renamed in place to `intentgate-treasury-mcp` (same UUID), a new agent `intentgate-agent` (`b50e7e3f-8d11-4a35-816a-2dc30b7cf760`, superseding the earlier `c8bcbe51-…` registration that remains in the workspace) was registered, and the allow-list policy was re-applied in place as `cli-intentgate-agent-intentgate-treasury-mcp` (`cd50b382-4983-456e-a1a9-c30b09668ef5`) — see **section 6** and [`docs/evidence/`](docs/evidence/README.md). All historical sections are left exactly as recorded, including their then-current names.
 
 ---
 
@@ -216,4 +216,39 @@ Intent-binding run:
 - **Case 1 — wrong action:** token minted for `lookup_order` (`90916da4116f4900bcd85e588714e785`) used to invoke `issue_refund` → `IntentMismatchException`, refused before any network call.
 - **Case 2 — swapped amount:** token minted for a refund of 89 (`86401740b0e8428fa5807abd4676dc84`) used to invoke a refund of 5,000 → **NOT REFUSED**; the platform binds declared actions and token freshness, not call arguments. The sandbox tool's own bounds check rejected it (`Refund of 5000 exceeds refundable balance 89 for ORD-1001.`). Reported exactly as observed rather than presented as an interception.
 - **Case 3 — expired token:** token `464314b10ac44edd8c20da15adde40b2` (5 s validity) → `TokenExpiredException`, refused before any network call.
-- **Mechanism for HELD:** refunds are held by FlowGuard's designed control — a real ArmorIQ platform delegation request (`POST /delegation/request`). The platform's response ("Delegation request created. Awaiting approval from senior officer.") and the delegation id are captured verbatim.
+- **Mechanism for HELD:** refunds are held by IntentGate's designed control — a real ArmorIQ platform delegation request (`POST /delegation/request`). The platform's response ("Delegation request created. Awaiting approval from senior officer.") and the delegation id are captured verbatim.
+
+---
+
+## 6. Re-verified after the IntentGate rename (2026-10-17, 03:10 IST · 2026-10-16 21:40 UTC)
+
+The project was renamed to **IntentGate** on 17 Oct 2026 ahead of submission. Platform records: the MCP record was renamed in place to `intentgate-treasury-mcp` (`7540cd0a-…`, same UUID), a new agent **`intentgate-agent`** (`b50e7e3f-8d11-4a35-816a-2dc30b7cf760`, superseding the earlier `c8bcbe51-…` registration that remains in the workspace) was registered, and the allow-list policy was re-applied in place as `cli-intentgate-agent-intentgate-treasury-mcp` (`cd50b382-4983-456e-a1a9-c30b09668ef5`). The superseded pre-rename record `flowguard-treasury-allowlist` (`23f8f304-…`) remains attached with the same allow-list and still matches calls (see `DISCLOSURES.md` §6).
+
+Raw captures of this run: [`docs/evidence/test-enforcement-2026-10-17.txt`](docs/evidence/test-enforcement-2026-10-17.txt) · [`docs/evidence/test-intent-mismatch-2026-10-17.txt`](docs/evidence/test-intent-mismatch-2026-10-17.txt). The same-day pre-rename captures are kept verbatim as `*-pre-rename.txt`.
+
+| Case | Verdict | tokenId | policy_ref | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| `lookup_order` | **ALLOWED** | `6301fb8c52c4404e90912db634752f77` | `armoriq:5081adc84221:1a146a7fcb9` | Real payload: order ORD-1001 (Dana Whitfield, delivered, USD 89, `refunded: 0`); 1,200 ms round-trip; `verified: true` |
+| `change_payout` | **BLOCKED** | `c2046e23139f41ff9962b670ed7c7401` | `armoriq:5081adc84221:1a146a80b51` | `PolicyBlockedException` HTTP 403 — `tool_not_in_allowlist` |
+| `issue_refund` | **HELD** | `f18882afb2b04411b5fd56ec28157c00` | `armoriq:5081adc84221:1a146a817ec` | Delegation `2c61ec81-1434-464f-907a-1748618e3d10` (status `pending`) created via the platform delegation API — releases only after supervisor approval |
+
+Intent-binding run (same revision):
+
+- **Case 1 — wrong action:** token minted for `lookup_order` (`c4a90485fe814976a7d524fa2ca75ac9`) used to invoke `issue_refund` → `IntentMismatchException`, refused before any network call.
+- **Case 2 — swapped amount:** token minted for a refund of 89 (`5fa1f8ed2aaf4bb2b7a4bb7a0609e01c`) used to invoke a refund of 5,000 → **NOT REFUSED**; the platform binds declared actions and token freshness, not call arguments. The sandbox tool's own bounds check rejected it (`Refund of 5000 exceeds refundable balance 89 for ORD-1001.`). Reported exactly as observed rather than presented as an interception.
+- **Case 3 — expired token:** token `4efb997e4b854b44a803f3ed85b2c9e6` (5 s validity) → `TokenExpiredException`, refused before any network call.
+
+Every call above ran against `intentgate-treasury-mcp` at `https://flowguard-treasury.vercel.app/mcp` (deployment hostname predates the rename and stays pinned) with `decision_source: "opa"`.
+
+---
+
+## 7. Post-deploy production-path verification (2026-10-17, 03:44 IST · 2026-10-16 22:14 UTC)
+
+After the IntentGate build was promoted to production, the **deployed app itself** was exercised through its public voice-gateway webhook (`POST https://flowguard-treasury.vercel.app/api/voice/gateway/tool-call`) so the live deployment — not only the local scripts — is on record as being governed by ArmorIQ. Both verdicts returned `decision_source: "opa"` with both policies matched.
+
+| Call (deployed webhook) | Verdict | tokenId | Notes |
+| :--- | :--- | :--- | :--- |
+| `IntentGate_orderLookup` (`ORD-1001`) | **ALLOWED** | `faf4e0d4faf0403aae85f95c158d4d60` | Spoken response cited the real sandbox order (delivered · USD 89 · refundable 89); 2,252 ms total; plan `b3e6889fe267adb6…` |
+| `IntentGate_payoutChange` (`ACC-4471` → GB29…) | **BLOCKED** | `35dcb60cbe164f20bddb8723aec3e4dc` | `tool_not_in_allowlist` — routed to the supervisor hold ("A supervisor has been notified…"); plan `b086c9aeb8da1343…` |
+
+Raw HTTP responses: [`docs/evidence/prod-verification-2026-10-17-orderlookup.json`](docs/evidence/prod-verification-2026-10-17-orderlookup.json) · [`docs/evidence/prod-verification-2026-10-17-payoutchange.json`](docs/evidence/prod-verification-2026-10-17-payoutchange.json). Two deployment fixes shipped with this verification: `2311a0e` — sanitize `ARMORIQ_API_KEY` (strip quotes/whitespace) before SDK init in the enforcement module, which previously reported `NOT_CONNECTED` on a format-rejected raw value; `7a2893d` — unwrap the MCP tool-result envelope before building the spoken response.

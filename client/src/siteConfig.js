@@ -11,7 +11,7 @@
  */
 
 // SINGLE SOURCE OF TRUTH FOR PRODUCT NAME
-export const PRODUCT_NAME = "FlowGuard";
+export const PRODUCT_NAME = "IntentGate";
 
 // Support email across the entire project
 export const SUPPORT_EMAIL = "beyondnothing01@gmail.com";
@@ -28,7 +28,7 @@ const CALENDLY_URL =
 
 export const siteConfig = {
   name: PRODUCT_NAME,
-  legalEntityName: `${PRODUCT_NAME} Technologies Pvt. Ltd.`,
+  legalEntityName: PRODUCT_NAME, // hackathon project — no registered corporate entity
   taglineKey: "brand.tagline",
   registrationTextKey: "brand.registeredText",
 
@@ -38,10 +38,10 @@ export const siteConfig = {
     url: CALENDLY_URL
   },
 
-  // FlowGuard Guide (PDF) Configuration - Single Source of Truth
+  // IntentGate Guide (PDF) Configuration - Single Source of Truth
   guidePdf: {
     enabled: true,
-    path: "/docs/flowguard-guide.pdf",
+    path: "/docs/intentgate-guide.pdf",
     pages: 24,
     sizeLabel: typeof __GUIDE_PDF_SIZE_LABEL__ !== 'undefined' ? __GUIDE_PDF_SIZE_LABEL__ : "32 KB"
   },
@@ -82,8 +82,8 @@ export const siteConfig = {
   businessDetails: {
     cin: "", // Leave empty until issued by Ministry of Corporate Affairs
     gstin: "", // Leave empty until GSTIN is verified
-    incorporationAct: "Registered under the Companies Act, 2013",
-    dataResidency: "India (AWS ap-south-1 / GCP asia-south1)"
+    incorporationAct: "", // no corporate-registration claims for this hackathon project
+    dataResidency: "Vercel (platform-managed regions)"
   },
 
   // Contact & Office Details in India (Indore, Madhya Pradesh)
@@ -170,7 +170,7 @@ export const siteConfig = {
         { labelKey: "links.hackathons", href: "#hackathons" },
         {
           labelKey: "links.guidePdf",
-          href: "/docs/flowguard-guide.pdf",
+          href: "/docs/intentgate-guide.pdf",
           isGuidePdf: true,
           isExternal: true,
           enabled: true

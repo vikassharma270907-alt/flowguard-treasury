@@ -1,5 +1,5 @@
 /**
- * FlowGuard - Enterprise Security & Zero-Trust Engine
+ * IntentGate - Enterprise Security & Zero-Trust Engine
  * 
  * Provides:
  * 1. HMAC-SHA256 Webhook & Request Signature Verification (anti-tamper & anti-replay)
@@ -43,7 +43,7 @@ class SecurityEngine {
    */
   verifySignature(signature, payload, timestamp, nonce) {
     if (!signature || !timestamp || !nonce) {
-      return { valid: false, reason: 'Missing cryptographic signature headers (x-flowguard-signature, timestamp, nonce)' };
+      return { valid: false, reason: 'Missing cryptographic signature headers (x-intentgate-signature, timestamp, nonce)' };
     }
 
     // Anti-replay: Timestamp must be within +/- 300 seconds (5 minutes)

@@ -1,5 +1,5 @@
 /**
- * FlowGuard - ArmorIQ Platform Authentication Service
+ * IntentGate - ArmorIQ Platform Authentication Service
  * 
  * Implements authentication adhering to official ArmorIQ platform documentation:
  * https://docs.armoriq.ai/platform/authentication
@@ -30,7 +30,7 @@
 
 const crypto = require('crypto');
 
-const JWT_SECRET = process.env.JWT_SECRET || process.env.ARMORIQ_API_KEY || 'armoriq-flowguard-jwt-auth-secret-2026';
+const JWT_SECRET = process.env.JWT_SECRET || process.env.ARMORIQ_API_KEY || 'armoriq-intentgate-jwt-auth-secret-2026';
 const ACCESS_TOKEN_TTL_SEC = 15 * 60; // 15 minutes per ArmorIQ docs
 const REFRESH_TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
@@ -55,12 +55,12 @@ function base64UrlDecode(str) {
 const USERS = [
   {
     id: 'usr_beyond_nothing',
-    email: 'beyond_nothing@flowguard.io',
+    email: 'beyond_nothing@intentgate.io',
     name: 'beyond_nothing',
     passwordHash: hashPassword('ArmorIQ#2026'),
     role: 'SUPER_ADMIN',
     department: 'Executive Treasury',
-    organization: 'FlowGuard Global Treasury',
+    organization: 'IntentGate Global Treasury',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
     verified: true,
     provider: 'ArmorIQ Platform',
@@ -73,7 +73,7 @@ const USERS = [
     passwordHash: hashPassword('Admin#2026'),
     role: 'SUPER_ADMIN',
     department: 'Fintech Engineering',
-    organization: 'FlowGuard Global Treasury',
+    organization: 'IntentGate Global Treasury',
     avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150',
     verified: true,
     provider: 'Google Workspace',
@@ -81,12 +81,12 @@ const USERS = [
   },
   {
     id: 'usr_sarah',
-    email: 'sarah.chen@flowguard.io',
+    email: 'sarah.chen@intentgate.io',
     name: 'Sarah Chen',
     passwordHash: hashPassword('Treasury#2026'),
     role: 'FINANCE_DIRECTOR',
     department: 'Accounts Payable',
-    organization: 'FlowGuard Global Treasury',
+    organization: 'IntentGate Global Treasury',
     avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150',
     verified: true,
     provider: 'ArmorIQ Platform',
@@ -119,7 +119,7 @@ function createAccessToken(user) {
     email: user.email,
     name: user.name,
     role: user.role,
-    organization: user.organization || 'FlowGuard Treasury',
+    organization: user.organization || 'IntentGate Treasury',
     avatar: user.avatar,
     iat: now,
     exp: now + ACCESS_TOKEN_TTL_SEC
@@ -237,7 +237,7 @@ function authenticateWithOAuth(provider, email, name, avatar) {
       name: name || normalizedEmail.split('@')[0],
       role: 'SUPER_ADMIN',
       department: 'Platform Operations',
-      organization: 'FlowGuard Global Treasury',
+      organization: 'IntentGate Global Treasury',
       avatar: avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name || normalizedEmail)}`,
       verified: true,
       provider: provider || 'OAuth Provider',
@@ -284,7 +284,7 @@ function initiateSignUp(email, name, password, organization) {
       passwordHash: hashPassword(password || 'ArmorIQ#2026'),
       role: 'FINANCE_OPERATOR',
       department: 'Treasury Operations',
-      organization: organization || 'FlowGuard Treasury',
+      organization: organization || 'IntentGate Treasury',
       avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name || normalizedEmail)}`,
       verified: false,
       provider: 'ArmorIQ Local Account',
@@ -390,7 +390,7 @@ function createDeviceCodeRequest(clientName = 'ArmorIQ CLI (armoriq login)') {
   return { userCode, deviceCode, verificationUrl: '/auth/device', expiresIn: 900 };
 }
 
-function approveDeviceCode(userCode, apiKey = 'ak_live_b4f92a10c83d4e7f') {
+function approveDeviceCode(userCode, apiKey = 'ak_test_b4f92a10c83d4e7f') {
   const code = (userCode || '').trim().toUpperCase();
   const entry = pendingDeviceApprovals.get(code);
 

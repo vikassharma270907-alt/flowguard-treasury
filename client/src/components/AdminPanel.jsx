@@ -174,7 +174,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
       }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--muted-foreground)' }}>
-            <span>FlowGuard</span>
+            <span>IntentGate</span>
             <span>/</span>
             <span>Enterprise Settings</span>
             <span>/</span>
@@ -712,7 +712,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--foreground)', margin: 0 }}>
-                  FlowGuard Treasury MCP Server
+                  IntentGate Treasury MCP Server
                 </h3>
                 <p style={{ fontSize: '0.82rem', color: 'var(--muted-foreground)', marginTop: '4px', margin: 0 }}>
                  Model Context Protocol (MCP) server exposing the sandbox treasury tools (lookup_order, change_payout, issue_refund) that ArmorIQ governs on the platform.
@@ -747,7 +747,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '12px', background: 'var(--surface-muted)', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
               <div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>Server Name</div>
-               <div style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--foreground)', fontSize: '0.85rem' }}>flowguard-treasury-mcp</div>
+               <div style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--foreground)', fontSize: '0.85rem' }}>intentgate-treasury-mcp</div>
               </div>
               <div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>ArmorIQ Enforcement</div>
@@ -780,7 +780,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
               { rule: 'Rule 4: At Least One MCP Server', status: 'VERIFIED ACTIVE', desc: 'MCP server implemented in this repo (mcp-server/) and onboarded to the platform with 3 tools.' },
               { rule: 'Rule 7: Sandbox Only / No Real Money', status: 'VERIFIED ACTIVE', desc: 'Synthetic sandbox data only; Airwallex client targets sandbox endpoints when enabled.' },
               { rule: 'Rule 8: Actual ArmorIQ Enforcement', status: 'VERIFIED ACTIVE', desc: 'Verdicts (allow / block / hold) come from the platform at call time — never hardcoded in the app.' },
-              { rule: 'Platform Onboarding', status: 'VERIFIED ACTIVE', desc: 'Agent flowguard-agent and MCP flowguard-treasury-mcp onboarded (see DISCLOSURES.md on the naming).' }
+              { rule: 'Platform Onboarding', status: 'VERIFIED ACTIVE', desc: 'Agent intentgate-agent and MCP intentgate-treasury-mcp onboarded (see DISCLOSURES.md on the naming).' }
               ].map((item, idx) => (
                 <div key={idx} style={{ background: 'var(--surface-muted)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
@@ -884,7 +884,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                     onClick={() => {
                       const cfg = {
                         mcpServers: {
-                          "flowguard-treasury": {
+                          "intentgate-treasury": {
                             "command": "node",
                            "args": ["server/mcpServer.js", "--stdio"],
                            "env": { "ARMORIQ_API_KEY": "<your-armoriq-api-key>" }
@@ -904,7 +904,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                 <pre style={{ background: 'var(--surface-muted)', border: '1px solid var(--border)', padding: '8px 10px', borderRadius: '6px', fontSize: '0.68rem', color: 'var(--foreground)', margin: 0, overflowX: 'auto' }}>
 {`{
   "mcpServers": {
-    "flowguard-treasury": {
+    "intentgate-treasury": {
       "command": "node",
       "args": ["server/mcpServer.js", "--stdio"],
       "env": { "ARMORIQ_API_KEY": "<your-armoriq-api-key>" }
@@ -954,7 +954,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                   required
                   value={inviteForm.email}
                   onChange={e => setInviteForm({ ...inviteForm, email: e.target.value })}
-                  placeholder="jordan@flowguard.io"
+                  placeholder="jordan@intentgate.io"
                   className="shadcn-input"
                   style={{ marginTop: '4px' }}
                 />

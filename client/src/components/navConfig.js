@@ -1,11 +1,11 @@
 /**
- * FlowGuard Navigation & Footer Configuration
+ * IntentGate Navigation & Footer Configuration
  * Centralized configuration driving Header and Footer links and metadata.
  */
 
 export const headerConfig = {
   brand: {
-    name: 'flowguard',
+    name: 'intentgate',
     href: '/',
     badge: 'F'
   },
@@ -30,7 +30,7 @@ export const headerConfig = {
 
 export const footerConfig = {
   brand: {
-    name: 'FlowGuard',
+    name: 'IntentGate',
     tagline: 'Intent enforcement for any MCP client and ElevenLabs voice agent, powered by ArmorIQ.',
     badge: 'F',
     socials: [

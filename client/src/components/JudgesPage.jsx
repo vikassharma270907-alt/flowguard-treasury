@@ -19,21 +19,21 @@ export default function JudgesPage({ onNavigate }) {
     {
       rule: "1. Functional ArmorIQ Integration",
       requirement: "Intent and policy enforcement must be demonstrated through platform.armoriq.ai. API keys from platform, agents and MCP servers onboarded.",
-      evidence: "Onboarded agent 'flowguard-agent' (c8bcbe51-dea4-4459-9fd8-38f88ebc714e), MCP server 'flowguard-treasury-mcp' (UUID: 7540cd0a-7d76-414a-a849-96b337a0c6ed), and policy 'flowguard-treasury-allowlist' (23f8f304-0f6b-44a0-9bba-fa9886ca611b) in the operator workspace (org dd9e9695-e58d-4e56-8cff-ef9617ba4c54). Tokens minted at iap.armoriq.ai; calls invoked via proxy.armoriq.ai.",
+      evidence: "Onboarded agent 'intentgate-agent' (b50e7e3f-8d11-4a35-816a-2dc30b7cf760), MCP server 'intentgate-treasury-mcp' (UUID: 7540cd0a-7d76-414a-a849-96b337a0c6ed), and allow-list policy 'cli-intentgate-agent-intentgate-treasury-mcp' (cd50b382-4983-456e-a1a9-c30b09668ef5) — the superseded pre-rename record 'flowguard-treasury-allowlist' (23f8f304-0f6b-44a0-9bba-fa9886ca611b) remains attached with the same allow-list — in the operator workspace (org dd9e9695-e58d-4e56-8cff-ef9617ba4c54). Tokens minted at iap.armoriq.ai; calls invoked via proxy.armoriq.ai.",
       status: "PASS",
       verified: true
     },
     {
       rule: "2. ElevenLabs Cannot Replace ArmorIQ",
       requirement: "Third-party services must not bypass or substitute ArmorIQ governance.",
-      evidence: "ElevenLabs Conversational Voice Agent sends tool webhooks with the 'FlowGuard_' prefix (legacy 'IntentGate_' accepted) to the FlowGuard gateway, which captures a canonical plan and gates the call through ArmorIQ before it can reach the MCP server. No tool executes without a platform-minted intent token bound to that plan.",
+      evidence: "ElevenLabs Conversational Voice Agent sends tool webhooks with the 'IntentGate_' prefix (legacy 'FlowGuard_' accepted) to the IntentGate gateway, which captures a canonical plan and gates the call through ArmorIQ before it can reach the MCP server. No tool executes without a platform-minted intent token bound to that plan.",
       status: "PASS",
       verified: true
     },
     {
       rule: "3. At Least One MCP Server",
       requirement: "The project must implement and utilize at least one functional MCP server.",
-      evidence: "One MCP server implementation, onboarded to the ArmorIQ platform as 'flowguard-treasury-mcp' with 3 governed tools (lookup_order, change_payout, issue_refund). Transports: JSON-RPC 2.0 over HTTP with SSE responses (deployed /mcp endpoint at flowguard-treasury.vercel.app) and stdio (server/mcpServer.js) for local CLI use. Two further helper checks (reserve floor, audit Merkle root) are labelled app-side in the UI.",
+      evidence: "One MCP server implementation, onboarded to the ArmorIQ platform as 'intentgate-treasury-mcp' with 3 governed tools (lookup_order, change_payout, issue_refund). Transports: JSON-RPC 2.0 over HTTP with SSE responses (deployed /mcp endpoint at flowguard-treasury.vercel.app) and stdio (server/mcpServer.js) for local CLI use. Two further helper checks (reserve floor, audit Merkle root) are labelled app-side in the UI.",
       status: "PASS",
       verified: true
     },
@@ -54,7 +54,7 @@ export default function JudgesPage({ onNavigate }) {
     {
       rule: "6. Real ArmorIQ Enforcement",
       requirement: "Demos must show actual ArmorIQ enforcement, never simulated or hardcoded results.",
-      evidence: "scripts/test-enforcement.mjs runs live calls against ArmorIQ: change_payout BLOCKED (PolicyBlockedException, reason 'tool_not_in_allowlist', HTTP 403), issue_refund HELD — real pending delegation eb63aac7-349a-4cf0-a156-a2f3c469f427 on the platform — and lookup_order ALLOWED end-to-end (real payload, verified: true). Raw captures re-run 16 Oct 2026 against the production endpoint: docs/evidence/test-enforcement-2026-10-16.txt; audit-log detail: EVIDENCE.md.",
+      evidence: "scripts/test-enforcement.mjs runs live calls against ArmorIQ: change_payout BLOCKED (PolicyBlockedException, reason 'tool_not_in_allowlist', HTTP 403), issue_refund HELD — real pending delegation 2c61ec81-1434-464f-907a-1748618e3d10 on the platform — and lookup_order ALLOWED end-to-end (real payload, verified: true, 1,200 ms round-trip). Raw captures from the post-rename run (17 Oct 2026): docs/evidence/test-enforcement-2026-10-17.txt; audit-log detail: EVIDENCE.md §6.",
       status: "PASS",
       verified: true
     },
@@ -78,19 +78,19 @@ export default function JudgesPage({ onNavigate }) {
       claim: "Read-only order lookups are allowed automatically",
       where: "Boundary Test -> lookup_order card",
       verification: "Platform allow verdict for lookup_order (allow-list from the live policy); real 200 response payload and latency captured in EVIDENCE.md and docs/evidence/.",
-      status: "Recorded (16 Oct 2026)"
+      status: "Recorded (17 Oct 2026)"
     },
     {
       claim: "Payout destination changes are blocked by policy",
       where: "Boundary Test -> change_payout card",
       verification: "PEP proxy raises PolicyBlockedException (HTTP 403) with reason 'tool_not_in_allowlist'.",
-      status: "Recorded (16 Oct 2026)"
+      status: "Recorded (17 Oct 2026)"
     },
     {
       claim: "Refund disbursements are held for human approval through a real ArmorIQ platform delegation",
       where: "Boundary Test -> issue_refund card & Supervisor Playground",
-      verification: "The refund path creates a real delegation via the platform API (delegationId: eb63aac7-349a-4cf0-a156-a2f3c469f427, status pending). Release flow runs through the app-side dual-supervisor playground.",
-      status: "Recorded (16 Oct 2026)"
+      verification: "The refund path creates a real delegation via the platform API (delegationId: 2c61ec81-1434-464f-907a-1748618e3d10, status pending). Release flow runs through the app-side dual-supervisor playground.",
+      status: "Recorded (17 Oct 2026)"
     },
     {
       claim: "Action-level intent binding: a token minted for one action cannot be used for another",
@@ -121,7 +121,7 @@ export default function JudgesPage({ onNavigate }) {
           Official Judge Inspection Dashboard · ArmorIQ Flow State Hackathon
         </div>
         <h1 style={{ fontSize: '2.4rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.03em', margin: '0 0 12px 0' }}>
-          FlowGuard Hackathon Evaluation Guide
+          IntentGate Hackathon Evaluation Guide
         </h1>
         <p style={{ fontSize: '1.05rem', color: 'var(--muted-foreground)', maxWidth: '840px', lineHeight: 1.6, margin: '0 0 24px 0' }}>
           Autonomous Treasury & Intent Vault Governed by ArmorIQ. This page provides a fast 90-second tour, verified rule compliance evidence, transparent claims validation, and honest architectural boundaries.
@@ -156,7 +156,7 @@ export default function JudgesPage({ onNavigate }) {
           </a>
 
           <a
-            href="/docs/flowguard-guide.pdf"
+            href="/docs/intentgate-guide.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-secondary btn-sm"
@@ -450,6 +450,7 @@ export default function JudgesPage({ onNavigate }) {
           <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-intent-mismatch-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-intent-mismatch-2026-10-16.txt</a> — baseline run: intent-binding refusals.</li>
           <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/EVIDENCE.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>EVIDENCE.md</a> — full audit-log entries for each verdict, including the end-to-end allowed call.</li>
           <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/README.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>docs/evidence/README.md</a> — run metadata: repo revision, platform object IDs, per-case token and policy refs.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/recorded-runs/real-armoriq-enforcement-2026-10-17.json" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>real-armoriq-enforcement-2026-10-17.json</a> — structured, machine-readable capture of the same run (also rendered in the Boundary Test section).</li>
         </ul>
       </section>
 
@@ -464,7 +465,7 @@ export default function JudgesPage({ onNavigate }) {
               ✨ What We Built for the Hackathon
             </h3>
             <ul style={{ paddingLeft: '18px', color: 'var(--muted-foreground)', fontSize: '0.85rem', lineHeight: 1.6, margin: 0 }}>
-              <li><strong>FlowGuard Gateway Service (gateway/server.mjs)</strong>: tool-name normalizer, canonical plan builder, and async holding responder.</li>
+              <li><strong>IntentGate Gateway Service (gateway/server.mjs)</strong>: tool-name normalizer, canonical plan builder, and async holding responder.</li>
               <li><strong>Dual-Supervisor Approval Quorum</strong>: Hold tracking engine in gateway/server.mjs requiring 2 independent human reviews before releasing disbursements.</li>
               <li><strong>Model Context Protocol (MCP) server</strong>: JSON-RPC 2.0 over HTTP plus a stdio transport, exposing 3 platform-governed financial tools (and 2 app-side helper checks).</li>
               <li><strong>3D Hardware-Accelerated Intent Vaults</strong>: Three Three.js WebGL visualizers with cursor tracking and 60 FPS delta loops.</li>
@@ -493,7 +494,7 @@ export default function JudgesPage({ onNavigate }) {
           📜 Open Disclosures & Lineage
         </h2>
         <p style={{ fontSize: '0.88rem', color: 'var(--muted-foreground)', lineHeight: 1.6, margin: '0 0 14px 0' }}>
-         <strong>Developer Statement:</strong> FlowGuard was assembled during the hackathon window and reuses the developer's earlier MIT-licensed IntentGate prototype components (gateway, sandbox adapter) — disclosed in DISCLOSURES.md below. Third-party open-source libraries: <code>@armoriq/sdk</code>, <code>@modelcontextprotocol/sdk</code>, <code>three</code>, <code>react</code>, <code>express</code>. All sensitive operations use synthetic sandbox data only — no live banking rails, no real funds.
+         <strong>Developer Statement:</strong> IntentGate — built under the interim name FlowGuard until the 17 Oct 2026 rename (visible in git history and the 15–16 Oct captures) — was assembled during the hackathon window and reuses the developer's earlier MIT-licensed IntentGate prototype components (gateway, sandbox adapter); the header/footer layout was adapted from the MIT-licensed yourbrand-ui starter template. Disclosed in DISCLOSURES.md below. Third-party open-source libraries: <code>@armoriq/sdk</code>, <code>@modelcontextprotocol/sdk</code>, <code>three</code>, <code>react</code>, <code>express</code>. All sensitive operations use synthetic sandbox data only — no live banking rails, no real funds.
         </p>
         <p style={{ fontSize: '0.82rem', color: '#94a3b8', margin: 0 }}>
           Detailed dependency disclosures and licensing notices are documented in <a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/DISCLOSURES.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>DISCLOSURES.md</a>.

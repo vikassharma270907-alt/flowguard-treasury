@@ -1,5 +1,5 @@
 /**
- * FlowGuard - ElevenLabs Conversational Voice Agent Gateway & Supervisor Playground
+ * IntentGate - ElevenLabs Conversational Voice Agent Gateway & Supervisor Playground
  *
  * Sits between ElevenLabs Conversational Voice Agents and the sandbox treasury MCP:
  * 1. Declared call plan on every support call:
@@ -8,8 +8,8 @@
  *      token_id / plan_hash / policy_validation in this service are ALWAYS the real
  *      values returned by ArmorIQ — never fabricated.
  * 2. Tool Prefix Normalization & Mapping:
- *    - ElevenLabs agents see tools as "FlowGuard_<tool>" (e.g. FlowGuard_orderLookup)
- *    - The legacy "IntentGate_<tool>" prefix from the earlier prototype is still
+ *    - ElevenLabs agents see tools as "IntentGate_<tool>" (e.g. IntentGate_orderLookup)
+ *    - The legacy "FlowGuard_<tool>" prefix from the pre-rename prototype is still
  *      accepted, so existing agent configs keep working.
  * 3. 5-Second Tool Call Timeout Window & Async Holding Pattern:
  *    - ElevenLabs times tool calls out after ~5 seconds
@@ -72,21 +72,21 @@ class VoiceGatewayService {
     //    decision that has not happened.
     const canonicalPlan = {
       agent_id: 'elevenlabs-voice-support-agent-v2',
-      gateway: 'flowguard-voice-gateway-v1',
+      gateway: 'intentgate-voice-gateway-v1',
       call_id: callId,
       caller_account: caller.verifiedAccountId,
       caller_name: caller.name,
       session_created_at: new Date().toISOString(),
       declared_tools: [
         {
-          name: 'FlowGuard_orderLookup',
+          name: 'IntentGate_orderLookup',
           internal_tool: 'orderLookup',
           mcp_tool: 'lookup_order',
           access: 'PUBLIC_READ',
           governed_by: 'ArmorIQ proxy decides at call time'
         },
         {
-          name: 'FlowGuard_payoutChange',
+          name: 'IntentGate_payoutChange',
           internal_tool: 'payoutChange',
           mcp_tool: 'change_payout',
           access: 'RESTRICTED_WRITE',
@@ -94,7 +94,7 @@ class VoiceGatewayService {
           governed_by: 'ArmorIQ proxy decides at call time'
         },
         {
-          name: 'FlowGuard_issueRefund',
+          name: 'IntentGate_issueRefund',
           internal_tool: 'issueRefund',
           mcp_tool: 'issue_refund',
           access: 'CRITICAL_FINANCIAL',
@@ -134,7 +134,7 @@ class VoiceGatewayService {
     auditLedger.record({
       eventType: 'VOICE_GATEWAY_EVENT',
       action: 'Voice call session initialized',
-      actor: 'FlowGuard Voice Gateway',
+      actor: 'IntentGate Voice Gateway',
       summary: `Call ${callId} initialized for ${caller.name}. Declared call plan fingerprint ${localPlanFingerprint.substring(0, 12)}...; awaiting real ArmorIQ token mint.`,
       payload: { callId, caller: caller.name, localPlanFingerprint, mcp: MCP_ID },
       mode: 'APP_SIDE'
@@ -198,7 +198,7 @@ class VoiceGatewayService {
         auditLedger.record({
           eventType: 'VOICE_GATEWAY_EVENT',
           action: 'ArmorIQ intent token not minted',
-          actor: 'FlowGuard Voice Gateway',
+          actor: 'IntentGate Voice Gateway',
           summary: `No ArmorIQ token was issued: ${mint.reason}. Governed calls will report NOT_EXECUTED until this is fixed.`,
           payload: { callId: session.callId, armorIq: session.armorIq },
           mode: 'ARMORIQ_NOT_CONNECTED'
@@ -211,13 +211,13 @@ class VoiceGatewayService {
   }
 
   /**
-   * Normalizes an ElevenLabs tool name. "FlowGuard_<tool>" is the current
-   * namespace; the legacy "IntentGate_<tool>" prefix from the earlier
+   * Normalizes an ElevenLabs tool name. "IntentGate_<tool>" is the current
+   * namespace; the legacy "FlowGuard_<tool>" prefix from the pre-rename
    * prototype is still accepted so existing agent configs keep working.
    */
   normalizeToolName(toolName) {
     if (!toolName) return '';
-    for (const prefix of ['FlowGuard_', 'IntentGate_']) {
+    for (const prefix of ['IntentGate_', 'FlowGuard_']) {
       if (toolName.startsWith(prefix)) {
         return toolName.substring(prefix.length);
       }
@@ -227,10 +227,10 @@ class VoiceGatewayService {
 
   toElevenLabsToolName(canonicalTool) {
     if (!canonicalTool) return '';
-    if (canonicalTool.startsWith('FlowGuard_')) return canonicalTool;
+    if (canonicalTool.startsWith('IntentGate_')) return canonicalTool;
     // Strip a legacy prefix before re-namespacing.
     const bare = this.normalizeToolName(canonicalTool);
-    return `FlowGuard_${bare}`;
+    return `IntentGate_${bare}`;
   }
 
   /**
@@ -277,7 +277,17 @@ class VoiceGatewayService {
       };
 
       if (enforcement.decision === 'ALLOWED') {
-        const order = enforcement.result?.order ?? enforcement.result ?? {};
+        // Unwrap the MCP tool-result envelope ({content:[{type:'text',text:'{json}'}]})
+        // so the spoken response cites the real order fields.
+        let payload = enforcement.result ?? {};
+        if (payload && Array.isArray(payload.content)) {
+          try {
+            payload = JSON.parse(payload.content[0]?.text ?? 'null') ?? payload;
+          } catch {
+            // keep the raw envelope when it is not JSON
+          }
+        }
+        const order = payload?.order ?? payload ?? {};
         const agentResponse = `I found order ${orderId}. Status: ${order.status ?? 'unknown'}. Total ${order.currency ?? 'USD'} ${order.total ?? '-'}, refundable ${order.refundable ?? '-'}. How can I help with this order?`;
         invocation.result = order;
         invocation.agentSpokenResponse = agentResponse;
@@ -348,7 +358,7 @@ class VoiceGatewayService {
       auditLedger.record({
         eventType: 'VOICE_GATEWAY_EVENT',
         action: `Tool call: lookup_order (${enforcement.decision})`,
-        actor: 'FlowGuard Voice Gateway',
+        actor: 'IntentGate Voice Gateway',
         summary: `lookup_order for ${orderId} was not executed. ${enforcement.decision}: ${enforcement.reason || ''}`,
         payload: { toolCallId, orderId, elevenLabsTool, enforcement },
         mode: enforcement.decision === 'NOT_EXECUTED' ? 'ARMORIQ_NOT_CONNECTED' : 'ARMORIQ_LIVE'
@@ -828,7 +838,7 @@ class VoiceGatewayService {
       auditLedger.record({
         eventType: 'VOICE_GATEWAY_EVENT',
         action: `Refund 2/2 approvals — ArmorIQ release attempt (${release.decision})`,
-        actor: 'FlowGuard supervisor quorum (app-side) + ArmorIQ proxy',
+        actor: 'IntentGate supervisor quorum (app-side) + ArmorIQ proxy',
         summary: agentSpokenResponse,
         payload: {
           toolCallId: pending.toolCallId,
@@ -877,14 +887,14 @@ class VoiceGatewayService {
    */
   getDxNotes() {
     return {
-      title: 'ElevenLabs Voice Agent + FlowGuard Gateway DX Architecture Notes',
+      title: 'ElevenLabs Voice Agent + IntentGate Gateway DX Architecture Notes',
       overview: 'Practical lessons, architectural patterns, and sandbox safeguards learned while connecting ElevenLabs Conversational Voice Agents to an ArmorIQ-governed financial gateway (ArmorIQ for decisions, Airwallex adapter in sandbox/mock mode).',
       insights: [
         {
           id: 'insight-1-timeout',
           title: '1. The 5-Second Tool Call Timeout Window & Async Holding Pattern',
           problem: 'The ElevenLabs Conversational Voice platform gives a tool call roughly 5 seconds before it times out. High-stakes financial operations (such as destination bank account modifications or multi-sig refunds) require human supervisor evaluation, which rarely completes within 5 seconds. If the webhook blocks waiting for human input, ElevenLabs triggers a timeout exception and can sever the voice call.',
-          solution: 'The FlowGuard Voice Gateway answers inside that 5-second window with an app-side holding utterance: "A supervisor has been notified. Please hold for supervisor review...". The gateway queues the pending transaction and records the REAL ArmorIQ verdict for the governed call, then pushes the supervisor decision once acted on.',
+          solution: 'The IntentGate Voice Gateway answers inside that 5-second window with an app-side holding utterance: "A supervisor has been notified. Please hold for supervisor review...". The gateway queues the pending transaction and records the REAL ArmorIQ verdict for the governed call, then pushes the supervisor decision once acted on.',
           codeSnippet: `// Inside tool call handler: answer inside the ~5s window.
 // The governed ArmorIQ call runs first (token mint + invoke); the human
 // approval loop is answered asynchronously via the supervisor queue.
@@ -902,11 +912,11 @@ if (requiresHumanSupervisor) {
         },
         {
           id: 'insight-2-prefix-mapping',
-          title: '2. The FlowGuard_<tool> Agent Tool Prefix Mapping',
-          problem: 'When configuring tools in the ElevenLabs agent interface, tools are exposed to the LLM with an explicit namespace such as FlowGuard_<tool> (e.g., FlowGuard_orderLookup, FlowGuard_payoutChange, FlowGuard_issueRefund). This signals to the model that financial actions pass through an intent-assurance gateway. Backend plans, MCP schemas, and the Airwallex adapter expect standard canonical names.',
-          solution: 'The FlowGuard Gateway implements bidirectional mapping: normalizeToolName() strips the FlowGuard_ prefix when processing tool requests (the legacy IntentGate_ prefix from the earlier prototype is still accepted), while toElevenLabsToolName() formats schemas for the agent client.',
+          title: '2. The IntentGate_<tool> Agent Tool Prefix Mapping',
+          problem: 'When configuring tools in the ElevenLabs agent interface, tools are exposed to the LLM with an explicit namespace such as IntentGate_<tool> (e.g., IntentGate_orderLookup, IntentGate_payoutChange, IntentGate_issueRefund). This signals to the model that financial actions pass through an intent-assurance gateway. Backend plans, MCP schemas, and the Airwallex adapter expect standard canonical names.',
+          solution: 'The IntentGate Gateway implements bidirectional mapping: normalizeToolName() strips the IntentGate_ prefix when processing tool requests (the legacy FlowGuard_ prefix from the pre-rename prototype is still accepted), while toElevenLabsToolName() formats schemas for the agent client.',
           codeSnippet: `function normalizeToolName(toolName) {
-  for (const prefix of ['FlowGuard_', 'IntentGate_']) {
+  for (const prefix of ['IntentGate_', 'FlowGuard_']) {
     if (toolName.startsWith(prefix)) {
       return toolName.substring(prefix.length);
     }
@@ -921,7 +931,7 @@ const canonical = normalizeToolName(req.body.tool_name);
       ],
       elevenLabsToolSchemas: [
         {
-          name: 'FlowGuard_orderLookup',
+          name: 'IntentGate_orderLookup',
           description: 'Looks up an order by id: status, delivery date, total and refunded amount. ArmorIQ decides at call time whether this read is allowed.',
           parameters: {
             type: 'object',
@@ -932,7 +942,7 @@ const canonical = normalizeToolName(req.body.tool_name);
           }
         },
         {
-          name: 'FlowGuard_payoutChange',
+          name: 'IntentGate_payoutChange',
           description: 'Attempts to change the bank destination for a payout account. High security risk: ArmorIQ decides at call time; blocked attempts go to the supervisor queue.',
           parameters: {
             type: 'object',
@@ -944,7 +954,7 @@ const canonical = normalizeToolName(req.body.tool_name);
           }
         },
         {
-          name: 'FlowGuard_issueRefund',
+          name: 'IntentGate_issueRefund',
           description: 'Issues a refund against an order. High value: ArmorIQ decides at call time; held refunds require dual supervisor approval and ArmorIQ delegation release.',
           parameters: {
             type: 'object',

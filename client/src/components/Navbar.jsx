@@ -91,7 +91,7 @@ export default function Navbar({
             border: '1px solid var(--border)',
             boxShadow: '0 0 15px rgba(16, 185, 129, 0.2)'
           }}>
-            <img src="/logo.svg" alt="FlowGuard Logo" style={{ width: '24px', height: '24px' }} />
+            <img src="/logo.svg" alt="IntentGate Logo" style={{ width: '24px', height: '24px' }} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
@@ -436,7 +436,7 @@ export default function Navbar({
                 }}>
                   <div style={{ padding: '8px 10px', borderBottom: '1px solid var(--border)' }}>
                     <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--foreground)' }}>{userSession.user?.name || 'beyond_nothing'}</div>
-                    <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>{userSession.user?.email || 'beyond_nothing@flowguard.io'}</div>
+                    <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>{userSession.user?.email || 'beyond_nothing@intentgate.io'}</div>
                     <div style={{ marginTop: '4px' }}>
                       <span className="badge badge-live" style={{ fontSize: '0.62rem', padding: '1px 6px' }}>
                         {userSession.user?.role || 'SUPER_ADMIN'}

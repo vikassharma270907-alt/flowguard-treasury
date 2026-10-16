@@ -1,5 +1,5 @@
 /**
- * FlowGuard - Airwallex Sandbox API Integration Service
+ * IntentGate - Airwallex Sandbox API Integration Service
  * 
  * Interacts with official Airwallex Sandbox endpoints:
  * - Base URL: https://api.sandbox.airwallex.com/api/v1
@@ -273,7 +273,7 @@ class AirwallexService {
     auditLedger.record({
       eventType: 'FX_QUOTE_LOCKED',
       action: 'Simulated FX Quote Locked',
-      actor: 'FlowGuard Mock Adapter',
+      actor: 'IntentGate Mock Adapter',
       requestId,
       summary: `Synthetic locked quote ${mockQuote.quote_id}: Buy ${buyCurrency} ${buyAmount} for ${sellCurrency} ${sellAmount} (rate: ${clientRate})`,
       payload: mockQuote,
