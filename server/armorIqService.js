@@ -7,8 +7,9 @@
  *    and cannot be manipulated by agent drift, hallucination, or prompt injection.
  * 3. Token Verification: issues and verifies cryptographically signed Intent Tokens.
  * 
- * Works with official @armoriq/sdk when ARMORIQ_API_KEY is supplied, with seamless
- * cryptographic simulation fallback for zero-dependency hackathon testing.
+ * Works with the official @armoriq/sdk when ARMORIQ_API_KEY is supplied. With no
+ * key configured the service reports NOT_CONNECTED and refuses to fabricate
+ * tokens or decisions — callers must surface the not-connected state instead.
  */
 
 const crypto = require('crypto');
@@ -27,7 +28,7 @@ class ArmorIQService {
   constructor() {
     this.apiKey = process.env.ARMORIQ_API_KEY || '';
     this.client = null;
-    this.mode = 'MOCK_SIMULATION';
+    this.mode = 'NOT_CONNECTED';
 
     this.initClient();
   }
@@ -55,10 +56,10 @@ class ArmorIQService {
       } catch (err) {
         console.warn('ArmorIQ init fallback:', err.message);
         this.client = null;
-        this.mode = 'MOCK_SIMULATION';
+        this.mode = 'NOT_CONNECTED';
       }
     } else {
-      this.mode = 'MOCK_SIMULATION';
+      this.mode = 'NOT_CONNECTED';
     }
   }
 
@@ -94,15 +95,15 @@ class ArmorIQService {
       }
     }
     return {
-      success: true,
+      success: false,
       live: false,
-      org: { orgId: 'org_flowguard_local', name: "Vikas Sharma's Workspace (FlowGuard)" },
-      agent: { agentId: 'flowguard-treasury-agent-v1', name: 'FlowGuard Treasury Agent' },
-      agents: [
-        { name: 'flowguard-treasury-agent-v1', id: 'flowguard-treasury-agent-v1' },
-        { name: 'elevenlabs-voice-support-agent-v2', id: 'elevenlabs-voice-support-agent-v2' }
-      ],
-      mcps: [{ name: 'flowguard-treasury-mcp' }],
+      connected: false,
+      org: { orgId: null, name: 'ArmorIQ not connected' },
+      agent: { agentId: null, name: 'ArmorIQ not connected' },
+      agents: [],
+      mcps: [],
+      toolMap: {},
+      note: 'ARMORIQ_API_KEY is not configured on this deployment, so no organization, agent or MCP data is available. Nothing here is simulated platform data.',
       mode: this.mode
     };
   }
@@ -153,30 +154,20 @@ class ArmorIQService {
           return { success: true, live: true, intentToken: formattedToken };
         }
       } catch (err) {
-        console.warn('Live mintPlanToken error, falling back to verified simulation:', err.message);
+        console.warn('Live mintPlanToken error:', err.message);
       }
     }
 
-    // Fallback deterministic simulation
-    const planHash = this.hashPlan({ goal, tools, userEmail, agentId });
-    const tokenId = 'aiq_tok_' + uuidv4().substring(0, 16);
-    const intentToken = {
-      token_id: tokenId,
-      tokenId: tokenId,
-      plan_hash: planHash,
-      planHash: planHash,
-      plan_id: 'plan_' + uuidv4().substring(0, 8),
-      signature: 'Ed25519-Verified-Mock',
-      signature_algorithm: 'Ed25519',
-      policy_decision: 'ALLOW',
-      mode: 'ARMORIQ_INTENT_ASSURANCE',
-      user_email: userEmail,
-      issued_at: new Date().toISOString(),
-      expires_at: new Date(Date.now() + 300000).toISOString(),
-      total_steps: tools.length,
-      step_proofs: tools.map((t, idx) => ({ path: `/steps/[${idx}]/tool`, hash: planHash, kind: 'step' }))
+    // No simulation fallback: without a live ArmorIQ response there is no token.
+    // Callers must handle the not-connected state instead of showing a fake one.
+    return {
+      success: false,
+      live: false,
+      connected: false,
+      reason: this.mode === 'ARMORIQ_LIVE'
+        ? 'ArmorIQ token mint failed — see server logs for the SDK error.'
+        : 'ARMORIQ_API_KEY is not configured on this deployment; no ArmorIQ token can be issued.'
     };
-    return { success: true, live: false, intentToken };
   }
 
   /**
@@ -251,36 +242,41 @@ class ArmorIQService {
 
     const planHash = this.hashPlan(canonicalPlan);
 
-    // 2. Policy Enforcement Check
+    // 2. App-side pre-checks (run in our own code — ArmorIQ is NOT involved here;
+    //    the governed tool call that follows is what ArmorIQ decides).
     const violations = [];
 
-    // Policy Rule 1: No critical duplicate permitted
+    // App-side rule 1: no critical duplicate permitted
     if (invoice.isBlocked || invoice.recommendation === 'BLOCKED') {
       violations.push({
         rule: 'DUPLICATE_INVOICE_PROHIBITION',
-        detail: `ArmorIQ Policy Violation: Target invoice ${invoice.invoice_number} is flagged as duplicate risk.`
+        checkedBy: 'app-side rule',
+        detail: `App-side check: invoice ${invoice.invoice_number} is flagged as duplicate risk.`
       });
     }
 
-    // Policy Rule 2: Cannot breach reserve floor
+    // App-side rule 2: cannot breach reserve floor
     if (invoice.recommendation === 'DEFER') {
       violations.push({
         rule: 'RESERVE_FLOOR_PROTECTION',
-        detail: `ArmorIQ Policy Violation: Disbursement breaches configured cash reserve floor ($${reserveFloor.toLocaleString()}).`
+        checkedBy: 'app-side rule',
+        detail: `App-side check: disbursement breaches the configured cash reserve floor ($${reserveFloor.toLocaleString()}).`
       });
     }
 
-    // Policy Rule 3: Single transfer cap check ($50,000 max autonomous limit without multi-sig)
+    // App-side rule 3: single transfer cap ($50,000 max without multi-sig)
     if (invoice.amount > 50000) {
       violations.push({
         rule: 'SINGLE_PAYOUT_THRESHOLD_EXCEEDED',
-        detail: 'ArmorIQ Policy Violation: Payout amount exceeds single-transaction ceiling.'
+        checkedBy: 'app-side rule',
+        detail: 'App-side check: payout amount exceeds the single-transaction ceiling.'
       });
     }
 
     if (violations.length > 0) {
       const decision = {
-        status: 'POLICY_BLOCKED',
+        status: 'APP_SIDE_BLOCKED',
+        checkedBy: 'app-side rules',
         planHash,
         violations,
         latencyMs: Date.now() - startTime
@@ -288,19 +284,19 @@ class ArmorIQService {
 
       auditLedger.record({
         eventType: 'POLICY_EVALUATION',
-        action: 'ArmorIQ Policy Enforcement: Execution Blocked',
-        actor: 'ArmorIQ Agent Governance',
+        action: 'App-side pre-check: execution blocked',
+        actor: 'FlowGuard app-side rules',
         requestId,
         latencyMs: decision.latencyMs,
-        summary: `ArmorIQ intercepted & blocked transfer for ${invoice.invoice_number}: ${violations[0].detail}`,
+        summary: `App-side pre-check blocked the transfer for ${invoice.invoice_number}: ${violations[0].detail}`,
         payload: decision,
         isAirwallexApi: false,
-        mode: this.mode
+        mode: 'APP_SIDE'
       });
 
       return {
         authorized: false,
-        policyStatus: 'POLICY_BLOCKED',
+        policyStatus: 'APP_SIDE_BLOCKED',
         decision
       };
     }
@@ -317,16 +313,43 @@ class ArmorIQService {
       agentId: 'flowguard-treasury-agent-v1'
     });
 
+    if (!mintResult.success || !mintResult.intentToken) {
+      const blockedDecision = {
+        status: 'ARMORIQ_NOT_CONNECTED',
+        planHash,
+        reason: mintResult.reason || 'ArmorIQ token mint failed',
+        latencyMs: Date.now() - startTime
+      };
+
+      auditLedger.record({
+        eventType: 'POLICY_EVALUATION',
+        action: 'Execution halted: ArmorIQ token not issued',
+        actor: 'FlowGuard app-side rules',
+        requestId,
+        latencyMs: blockedDecision.latencyMs,
+        summary: `No ArmorIQ token was issued (${blockedDecision.reason}). The payout was not authorized — no simulated decision was substituted.`,
+        payload: blockedDecision,
+        isAirwallexApi: false,
+        mode: 'ARMORIQ_NOT_CONNECTED'
+      });
+
+      return {
+        authorized: false,
+        policyStatus: 'ARMORIQ_NOT_CONNECTED',
+        decision: blockedDecision
+      };
+    }
+
     const issuedToken = mintResult.intentToken;
     const latencyMs = Date.now() - startTime;
 
     auditLedger.record({
       eventType: 'POLICY_EVALUATION',
-      action: mintResult.live ? 'ArmorIQ Live Intent Verified & Signed' : 'ArmorIQ Intent Token Minted',
-      actor: mintResult.live ? 'ArmorIQ Platform (iap.armoriq.ai)' : 'ArmorIQ Intent Assurance',
+      action: 'ArmorIQ intent token minted',
+      actor: 'ArmorIQ platform (platform.armoriq.ai)',
       requestId,
       latencyMs,
-      summary: `ArmorIQ ${mintResult.live ? 'Live CSRG-IAP' : 'Assurance Engine'} issued intent token ${issuedToken.token_id}. Plan Hash: ${issuedToken.plan_hash.substring(0, 16)}...`,
+      summary: `ArmorIQ issued intent token ${issuedToken.token_id}. Plan hash: ${issuedToken.plan_hash.substring(0, 16)}...`,
       payload: { planHash: issuedToken.plan_hash, intentToken: issuedToken },
       mode: issuedToken.mode
     });

@@ -24,7 +24,7 @@ async function callTool(tool, args) {
   try {
     res = await fetch(url, {
       method: 'POST',
-      headers: { 'content-type': 'application/json', ...(TOKEN ? { 'x-intentgate-token': TOKEN } : {}) },
+      headers: { 'content-type': 'application/json', ...(TOKEN ? { 'x-flowguard-token': TOKEN } : {}) },
       body: JSON.stringify(args),
     });
   } catch (err) {

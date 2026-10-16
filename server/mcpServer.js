@@ -1,16 +1,24 @@
 /**
- * FlowGuard - Official Model Context Protocol (MCP) Server
- * 
- * Implements the Model Context Protocol (MCP spec 2024-11-05) to govern:
- * 1. Read-only Order & Payout Lookups (ArmorIQ Allowed)
- * 2. High-Risk Payout Destination Modification (ArmorIQ Escalate to Supervisor)
- * 3. Multi-Sig Dual-Approval Refunds (ArmorIQ Dual-Quorum Enforcement)
- * 4. Treasury Cash Reserve Floor Assertion ($15,000 USD default)
- * 5. Immutable SHA-256 Merkle Ledger Audit Verification
- * 
- * Works over:
- * - Stdio Transport (CLI mode for Claude Desktop, Cursor, Antigravity IDE)
- * - HTTP / SSE / REST endpoints for Vercel and browser playgrounds
+ * FlowGuard - Model Context Protocol (MCP) Server
+ *
+ * Exposes the SAME three sandbox tools that are registered on the ArmorIQ
+ * platform under `intentgate-support-mcp` (see mcp-server/tools.cjs — single
+ * implementation shared with the standalone stdio/SSE server):
+ *
+ *   - lookup_order   (read-only order lookup)
+ *   - change_payout  (bank destination change)
+ *   - issue_refund   (refund against an order)
+ *
+ * IMPORTANT: these tool implementations contain NO policy logic and return NO
+ * verdict. Whether a call is allowed, held or blocked is decided by ArmorIQ
+ * *before* the call reaches this server, when the call is routed through the
+ * ArmorIQ proxy. A direct call to this server (e.g. /api/mcp/execute from the
+ * playground) bypasses the proxy entirely and therefore carries no ArmorIQ
+ * decision — responses make that explicit.
+ *
+ * Transport:
+ * - HTTP JSON-RPC 2.0 (MCP spec 2024-11-05) via /mcp and /api/mcp
+ * - Stdio transport for CLI / Claude Desktop / Cursor (`node server/mcpServer.js --stdio`)
  */
 
 const { Server } = require('@modelcontextprotocol/sdk/server/index.js');
@@ -22,87 +30,34 @@ const {
   ListResourcesRequestSchema
 } = require('@modelcontextprotocol/sdk/types.js');
 
-const armorIqService = require('./armorIqService');
-const airwallexService = require('./airwallexService');
+const { TOOLS, callTool } = require('../mcp-server/tools.cjs');
 const securityEngine = require('./securityEngine');
 const auditLedger = require('./auditLedger');
 
-// Tool definitions for MCP
-const FLOWGUARD_MCP_TOOLS = [
-  {
-    name: 'order_lookup',
-    description: 'Look up customer invoice, scheduled payout date, and corridor method. Allowed automatically by ArmorIQ read policy.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        orderId: {
-          type: 'string',
-          description: 'Unique order identifier (e.g. ORD-84920)'
-        }
-      },
-      required: ['orderId']
-    }
-  },
-  {
-    name: 'payout_change',
-    description: 'Attempts to modify destination ABA routing or account number for a scheduled disbursement. Intercepted by ArmorIQ; requires supervisor authorization.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        routingNumber: {
-          type: 'string',
-          description: 'New 9-digit ABA routing transit number'
-        },
-        accountNumber: {
-          type: 'string',
-          description: 'New recipient bank account number'
-        },
-        reason: {
-          type: 'string',
-          description: 'Business justification for routing update'
-        }
-      },
-      required: ['routingNumber', 'accountNumber']
-    }
-  },
-  {
-    name: 'issue_refund',
-    description: 'Issues a refund disbursement against an order. High financial risk. Enforces dual-key supervisor quorum (requires 2 approvals).',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        amount: {
-          type: 'number',
-          description: 'Refund amount in USD'
-        },
-        orderId: {
-          type: 'string',
-          description: 'Order reference number'
-        },
-        reason: {
-          type: 'string',
-          description: 'Reason for refund disbursement'
-        }
-      },
-      required: ['amount']
-    }
-  },
+/** The three governed sandbox tools — same contract as the platform registration. */
+const FLOWGUARD_MCP_TOOLS = TOOLS;
+
+/**
+ * App-side utility checks. These are NOT ArmorIQ tools and are never presented
+ * as ArmorIQ decisions; they run locally against sandbox state.
+ */
+const FLOWGUARD_APP_TOOLS = [
   {
     name: 'assert_reserve_floor',
-    description: 'Verifies that total multi-currency wallet balances strictly satisfy the minimum cash reserve floor.',
+    description: 'App-side check: verifies that the sandbox liquid balance satisfies a minimum reserve floor.',
     inputSchema: {
       type: 'object',
       properties: {
         minimumReserveUsd: {
           type: 'number',
-          description: 'Reserve floor ceiling threshold in USD (e.g. 15000)'
+          description: 'Reserve floor threshold in USD (e.g. 15000)'
         }
       }
     }
   },
   {
     name: 'verify_audit_merkle',
-    description: 'Computes cryptographic SHA-256 Merkle root across all recorded ledger events for zero-trust compliance verification.',
+    description: 'App-side check: computes a SHA-256 Merkle root over the local audit ledger events.',
     inputSchema: {
       type: 'object',
       properties: {}
@@ -138,15 +93,7 @@ class FlowGuardMcpServer {
     // 2. Call Tool Execution
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const { name, arguments: args = {} } = request.params;
-      const result = await this.executeTool(name, args);
-      return {
-        content: [
-          {
-            type: 'text',
-            text: JSON.stringify(result, null, 2)
-          }
-        ]
-      };
+      return await this.executeTool(name, args);
     });
 
     // 3. List Prompts (fintech reasoning prompts)
@@ -155,7 +102,7 @@ class FlowGuardMcpServer {
         prompts: [
           {
             name: 'treasury_payout_review',
-            description: 'Evaluate scheduled payouts against cash reserve floor and duplicate invoice anomalies under ArmorIQ governance.',
+            description: 'Evaluate scheduled payouts against cash reserve floor and duplicate invoice anomalies. App-side reasoning prompt; ArmorIQ remains the enforcement point for governed tool calls.',
             arguments: [
               {
                 name: 'reserveFloor',
@@ -170,139 +117,74 @@ class FlowGuardMcpServer {
   }
 
   /**
-   * Core tool execution logic with live ArmorIQ intent verification
+   * Execute one tool call.
+   *
+   * The three governed tools are delegated to the shared sandbox implementation
+   * (mcp-server/tools.cjs) and return raw sandbox results — never a verdict.
+   * A `_meta` note distinguishes direct execution from proxy-governed execution.
+   *
+   * @returns MCP result object: { content: [{type:'text', text}], isError? }
    */
   async executeTool(name, args) {
-    const startTime = Date.now();
+    const governed = FLOWGUARD_MCP_TOOLS.some((t) => t.name === name);
 
-    // Capture plan in Live ArmorIQ platform if client available
-    if (armorIqService && armorIqService.client) {
-      try {
-        armorIqService.client.capturePlan(
-          'flowguard-treasury-mcp-v1',
-          `MCP execution of tool: ${name}`,
-          {
-            goal: `Execute MCP tool ${name}`,
-            steps: [{ action: name, mcp: 'flowguard-treasury-mcp', params: args }]
-          }
-        );
-      } catch (e) {
-        console.warn('ArmorIQ MCP capture plan note:', e.message);
-      }
-    }
-
-    if (name === 'order_lookup') {
-      const orderId = args.orderId || 'ORD-84920';
-      const orderData = {
-        orderId,
-        vendor: 'Acme Global Freight LLC',
-        amount: 18500.00,
-        currency: 'USD',
-        status: 'SCHEDULED_FOR_DISBURSEMENT',
-        disbursementDate: '2026-11-18',
-        corridorMethod: 'US_LOCAL_ACH',
-        accountEnding: '4128',
-        armorIqDecision: 'ALLOWED_READ_POLICY',
-        latencyMs: Date.now() - startTime
-      };
+    if (governed) {
+      const result = callTool(name, args);
 
       auditLedger.record({
         eventType: 'MCP_TOOL_EXECUTION',
-        action: 'MCP Tool: order_lookup',
-        actor: 'MCP Client / Claude Desktop',
-        summary: `MCP executed order_lookup for ${orderId}. Permitted by ArmorIQ read policy.`,
-        payload: orderData,
-        mode: armorIqService.mode
+        action: `MCP tool executed: ${name}`,
+        actor: 'MCP client (direct execution)',
+        summary:
+          `flowguard-treasury-mcp ran "${name}" directly on sandbox data. ` +
+          `No ArmorIQ decision was requested or implied — governed calls run through the ArmorIQ proxy instead.`,
+        payload: { name, args },
+        mode: 'MCP_DIRECT'
       });
-
-      return orderData;
-    }
-
-    if (name === 'payout_change') {
-      const routing = args.routingNumber || '021000021';
-      const account = args.accountNumber || '987654321';
-
-      const decision = {
-        tool: 'payout_change',
-        status: 'ESCALATED_TO_SUPERVISOR',
-        armorIqPolicy: 'UNVERIFIED_WIRE_OVERRIDE_HALTED',
-        riskLevel: 'CRITICAL_SECURITY_RISK',
-        details: {
-          requestedRouting: routing,
-          requestedAccount: account,
-          reason: args.reason || 'MCP client payout destination change request'
-        },
-        message: 'ArmorIQ Security Policy: Payout destination changes cannot be executed autonomously. Escalated to supervisor queue.',
-        requiresSupervisorAction: true,
-        latencyMs: Date.now() - startTime
-      };
-
-      auditLedger.record({
-        eventType: 'MCP_TOOL_EXECUTION',
-        action: 'MCP Tool: payout_change (HALTED BY ARMORIQ)',
-        actor: 'MCP Client / Claude Desktop',
-        summary: `ArmorIQ halted unverified destination change to acct ${account} via MCP. Escalated to supervisor.`,
-        payload: decision,
-        mode: armorIqService.mode
-      });
-
-      return decision;
-    }
-
-    if (name === 'issue_refund') {
-      const amount = Number(args.amount) || 4200.00;
-      const decision = {
-        tool: 'issue_refund',
-        status: 'DUAL_APPROVAL_REQUIRED',
-        amount,
-        currency: 'USD',
-        approvalsRequired: 2,
-        approvalsSigned: 0,
-        policy: 'ARMORIQ_MULTI_SIG_QUORUM',
-        message: `ArmorIQ Policy: Refund of $${amount.toLocaleString()} USD exceeds single-operator limit. Requires two supervisor approvals before payout execution.`,
-        latencyMs: Date.now() - startTime
-      };
-
-      auditLedger.record({
-        eventType: 'MCP_TOOL_EXECUTION',
-        action: 'MCP Tool: issue_refund (QUORUM REQUIRED)',
-        actor: 'MCP Client / Claude Desktop',
-        summary: `Refund of $${amount} USD requested via MCP. ArmorIQ enforces 2 supervisor approvals.`,
-        payload: decision,
-        mode: armorIqService.mode
-      });
-
-      return decision;
-    }
-
-    if (name === 'assert_reserve_floor') {
-      const floor = Number(args.minimumReserveUsd) || 15000.00;
-      const totalLiquid = 42800.00; // base liquid balance
-      const compliant = totalLiquid >= floor;
-
-      const result = {
-        totalLiquidUsd: totalLiquid,
-        reserveFloorUsd: floor,
-        freeBufferUsd: Math.max(0, totalLiquid - floor),
-        compliant,
-        armorIqDecision: compliant ? 'ALLOW_DISBURSEMENT' : 'HALT_LOW_PRIORITY_OUTFLOWS',
-        latencyMs: Date.now() - startTime
-      };
 
       return result;
+    }
+
+    // --- App-side utility checks (not ArmorIQ tools) ---
+    if (name === 'assert_reserve_floor') {
+      const floor = Number(args.minimumReserveUsd) || 15000.0;
+      const totalLiquid = 42800.0; // sandbox liquid balance
+      const compliant = totalLiquid >= floor;
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              totalLiquidUsd: totalLiquid,
+              reserveFloorUsd: floor,
+              freeBufferUsd: Math.max(0, totalLiquid - floor),
+              compliant,
+              checkedBy: 'app-side rule (no ArmorIQ involvement)',
+            })
+          }
+        ]
+      };
     }
 
     if (name === 'verify_audit_merkle') {
       const root = securityEngine.computeAuditMerkleRoot(auditLedger.events);
       return {
-        merkleRoot: root,
-        eventsCount: auditLedger.events.length,
-        algorithm: 'SHA-256 Binary Merkle Tree',
-        verifiedAt: new Date().toISOString()
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              merkleRoot: root,
+              eventsCount: auditLedger.events.length,
+              algorithm: 'SHA-256 binary Merkle tree over local audit ledger',
+              checkedBy: 'app-side check (no ArmorIQ involvement)',
+              verifiedAt: new Date().toISOString()
+            })
+          }
+        ]
       };
     }
 
-    throw new Error(`Unknown MCP Tool: ${name}`);
+    throw Object.assign(new Error(`Unknown MCP tool: ${name}`), { code: -32602 });
   }
 
   /**
@@ -327,5 +209,6 @@ if (require.main === module) {
 
 module.exports = {
   flowguardMcpServer,
-  FLOWGUARD_MCP_TOOLS
+  FLOWGUARD_MCP_TOOLS,
+  FLOWGUARD_APP_TOOLS
 };

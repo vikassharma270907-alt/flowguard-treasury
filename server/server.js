@@ -19,7 +19,8 @@ const airwallexService = require('./airwallexService');
 const armorIqService = require('./armorIqService');
 const securityEngine = require('./securityEngine');
 const voiceGatewayService = require('./voiceGatewayService');
-const { flowguardMcpServer, FLOWGUARD_MCP_TOOLS } = require('./mcpServer');
+const { flowguardMcpServer, FLOWGUARD_MCP_TOOLS, FLOWGUARD_APP_TOOLS } = require('./mcpServer');
+const armorIqEnforcement = require('./armorIqEnforcement');
 const { scanAllInvoices, inspectInvoice } = require('./duplicateDetector');
 const { planPayments } = require('./rulesEngine');
 const auditLedger = require('./auditLedger');
@@ -264,7 +265,8 @@ app.post('/api/voice/gateway/tool-call', async (req, res) => {
   const result = await voiceGatewayService.handleToolCall({
     rawToolName: tool,
     parameters,
-    callerContext
+    callerContext,
+    clientKey: req.ip
   });
   res.json(result);
 });
@@ -336,21 +338,26 @@ app.post('/api/voice/synthesize', async (req, res) => {
 
 // --- FlowGuard Model Context Protocol (MCP) Server Endpoints ---
 app.get('/api/mcp/status', (req, res) => {
+  const connected = !!armorIqEnforcement.getClient();
   res.json({
     name: 'flowguard-treasury-mcp',
     version: '1.0.0',
     protocolVersion: '2024-11-05',
     status: 'ONLINE',
-    armorIqEnforced: armorIqService.isConfigured(),
-    armorIqMode: armorIqService.mode,
-    transport: ['stdio', 'http-sse', 'rest'],
-    toolsCount: FLOWGUARD_MCP_TOOLS.length,
+    transport: ['stdio', 'http-jsonrpc', 'rest'],
+    governedTools: FLOWGUARD_MCP_TOOLS.map((t) => t.name),
+    appSideTools: FLOWGUARD_APP_TOOLS.map((t) => t.name),
+    governance: {
+      enforcedBy: 'ArmorIQ proxy — governed calls are routed through proxy.armoriq.ai before they reach this server',
+      armorIqMode: connected ? 'ARMORIQ_LIVE' : 'NOT_CONFIGURED',
+      note: 'This MCP server holds no policy logic. Direct calls are ungoverned and labelled as such.',
+    },
     onboardingPlatformUrl: 'https://platform.armoriq.ai'
   });
 });
 
 app.get('/api/mcp/tools', (req, res) => {
-  res.json({ tools: FLOWGUARD_MCP_TOOLS });
+  res.json({ tools: FLOWGUARD_MCP_TOOLS, appSideTools: FLOWGUARD_APP_TOOLS });
 });
 
 app.post('/api/mcp/execute', async (req, res) => {
@@ -358,7 +365,21 @@ app.post('/api/mcp/execute', async (req, res) => {
   const toolName = tool || name;
   try {
     const result = await flowguardMcpServer.executeTool(toolName, toolArgs);
-    res.json({ success: true, tool: toolName, result });
+    let payload = null;
+    try {
+      payload = JSON.parse(result.content?.[0]?.text ?? 'null');
+    } catch {
+      payload = result.content?.[0]?.text ?? null;
+    }
+    res.json({
+      success: !result.isError,
+      tool: toolName,
+      direct: true,
+      governed: false,
+      note: 'Direct MCP execution — bypasses the ArmorIQ proxy by design and carries no ArmorIQ decision. Use the governed demo path to see ArmorIQ act.',
+      result: payload,
+      isError: !!result.isError
+    });
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });
   }
@@ -372,16 +393,17 @@ app.get('/api/mcp/config', (req, res) => {
           command: 'node',
           args: ['server/mcpServer.js', '--stdio'],
           env: {
-            ARMORIQ_API_KEY: process.env.ARMORIQ_API_KEY || 'ak_live_your_key_here'
+            ARMORIQ_API_KEY: '<set ARMORIQ_API_KEY in your environment — never commit keys>'
           }
         }
       }
     },
     platformOnboarding: {
       serverName: 'flowguard-treasury-mcp',
-      agentId: 'flowguard-treasury-agent-v1',
+      agentId: process.env.ARMORIQ_AGENT_ID || 'intentgate-agent',
       platformUrl: 'https://platform.armoriq.ai',
-      supportedTools: FLOWGUARD_MCP_TOOLS.map(t => t.name)
+      supportedTools: FLOWGUARD_MCP_TOOLS.map(t => t.name),
+      appSideTools: FLOWGUARD_APP_TOOLS.map(t => t.name)
     }
   });
 });
@@ -389,7 +411,29 @@ app.get('/api/mcp/config', (req, res) => {
 // --- Model Context Protocol (MCP) Standard JSON-RPC 2.0 Handler (/mcp & /api/mcp) ---
 // Compliant with MCP 2024-11-05 specification and docs.armoriq.ai cookbook requirements
 const handleMcpJsonRpc = async (req, res) => {
+  // Optional bearer auth: enforced whenever MCP_AUTH_TOKEN is configured.
+  // The ArmorIQ platform registration sends this token (auth.type = bearer).
+  const expectedToken = process.env.MCP_AUTH_TOKEN;
+  if (expectedToken) {
+    const auth = req.headers.authorization || '';
+    if (auth !== `Bearer ${expectedToken}`) {
+      return res.status(401).json({
+        jsonrpc: '2.0',
+        id: null,
+        error: { code: -32001, message: 'Unauthorized: missing or invalid MCP bearer token.' }
+      });
+    }
+  }
+
   const { jsonrpc, id, method, params = {} } = req.body || {};
+
+  // JSON-RPC notifications (e.g. notifications/initialized) expect no response.
+  if (typeof method === 'string' && method.startsWith('notifications/')) {
+    return res.status(204).end();
+  }
+  if (method === 'ping') {
+    return res.json({ jsonrpc: '2.0', id: id ?? 1, result: {} });
+  }
   if (method === 'tools/list') {
     return res.json({
       jsonrpc: '2.0',
@@ -405,20 +449,13 @@ const handleMcpJsonRpc = async (req, res) => {
       return res.json({
         jsonrpc: '2.0',
         id: id ?? 1,
-        result: {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(toolResult, null, 2)
-            }
-          ]
-        }
+        result: toolResult
       });
     } catch (err) {
       return res.status(400).json({
         jsonrpc: '2.0',
         id: id ?? 1,
-        error: { code: -32000, message: err.message }
+        error: { code: err.code ?? -32000, message: err.message }
       });
     }
   }
@@ -717,9 +754,13 @@ app.post('/api/payments/approve-and-pay', async (req, res) => {
   });
 
   if (!armorIqResult.authorized) {
-    return res.status(403).json({
-      error: 'ARMORIQ_POLICY_BLOCKED',
-      message: armorIqResult.decision?.violations?.[0]?.detail || 'ArmorIQ Agent Policy Enforcement halted execution.',
+    const notConnected = armorIqResult.policyStatus === 'ARMORIQ_NOT_CONNECTED';
+    const appSideBlocked = armorIqResult.policyStatus === 'APP_SIDE_BLOCKED';
+    return res.status(notConnected ? 503 : 403).json({
+      error: notConnected ? 'ARMORIQ_NOT_CONNECTED' : appSideBlocked ? 'APP_SIDE_CHECK_BLOCKED' : 'ARMORIQ_POLICY_BLOCKED',
+      message: notConnected
+        ? armorIqResult.decision?.reason || 'ArmorIQ is not connected on this deployment, so the payout was not authorized. No decision was simulated.'
+        : armorIqResult.decision?.violations?.[0]?.detail || 'Execution halted before any funds moved.',
       armorIq: armorIqResult
     });
   }

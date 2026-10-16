@@ -1,5 +1,5 @@
 /**
- * IntentGate gateway.
+ * FlowGuard gateway (live ArmorIQ enforcement).
  *
  * Two jobs:
  *   1. Tool endpoint for the ElevenLabs agent. Every call is routed through
@@ -22,7 +22,12 @@ import { audit, recordCall, recordHold, recordApproval, updateHold, listPending,
 const PORT = Number(process.env.GATEWAY_PORT || 8790);
 const SHARED_SECRET = process.env.GATEWAY_SHARED_SECRET || '';
 const PLAYGROUND_TOKEN = process.env.PLAYGROUND_TOKEN || '';
-const TOOL_PREFIX = 'IntentGate_';
+/**
+ * ElevenLabs exposes tools with a namespace prefix. FlowGuard_ is the current
+ * prefix; IntentGate_ (earlier prototype) is still accepted so existing agent
+ * configurations keep working.
+ */
+const TOOL_PREFIXES = ['FlowGuard_', 'IntentGate_'];
 const HOLD_TTL_MS = Number(process.env.HOLD_TTL_MS || 15 * 60 * 1000);
 const REQUIRED_APPROVALS = {
   issue_refund: Number(process.env.REQUIRED_APPROVALS_ISSUE_REFUND || 2),
@@ -63,7 +68,10 @@ function readBody(req) {
 
 /** Strip the ElevenLabs tool prefix so the plan uses the MCP's real tool name. */
 export function canonicalToolName(raw) {
-  return raw.startsWith(TOOL_PREFIX) ? raw.slice(TOOL_PREFIX.length) : raw;
+  for (const prefix of TOOL_PREFIXES) {
+    if (raw.startsWith(prefix)) return raw.slice(prefix.length);
+  }
+  return raw;
 }
 
 /* --------------------------------------------------------------------------
@@ -213,7 +221,10 @@ const server = http.createServer(async (req, res) => {
   try {
     /* ---- ElevenLabs tool endpoint -------------------------------------- */
     if (req.method === 'POST' && url.pathname.startsWith('/tools/')) {
-      if (SHARED_SECRET && req.headers['x-intentgate-token'] !== SHARED_SECRET) {
+      // x-flowguard-token is the current shared-secret header; the legacy
+      // x-intentgate-token name from the earlier prototype is still accepted.
+      const presentedToken = req.headers['x-flowguard-token'] || req.headers['x-intentgate-token'];
+      if (SHARED_SECRET && presentedToken !== SHARED_SECRET) {
         log('tool.unauthorized', { path: url.pathname });
         return json(res, 401, { error: 'unauthorized' });
       }
