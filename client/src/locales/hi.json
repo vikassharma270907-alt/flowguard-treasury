@@ -20,8 +20,10 @@
     "switchLanguage": "भाषा बदलें",
     "themeLight": "लाइट",
     "themeDark": "डार्क",
+    "themeSystem": "सिस्टम",
     "switchToLight": "लाइट मोड पर स्विच करें",
-    "switchToDark": "डार्क मोड पर स्विच करें"
+    "switchToDark": "डार्क मोड पर स्विच करें",
+    "switchToSystem": "सिस्टम थीम पर स्विच करें"
   },
   "columns": {
     "product": "उत्पाद",

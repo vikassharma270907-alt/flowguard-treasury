@@ -57,8 +57,17 @@ const SunIcon = () => (
 
 // Inline Accessible Moon SVG Icon (Dark mode trigger)
 const MoonIcon = () => (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+  </svg>
+);
+
+// Inline Accessible System Monitor SVG Icon (System mode trigger)
+const SystemIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+    <line x1="8" y1="21" x2="16" y2="21" />
+    <line x1="12" y1="17" x2="12" y2="21" />
   </svg>
 );
 
@@ -72,10 +81,10 @@ export const BrandLogoIcon = ({ isDark = false }) => (
       width: '24px',
       height: '24px',
       borderRadius: '6px',
-      backgroundColor: isDark ? '#18181b' : '#000000',
-      border: isDark ? '1px solid #3f3f46' : '1px solid #000000',
+      backgroundColor: isDark ? 'var(--surface)' : '#000000',
+      border: isDark ? '1px solid var(--border)' : '1px solid #000000',
       flexShrink: 0,
-      transition: 'background-color 0.15s ease, border-color 0.15s ease'
+      transition: 'background-color 150ms ease, border-color 150ms ease'
     }}
     aria-hidden="true"
   >
@@ -91,7 +100,7 @@ export default function Header({
   onNavigate
 }) {
   const { language, setLanguage, t } = useI18n();
-  const { theme, isDark, toggleTheme } = useTheme();
+  const { theme, resolvedTheme, isDark, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
 
@@ -207,12 +216,12 @@ export default function Header({
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        backgroundColor: isDark ? 'rgba(9, 9, 11, 0.95)' : '#ffffff',
+        backgroundColor: isDark ? 'rgba(11, 11, 12, 0.95)' : 'rgba(255, 255, 255, 0.95)',
         backdropFilter: 'blur(12px)',
-        borderBottom: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
+        borderBottom: '1px solid var(--border)',
         width: '100%',
         fontFamily: "'Inter', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif",
-        transition: 'background-color 0.2s ease, border-color 0.2s ease'
+        transition: 'background-color 150ms ease, border-color 150ms ease'
       }}
     >
       {/* Optional subtle 2px Indian Tricolor Accent Line - DISABLED by default */}
@@ -254,12 +263,12 @@ export default function Header({
               alignItems: 'center',
               gap: '10px',
               textDecoration: 'none',
-              color: isDark ? '#fafafa' : '#111111',
+              color: 'var(--text)',
               fontWeight: 700,
               fontSize: '15px',
               letterSpacing: '-0.02em',
               outlineOffset: '2px',
-              transition: 'color 0.15s ease'
+              transition: 'color 150ms ease'
             }}
             aria-label={`${config.name} home`}
           >
@@ -286,16 +295,16 @@ export default function Header({
                     rel={link.isExternal ? 'noopener noreferrer' : undefined}
                     style={{
                       fontSize: '14px',
-                      color: isActive ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'),
+                      color: isActive ? 'var(--text)' : 'var(--text-muted)',
                       textDecoration: 'none',
                       fontWeight: isActive ? 600 : 400,
-                      transition: 'color 0.15s ease',
+                      transition: 'color 150ms ease',
                       display: 'inline-flex',
                       alignItems: 'center',
                       outlineOffset: '2px'
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = isDark ? '#ffffff' : '#111111')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = isActive ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'))}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = isActive ? 'var(--text)' : 'var(--text-muted)')}
                   >
                     <span>{label}</span>
                     {link.isExternal && <ExternalArrowIcon />}
@@ -306,47 +315,58 @@ export default function Header({
           )}
         </div>
 
-        {/* Right: Theme Toggle (Light/Dark Mode), Language Switcher, Optional Playground Indicator, CTA, Hamburger */}
+        {/* Right: Theme Toggle (Light/Dark/System Mode), Language Switcher, Optional Playground Indicator, CTA, Hamburger */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          {/* Light / Dark Mode Button on Top Right Corner */}
-          <button
-            onClick={toggleTheme}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '12px',
-              fontWeight: 500,
-              color: isDark ? '#f4f4f5' : '#111111',
-              backgroundColor: isDark ? '#18181b' : '#f7f7f5',
-              padding: '4px 9px',
-              borderRadius: '4px',
-              border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
-              cursor: 'pointer',
-              transition: 'background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease',
-              fontFamily: 'inherit',
-              outlineOffset: '2px',
-              lineHeight: 1.2
-            }}
-            aria-label={isDark ? t('nav.switchToLight') : t('nav.switchToDark')}
-            title={isDark ? t('nav.switchToLight') : t('nav.switchToDark')}
-          >
-            {isDark ? (
-              <>
-                <span style={{ color: '#fbbf24', display: 'inline-flex', alignItems: 'center' }} aria-hidden="true">
-                  <SunIcon />
+          {/* Accessible 3-State Theme Toggle (System / Light / Dark) - Min 40x40px tap target */}
+          {(() => {
+            let iconNode = <SystemIcon />;
+            let iconColor = isDark ? 'var(--accent)' : '#16a34a';
+            let titleText = `Current theme: System (${resolvedTheme === 'dark' ? 'Dark' : 'Light'}). Click to switch to Light.`;
+            let ariaText = `Current theme: System. Switch to Light.`;
+
+            if (theme === 'light') {
+              iconNode = <SunIcon />;
+              iconColor = '#d97706';
+              titleText = `Current theme: Light. Click to switch to Dark.`;
+              ariaText = `Current theme: Light. Switch to Dark.`;
+            } else if (theme === 'dark') {
+              iconNode = <MoonIcon />;
+              iconColor = '#22c55e';
+              titleText = `Current theme: Dark. Click to switch to System.`;
+              ariaText = `Current theme: Dark. Switch to System.`;
+            }
+
+            return (
+              <button
+                onClick={toggleTheme}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '40px',
+                  height: '40px',
+                  minWidth: '40px',
+                  minHeight: '40px',
+                  borderRadius: '6px',
+                  backgroundColor: 'var(--surface-muted)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--text)',
+                  cursor: 'pointer',
+                  padding: 0,
+                  transition: 'background-color 150ms ease, border-color 150ms ease, color 150ms ease',
+                  fontFamily: 'inherit',
+                  outlineOffset: '2px',
+                  boxSizing: 'border-box'
+                }}
+                aria-label={ariaText}
+                title={titleText}
+              >
+                <span style={{ color: iconColor, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }} aria-hidden="true">
+                  {iconNode}
                 </span>
-                <span>{t('nav.themeLight')}</span>
-              </>
-            ) : (
-              <>
-                <span style={{ color: '#4f46e5', display: 'inline-flex', alignItems: 'center' }} aria-hidden="true">
-                  <MoonIcon />
-                </span>
-                <span>{t('nav.themeDark')}</span>
-              </>
-            )}
-          </button>
+              </button>
+            );
+          })()}
 
           {/* Language Switcher: "EN | हिन्दी" */}
           <div
@@ -355,12 +375,12 @@ export default function Header({
               alignItems: 'center',
               fontSize: '12px',
               fontWeight: 500,
-              color: isDark ? '#a1a1aa' : '#6b6b6b',
-              backgroundColor: isDark ? '#18181b' : '#f7f7f5',
+              color: 'var(--text-muted)',
+              backgroundColor: 'var(--surface-muted)',
               padding: '3px 8px',
-              borderRadius: '4px',
-              border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
-              transition: 'background-color 0.15s ease, border-color 0.15s ease'
+              borderRadius: '6px',
+              border: '1px solid var(--border)',
+              transition: 'background-color 150ms ease, border-color 150ms ease'
             }}
             aria-label={t('nav.switchLanguage')}
           >
@@ -373,7 +393,7 @@ export default function Header({
                 padding: '2px 4px',
                 fontSize: '12px',
                 fontWeight: language === 'en' ? 700 : 400,
-                color: language === 'en' ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'),
+                color: language === 'en' ? 'var(--text)' : 'var(--text-muted)',
                 fontFamily: 'inherit',
                 outlineOffset: '2px'
               }}
@@ -381,7 +401,7 @@ export default function Header({
             >
               EN
             </button>
-            <span style={{ color: isDark ? '#3f3f46' : '#d1d5db', padding: '0 2px' }} aria-hidden="true">|</span>
+            <span style={{ color: 'var(--border)', padding: '0 2px' }} aria-hidden="true">|</span>
             <button
               onClick={() => setLanguage('hi')}
               style={{
@@ -391,7 +411,7 @@ export default function Header({
                 padding: '2px 4px',
                 fontSize: '12px',
                 fontWeight: language === 'hi' ? 700 : 400,
-                color: language === 'hi' ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'),
+                color: language === 'hi' ? 'var(--text)' : 'var(--text-muted)',
                 fontFamily: "'Noto Sans Devanagari', inherit",
                 outlineOffset: '2px'
               }}
@@ -419,7 +439,7 @@ export default function Header({
                   width: '6px',
                   height: '6px',
                   borderRadius: '50%',
-                  backgroundColor: '#16a34a',
+                  backgroundColor: 'var(--accent)',
                   display: 'inline-block'
                 }}
                 aria-hidden="true"
@@ -430,7 +450,7 @@ export default function Header({
                   fontSize: '11px',
                   fontWeight: 600,
                   letterSpacing: '0.08em',
-                  color: isDark ? '#d4d4d8' : '#333333',
+                  color: 'var(--text)',
                   textTransform: 'uppercase'
                 }}
               >
@@ -453,32 +473,32 @@ export default function Header({
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                backgroundColor: isDark ? '#18181b' : '#ffffff',
-                border: isDark ? '1px solid #3f3f46' : '1px solid #111111',
-                borderRadius: '4px',
+                backgroundColor: 'var(--surface)',
+                border: isDark ? '1px solid #3f3f46' : '1px solid var(--text)',
+                borderRadius: '6px',
                 padding: '7px 14px',
                 fontFamily: "'Inter', sans-serif",
                 fontSize: '13px',
                 fontWeight: 600,
-                color: isDark ? '#fafafa' : '#111111',
+                color: 'var(--text)',
                 textDecoration: 'none',
-                transition: 'background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease',
+                transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease',
                 outlineOffset: '2px'
               }}
               onMouseEnterCapture={(e) => {
-                e.currentTarget.style.backgroundColor = isDark ? '#27272a' : '#111111';
+                e.currentTarget.style.backgroundColor = isDark ? '#262626' : '#111111';
                 e.currentTarget.style.color = '#ffffff';
               }}
               onMouseLeaveCapture={(e) => {
-                e.currentTarget.style.backgroundColor = isDark ? '#18181b' : '#ffffff';
-                e.currentTarget.style.color = isDark ? '#fafafa' : '#111111';
+                e.currentTarget.style.backgroundColor = 'var(--surface)';
+                e.currentTarget.style.color = 'var(--text)';
               }}
             >
               <span>{t('nav.bookDemo')}</span>
             </a>
           )}
 
-          {/* Mobile Hamburger Toggle (<1024px) */}
+          {/* Mobile Hamburger Toggle (<1024px) - Minimum 40x40px tap target */}
           {!isDesktop && (
             <button
               ref={hamburgerButtonRef}
@@ -487,22 +507,25 @@ export default function Header({
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: '34px',
-                height: '34px',
-                background: isDark ? '#18181b' : 'transparent',
-                border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
-                borderRadius: '4px',
-                color: isDark ? '#fafafa' : '#111111',
+                width: '40px',
+                height: '40px',
+                minWidth: '40px',
+                minHeight: '40px',
+                background: 'var(--surface-muted)',
+                border: '1px solid var(--border)',
+                borderRadius: '6px',
+                color: 'var(--text)',
                 cursor: 'pointer',
                 padding: 0,
                 outlineOffset: '2px',
-                transition: 'background-color 0.15s ease, border-color 0.15s ease'
+                boxSizing: 'border-box',
+                transition: 'background-color 150ms ease, border-color 150ms ease'
               }}
               aria-label={mobileMenuOpen ? t('nav.closeMenu') : t('nav.toggleMenu')}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-nav-drawer"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 {mobileMenuOpen ? (
                   <path d="M18 6L6 18M6 6l12 12" />
                 ) : (
@@ -527,15 +550,15 @@ export default function Header({
             top: '57px',
             left: 0,
             width: '100%',
-            backgroundColor: isDark ? '#0d0d11' : '#ffffff',
-            borderBottom: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
+            backgroundColor: 'var(--surface)',
+            borderBottom: '1px solid var(--border)',
             boxShadow: isDark ? '0 12px 24px rgba(0, 0, 0, 0.6)' : '0 12px 24px rgba(0, 0, 0, 0.08)',
             padding: '20px',
             display: 'flex',
             flexDirection: 'column',
             gap: '12px',
             zIndex: 99,
-            transition: 'background-color 0.2s ease, border-color 0.2s ease'
+            transition: 'background-color 150ms ease, border-color 150ms ease'
           }}
         >
           {config.headerNav.map((link) => (
@@ -547,10 +570,10 @@ export default function Header({
               rel={link.isExternal ? 'noopener noreferrer' : undefined}
               style={{
                 fontSize: '15px',
-                color: isDark ? '#fafafa' : '#111111',
+                color: 'var(--text)',
                 textDecoration: 'none',
                 padding: '10px 4px',
-                borderBottom: isDark ? '1px solid #1c1c22' : '1px solid #f5f5f5',
+                borderBottom: '1px solid var(--border)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -578,12 +601,12 @@ export default function Header({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: isDark ? '#ffffff' : '#111111',
-                  borderRadius: '4px',
+                  backgroundColor: 'var(--accent)',
+                  borderRadius: '6px',
                   padding: '12px 16px',
                   fontSize: '13px',
                   fontWeight: 600,
-                  color: isDark ? '#09090b' : '#ffffff',
+                  color: 'var(--accent-foreground)',
                   textDecoration: 'none',
                   outlineOffset: '2px'
                 }}

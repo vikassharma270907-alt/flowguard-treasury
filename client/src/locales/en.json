@@ -19,8 +19,10 @@
     "switchLanguage": "Switch language",
     "themeLight": "Light",
     "themeDark": "Dark",
+    "themeSystem": "System",
     "switchToLight": "Switch to light mode",
-    "switchToDark": "Switch to dark mode"
+    "switchToDark": "Switch to dark mode",
+    "switchToSystem": "Switch to system theme"
   },
   "columns": {
     "product": "Product",

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Shield, Activity, RefreshCw, Key, ChevronDown, CheckCircle2,
   AlertTriangle, Play, Lock, User, LogOut, Sliders, Video, X,
-  ShieldCheck, Clock, ArrowDownCircle, Sun, Moon, Box
+  ShieldCheck, Clock, ArrowDownCircle, Sun, Moon, Box, Laptop
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
@@ -21,7 +21,7 @@ export default function Navbar({
 }) {
   const [scenarioOpen, setScenarioOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const { theme, isDark, toggleTheme } = useTheme();
+  const { theme, resolvedTheme, isDark, toggleTheme } = useTheme();
 
   const scenarios = [
     {
@@ -203,7 +203,7 @@ export default function Navbar({
 
         {/* Actions & Scenario Switcher */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {/* Theme Toggle Button (Light/Dark Mode) */}
+          {/* Theme Toggle Button (3-state System / Light / Dark) */}
           <button
             onClick={toggleTheme}
             className="btn btn-secondary btn-sm"
@@ -213,22 +213,27 @@ export default function Navbar({
               gap: '6px',
               padding: '6px 10px',
               border: '1px solid var(--border)',
-              background: 'var(--secondary)',
-              color: 'var(--foreground)',
+              background: 'var(--surface-muted)',
+              color: 'var(--text)',
               borderRadius: '6px',
               cursor: 'pointer'
             }}
-            aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
-            title={`Current theme: ${theme} (click to switch to ${isDark ? 'light' : 'dark'} mode)`}
+            aria-label={`Current theme: ${theme}. Click to switch theme.`}
+            title={`Current theme: ${theme} (${resolvedTheme}). Click to cycle.`}
           >
-            {isDark ? (
+            {theme === 'system' ? (
               <>
-                <Sun size={14} color="#fbbf24" />
+                <Laptop size={14} color="var(--accent)" />
+                <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>System</span>
+              </>
+            ) : theme === 'light' ? (
+              <>
+                <Sun size={14} color="#d97706" />
                 <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>Light</span>
               </>
             ) : (
               <>
-                <Moon size={14} color="#6366f1" />
+                <Moon size={14} color="#22c55e" />
                 <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>Dark</span>
               </>
             )}

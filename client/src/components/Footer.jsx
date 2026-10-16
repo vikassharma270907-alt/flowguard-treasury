@@ -149,13 +149,13 @@ export default function Footer({
     <footer
       style={{
         width: '100%',
-        backgroundColor: isDark ? '#0d0d11' : '#f7f7f5',
-        borderTop: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
+        backgroundColor: 'var(--surface-muted)',
+        borderTop: '1px solid var(--border)',
         fontFamily: "'Inter', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif",
-        color: isDark ? '#fafafa' : '#111111',
+        color: 'var(--text)',
         padding: '64px 20px 32px 20px',
         marginTop: '60px',
-        transition: 'background-color 0.2s ease, border-color 0.2s ease'
+        transition: 'background-color 150ms ease, border-color 150ms ease, color 150ms ease'
       }}
       aria-label="Site footer"
     >
@@ -181,12 +181,12 @@ export default function Footer({
           <div style={{ gridColumn: isDesktop ? 'auto' : '1 / -1' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '9px', marginBottom: '12px' }}>
               <BrandLogoIcon isDark={isDark} />
-              <span style={{ fontSize: '16px', fontWeight: 700, color: isDark ? '#fafafa' : '#111111', letterSpacing: '-0.02em' }}>
+              <span style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.02em' }}>
                 {config.name}
               </span>
             </div>
 
-            <p style={{ fontSize: '13.5px', color: isDark ? '#a1a1aa' : '#6b6b6b', lineHeight: 1.55, marginBottom: '16px', maxWidth: '340px' }}>
+            <p style={{ fontSize: '13.5px', color: 'var(--text-muted)', lineHeight: 1.55, marginBottom: '16px', maxWidth: '340px' }}>
               {t(config.taglineKey)}
             </p>
 
@@ -200,16 +200,16 @@ export default function Footer({
                   rel="noopener noreferrer"
                   aria-label={social.name}
                   style={{
-                    color: isDark ? '#a1a1aa' : '#6b6b6b',
+                    color: 'var(--text-muted)',
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    transition: 'color 0.15s ease',
+                    transition: 'color 150ms ease',
                     textDecoration: 'none',
                     outlineOffset: '2px'
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = isDark ? '#ffffff' : '#111111')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = isDark ? '#a1a1aa' : '#6b6b6b')}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
                 >
                   <SocialIcon name={social.icon} />
                 </a>
@@ -219,17 +219,17 @@ export default function Footer({
             {/* Contact & Legal Entity Block */}
             <div
               style={{
-                backgroundColor: isDark ? '#18181b' : '#ffffff',
-                border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
+                backgroundColor: 'var(--surface)',
+                border: '1px solid var(--border)',
                 borderRadius: '6px',
                 padding: '14px',
                 fontSize: '12px',
-                color: isDark ? '#d4d4d8' : '#4b5563',
+                color: 'var(--text-muted)',
                 lineHeight: 1.6,
                 maxWidth: '340px'
               }}
             >
-              <div style={{ fontWeight: 600, color: isDark ? '#fafafa' : '#111111', marginBottom: '4px' }}>
+              <div style={{ fontWeight: 600, color: 'var(--text)', marginBottom: '4px' }}>
                 {config.legalEntityName}
               </div>
               <div>{t(config.registrationTextKey)}</div>
@@ -248,14 +248,14 @@ export default function Footer({
                 </div>
               )}
 
-              <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: isDark ? '1px solid #27272a' : '1px solid #f0f0f0' }}>
+              <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid var(--border)' }}>
                 {/* Render email as plain text in the HTML and build mailto link on client */}
                 <div>
-                  <strong>{t('contact.email')}:</strong>{' '}
+                  <strong style={{ color: 'var(--text)' }}>{t('contact.email')}:</strong>{' '}
                   <a
                     href={mailtoHref || `mailto:${SUPPORT_EMAIL}`}
                     aria-label={`Send email to support at ${SUPPORT_EMAIL}`}
-                    style={{ color: isDark ? '#38bdf8' : '#111111', textDecoration: 'none', outlineOffset: '2px' }}
+                    style={{ color: 'var(--accent)', textDecoration: 'none', outlineOffset: '2px' }}
                     onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
                     onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
                   >
@@ -263,7 +263,7 @@ export default function Footer({
                   </a>
                 </div>
                 <div style={{ marginTop: '2px' }}>
-                  <strong>{t('contact.office')}:</strong> <span>{addressText}</span>
+                  <strong style={{ color: 'var(--text)' }}>{t('contact.office')}:</strong> <span>{addressText}</span>
                 </div>
               </div>
             </div>
@@ -305,7 +305,7 @@ export default function Footer({
                   fontWeight: 600,
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
-                  color: isDark ? '#a1a1aa' : '#6b6b6b',
+                  color: 'var(--text-muted)',
                   marginBottom: '14px',
                   margin: '0 0 14px 0'
                 }}
@@ -343,18 +343,18 @@ export default function Footer({
                           aria-label={t('nav.bookDemoAria')}
                           style={{
                             fontSize: '14px',
-                            color: isDark ? '#d4d4d8' : '#444444',
+                            color: 'var(--text-muted)',
                             textDecoration: 'none',
-                            transition: 'color 0.15s ease',
+                            transition: 'color 150ms ease',
                             cursor: 'pointer',
                             outlineOffset: '2px'
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.color = isDark ? '#ffffff' : '#111111';
+                            e.currentTarget.style.color = 'var(--text)';
                             e.currentTarget.style.textDecoration = 'underline';
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.color = isDark ? '#d4d4d8' : '#444444';
+                            e.currentTarget.style.color = 'var(--text-muted)';
                             e.currentTarget.style.textDecoration = 'none';
                           }}
                         >
@@ -373,18 +373,18 @@ export default function Footer({
                         rel={link.isExternal ? 'noopener noreferrer' : undefined}
                         style={{
                           fontSize: '14px',
-                          color: isDark ? '#d4d4d8' : '#444444',
+                          color: 'var(--text-muted)',
                           textDecoration: 'none',
-                          transition: 'color 0.15s ease',
+                          transition: 'color 150ms ease',
                           cursor: 'pointer',
                           outlineOffset: '2px'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.color = isDark ? '#ffffff' : '#111111';
+                          e.currentTarget.style.color = 'var(--text)';
                           e.currentTarget.style.textDecoration = 'underline';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.color = isDark ? '#d4d4d8' : '#444444';
+                          e.currentTarget.style.color = 'var(--text-muted)';
                           e.currentTarget.style.textDecoration = 'none';
                         }}
                       >
@@ -404,7 +404,7 @@ export default function Footer({
         {/* Bottom Bar: Copyright, Made with Heart in India (No emoji flag), System Status */}
         <div
           style={{
-            borderTop: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
+            borderTop: '1px solid var(--border)',
             paddingTop: '20px',
             display: 'flex',
             alignItems: 'center',
@@ -412,7 +412,7 @@ export default function Footer({
             flexWrap: 'wrap',
             gap: '14px',
             fontSize: '12px',
-            color: isDark ? '#a1a1aa' : '#6b6b6b'
+            color: 'var(--text-muted)'
           }}
         >
           <div>
@@ -429,7 +429,7 @@ export default function Footer({
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  color: isDark ? '#d4d4d8' : '#4b5563',
+                  color: 'var(--text-muted)',
                   textDecoration: 'none',
                   fontSize: '11px',
                   fontFamily: "'JetBrains Mono', monospace",
@@ -441,7 +441,7 @@ export default function Footer({
                     width: '6px',
                     height: '6px',
                     borderRadius: '50%',
-                    backgroundColor: '#16a34a',
+                    backgroundColor: 'var(--accent)',
                     display: 'inline-block'
                   }}
                   aria-hidden="true"
@@ -451,7 +451,7 @@ export default function Footer({
             )}
 
             {/* "Made with ♥ in India" text representation - NEVER an emoji flag */}
-            <span style={{ fontWeight: 500, color: isDark ? '#d4d4d8' : '#374151' }}>
+            <span style={{ fontWeight: 500, color: 'var(--text)' }}>
               {t('footer.madeInIndia')}
             </span>
           </div>

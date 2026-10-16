@@ -95,7 +95,7 @@ export default function PricingSection({ onBackToHome, onBookDemo }) {
           fontFamily: "'JetBrains Mono', monospace",
           fontSize: '11px',
           fontWeight: 600,
-          color: '#16a34a',
+          color: 'var(--accent)',
           backgroundColor: 'rgba(22, 163, 74, 0.1)',
           padding: '4px 10px',
           borderRadius: '4px',
@@ -112,23 +112,23 @@ export default function PricingSection({ onBackToHome, onBookDemo }) {
             fontWeight: 800,
             letterSpacing: '-0.02em',
             margin: '0 0 10px 0',
-            color: 'var(--foreground, #111111)'
+            color: 'var(--text)'
           }}
         >
           {t('pricing.headingTitle') || 'Predictable Pricing for Developers & Teams'}
         </h1>
-        <p style={{ fontSize: '15px', color: 'var(--muted-foreground, #6b6b6b)', margin: 0, maxWidth: '640px', marginLeft: 'auto', marginRight: 'auto' }}>
+        <p style={{ fontSize: '15px', color: 'var(--text-muted)', margin: 0, maxWidth: '640px', marginLeft: 'auto', marginRight: 'auto' }}>
           {t('pricing.headingSubtitle') || 'All paid plans include GST-compliant invoicing, rupee settlement, and sovereign data retention.'}
         </p>
 
         {/* Optional Currency Switcher - OFF by default */}
         {enableSwitcher && (
-          <div style={{ marginTop: '20px', display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '3px', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '6px' }}>
+          <div style={{ marginTop: '20px', display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '3px', background: 'var(--surface-muted)', border: '1px solid var(--border)', borderRadius: '6px' }}>
             <button
               onClick={() => handleCurrencyChange('INR')}
               style={{
-                background: selectedCurrency === 'INR' ? '#16a34a' : 'transparent',
-                color: selectedCurrency === 'INR' ? '#ffffff' : 'var(--foreground)',
+                background: selectedCurrency === 'INR' ? 'var(--accent)' : 'transparent',
+                color: selectedCurrency === 'INR' ? 'var(--accent-foreground)' : 'var(--text)',
                 border: 'none',
                 padding: '4px 10px',
                 borderRadius: '4px',
@@ -142,8 +142,8 @@ export default function PricingSection({ onBackToHome, onBookDemo }) {
             <button
               onClick={() => handleCurrencyChange('USD')}
               style={{
-                background: selectedCurrency === 'USD' ? '#16a34a' : 'transparent',
-                color: selectedCurrency === 'USD' ? '#ffffff' : 'var(--foreground)',
+                background: selectedCurrency === 'USD' ? 'var(--accent)' : 'transparent',
+                color: selectedCurrency === 'USD' ? 'var(--accent-foreground)' : 'var(--text)',
                 border: 'none',
                 padding: '4px 10px',
                 borderRadius: '4px',
@@ -175,15 +175,16 @@ export default function PricingSection({ onBackToHome, onBookDemo }) {
             <div
               key={p.id || p.name}
               style={{
-                backgroundColor: 'var(--card, #ffffff)',
-                border: p.popular ? '2px solid #16a34a' : '1px solid var(--border, #e5e5e5)',
+                backgroundColor: 'var(--surface)',
+                border: p.popular ? '2px solid var(--accent)' : '1px solid var(--border)',
                 borderRadius: '8px',
                 padding: '28px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 position: 'relative',
-                boxShadow: p.popular ? '0 10px 30px rgba(22, 163, 74, 0.08)' : 'none'
+                boxShadow: p.popular ? '0 10px 30px rgba(22, 163, 74, 0.08)' : 'none',
+                transition: 'background-color 150ms ease, border-color 150ms ease'
               }}
             >
               {p.popular && (
@@ -192,8 +193,8 @@ export default function PricingSection({ onBackToHome, onBookDemo }) {
                     position: 'absolute',
                     top: '-12px',
                     right: '24px',
-                    backgroundColor: '#16a34a',
-                    color: '#ffffff',
+                    backgroundColor: 'var(--accent)',
+                    color: 'var(--accent-foreground)',
                     fontSize: '11px',
                     fontWeight: 700,
                     fontFamily: "'JetBrains Mono', monospace",
@@ -208,10 +209,10 @@ export default function PricingSection({ onBackToHome, onBookDemo }) {
               )}
 
               <div>
-                <h2 style={{ fontSize: '18px', fontWeight: 700, margin: '0 0 8px 0', color: 'var(--foreground, #111111)' }}>
+                <h2 style={{ fontSize: '18px', fontWeight: 700, margin: '0 0 8px 0', color: 'var(--text)' }}>
                   {planName}
                 </h2>
-                <p style={{ fontSize: '13px', color: 'var(--muted-foreground, #6b6b6b)', margin: '0 0 18px 0', lineHeight: 1.5 }}>
+                <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: '0 0 18px 0', lineHeight: 1.5 }}>
                   {planDesc}
                 </p>
 
@@ -231,8 +232,8 @@ export default function PricingSection({ onBackToHome, onBookDemo }) {
 
                 <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 28px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {(p.featuresKeys || []).map((fKey, i) => (
-                    <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '13.5px', color: 'var(--foreground, #374151)' }}>
-                      <span style={{ color: '#16a34a', fontWeight: 'bold' }}>✓</span>
+                    <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '13.5px', color: 'var(--text)' }}>
+                      <span style={{ color: 'var(--accent)', fontWeight: 'bold' }}>✓</span>
                       <span>{t(fKey)}</span>
                     </li>
                   ))}
@@ -246,15 +247,15 @@ export default function PricingSection({ onBackToHome, onBookDemo }) {
                 style={{
                   display: 'block',
                   textAlign: 'center',
-                  backgroundColor: p.popular ? '#16a34a' : 'transparent',
-                  color: p.popular ? '#ffffff' : 'var(--foreground, #111111)',
-                  border: p.popular ? 'none' : '1px solid var(--border, #111111)',
+                  backgroundColor: p.popular ? 'var(--accent)' : 'transparent',
+                  color: p.popular ? 'var(--accent-foreground)' : 'var(--text)',
+                  border: p.popular ? 'none' : '1px solid var(--border)',
                   borderRadius: '6px',
                   padding: '10px 16px',
                   fontSize: '13px',
                   fontWeight: 600,
                   textDecoration: 'none',
-                  transition: 'all 0.15s ease'
+                  transition: 'background-color 150ms ease, color 150ms ease, border-color 150ms ease'
                 }}
               >
                 {ctaLabel}
@@ -271,7 +272,7 @@ export default function PricingSection({ onBackToHome, onBookDemo }) {
             style={{
               background: 'none',
               border: 'none',
-              color: '#16a34a',
+              color: 'var(--accent)',
               cursor: 'pointer',
               fontSize: '13px',
               fontWeight: 500

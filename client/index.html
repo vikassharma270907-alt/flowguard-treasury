@@ -53,8 +53,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Zero-Flash Color Scheme & Theme Initialization Script -->
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#0b0b0c" id="theme-color-meta" />
     <script>
       (function() {
+        // 1. Restore Language
         try {
           var cookieMatch = document.cookie.match(/(?:^|; )preferred-lang=([^;]*)/);
           var lang = cookieMatch ? decodeURIComponent(cookieMatch[1]) : localStorage.getItem('preferred-lang');
@@ -63,13 +68,37 @@
           }
         } catch (e) {}
 
+        // 2. Zero-flash Theme Restore: Cookie -> localStorage -> System OS
         try {
-          var saved = localStorage.getItem('flowguard-theme');
-          var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-          var theme = saved ? saved : (prefersLight ? 'light' : 'dark');
-          document.documentElement.setAttribute('data-theme', theme);
+          var themeCookie = document.cookie.match(/(?:^|; )preferred-theme=([^;]*)/);
+          var saved = themeCookie ? decodeURIComponent(themeCookie[1]) : (localStorage.getItem('preferred-theme') || localStorage.getItem('flowguard-theme') || 'system');
+          
+          var isDark = true;
+          if (saved === 'light') {
+            isDark = false;
+          } else if (saved === 'dark') {
+            isDark = true;
+          } else {
+            // 'system' or unset
+            isDark = !window.matchMedia || window.matchMedia('(prefers-color-scheme: dark)').matches;
+          }
+
+          var resolved = isDark ? 'dark' : 'light';
+          var docEl = document.documentElement;
+          docEl.classList.remove('light', 'dark');
+          docEl.classList.add(resolved);
+          docEl.setAttribute('data-theme', resolved);
+          docEl.setAttribute('data-theme-setting', saved);
+          docEl.style.colorScheme = resolved;
+
+          var meta = document.getElementById('theme-color-meta');
+          if (meta) {
+            meta.setAttribute('content', isDark ? '#0b0b0c' : '#ffffff');
+          }
         } catch (e) {
+          document.documentElement.classList.add('dark');
           document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.style.colorScheme = 'dark';
         }
       })();
     </script>
