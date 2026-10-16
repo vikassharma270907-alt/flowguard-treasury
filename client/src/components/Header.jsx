@@ -273,35 +273,51 @@ export default function Header({
               style={{ display: 'flex', alignItems: 'center', gap: '24px' }}
               aria-label="Main navigation"
             >
-              {config.headerNav.map((link) => {
-                const isActive = !link.isExternal && (activeTab === link.id || (activeTab === 'overview' && link.href === '/'));
-                const label = t(link.labelKey);
+              {config.headerNav
+                .filter((link) => !(link.id === 'pricing' && config.flags?.showPricing === false))
+                .map((link) => {
+                  const isActive = !link.isExternal && (activeTab === link.id || (activeTab === 'overview' && link.href === '/'));
+                  const label = t(link.labelKey);
 
-                return (
-                  <a
-                    key={link.labelKey}
-                    href={link.href}
-                    onClick={(e) => handleLinkClick(e, link)}
-                    target={link.isExternal ? '_blank' : undefined}
-                    rel={link.isExternal ? 'noopener noreferrer' : undefined}
-                    style={{
-                      fontSize: '14px',
-                      color: isActive ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'),
-                      textDecoration: 'none',
-                      fontWeight: isActive ? 600 : 400,
-                      transition: 'color 0.15s ease',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      outlineOffset: '2px'
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = isDark ? '#ffffff' : '#111111')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = isActive ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'))}
-                  >
-                    <span>{label}</span>
-                    {link.isExternal && <ExternalArrowIcon />}
-                  </a>
-                );
-              })}
+                  return (
+                    <a
+                      key={link.labelKey}
+                      href={link.href}
+                      onClick={(e) => handleLinkClick(e, link)}
+                      target={link.isExternal ? '_blank' : undefined}
+                      rel={link.isExternal ? 'noopener noreferrer' : undefined}
+                      style={{
+                        fontSize: '14px',
+                        color: isActive ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'),
+                        textDecoration: 'none',
+                        fontWeight: isActive ? 600 : 400,
+                        transition: 'color 0.15s ease',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        outlineOffset: '2px'
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = isDark ? '#ffffff' : '#111111')}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = isActive ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'))}
+                    >
+                      <span>{label}</span>
+                      {link.badge && (
+                        <span style={{
+                          fontSize: '0.65rem',
+                          padding: '1px 6px',
+                          borderRadius: '9999px',
+                          background: 'rgba(16, 185, 129, 0.15)',
+                          color: '#34d399',
+                          border: '1px solid rgba(16, 185, 129, 0.3)',
+                          fontWeight: 700
+                        }}>
+                          {link.badge}
+                        </span>
+                      )}
+                      {link.isExternal && <ExternalArrowIcon />}
+                    </a>
+                  );
+                })}
             </nav>
           )}
         </div>
@@ -538,7 +554,9 @@ export default function Header({
             transition: 'background-color 0.2s ease, border-color 0.2s ease'
           }}
         >
-          {config.headerNav.map((link) => (
+          {config.headerNav
+            .filter((link) => !(link.id === 'pricing' && config.flags?.showPricing === false))
+            .map((link) => (
             <a
               key={link.labelKey}
               href={link.href}

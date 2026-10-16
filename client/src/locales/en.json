@@ -1,12 +1,14 @@
 {
   "brand": {
-    "name": "YourBrand",
-    "tagline": "Developer-first infrastructure and treasury tooling built for Indian innovators and global teams.",
+    "name": "FlowGuard",
+    "tagline": "Autonomous Treasury & Intent Vault Governed by ArmorIQ.",
     "registeredText": "Incorporated under the Companies Act, 2013"
   },
   "nav": {
     "home": "Home",
+    "judges": "For Judges",
     "howItWorks": "How it works",
+    "boundaryTest": "Boundary Test",
     "pricing": "Pricing (₹)",
     "docs": "Docs",
     "github": "GitHub",

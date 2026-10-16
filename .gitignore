@@ -11,6 +11,7 @@ client/node_modules
 dist
 client/dist
 .vercel
+scratch/
 
 # Logs
 npm-debug.log*

@@ -1,8 +1,8 @@
-# Veratone — Verifiable Voice AI Governed by ArmorIQ & Powered by ElevenLabs
+# FlowGuard — Autonomous Treasury & Intent Vault Governed by ArmorIQ
 
-> **Tagline**: *Verifiable voice AI, cryptographically governed by ArmorIQ.*  
-> **Description**: An autonomous conversational voice support and treasury agent where ElevenLabs delivers lifelike speech and ArmorIQ cryptographically enforces every real-world action against declared intent.  
-> **Live Production**: [https://flowguard-treasury.vercel.app](https://flowguard-treasury.vercel.app) · **Technical Blueprint**: [`docs/Veratone_Overview.pdf`](docs/Veratone_Overview.pdf)
+> **Tagline**: *Autonomous treasury operations and MCP tools, cryptographically governed by ArmorIQ.*  
+> **Description**: FlowGuard is an autonomous treasury agent and conversational support enclave where ElevenLabs delivers voice telephony and ArmorIQ cryptographically bounds every real-world MCP action to declared intent.  
+> **Live Production**: [https://flowguard-treasury.vercel.app](https://flowguard-treasury.vercel.app) · **Judge Dashboard**: [`/judges`](https://flowguard-treasury.vercel.app/judges) · **Architecture Blueprint**: [`docs/ARMORIQ_MCP_INTEGRATION.md`](file:///d:/hackathon/New%20folder/docs/ARMORIQ_MCP_INTEGRATION.md) · **Real Run Capture**: [`docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json`](file:///d:/hackathon/New%20folder/docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json)
 
 ---
 
@@ -152,10 +152,10 @@ This executes:
 
 ## 🎨 3D Interactive Elements (Three.js 60 FPS)
 
-Veratone features three interactive, hardware-accelerated 3D elements built with Three.js (located in `client/src/components/3d/`):
+FlowGuard features three interactive, hardware-accelerated 3D elements built with Three.js (located in `client/src/components/3d/`):
 
 1. **`RotatingHeroVault.jsx` (Hero Object)**:
-   - Visualizes the Veratone Cryptographic Treasury Vault.
+   - Visualizes the FlowGuard Cryptographic Treasury Vault.
    - Inner crystalline icosahedron core surrounded by an outer holographic protective wireframe cage and an equatorial intent verification ring.
    - Interactive: Tracks cursor hover and drag to tilt perspective; dynamically speeds up on interaction.
 
@@ -179,7 +179,7 @@ Veratone features three interactive, hardware-accelerated 3D elements built with
 
 ## 🌓 Light & Dark Theme System
 
-Veratone implements an adaptive theme engine with strict WCAG AA contrast compliance:
+FlowGuard implements an adaptive theme engine with strict WCAG AA contrast compliance:
 - **Design Tokens**: Standardized CSS variables defined in `client/src/index.css` for both `:root, [data-theme="dark"]` and `[data-theme="light"]`.
 - **Theme Toggle**: Accessible Sun/Moon toggle button in the top navigation bar with `aria-label`.
 - **Zero-Flash First Load**: Inline blocking script in `client/index.html` checks `localStorage` and `prefers-color-scheme` before rendering body.
@@ -190,7 +190,7 @@ Veratone implements an adaptive theme engine with strict WCAG AA contrast compli
 ## 📖 PDF Technical Architectural Guides
 
 Two comprehensive technical architectural documents are generated and committed to the repository:
-- **`Veratone_Overview.pdf`**: [`docs/Veratone_Overview.pdf`](docs/Veratone_Overview.pdf) — Complete 9-page guide covering the ElevenLabs voice layer, ArmorIQ cryptographic intent enforcement, sub-5s timeout protection, comparative tables, and production roadmap.
+- **`FlowGuard_Overview.pdf`**: [`docs/Veratone_Overview.pdf`](docs/Veratone_Overview.pdf) — Complete 9-page guide covering the ElevenLabs voice layer, ArmorIQ cryptographic intent enforcement, sub-5s timeout protection, comparative tables, and production roadmap.
 - **`USER_GUIDE.pdf`**: [`docs/USER_GUIDE.pdf`](docs/USER_GUIDE.pdf) — Complete operator manual for local deployment, 3D controls, theme tokens, and troubleshooting.
 - **Regenerate via scripts**:
   ```bash
@@ -201,7 +201,7 @@ Two comprehensive technical architectural documents are generated and committed 
 ---
 
 ## 📚 Deliverable References
-- [docs/Veratone_Overview.pdf](docs/Veratone_Overview.pdf): Official technical overview of ElevenLabs + ArmorIQ integration.
+- [docs/Veratone_Overview.pdf](docs/Veratone_Overview.pdf): Technical overview of ElevenLabs + ArmorIQ integration.
 - [docs/USER_GUIDE.pdf](docs/USER_GUIDE.pdf): Complete 9-page printed technical architectural guide.
 - [DX_NOTES.md](DX_NOTES.md): Comprehensive documentation of the ElevenLabs ~5s timeout pattern, prefix normalization, measured latencies, 2-approval counter approach, and ArmorIQ SDK error typing gotchas.
 - [DISCLOSURES.md](DISCLOSURES.md): Complete disclosures of all pre-existing libraries, AI assistants, and open-source packages.

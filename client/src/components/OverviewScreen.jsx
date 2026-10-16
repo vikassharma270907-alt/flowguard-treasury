@@ -1,5 +1,7 @@
-import React, { Suspense, lazy } from 'react';
-import { Wallet, ShieldCheck, ArrowUpRight, ArrowDownLeft, Clock, AlertTriangle, CheckCircle2, TrendingUp, DollarSign, PhoneCall, ArrowRight, Shield, Server, ExternalLink, Activity, Box, Sparkles } from 'lucide-react';
+import React, { useState, Suspense, lazy } from 'react';
+import { Wallet, ShieldCheck, ArrowUpRight, ArrowDownLeft, Clock, AlertTriangle, CheckCircle2, TrendingUp, DollarSign, PhoneCall, ArrowRight, Shield, Server, ExternalLink, Activity, Box, Sparkles, Video, Play, X, Info } from 'lucide-react';
+import BoundaryTestSection from './BoundaryTestSection';
+import HowWeUseArmorIQSection from './HowWeUseArmorIQSection';
 
 const RotatingHeroVault = lazy(() => import('./3d/RotatingHeroVault'));
 
@@ -10,6 +12,8 @@ export default function OverviewScreen({
   onNavigate,
   onSimulateDeposit
 }) {
+  const [showDemoVideo, setShowDemoVideo] = useState(false);
+
   const plan = planData?.plan;
   const totalLiquid = plan?.totalLiquidUsd || 0;
   const reserveFloor = plan?.reserveFloor || 15000;
@@ -19,51 +23,125 @@ export default function OverviewScreen({
   const bufferPercent = Math.min(100, Math.round((reserveFloor / (totalLiquid || 1)) * 100));
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      {/* Official Hackathon Rules Compliance Card */}
-      <div className="card" style={{
-        padding: '20px 24px',
-        border: '1px solid rgba(16, 185, 129, 0.35)',
-        boxShadow: 'var(--card-shadow)'
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+      {/* Sandbox Notice Banner - Mandatory Rule 5 */}
+      <div style={{
+        background: 'rgba(56, 189, 248, 0.08)',
+        border: '1px solid rgba(56, 189, 248, 0.25)',
+        borderRadius: '10px',
+        padding: '10px 16px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '10px'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(16, 185, 129, 0.4)' }}>
-              <ShieldCheck size={20} color="#34d399" />
-            </div>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--foreground)', margin: 0 }}>
-                  Hackathon Eligibility Verification: 1 Agent · 1 MCP Server · ArmorIQ Real Enforcement
-                </h3>
-                <span className="badge badge-success" style={{ fontSize: '0.65rem' }}>100% ELIGIBLE</span>
-              </div>
-              <p style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', margin: '2px 0 0 0' }}>
-                Real ArmorIQ workspace integration (Org: <code style={{ color: '#34d399' }}>Vikas Sharma's Workspace</code>) with live MCP JSON-RPC 2.0 endpoint at <code style={{ color: '#38bdf8' }}>/mcp</code>
-              </p>
-            </div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <a
-              href="https://docs.armoriq.ai"
-              target="_blank"
-              rel="noreferrer"
-              className="btn btn-secondary btn-sm"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem' }}
-            >
-              <ExternalLink size={12} color="#a1a1aa" />
-              <span>docs.armoriq.ai</span>
-            </a>
-            <button
-              onClick={() => onNavigate('admin')}
-              className="btn btn-secondary btn-sm"
-              style={{ fontSize: '0.75rem' }}
-            >
-              <span>View MCP & ArmorIQ Console</span>
-              <ArrowRight size={12} />
-            </button>
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#38bdf8', fontSize: '0.82rem', fontWeight: 600 }}>
+          <Info size={16} />
+          <span>Sandbox / test environment. No real funds or customer data.</span>
         </div>
+        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>
+          Synthetic Airwallex balances & test orders (ORD-1001, ACC-4471)
+        </div>
+      </div>
+
+      {/* TIER 1 ITEM 6: First Screen Hero (2 Sentences + 60s Demo Button) */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(9, 13, 22, 0.95) 100%)',
+        border: '1px solid var(--border)',
+        borderRadius: '16px',
+        padding: '40px 32px',
+        boxShadow: '0 16px 40px rgba(0, 0, 0, 0.5)'
+      }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '9999px', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>
+          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#34d399', boxShadow: '0 0 8px #34d399' }}></span>
+          Official Submission · ArmorIQ Flow State Hackathon
+        </div>
+
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1.2, margin: '0 0 16px 0' }}>
+          Autonomous Treasury & Intent Vault Governed by ArmorIQ
+        </h1>
+
+        {/* The 2 Mandated Sentences */}
+        <p style={{ fontSize: '1.15rem', color: '#cbd5e1', lineHeight: 1.6, margin: '0 0 8px 0', fontWeight: 500 }}>
+          FlowGuard is an autonomous treasury and customer support agent that manages multi-currency disbursements, verifies vendor invoices, and handles live telephony inquiries.
+        </p>
+        <p style={{ fontSize: '1.05rem', color: '#94a3b8', lineHeight: 1.6, margin: '0 0 24px 0' }}>
+          ArmorIQ cryptographically bounds every tool invocation to declared intent using Ed25519 tokens and blocks unauthorized bank diversions or prompt injections before any network execution.
+        </p>
+
+        {/* CTA Buttons */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
+          <button
+            onClick={() => setShowDemoVideo(!showDemoVideo)}
+            className="btn btn-primary"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+          >
+            <Play size={16} fill="currentColor" />
+            <span>{showDemoVideo ? 'Hide Demo Video' : 'Watch the 60-Second Demo'}</span>
+          </button>
+
+          <a
+            href="/judges"
+            onClick={(e) => { e.preventDefault(); onNavigate('judges'); }}
+            className="btn btn-secondary"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', fontSize: '0.9rem' }}
+          >
+            <ShieldCheck size={16} color="#34d399" />
+            <span>Judge Inspection Dashboard (/judges)</span>
+            <ArrowRight size={14} />
+          </a>
+
+          <a
+            href="/#boundary-test"
+            onClick={(e) => { e.preventDefault(); const el = document.getElementById('boundary-test'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}
+            className="btn btn-secondary"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 18px', fontSize: '0.9rem' }}
+          >
+            <span>Skip to Boundary Test</span>
+            <ArrowRight size={14} />
+          </a>
+        </div>
+
+        {/* Lazy-Loaded 60-Second Demo Embed Modal / Player */}
+        {showDemoVideo && (
+          <div style={{ marginTop: '24px', background: '#030712', border: '1px solid var(--border)', borderRadius: '12px', padding: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f8fafc', fontWeight: 700, fontSize: '0.95rem' }}>
+                <Video size={18} color="#38bdf8" />
+                <span>FlowGuard 60-Second Architecture & Enforcement Demo</span>
+              </div>
+              <button
+                onClick={() => setShowDemoVideo(false)}
+                style={{ background: 'none', border: 'none', color: 'var(--muted-foreground)', cursor: 'pointer', padding: '4px' }}
+                aria-label="Close demo video"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            
+            <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: '8px', background: '#090d16' }}>
+              <iframe
+                title="FlowGuard 60-Second Hackathon Demo"
+                src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+            </div>
+            <p style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', marginTop: '10px', textAlign: 'center' }}>
+              60-second walkthrough showing real ArmorIQ plan capture, Ed25519 token minting, and proxy enforcement.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* TIER 1 ITEM 5: Centerpiece Boundary Test Section */}
+      <BoundaryTestSection />
+
+      {/* TIER 1 ITEM 7: Architecture & Zero-Bypass Flow Section */}
+      <HowWeUseArmorIQSection />
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '12px' }}>
           {/* Card 1: AI Agent */}
@@ -122,7 +200,6 @@ export default function OverviewScreen({
             </div>
           </div>
         </div>
-      </div>
       {/* Top Banner Alert depending on active scenario */}
       {systemStatus?.activeScenario === 'SCENARIO_B' && (
         <div style={{

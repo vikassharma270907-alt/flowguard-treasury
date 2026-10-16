@@ -1,13 +1,15 @@
 {
   "_note": "DRAFT MACHINE TRANSLATION: This Hindi dictionary requires professional human review and certification before production release.",
   "brand": {
-    "name": "YourBrand",
-    "tagline": "भारतीय डेवलपर्स और उद्यमों के लिए विशेष रूप से निर्मित डेव-टूल्स और ट्रेजरी इन्फ्रास्ट्रक्चर।",
+    "name": "FlowGuard",
+    "tagline": "ArmorIQ द्वारा शासित स्वायत्त ट्रेजरी और इंटेंट वॉल्ट।",
     "registeredText": "कंपनी अधिनियम, 2013 के अंतर्गत निगमित"
   },
   "nav": {
     "home": "होम",
+    "judges": "जजेस टूर",
     "howItWorks": "यह कैसे काम करता है",
+    "boundaryTest": "बाउंड्री टेस्ट",
     "pricing": "मूल्य निर्धारण (₹)",
     "docs": "दस्तावेज़",
     "github": "गिटहब",

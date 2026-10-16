@@ -11,7 +11,7 @@
  */
 
 // SINGLE SOURCE OF TRUTH FOR PRODUCT NAME
-export const PRODUCT_NAME = "YourBrand";
+export const PRODUCT_NAME = "FlowGuard";
 
 // Support email across the entire project
 export const SUPPORT_EMAIL = "beyondnothing01@gmail.com";
@@ -48,6 +48,15 @@ export const siteConfig = {
 
   // Feature Flags - Security and Compliance defaults
   flags: {
+    /**
+     * Hackathon Focus Flags:
+     * Pricing, GST, and Google Login are hidden (config flag off, not deleted)
+     * so judges can focus 100% on ArmorIQ enforcement, MCP tools, and compliance.
+     */
+    showPricing: false,
+    showGst: false,
+    showGoogleLogin: false,
+
     /**
      * Trust badges (Data stored in India, UPI/Razorpay supported, GST-compliant invoices)
      * are config-driven and DISABLED by default.
@@ -108,8 +117,9 @@ export const siteConfig = {
   // Desktop nav visible from lg (1024px) up; collapsible hamburger drawer below 1024px.
   headerNav: [
     { labelKey: "nav.home", href: "/", id: "overview", isExternal: false },
-    { labelKey: "nav.howItWorks", href: "#how-it-works", id: "enclave", isExternal: false },
-    { labelKey: "nav.pricing", href: "#pricing", id: "pricing", isExternal: false },
+    { labelKey: "nav.judges", href: "/judges", id: "judges", isExternal: false, badge: "Tour" },
+    { labelKey: "nav.howItWorks", href: "/how-it-works", id: "enclave", isExternal: false },
+    { labelKey: "nav.boundaryTest", href: "/#boundary-test", id: "boundary", isExternal: false },
     { labelKey: "nav.docs", href: DOCS_URL, isExternal: true },
     { labelKey: "nav.github", href: GITHUB_REPO_URL, isExternal: true }
   ],
@@ -134,10 +144,10 @@ export const siteConfig = {
       titleKey: "columns.product",
       links: [
         { labelKey: "links.quickstart", href: "#quickstart", id: "overview" },
-        { labelKey: "links.howItWorks", href: "#how-it-works", id: "enclave" },
-        { labelKey: "links.apiReference", href: DOCS_URL, isExternal: true },
-        { labelKey: "links.pricingInr", href: "#pricing", id: "pricing" },
-        { labelKey: "links.changelog", href: "#changelog" }
+        { labelKey: "nav.judges", href: "/judges", id: "judges" },
+        { labelKey: "nav.boundaryTest", href: "/#boundary-test", id: "boundary" },
+        { labelKey: "links.howItWorks", href: "/how-it-works", id: "enclave" },
+        { labelKey: "links.apiReference", href: DOCS_URL, isExternal: true }
       ]
     },
     {
@@ -145,10 +155,9 @@ export const siteConfig = {
       links: [
         { labelKey: "links.bookCall", isBooking: true },
         { labelKey: "links.contactSales", href: `mailto:${SUPPORT_EMAIL}` },
-        { labelKey: "links.gstBilling", href: "#gst-billing" },
         { labelKey: "links.enterprise", href: "#enterprise", id: "admin" },
-        { labelKey: "links.partners", href: "#partners" },
-        { labelKey: "links.caseStudies", href: "#case-studies" }
+        { labelKey: "links.partners", href: "https://platform.armoriq.ai", isExternal: true },
+        { labelKey: "links.caseStudies", href: "#boundary-test" }
       ]
     },
     {

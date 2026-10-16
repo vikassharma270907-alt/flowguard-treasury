@@ -14,6 +14,7 @@ import CredentialsModal from './components/CredentialsModal';
 import OAuthModal from './components/OAuthModal';
 import LegalPages from './components/LegalPages';
 import PricingSection from './components/PricingSection';
+import JudgesPage from './components/JudgesPage';
 import { Lock, Shield, ArrowRight } from 'lucide-react';
 
 const LEGAL_ROUTES = ['privacy', 'terms', 'refund-policy', 'grievance-officer', 'dpdp-compliance', 'dpdp-act'];
@@ -21,6 +22,7 @@ const LEGAL_ROUTES = ['privacy', 'terms', 'refund-policy', 'grievance-officer', 
 function getInitialTabFromUrl() {
   if (typeof window === 'undefined') return 'overview';
   const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  if (path === 'judges') return 'judges';
   if (LEGAL_ROUTES.includes(path)) {
     return path === 'dpdp-act' ? 'dpdp-compliance' : path;
   }
@@ -29,6 +31,7 @@ function getInitialTabFromUrl() {
 
   if (window.location.hash) {
     const hash = window.location.hash.replace('#', '');
+    if (hash === 'judges') return 'judges';
     if (hash === 'pricing') return 'pricing';
     if (hash === 'how-it-works') return 'enclave';
     if (hash === 'quickstart') return 'overview';
@@ -101,6 +104,8 @@ export default function App() {
     setActiveTab(tab);
     if (LEGAL_ROUTES.includes(tab)) {
       window.history.pushState(null, '', `/${tab}`);
+    } else if (tab === 'judges') {
+      window.history.pushState(null, '', '/judges');
     } else if (tab === 'pricing') {
       window.history.pushState(null, '', '/#pricing');
     } else if (tab === 'enclave') {
@@ -229,12 +234,12 @@ export default function App() {
     return data;
   };
 
-  const isLegalOrPricing = LEGAL_ROUTES.includes(activeTab) || activeTab === 'pricing';
+  const isLegalOrPricingOrJudges = LEGAL_ROUTES.includes(activeTab) || activeTab === 'pricing' || activeTab === 'judges';
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header activeTab={activeTab} onNavigate={handleNavigate} />
-      {!isLegalOrPricing && (
+      {!isLegalOrPricingOrJudges && (
         <Navbar
           systemStatus={systemStatus}
           activeTab={activeTab}
@@ -250,6 +255,10 @@ export default function App() {
       )}
 
       <main style={{ maxWidth: '1440px', width: '100%', margin: '0 auto', padding: '24px', flex: 1 }}>
+        {activeTab === 'judges' && (
+          <JudgesPage onNavigate={handleNavigate} />
+        )}
+
         {LEGAL_ROUTES.includes(activeTab) && (
           <LegalPages
             docKey={activeTab}
