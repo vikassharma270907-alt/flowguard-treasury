@@ -9,11 +9,12 @@ verdict, token id, hash and delegation id below was returned by
 
 | File | Script | What it shows |
 | --- | --- | --- |
-| `test-enforcement-2026-10-16.txt` | `node --env-file=.env scripts/test-enforcement.mjs` | `lookup_order` **ALLOWED**, `change_payout` **BLOCKED** (HTTP 403, `tool_not_in_allowlist`), `issue_refund` **HELD** (real pending platform delegation) |
-| `test-intent-mismatch-2026-10-16.txt` | `node --env-file=.env scripts/test-intent-mismatch.mjs` | SDK refuses a wrong-action token and an expired token before any network call; the swapped-amount case is reported honestly as **NOT REFUSED** (the platform binds actions, not call arguments — the sandbox tool's own bounds check rejects the amount) |
+| `test-enforcement-2026-10-17.txt` | `node --env-file=.env scripts/test-enforcement.mjs` | Latest live run: `lookup_order` **ALLOWED** (912 ms), `change_payout` **BLOCKED** (`PolicyBlockedException`, HTTP 403), `issue_refund` **HELD** (`delegationId: 03033248-...`) |
+| `test-intent-mismatch-2026-10-17.txt` | `node --env-file=.env scripts/test-intent-mismatch.mjs` | Latest live run: Case 1 `IntentMismatchException`, Case 2 `NOT REFUSED` (bounds check), Case 3 `TokenExpiredException` |
+| `test-enforcement-2026-10-16.txt` | `node --env-file=.env scripts/test-enforcement.mjs` | Baseline production run: `lookup_order` **ALLOWED** (887 ms), `change_payout` **BLOCKED** (HTTP 403), `issue_refund` **HELD** (`eb63aac7-...`) |
+| `test-intent-mismatch-2026-10-16.txt` | `node --env-file=.env scripts/test-intent-mismatch.mjs` | Baseline production run: SDK action-level intent binding and token expiration verification |
 
-Captured: 2026-10-16, 19:06–19:07 UTC (the `expiresAt` values inside the
-captures are authoritative).
+Captured: 2026-10-16 (19:06 UTC) and 2026-10-17 (02:18 UTC). Expiration timestamps and tokens within raw files are authoritative.
 
 ## Revision
 

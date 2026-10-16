@@ -1,0 +1,49 @@
+﻿ArmorIQ SDK initialized: mode=production, user=flowguard-operator, agent=flowguard-agent, iap=https://iap.armoriq.ai, proxy=https://proxy.armoriq.ai, backend=https://api.armoriq.ai
+Intent-binding tests against ArmorIQ
+
+Capturing plan: llm=flowguard-test, prompt=Caller asks where ORD-1001 is...
+Plan captured with 1 steps
+Requesting intent token for plan with 1 steps
+Γ£à API key validated successfully
+Intent token issued: id=5bc0c2cdb86c4e2caa6099923d4b366d, plan_hash=b3e6889fe267adb6..., expires=57.7s, stepProofs=1
+minted lookup_order token  planHash=b3e6889fe267adb661881333d488307f0263e0c2baf3efb3866bf136a62ac1ec
+
+------------------------------------------------------------------------
+Case 1 ΓÇö lookup_order token used to invoke issue_refund
+------------------------------------------------------------------------
+Invoking MCP action: mcp=flowguard-treasury-mcp, action=issue_refund
+  refused by : IntentMismatchException (before any network call)
+  reason     : Action 'issue_refund' not found in the original plan. Plan contains actions: ["lookup_order"]. You can only invoke actions that were included in the plan when you called capturePlan().
+Capturing plan: llm=flowguard-test, prompt=Caller asks for an 89 USD refund on ORD-1001...
+Plan captured with 1 steps
+Requesting intent token for plan with 1 steps
+Intent token issued: id=edbe8950cb724e6990ca30d6f54dbcc9, plan_hash=5ed2b4ec3d598c42..., expires=57.6s, stepProofs=1
+minted issue_refund token  planHash=5ed2b4ec3d598c4234398e2d6b27ce6bff71dbc206c8033209fd148e165e6f9d  (plan amount: 89)
+
+------------------------------------------------------------------------
+Case 2 ΓÇö issue_refund(89) token used to invoke issue_refund(5000)
+------------------------------------------------------------------------
+Invoking MCP action: mcp=flowguard-treasury-mcp, action=issue_refund
+Using Merkle proof from CSRG-IAP for step 0
+MCP invocation returned error payload: issue_refund in 0.96s
+  NOT REFUSED ΓÇö the call reached the upstream tool: {"content":[{"type":"text","text":"{\"error\":\"Refund of 5000 exceeds refundable balance 89 for ORD-1001.\"}"}],"isError":true}
+Capturing plan: llm=flowguard-test, prompt=expiry test...
+Plan captured with 1 steps
+Requesting intent token for plan with 1 steps
+Intent token issued: id=f0886b4516b842d7af1d89c940bf4e24, plan_hash=b3e6889fe267adb6..., expires=2.5s, stepProofs=1
+minted short-lived token    expiresAt=2026-10-16T20:49:01.000Z (5s validity)
+waiting 7s for it to lapseΓÇª
+
+------------------------------------------------------------------------
+Case 3 ΓÇö using a token after it expired
+------------------------------------------------------------------------
+Invoking MCP action: mcp=flowguard-treasury-mcp, action=lookup_order
+  refused by : TokenExpiredException (before any network call)
+  reason     : Intent token expired 4.5s ago
+
+========================================================================
+Case 1 ΓÇö wrong action   : IntentMismatchException
+Case 2 ΓÇö swapped amount : NOT REFUSED (reached upstream)
+Case 3 ΓÇö expired token  : TokenExpiredException
+========================================================================
+ArmorIQ SDK client closed
