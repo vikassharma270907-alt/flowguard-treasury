@@ -24,6 +24,7 @@ const armorIqEnforcement = require('./armorIqEnforcement');
 const { scanAllInvoices, inspectInvoice } = require('./duplicateDetector');
 const { planPayments } = require('./rulesEngine');
 const auditLedger = require('./auditLedger');
+const authService = require('./authService');
 const {
   INITIAL_INVOICES,
   INITIAL_VENDORS,
@@ -82,82 +83,192 @@ let adminOrgMembers = [
   { id: 'usr_04', name: 'Airwallex Agent Bot', email: 'agent@flowguard.bot', role: 'AUTONOMOUS_AGENT', department: 'Automated Operations', status: 'MANAGED_BY_ARMORIQ', lastLogin: 'Continuous' }
 ];
 
-// --- OAuth Authentication Endpoints ---
+// --- ArmorIQ Platform Authentication Endpoints (docs.armoriq.ai/platform/authentication) ---
+
+// 1. Get current session (supports Bearer JWT token in Authorization header)
 app.get('/api/auth/session', (req, res) => {
-  if (currentUserSession) {
-    res.json({ authenticated: true, user: currentUserSession, session: currentUserSession });
-  } else {
-    res.json({ authenticated: false, user: null, session: null });
+  const authHeader = req.headers.authorization || '';
+  if (authHeader.startsWith('Bearer ')) {
+    const token = authHeader.slice(7).trim();
+    const verified = authService.verifyAccessToken(token);
+    if (verified && verified.valid) {
+      return res.json({
+        authenticated: true,
+        user: verified.payload,
+        session: verified.payload,
+        tokenType: 'Bearer',
+        expiresIn: Math.max(0, verified.payload.exp - Math.floor(Date.now() / 1000))
+      });
+    }
   }
+
+  // Fallback to active server session
+  if (currentUserSession) {
+    return res.json({ authenticated: true, user: currentUserSession, session: currentUserSession });
+  }
+
+  res.json({ authenticated: false, user: null, session: null });
 });
 
+// 2. Email & Password Sign In (/platform/authentication/sign-in)
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body || {};
+  if (!email || !password) {
+    return res.status(400).json({ success: false, error: 'Email and password are required' });
+  }
+
+  const result = authService.authenticateWithPassword(email, password);
+  if (!result.success) {
+    auditLedger.record({
+      eventType: 'AUTH_FAILED',
+      action: 'Password Sign-In Rejected',
+      actor: email,
+      summary: `Failed login attempt for ${email}: ${result.error}`
+    });
+    return res.status(401).json(result);
+  }
+
+  currentUserSession = result.user;
+
+  auditLedger.record({
+    eventType: 'AUTH_EVENT',
+    action: 'ArmorIQ Local Sign-In',
+    actor: result.user.name,
+    summary: `Officer ${result.user.name} (${result.user.email}) signed in via ArmorIQ Password Authentication with role ${result.user.role}`,
+    payload: { user: result.user, tokenLifetime: '15m' }
+  });
+
+  res.json(result);
+});
+
+// 3. Sign Up & 6-Digit OTP Verification (/platform/authentication/sign-up)
+app.post('/api/auth/signup', (req, res) => {
+  const { email, name, password, organization } = req.body || {};
+  if (!email) {
+    return res.status(400).json({ success: false, error: 'Email is required' });
+  }
+
+  const result = authService.initiateSignUp(email, name, password, organization);
+  if (!result.success) {
+    return res.status(400).json(result);
+  }
+
+  auditLedger.record({
+    eventType: 'AUTH_EVENT',
+    action: 'Account Signup Initiated',
+    actor: email,
+    summary: `New account registered for ${email}. 6-digit verification OTP issued.`
+  });
+
+  res.json(result);
+});
+
+// 4. Verify OTP (/platform/authentication/sign-up)
+app.post('/api/auth/verify-otp', (req, res) => {
+  const { email, otp } = req.body || {};
+  if (!email || !otp) {
+    return res.status(400).json({ success: false, error: 'Email and 6-digit OTP code are required' });
+  }
+
+  const result = authService.verifyOtp(email, otp);
+  if (!result.success) {
+    return res.status(400).json(result);
+  }
+
+  currentUserSession = result.user;
+
+  auditLedger.record({
+    eventType: 'AUTH_EVENT',
+    action: 'Account OTP Verified & Activated',
+    actor: result.user.name,
+    summary: `Email ${email} verified with OTP. Account activated under organization ${result.user.organization}.`
+  });
+
+  res.json(result);
+});
+
+// 5. Automatic Token Refresh (/platform/authentication/sessions)
+app.post('/api/auth/refresh', (req, res) => {
+  const { refreshToken } = req.body || {};
+  if (!refreshToken) {
+    return res.status(400).json({ success: false, error: 'Refresh token required' });
+  }
+
+  const result = authService.refreshSession(refreshToken);
+  if (!result.success) {
+    return res.status(401).json(result);
+  }
+
+  res.json(result);
+});
+
+// 6. OAuth Sign In (Google / GitHub / ArmorIQ SSO)
 app.post('/api/auth/oauth/login', (req, res) => {
-  const { provider = 'Google Workspace OAuth', email = 'beyond_nothing@flowguard.io', name = 'beyond_nothing' } = req.body;
-  currentUserSession = {
-    id: 'usr_' + uuidv4().substring(0, 8),
-    name: name,
-    email: email,
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
-    role: 'SUPER_ADMIN',
-    provider: provider,
-    authenticatedAt: new Date().toISOString()
-  };
+  const { provider = 'Google Workspace OAuth', email = 'beyond_nothing@flowguard.io', name = 'beyond_nothing', avatar } = req.body || {};
+
+  const result = authService.authenticateWithOAuth(provider, email, name, avatar);
+  currentUserSession = result.user;
 
   auditLedger.record({
     eventType: 'AUTH_EVENT',
     action: `OAuth Sign-In via ${provider}`,
-    actor: currentUserSession.name,
-    summary: `Admin authenticated via ${provider} with role ${currentUserSession.role}`,
-    payload: { user: currentUserSession }
+    actor: result.user.name,
+    summary: `Admin authenticated via ${provider} with role ${result.user.role}`,
+    payload: { user: result.user, provider }
   });
 
-  res.json({ success: true, authenticated: true, user: currentUserSession, session: currentUserSession });
+  res.json(result);
 });
 
+// 7. Google Identity Services (PKCE)
 app.post('/api/auth/google', (req, res) => {
-  const { credential, email, name, avatar, googleId } = req.body;
-  
-  const resolvedEmail = email || 'beyond_nothing@flowguard.io';
-  const resolvedName = name || (resolvedEmail.includes('@') ? resolvedEmail.split('@')[0] : 'Google User');
-  const resolvedAvatar = avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(resolvedName)}`;
-  
-  currentUserSession = {
-    id: 'usr_g_' + (googleId || uuidv4().substring(0, 8)),
-    name: resolvedName,
-    email: resolvedEmail,
-    avatar: resolvedAvatar,
-    role: 'SUPER_ADMIN',
-    provider: 'Google Identity Services (OAuth 2.0 PKCE)',
-    googleVerified: true,
-    authenticatedAt: new Date().toISOString()
-  };
+  const { email = 'beyond_nothing@flowguard.io', name, avatar } = req.body || {};
+  const result = authService.authenticateWithOAuth('Google Identity Services (OAuth 2.0 PKCE)', email, name, avatar);
+  currentUserSession = result.user;
 
   auditLedger.record({
     eventType: 'AUTH_EVENT',
     action: 'Google OAuth Real-Time Sign-In',
-    actor: currentUserSession.name,
-    summary: `Verified Google identity for ${resolvedEmail} with role SUPER_ADMIN`,
-    payload: { user: currentUserSession, provider: 'Google Identity Services' }
+    actor: result.user.name,
+    summary: `Verified Google identity for ${email} with role ${result.user.role}`,
+    payload: { user: result.user, provider: 'Google Identity Services' }
   });
 
-  res.json({
-    success: true,
-    authenticated: true,
-    user: currentUserSession,
-    session: currentUserSession
-  });
+  res.json(result);
 });
 
+// 8. Device Approval Flow (/platform/authentication/device-approval)
+app.post('/api/auth/device/request', (req, res) => {
+  const { clientName } = req.body || {};
+  const request = authService.createDeviceCodeRequest(clientName);
+  res.json({ success: true, ...request });
+});
+
+app.post('/api/auth/device/approve', (req, res) => {
+  const { userCode, apiKey } = req.body || {};
+  const result = authService.approveDeviceCode(userCode, apiKey);
+
+  auditLedger.record({
+    eventType: 'AUTH_EVENT',
+    action: 'Device Connection Approved',
+    actor: currentUserSession ? currentUserSession.name : 'Authorized Officer',
+    summary: `Approved device connection for user code "${userCode}". Bound to API key ${apiKey || 'production'}.`
+  });
+
+  res.json(result);
+});
+
+// 9. Sign Out
 app.post('/api/auth/logout', (req, res) => {
   const prevUser = currentUserSession?.name || 'Admin';
   currentUserSession = null;
   auditLedger.record({
     eventType: 'AUTH_EVENT',
-    action: 'Admin Signed Out',
+    action: 'Officer Signed Out',
     actor: prevUser,
-    summary: 'Session terminated by user.'
+    summary: 'ArmorIQ session terminated by user.'
   });
-  res.json({ success: true });
+  res.json({ success: true, message: 'Logged out successfully' });
 });
 
 // --- Admin Governance & Telemetry Endpoints ---

@@ -75,7 +75,9 @@ export default function App() {
 
   const checkAuthSession = async () => {
     try {
-      const res = await fetch('/api/auth/session');
+      const token = typeof window !== 'undefined' ? localStorage.getItem('armoriq_access_token') : null;
+      const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+      const res = await fetch('/api/auth/session', { headers });
       const data = await res.json();
       if (data.authenticated && data.user) {
         setUserSession({ authenticated: true, user: data.user });
@@ -129,6 +131,10 @@ export default function App() {
       await fetch('/api/auth/logout', { method: 'POST' });
     } catch (err) {
       console.error(err);
+    }
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('armoriq_access_token');
+      localStorage.removeItem('armoriq_refresh_token');
     }
     setUserSession({ authenticated: false, user: null });
   };
