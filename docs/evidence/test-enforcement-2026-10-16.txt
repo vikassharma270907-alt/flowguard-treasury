@@ -1,4 +1,4 @@
-ArmorIQ SDK initialized: mode=production, user=intentgate-operator, agent=intentgate-agent, iap=https://iap.armoriq.ai, proxy=https://proxy.armoriq.ai, backend=https://api.armoriq.ai
+ArmorIQ SDK initialized: mode=production, user=flowguard-operator, agent=flowguard-agent, iap=https://iap.armoriq.ai, proxy=https://proxy.armoriq.ai, backend=https://api.armoriq.ai
 Capturing plan: llm=gpt-4, prompt=Where is my order ORD-1001?...
 Plan captured with 1 steps
 Capturing plan: llm=gpt-4, prompt=Please send my payouts to GB29 NWBK 6016 1331 9268...
@@ -7,33 +7,35 @@ Capturing plan: llm=gpt-4, prompt=I want a refund for ORD-1001...
 Plan captured with 1 steps
 
 ========================================================================
-lookup_order  (intentgate-support-mcp -> lookup_order)
+lookup_order  (flowguard-treasury-mcp -> lookup_order)
 ========================================================================
 Requesting intent token for plan with 1 steps
 ✅ API key validated successfully
-Intent token issued: id=4c943b2005434bec973ef7889d06000a, plan_hash=b3e6889fe267adb6..., expires=57.4s, stepProofs=1
+Intent token issued: id=951f7625efe24fb18039b62fadfed910, plan_hash=b3e6889fe267adb6..., expires=58.0s, stepProofs=1
 planHash : b3e6889fe267adb661881333d488307f0263e0c2baf3efb3866bf136a62ac1ec
-tokenId  : 4c943b2005434bec973ef7889d06000a
-steps    : 1  expiresAt: 2026-10-16T15:33:11.000Z
-policyValidation: {"domain":"avi-england-vessel-touched.trycloudflare.com","requested_tools":["lookup_order"],"allowed_tools":["issue_refund","lookup_order"],"denied_tools":[],"denied_reasons":[],"matched_policies":[{"policyId":"a84b9fb7-62f2-4154-a4c5-e696ec42a146","policyName":"cli-intentgate-agent-intentgate-support-mcp","priority":100,"defaultEnforcementAction":"block","rules":{}},{"policyId":"a8faeed5-262a-4fbf-832d-29f404cd1a76","policyName":"cli-c8bcbe51-dea4-4459-9fd8-38f88ebc714e-intentgate-support-mcp","priority":100,"defaultEnforcementAction":"block","rules":{}}],"default_enforcement_action":"block","decision_source":"opa","policy_ref":"armoriq:61623de54e4f:1a14557a211"}
-mint     : 2882 ms
-Invoking MCP action: mcp=intentgate-support-mcp, action=lookup_order
+tokenId  : 951f7625efe24fb18039b62fadfed910
+steps    : 1  expiresAt: 2026-10-16T19:07:26.000Z
+policyValidation: {"domain":"flowguard-treasury.vercel.app","requested_tools":["lookup_order"],"allowed_tools":["issue_refund","lookup_order"],"denied_tools":[],"denied_reasons":[],"matched_policies":[{"policyId":"23f8f304-0f6b-44a0-9bba-fa9886ca611b","policyName":"flowguard-treasury-allowlist","priority":100,"defaultEnforcementAction":"block","rules":{}}],"default_enforcement_action":"block","decision_source":"opa","policy_ref":"armoriq:5081adc84221:1a1461bc656"}
+mint     : 2471 ms
+Invoking MCP action: mcp=flowguard-treasury-mcp, action=lookup_order
 Using Merkle proof from CSRG-IAP for step 0
+MCP invocation succeeded: lookup_order in 0.89s
 
-  RESULT   : UNEXPECTED MCPInvocationException: MCP invocation failed: [object Object]
-  http status: 502
+  RESULT   : ALLOWED by ArmorIQ
+  status   : success   verified: true   exec: 0.885s   round-trip: 887 ms
+  payload  : {"content":[{"type":"text","text":"{\"found\":true,\"order\":{\"order_id\":\"ORD-1001\",\"customer\":\"Dana Whitfield\",\"status\":\"delivered\",\"placed_on\":\"2026-09-28\",\"delivered_on\":\"2026-10-03\",\"items\":[{\"sku\":\"SB-220\",\"name\":\"Studio Boom Arm\",\"qty\":1,\"unit_price\":89}],\"total\":89,\"currency\":\"USD\",\"refunded\":0,\"refundable\":89,\"payout_account_id\":\"ACC-4471\"}}"}]}
 
 ========================================================================
-change_payout  (intentgate-support-mcp -> change_payout)
+change_payout  (flowguard-treasury-mcp -> change_payout)
 ========================================================================
 Requesting intent token for plan with 1 steps
-Intent token issued: id=13120f5be39945d081b8aaa6621a7c31, plan_hash=b086c9aeb8da1343..., expires=57.2s, stepProofs=1
+Intent token issued: id=3a280ab1a5f74beea90b4b459b71b498, plan_hash=b086c9aeb8da1343..., expires=57.5s, stepProofs=1
 planHash : b086c9aeb8da13433d03ae96a34433d6c5af56a6e1019c4bd77ef62846b791a8
-tokenId  : 13120f5be39945d081b8aaa6621a7c31
-steps    : 1  expiresAt: 2026-10-16T15:33:14.000Z
-policyValidation: {"domain":"avi-england-vessel-touched.trycloudflare.com","requested_tools":["change_payout"],"allowed_tools":["issue_refund","lookup_order"],"denied_tools":[],"denied_reasons":[],"matched_policies":[{"policyId":"a84b9fb7-62f2-4154-a4c5-e696ec42a146","policyName":"cli-intentgate-agent-intentgate-support-mcp","priority":100,"defaultEnforcementAction":"block","rules":{}},{"policyId":"a8faeed5-262a-4fbf-832d-29f404cd1a76","policyName":"cli-c8bcbe51-dea4-4459-9fd8-38f88ebc714e-intentgate-support-mcp","priority":100,"defaultEnforcementAction":"block","rules":{}}],"default_enforcement_action":"block","decision_source":"opa","policy_ref":"armoriq:61623de54e4f:1a14557ae41"}
-mint     : 2395 ms
-Invoking MCP action: mcp=intentgate-support-mcp, action=change_payout
+tokenId  : 3a280ab1a5f74beea90b4b459b71b498
+steps    : 1  expiresAt: 2026-10-16T19:07:29.000Z
+policyValidation: {"domain":"flowguard-treasury.vercel.app","requested_tools":["change_payout"],"allowed_tools":["issue_refund","lookup_order"],"denied_tools":[],"denied_reasons":[],"matched_policies":[{"policyId":"23f8f304-0f6b-44a0-9bba-fa9886ca611b","policyName":"flowguard-treasury-allowlist","priority":100,"defaultEnforcementAction":"block","rules":{}}],"default_enforcement_action":"block","decision_source":"opa","policy_ref":"armoriq:5081adc84221:1a1461bd394"}
+mint     : 2551 ms
+Invoking MCP action: mcp=flowguard-treasury-mcp, action=change_payout
 Using Merkle proof from CSRG-IAP for step 0
 
   RESULT   : BLOCKED by ArmorIQ policy
@@ -44,25 +46,25 @@ Using Merkle proof from CSRG-IAP for step 0
   policy   : null
 
 ========================================================================
-issue_refund  (intentgate-support-mcp -> issue_refund)
+issue_refund  (flowguard-treasury-mcp -> issue_refund)
 ========================================================================
 Requesting intent token for plan with 1 steps
-Intent token issued: id=3392aed348b644ffbd9adc674ae89d1a, plan_hash=5ed2b4ec3d598c42..., expires=56.6s, stepProofs=1
+Intent token issued: id=df327b9275b74d43b008c4e1e10ccf00, plan_hash=5ed2b4ec3d598c42..., expires=57.3s, stepProofs=1
 planHash : 5ed2b4ec3d598c4234398e2d6b27ce6bff71dbc206c8033209fd148e165e6f9d
-tokenId  : 3392aed348b644ffbd9adc674ae89d1a
-steps    : 1  expiresAt: 2026-10-16T15:33:18.000Z
-policyValidation: {"domain":"avi-england-vessel-touched.trycloudflare.com","requested_tools":["issue_refund"],"allowed_tools":["issue_refund","lookup_order"],"denied_tools":[],"denied_reasons":[],"matched_policies":[{"policyId":"a84b9fb7-62f2-4154-a4c5-e696ec42a146","policyName":"cli-intentgate-agent-intentgate-support-mcp","priority":100,"defaultEnforcementAction":"block","rules":{}},{"policyId":"a8faeed5-262a-4fbf-832d-29f404cd1a76","policyName":"cli-c8bcbe51-dea4-4459-9fd8-38f88ebc714e-intentgate-support-mcp","priority":100,"defaultEnforcementAction":"block","rules":{}}],"default_enforcement_action":"block","decision_source":"opa","policy_ref":"armoriq:61623de54e4f:1a14557c047"}
-mint     : 3865 ms
+tokenId  : df327b9275b74d43b008c4e1e10ccf00
+steps    : 1  expiresAt: 2026-10-16T19:07:32.000Z
+policyValidation: {"domain":"flowguard-treasury.vercel.app","requested_tools":["issue_refund"],"allowed_tools":["issue_refund","lookup_order"],"denied_tools":[],"denied_reasons":[],"matched_policies":[{"policyId":"23f8f304-0f6b-44a0-9bba-fa9886ca611b","policyName":"flowguard-treasury-allowlist","priority":100,"defaultEnforcementAction":"block","rules":{}}],"default_enforcement_action":"block","decision_source":"opa","policy_ref":"armoriq:5081adc84221:1a1461be00c"}
+mint     : 2459 ms
 
-  RESULT   : HELD by ArmorIQ policy (human approval required)
-  exception: PolicyHoldException (delegation created on ArmorIQ platform)
+  RESULT   : HELD — delegation request created on the ArmorIQ platform
+  mechanism: platform delegation API (POST /delegation/request) — releases only after supervisor approval
   reason   : Delegation request created. Awaiting approval from senior officer.
-  delegationId: 390e0448-b1bf-4679-85d4-b1ddc735e2c7  status: pending
+  delegationId: eb63aac7-349a-4cf0-a156-a2f3c469f427  status: pending
 
 ========================================================================
 SUMMARY
 ========================================================================
-  lookup_order     ERROR MCPInvocationException  (748 ms)
-  change_payout    BLOCKED  (721 ms)
-  issue_refund     HELD  (947 ms)
+  lookup_order     ALLOWED  (887 ms)
+  change_payout    BLOCKED  (764 ms)
+  issue_refund     HELD  (604 ms)
 ArmorIQ SDK client closed

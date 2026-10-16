@@ -3,22 +3,26 @@
  *
  *   node --env-file=.env scripts/test-intent-mismatch.mjs
  *
- * Case 1 — different tool: token minted for a lookup_order plan, then used to
- *          invoke issue_refund. Refused before anything executes.
- * Case 2 — same tool, different arguments: token minted for a refund of 89,
- *          then used to invoke a refund of 5,000. This is the attack the plan
- *          hash / CSRG binding exists to stop.
+ * Case 1 — different action: a token minted for a lookup_order plan is used to
+ *          invoke issue_refund. Refused by the SDK before any network call
+ *          (IntentMismatchException).
+ * Case 2 — same action, different arguments: a token minted for a refund of 89
+ *          is used to invoke a refund of 5,000. Observed honestly: the platform
+ *          binds the action but not the call arguments, so the call reaches the
+ *          sandbox tool, whose own bounds check rejects the amount. Reported as
+ *          NOT REFUSED rather than dressed up as an interception.
  * Case 3 — expired token: minted with a 5 second validity, used after it lapses.
+ *          Refused by the SDK before any network call (TokenExpiredException).
  *
- * Nothing here is mocked: every refusal is what the SDK or the ArmorIQ proxy
+ * Nothing here is mocked: every outcome is what the SDK or the ArmorIQ platform
  * actually returned.
  */
 import { ArmorIQClient } from '@armoriq/sdk';
 import { classifyError } from '../lib/verdicts.mjs';
 
 const MCP = process.env.ARMORIQ_MCP_ID;
-const AGENT = process.env.ARMORIQ_AGENT_ID || 'intentgate-agent';
-const USER = process.env.USER_ID || 'intentgate-operator';
+const AGENT = process.env.ARMORIQ_AGENT_ID || 'flowguard-agent';
+const USER = process.env.USER_ID || 'flowguard-operator';
 
 const client = new ArmorIQClient({ apiKey: process.env.ARMORIQ_API_KEY, userId: USER, agentId: AGENT });
 
@@ -27,7 +31,7 @@ function plan(action, inputs, goal) {
 }
 
 async function mint(action, inputs, goal) {
-  const capture = client.capturePlan('intentgate-test', goal, plan(action, inputs, goal));
+  const capture = client.capturePlan('flowguard-test', goal, plan(action, inputs, goal));
   return client.getIntentToken(capture);
 }
 
@@ -35,8 +39,8 @@ async function report(label, fn) {
   console.log(`\n${'-'.repeat(72)}\n${label}\n${'-'.repeat(72)}`);
   try {
     const out = await fn();
-    console.log(`  ALLOWED (unexpected): ${JSON.stringify(out).slice(0, 200)}`);
-    return 'ALLOWED';
+    console.log(`  NOT REFUSED — the call reached the upstream tool: ${JSON.stringify(out).slice(0, 200)}`);
+    return 'NOT REFUSED (reached upstream)';
   } catch (err) {
     const info = classifyError(err);
     console.log(`  refused by : ${info.errorName}${info.httpStatus ? ` (HTTP ${info.httpStatus})` : ' (before any network call)'}`);
@@ -64,7 +68,7 @@ const case2 = await report('Case 2 — issue_refund(89) token used to invoke iss
 });
 
 // --- Case 3: expired token --------------------------------------------------
-const shortCapture = client.capturePlan('intentgate-test', 'expiry test', plan('lookup_order', { order_id: 'ORD-1002' }, 'expiry test'));
+const shortCapture = client.capturePlan('flowguard-test', 'expiry test', plan('lookup_order', { order_id: 'ORD-1002' }, 'expiry test'));
 const shortToken = await client.getIntentToken(shortCapture, undefined, 5);
 console.log(`minted short-lived token    expiresAt=${new Date(shortToken.expiresAt * 1000).toISOString()} (5s validity)`);
 console.log('waiting 7s for it to lapse…');
@@ -75,9 +79,9 @@ const case3 = await report('Case 3 — using a token after it expired', async ()
 });
 
 console.log(`\n${'='.repeat(72)}`);
-console.log(`Case 1 refused by: ${case1}`);
-console.log(`Case 2 refused by: ${case2}`);
-console.log(`Case 3 refused by: ${case3}`);
+console.log(`Case 1 — wrong action   : ${case1}`);
+console.log(`Case 2 — swapped amount : ${case2}`);
+console.log(`Case 3 — expired token  : ${case3}`);
 console.log('='.repeat(72));
 
 client.close();

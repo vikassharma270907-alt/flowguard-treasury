@@ -1,49 +1,49 @@
-ArmorIQ SDK initialized: mode=production, user=intentgate-operator, agent=intentgate-agent, iap=https://iap.armoriq.ai, proxy=https://proxy.armoriq.ai, backend=https://api.armoriq.ai
+ArmorIQ SDK initialized: mode=production, user=flowguard-operator, agent=flowguard-agent, iap=https://iap.armoriq.ai, proxy=https://proxy.armoriq.ai, backend=https://api.armoriq.ai
 Intent-binding tests against ArmorIQ
 
-Capturing plan: llm=intentgate-test, prompt=Caller asks where ORD-1001 is...
+Capturing plan: llm=flowguard-test, prompt=Caller asks where ORD-1001 is...
 Plan captured with 1 steps
 Requesting intent token for plan with 1 steps
 ✅ API key validated successfully
-Intent token issued: id=71cee09cc6b749f7b1788f07cc9630ad, plan_hash=b3e6889fe267adb6..., expires=58.0s, stepProofs=1
+Intent token issued: id=90916da4116f4900bcd85e588714e785, plan_hash=b3e6889fe267adb6..., expires=57.8s, stepProofs=1
 minted lookup_order token  planHash=b3e6889fe267adb661881333d488307f0263e0c2baf3efb3866bf136a62ac1ec
 
 ------------------------------------------------------------------------
 Case 1 — lookup_order token used to invoke issue_refund
 ------------------------------------------------------------------------
-Invoking MCP action: mcp=intentgate-support-mcp, action=issue_refund
+Invoking MCP action: mcp=flowguard-treasury-mcp, action=issue_refund
   refused by : IntentMismatchException (before any network call)
   reason     : Action 'issue_refund' not found in the original plan. Plan contains actions: ["lookup_order"]. You can only invoke actions that were included in the plan when you called capturePlan().
-Capturing plan: llm=intentgate-test, prompt=Caller asks for an 89 USD refund on ORD-1001...
+Capturing plan: llm=flowguard-test, prompt=Caller asks for an 89 USD refund on ORD-1001...
 Plan captured with 1 steps
 Requesting intent token for plan with 1 steps
-Intent token issued: id=93f2c74620074e3491b4265bc1831a7a, plan_hash=5ed2b4ec3d598c42..., expires=57.4s, stepProofs=1
+Intent token issued: id=86401740b0e8428fa5807abd4676dc84, plan_hash=5ed2b4ec3d598c42..., expires=57.6s, stepProofs=1
 minted issue_refund token  planHash=5ed2b4ec3d598c4234398e2d6b27ce6bff71dbc206c8033209fd148e165e6f9d  (plan amount: 89)
 
 ------------------------------------------------------------------------
 Case 2 — issue_refund(89) token used to invoke issue_refund(5000)
 ------------------------------------------------------------------------
-Invoking MCP action: mcp=intentgate-support-mcp, action=issue_refund
+Invoking MCP action: mcp=flowguard-treasury-mcp, action=issue_refund
 Using Merkle proof from CSRG-IAP for step 0
-  refused by : MCPInvocationException (HTTP 502)
-  reason     : MCP invocation failed: [object Object]
-Capturing plan: llm=intentgate-test, prompt=expiry test...
+MCP invocation returned error payload: issue_refund in 1.08s
+  NOT REFUSED — the call reached the upstream tool: {"content":[{"type":"text","text":"{\"error\":\"Refund of 5000 exceeds refundable balance 89 for ORD-1001.\"}"}],"isError":true}
+Capturing plan: llm=flowguard-test, prompt=expiry test...
 Plan captured with 1 steps
 Requesting intent token for plan with 1 steps
-Intent token issued: id=262df124ebcc42c09c4e715b25a02225, plan_hash=b3e6889fe267adb6..., expires=2.1s, stepProofs=1
-minted short-lived token    expiresAt=2026-10-16T15:35:28.000Z (5s validity)
+Intent token issued: id=464314b10ac44edd8c20da15adde40b2, plan_hash=b3e6889fe267adb6..., expires=2.9s, stepProofs=1
+minted short-lived token    expiresAt=2026-10-16T19:06:47.000Z (5s validity)
 waiting 7s for it to lapse…
 
 ------------------------------------------------------------------------
 Case 3 — using a token after it expired
 ------------------------------------------------------------------------
-Invoking MCP action: mcp=intentgate-support-mcp, action=lookup_order
+Invoking MCP action: mcp=flowguard-treasury-mcp, action=lookup_order
   refused by : TokenExpiredException (before any network call)
-  reason     : Intent token expired 4.9s ago
+  reason     : Intent token expired 4.1s ago
 
 ========================================================================
-Case 1 refused by: IntentMismatchException
-Case 2 refused by: MCPInvocationException
-Case 3 refused by: TokenExpiredException
+Case 1 — wrong action   : IntentMismatchException
+Case 2 — swapped amount : NOT REFUSED (reached upstream)
+Case 3 — expired token  : TokenExpiredException
 ========================================================================
 ArmorIQ SDK client closed

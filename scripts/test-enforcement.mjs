@@ -3,21 +3,23 @@
  *
  *   node --env-file=.env scripts/test-enforcement.mjs
  *
- * Expected (once the policies are stored on the platform):
- *   1. lookup_order   -> SUCCEEDS (allowed)
- *   2. change_payout  -> PolicyBlockedException (denied)
- *   3. issue_refund   -> PolicyHoldException (held for human approval)
+ * Expected (against the live platform allowlist policy):
+ *   1. lookup_order   -> ALLOWED by the ArmorIQ proxy (real sandbox payload)
+ *   2. change_payout  -> PolicyBlockedException (tool_not_in_allowlist)
+ *   3. issue_refund   -> HELD — a real delegation request is created on the
+ *                        ArmorIQ platform and awaits supervisor approval
  *
- * Nothing in this file decides allow/block/hold: every verdict is the exception
- * (or the success) ArmorIQ returns. The script prints the matched policy and
- * reason so you can see which stored rule fired.
+ * Nothing in this file decides allow/block: those verdicts are the exception
+ * (or the success) ArmorIQ returns. For issue_refund the script creates a real
+ * platform delegation (backend /delegation/request) — FlowGuard's designed
+ * hold path for refunds — and reports the returned delegation ID.
  */
 import { ArmorIQClient } from '@armoriq/sdk';
 import { classifyError } from '../lib/verdicts.mjs';
 
 const MCP = process.env.ARMORIQ_MCP_ID;
-const AGENT = process.env.ARMORIQ_AGENT_ID || 'intentgate-agent';
-const USER = process.env.USER_ID || 'intentgate-operator';
+const AGENT = process.env.ARMORIQ_AGENT_ID || 'flowguard-agent';
+const USER = process.env.USER_ID || 'flowguard-operator';
 
 if (!process.env.ARMORIQ_API_KEY || !MCP) {
   console.error('Need ARMORIQ_API_KEY and ARMORIQ_MCP_ID in .env');
@@ -102,8 +104,8 @@ for (const kase of cases) {
         reason: 'Refund requires dual supervisor approval before disbursement'
       });
       const invokeMs = Date.now() - invokeStart;
-      console.log(`\n  RESULT   : HELD by ArmorIQ policy (human approval required)`);
-      console.log(`  exception: PolicyHoldException (delegation created on ArmorIQ platform)`);
+      console.log(`\n  RESULT   : HELD — delegation request created on the ArmorIQ platform`);
+      console.log(`  mechanism: platform delegation API (POST /delegation/request) — releases only after supervisor approval`);
       console.log(`  reason   : ${del.message || 'Refund requires dual supervisor approval'}`);
       console.log(`  delegationId: ${del.delegationId}  status: ${del.status}`);
       summary.push({ tool: kase.label, verdict: 'HELD', ms: invokeMs });
