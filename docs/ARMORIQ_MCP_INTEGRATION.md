@@ -47,13 +47,13 @@ The repository contains two prototype MCP server implementations:
 
 ### A. `intentgate-support-mcp` (Voice Support & Enclave MCP)
 * **Registered UUID on ArmorIQ Platform**: `cd7deb69-adb3-45f7-977b-f0d0e7235ba2`
-* **Source File**: [`mcp-server/server.mjs`](file:///d:/hackathon/New%20folder/mcp-server/server.mjs)
+* **Source File**: [`mcp-server/server.mjs`](../mcp-server/server.mjs)
 * **Transport**: HTTP POST (`/mcp`) accepting JSON-RPC 2.0 payloads and replying via Server-Sent Events (`Content-Type: text/event-stream; event: message\ndata: {json}\n\n`).
 * **Tunnel URL**: Accessible to ArmorIQ's PEP proxy via public HTTPS tunnel (`https://avi-england-vessel-touched.trycloudflare.com/mcp`).
 * **Authentication**: Enforces bearer token verification via `Authorization` / `X-Armoriq-MCP-Auth`.
 
 ### B. `flowguard-treasury-mcp` (Treasury Controller MCP)
-* **Source File**: [`server/mcpServer.js`](file:///d:/hackathon/New%20folder/server/mcpServer.js)
+* **Source File**: [`server/mcpServer.js`](../server/mcpServer.js)
 * **Transports**:
   * **Stdio Transport**: Compatible with Claude Desktop, Cursor, and IDEs via `npm run mcp` (`node server/mcpServer.js --stdio`).
   * **JSON-RPC 2.0 HTTP Endpoint**: `POST /mcp` and `POST /api/mcp` on port 3001.
@@ -250,7 +250,7 @@ The PEP proxy verifies:
 ### A. Sub-5-Second Holding Pattern for Conversational Voice
 ElevenLabs conversational voice agents time out webhooks after approximately 5 seconds. High-stakes financial operations requiring human intervention cannot complete in 5 seconds.
 
-**Solution implemented in [`gateway/server.mjs`](file:///d:/hackathon/New%20folder/gateway/server.mjs)**:
+**Solution implemented in [`gateway/server.mjs`](../gateway/server.mjs)**:
 1. When `issue_refund` triggers a `PolicyHoldException`, the gateway registers the delegation on ArmorIQ.
 2. The gateway replies to ElevenLabs **in under 3.5 seconds**:
    > *"Thanks — that refund needs a supervisor to approve it. I have notified them and will let you know as soon as they respond."*
@@ -258,7 +258,7 @@ ElevenLabs conversational voice agents time out webhooks after approximately 5 s
 
 ### B. Dual-Supervisor Quorum (Multi-Sig Human-in-the-Loop)
 * High-risk tools like `issue_refund` enforce a minimum of **2 distinct supervisor approvals**.
-* Handled in [`playground/index.html`](file:///d:/hackathon/New%20folder/playground/index.html) and [`gateway/server.mjs`](file:///d:/hackathon/New%20folder/gateway/server.mjs):
+* Handled in [`playground/index.html`](../playground/index.html) and [`gateway/server.mjs`](../gateway/server.mjs):
   * Supervisor 1 approves: State changes to `awaiting_approvals (1/2)`.
   * Supervisor 2 approves: Quorum satisfied -> Gateway triggers `releaseHeldCall()` through ArmorIQ with a freshly minted, supervisor-backed token.
 

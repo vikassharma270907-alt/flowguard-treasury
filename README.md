@@ -2,7 +2,7 @@
 
 > **Tagline**: *Autonomous treasury operations and MCP tools, cryptographically governed by ArmorIQ.*  
 > **Description**: FlowGuard is an autonomous treasury agent and conversational support enclave where ElevenLabs delivers voice telephony and ArmorIQ cryptographically bounds every real-world MCP action to declared intent.  
-> **Live Production**: [https://flowguard-treasury.vercel.app](https://flowguard-treasury.vercel.app) · **Judge Dashboard**: [`/judges`](https://flowguard-treasury.vercel.app/judges) · **Architecture Blueprint**: [`docs/ARMORIQ_MCP_INTEGRATION.md`](file:///d:/hackathon/New%20folder/docs/ARMORIQ_MCP_INTEGRATION.md) · **Real Run Capture**: [`docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json`](file:///d:/hackathon/New%20folder/docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json)
+> **Live Production**: [https://flowguard-treasury.vercel.app](https://flowguard-treasury.vercel.app) · **Judge Dashboard**: [`/judges`](https://flowguard-treasury.vercel.app/judges) · **Architecture Blueprint**: [`docs/ARMORIQ_MCP_INTEGRATION.md`](docs/ARMORIQ_MCP_INTEGRATION.md) · **Real Run Capture**: [`docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json`](docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json)
 
 ---
 
@@ -12,14 +12,14 @@
 | :--- | :--- | :--- |
 | **Setup Order Followed** | 1. API key created on `platform.armoriq.ai`.<br>2. Public MCP deployed & registered (`intentgate-support-mcp`, UUID `cd7deb69-adb3-45f7-977b-f0d0e7235ba2`).<br>3. Agent onboarded (`intentgate-agent`).<br>4. Policies authored on platform (`cli-intentgate-agent-intentgate-support-mcp`). | ✅ **PASS** |
 | **Policies Verified with 3-Result Test Script** | `scripts/test-enforcement.mjs` runs real live calls against ArmorIQ:<br>• `lookup_order`: **ALLOWED** (1,793 ms)<br>• `change_payout`: **BLOCKED** (`PolicyBlockedException`, 711 ms)<br>• `issue_refund`: **HELD** (`PolicyHoldException`, delegation created on platform, 589 ms). | ✅ **PASS** |
-| **Two-Approval Approach Documented** | Confirmed against ArmorIQ SDK docs. ArmorIQ platform evaluates holds (`/delegation/request`); gateway counts 2 supervisor approvals before releasing held execution. Fully documented in [DX_NOTES.md](file:///d:/hackathon/New%20folder/DX_NOTES.md). | ✅ **PASS** |
+| **Two-Approval Approach Documented** | Confirmed against ArmorIQ SDK docs. ArmorIQ platform evaluates holds (`/delegation/request`); gateway counts 2 supervisor approvals before releasing held execution. Fully documented in [DX_NOTES.md](DX_NOTES.md). | ✅ **PASS** |
 | **MCP Reachable via ArmorIQ Proxy** | MCP server listening on `POST /mcp` (JSON-RPC 2.0 with SSE responses) is publicly exposed over HTTPS (`https://avi-england-vessel-touched.trycloudflare.com/mcp`) and successfully invoked via `https://proxy.armoriq.ai/invoke`. | ✅ **PASS** |
 | **One Action ALLOWED, One BLOCKED in Audit Logs** | `lookup_order` visibly **ALLOWED**; `change_payout` visibly **BLOCKED** (`tool_not_in_allowlist`). Both verified against `proxy.armoriq.ai` audit ledger. | ✅ **PASS** |
 | **Intent Mismatch Demonstrated** | `scripts/test-intent-mismatch.mjs` mints a token for `lookup_order` only, then attempts to invoke `issue_refund` -> immediately raises `IntentMismatchException` before network execution. | ✅ **PASS** |
 | **Decisions from ArmorIQ, Not Code `if` Statements** | Every allow/block decision is returned directly by the ArmorIQ proxy (`proxy.armoriq.ai`). The gateway contains no hardcoded allow/deny rules. | ✅ **PASS** |
 | **Held Calls Answer Within 5s Window** | Real measured latencies: `lookup_order` (3.7s–4.3s), `change_payout` (2.7s), `issue_refund` (2.8s–3.9s). Held calls reply immediately with holding message; final decision relayed via `check_supervisor_decision`. | ✅ **PASS** |
 | **Prefix Mapping & Zero Real Data** | Gateway transparently strips `IntentGate_` prefix from ElevenLabs tool calls. 100% synthetic sandbox data (`ORD-1001`, `ORD-1002`, `ACC-4471`). | ✅ **PASS** |
-| **No Secrets & Complete Disclosures** | `.env` gitignored; safe `.env.example` provided. Full [DISCLOSURES.md](file:///d:/hackathon/New%20folder/DISCLOSURES.md) and [DX_NOTES.md](file:///d:/hackathon/New%20folder/DX_NOTES.md) included. | ✅ **PASS** |
+| **No Secrets & Complete Disclosures** | `.env` gitignored; safe `.env.example` provided. Full [DISCLOSURES.md](DISCLOSURES.md) and [DX_NOTES.md](DX_NOTES.md) included. | ✅ **PASS** |
 
 ---
 

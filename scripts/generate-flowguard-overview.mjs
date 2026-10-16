@@ -195,7 +195,7 @@ const tocSections = [
     '4.3 Official Citations & Documentation References'
   ]},
   { num: '5', title: 'Importance and Use Cases', page: '8', items: [
-    '5.1 Mission-Critical Domains: Finance, Healthcare, Customer Support',
+    '5.1 High-Assurance Domains: Finance, Healthcare, Customer Support',
     '5.2 Acute Risks of Unsecured Autonomous Agents',
     '5.3 Beneficiaries: AI Engineers, CISOs, Treasurers, End Users'
   ]},
@@ -422,7 +422,7 @@ p('The security guarantees and architectural models in FlowGuard adhere to publi
    ========================================================================== */
 sectionHeading('5', 'Importance and Use Cases');
 
-subHeading('5.1 Mission-Critical Enterprise Use Cases');
+subHeading('5.1 High-Assurance Enterprise Use Cases');
 p('FlowGuard is designed for environments where automated errors carry real cost:');
 p('• Corporate Treasury & Disbursements: Governs voice agents handling payment inquiries, wire status checks, and supplier invoice adjustments. Payout account changes are blocked; high-value refunds require dual sign-off.\n' +
   '• Healthcare Patient Portals: Authenticates patient identity, releases appointments, and blocks unauthorized medication alterations or prescription transfers without physician sign-off.\n' +

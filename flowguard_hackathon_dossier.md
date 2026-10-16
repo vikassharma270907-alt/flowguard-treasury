@@ -264,13 +264,13 @@ FlowGuard comes with four switchable presets via the top-bar scenario selector:
 ## 10. Verification of Implementation Artifacts
 
 All files have been implemented and tested:
-- Root Package Configuration: [package.json](file:///d:/hackathon/New%20folder/package.json)
-- Environment Template: [.env.example](file:///d:/hackathon/New%20folder/.env.example)
-- Backend Server: [server/server.js](file:///d:/hackathon/New%20folder/server/server.js)
-- Airwallex API Integration: [server/airwallexService.js](file:///d:/hackathon/New%20folder/server/airwallexService.js)
-- ArmorIQ SDK Integration: [server/armorIqService.js](file:///d:/hackathon/New%20folder/server/armorIqService.js)
-- Deterministic Rules Engine: [server/rulesEngine.js](file:///d:/hackathon/New%20folder/server/rulesEngine.js)
-- AP Duplicate Detection Engine: [server/duplicateDetector.js](file:///d:/hackathon/New%20folder/server/duplicateDetector.js)
-- Immutable Audit Ledger: [server/auditLedger.js](file:///d:/hackathon/New%20folder/server/auditLedger.js)
-- Frontend Application: [client/src/App.jsx](file:///d:/hackathon/New%20folder/client/src/App.jsx)
-- Design System: [client/src/index.css](file:///d:/hackathon/New%20folder/client/src/index.css)
+- Root Package Configuration: [package.json](package.json)
+- Environment Template: [.env.example](.env.example)
+- Backend Server: [server/server.js](server/server.js)
+- Airwallex API Integration: [server/airwallexService.js](server/airwallexService.js)
+- ArmorIQ SDK Integration: [server/armorIqService.js](server/armorIqService.js)
+- Deterministic Rules Engine: [server/rulesEngine.js](server/rulesEngine.js)
+- AP Duplicate Detection Engine: [server/duplicateDetector.js](server/duplicateDetector.js)
+- Immutable Audit Ledger: [server/auditLedger.js](server/auditLedger.js)
+- Frontend Application: [client/src/App.jsx](client/src/App.jsx)
+- Design System: [client/src/index.css](client/src/index.css)
