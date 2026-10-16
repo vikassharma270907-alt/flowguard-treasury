@@ -67,8 +67,8 @@ console.log(`Run at: ${new Date().toISOString()}\n`);
 // ---------------------------------------------------------------------------
 console.log('== Desktop keyboard journey (1280x800, Tab + Enter only) ==');
 const desktop = await browser.newPage({ viewport: { width: 1280, height: 800 } });
-await desktop.goto(target, { waitUntil: 'load', timeout: 60000 });
-await desktop.waitForTimeout(1500);
+await desktop.goto(target, { waitUntil: 'domcontentloaded', timeout: 60000 });
+await desktop.waitForTimeout(2000);
 
 const stops = [];
 for (let i = 0; i < 12; i++) {
@@ -108,8 +108,8 @@ check('Shift+Tab moves focus backwards to another control', backwards.tag !== 'B
 // ---------------------------------------------------------------------------
 console.log('\n== Mobile drawer keyboard journey (390x844, Tab + Enter + Escape) ==');
 const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
-await mobile.goto(target, { waitUntil: 'load', timeout: 60000 });
-await mobile.waitForTimeout(1500);
+await mobile.goto(target, { waitUntil: 'domcontentloaded', timeout: 60000 });
+await mobile.waitForTimeout(2000);
 
 const hamburgerCount = await mobile.locator('button[aria-controls="mobile-nav-drawer"]').count();
 check('Hamburger toggle is present on mobile', hamburgerCount === 1, `found ${hamburgerCount}`);
