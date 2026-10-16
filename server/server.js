@@ -819,9 +819,31 @@ app.get('/api/audit-logs', (req, res) => {
   res.json({ events });
 });
 
-// --- Serve Frontend Client Build on Port 3001 ---
+// --- FlowGuard Guide PDF Endpoint with Strict Header Compliance ---
+const fs = require('fs');
 const path = require('path');
 const distPath = path.join(__dirname, '../client/dist');
+
+app.get('/docs/flowguard-guide.pdf', (req, res) => {
+  const possiblePaths = [
+    path.join(distPath, 'docs/flowguard-guide.pdf'),
+    path.join(__dirname, '../client/public/docs/flowguard-guide.pdf'),
+    path.join(__dirname, '../public/docs/flowguard-guide.pdf')
+  ];
+  const targetPath = possiblePaths.find(p => fs.existsSync(p));
+
+  if (!targetPath) {
+    return res.status(404).send('PDF Guide Not Found');
+  }
+
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', 'inline');
+  res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
+  res.setHeader('X-Robots-Tag', 'noindex');
+  res.sendFile(targetPath);
+});
+
+// --- Serve Frontend Client Build on Port 3001 ---
 app.use(express.static(distPath));
 
 app.use((req, res, next) => {

@@ -52,7 +52,10 @@
     "termsOfService": "Terms of Service",
     "refundPolicy": "Refund & Cancellation Policy",
     "grievanceOfficer": "Grievance Officer",
-    "dpdpAct": "DPDP Act Notice"
+    "dpdpAct": "DPDP Act Notice",
+    "guidePdf": "Guide (PDF)",
+    "downloadGuide": "Download the guide (PDF)",
+    "guidePdfAria": "FlowGuard guide, PDF, {pages} pages, {size} (opens in a new tab)"
   },
   "trustBadges": {
     "dataIndia": "Data stored in India",

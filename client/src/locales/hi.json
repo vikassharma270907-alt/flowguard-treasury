@@ -53,7 +53,10 @@
     "termsOfService": "सेवा की शर्तें",
     "refundPolicy": "धनवापसी और रद्दीकरण नीति",
     "grievanceOfficer": "शिकायत निवारण अधिकारी",
-    "dpdpAct": "डीपीडीपी अधिनियम सूचना"
+    "dpdpAct": "डीपीडीपी अधिनियम सूचना",
+    "guidePdf": "गाइड (PDF)",
+    "downloadGuide": "गाइड डाउनलोड करें (PDF)",
+    "guidePdfAria": "फ्लोगार्ड गाइड, PDF (केवल अंग्रेज़ी में उपलब्ध), {pages} पृष्ठ, {size} (नए टैब में खुलता है)"
   },
   "trustBadges": {
     "dataIndia": "डेटा भारत में सुरक्षित",

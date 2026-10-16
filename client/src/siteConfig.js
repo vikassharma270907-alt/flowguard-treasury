@@ -38,6 +38,14 @@ export const siteConfig = {
     url: CALENDLY_URL
   },
 
+  // FlowGuard Guide (PDF) Configuration - Single Source of Truth
+  guidePdf: {
+    enabled: true,
+    path: "/docs/flowguard-guide.pdf",
+    pages: 7,
+    sizeLabel: typeof __GUIDE_PDF_SIZE_LABEL__ !== 'undefined' ? __GUIDE_PDF_SIZE_LABEL__ : "23 KB"
+  },
+
   // Feature Flags - Security and Compliance defaults
   flags: {
     /**
@@ -150,7 +158,14 @@ export const siteConfig = {
         { labelKey: "links.github", href: GITHUB_REPO_URL, isExternal: true },
         { labelKey: "links.npm", href: `${GITHUB_REPO_URL}#architecture`, isExternal: true },
         { labelKey: "links.community", href: `${GITHUB_REPO_URL}/discussions`, isExternal: true },
-        { labelKey: "links.hackathons", href: "#hackathons" }
+        { labelKey: "links.hackathons", href: "#hackathons" },
+        {
+          labelKey: "links.guidePdf",
+          href: "/docs/flowguard-guide.pdf",
+          isGuidePdf: true,
+          isExternal: true,
+          enabled: true
+        }
       ]
     },
     {

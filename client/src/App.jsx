@@ -25,6 +25,9 @@ function getInitialTabFromUrl() {
   if (LEGAL_ROUTES.includes(path)) {
     return path === 'dpdp-act' ? 'dpdp-compliance' : path;
   }
+  if (path === 'how-it-works') return 'enclave';
+  if (path === 'pricing') return 'pricing';
+
   if (window.location.hash) {
     const hash = window.location.hash.replace('#', '');
     if (hash === 'pricing') return 'pricing';

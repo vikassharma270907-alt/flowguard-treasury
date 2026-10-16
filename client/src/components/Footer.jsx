@@ -364,6 +364,65 @@ export default function Footer({
                     );
                   }
 
+                  // FlowGuard Guide (PDF) link
+                  if (link.isGuidePdf) {
+                    if (!config.guidePdf?.enabled || link.enabled === false) {
+                      return null;
+                    }
+                    const sizeText = config.guidePdf?.sizeLabel || '23 KB';
+                    const pagesCount = config.guidePdf?.pages || 7;
+                    const pdfHref = config.guidePdf?.path || link.href;
+                    const ariaLabel = t('links.guidePdfAria', { pages: pagesCount, size: sizeText });
+
+                    return (
+                      <li key={link.labelKey}>
+                        <a
+                          href={pdfHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={ariaLabel}
+                          style={{
+                            fontSize: '14px',
+                            color: isDark ? '#d4d4d8' : '#444444',
+                            textDecoration: 'none',
+                            transition: 'color 0.15s ease',
+                            cursor: 'pointer',
+                            outlineOffset: '2px',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            minHeight: '44px',
+                            borderRadius: '4px'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.color = isDark ? '#ffffff' : '#111111';
+                            e.currentTarget.style.textDecoration = 'underline';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.color = isDark ? '#d4d4d8' : '#444444';
+                            e.currentTarget.style.textDecoration = 'none';
+                          }}
+                        >
+                          <span>{t(link.labelKey)}</span>
+                          <span
+                            style={{
+                              fontSize: '11px',
+                              color: isDark ? '#a1a1aa' : '#6b7280',
+                              backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)',
+                              padding: '2px 6px',
+                              borderRadius: '4px',
+                              fontWeight: 500,
+                              lineHeight: 1
+                            }}
+                          >
+                            PDF · {sizeText}
+                          </span>
+                          <span style={{ fontSize: '10px', opacity: 0.7 }} aria-hidden="true">↗</span>
+                        </a>
+                      </li>
+                    );
+                  }
+
                   return (
                     <li key={link.labelKey}>
                       <a
