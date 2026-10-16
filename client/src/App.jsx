@@ -19,6 +19,7 @@ const LegalPages = lazy(() => import('./components/LegalPages'));
 const PricingSection = lazy(() => import('./components/PricingSection'));
 const JudgesPage = lazy(() => import('./components/JudgesPage'));
 const ScenariosScreen = lazy(() => import('./components/ScenariosScreen'));
+const ArmorPayModal = lazy(() => import('./components/ArmorPayModal'));
 import { Lock, Shield, ArrowRight } from 'lucide-react';
 
 const LEGAL_ROUTES = ['privacy', 'terms', 'refund-policy', 'grievance-officer', 'dpdp-compliance', 'dpdp-act'];
@@ -52,8 +53,10 @@ export default function App() {
   const [systemStatus, setSystemStatus] = useState(null);
   const [planData, setPlanData] = useState(null);
   const [inspections, setInspections] = useState(null);
+  const [armorPayStatus, setArmorPayStatus] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedInvoiceForApproval, setSelectedInvoiceForApproval] = useState(null);
+  const [selectedInvoiceForArmorPay, setSelectedInvoiceForArmorPay] = useState(null);
   const [showCredentialsModal, setShowCredentialsModal] = useState(false);
   const [showOAuthModal, setShowOAuthModal] = useState(false);
   const [userSession, setUserSession] = useState({ authenticated: false, user: null });
@@ -61,15 +64,20 @@ export default function App() {
   const loadData = async () => {
     setIsRefreshing(true);
     try {
-      const [statusRes, plannerRes, inspectionsRes] = await Promise.all([
+      const [statusRes, plannerRes, inspectionsRes, armorPayRes] = await Promise.all([
         fetch('/api/status'),
         fetch('/api/planner'),
-        fetch('/api/invoices/inspections')
+        fetch('/api/invoices/inspections'),
+        fetch('/api/armorpay/status').catch(() => null)
       ]);
 
       const statusData = await statusRes.json();
       const planData = await plannerRes.json();
       const inspData = await inspectionsRes.json();
+      if (armorPayRes && armorPayRes.ok) {
+        const apData = await armorPayRes.json();
+        setArmorPayStatus(apData);
+      }
 
       setSystemStatus(statusData);
       setPlanData(planData);
@@ -276,6 +284,38 @@ export default function App() {
     }
   };
 
+  const handleArmorPaySettle = async (payload) => {
+    try {
+      const res = await fetch('/api/armorpay/settle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      await loadData();
+      return data;
+    } catch (err) {
+      console.error('ArmorPay single settlement failed:', err);
+      return { success: false, error: err.message };
+    }
+  };
+
+  const handleArmorPayBatchSettle = async () => {
+    try {
+      const res = await fetch('/api/armorpay/batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ corridor: 'LOCAL' })
+      });
+      const data = await res.json();
+      await loadData();
+      return data;
+    } catch (err) {
+      console.error('ArmorPay batch settlement failed:', err);
+      return { success: false, error: err.message };
+    }
+  };
+
   const handleSimulateDeposit = async (amount, currency) => {
     try {
       await fetch('/api/simulation/deposit', {
@@ -375,8 +415,12 @@ export default function App() {
 
         {activeTab === 'invoices' && (
           <InvoiceGuardScreen
+            invoices={planData?.invoices}
             inspections={inspections}
             onRegisterInvoice={handleRegisterInvoice}
+            onSelectForArmorPay={(inv) => setSelectedInvoiceForArmorPay(inv)}
+            onBatchSettleArmorPay={handleArmorPayBatchSettle}
+            armorPayStatus={armorPayStatus}
           />
         )}
 
@@ -451,6 +495,16 @@ export default function App() {
           onClose={() => setSelectedInvoiceForApproval(null)}
           onExecutePayment={handleExecutePayment}
           onTransitionStatus={handleTransitionStatus}
+        />
+      )}
+
+      {/* ArmorPay Intent Settlement Modal */}
+      {selectedInvoiceForArmorPay && (
+        <ArmorPayModal
+          invoice={selectedInvoiceForArmorPay}
+          onClose={() => setSelectedInvoiceForArmorPay(null)}
+          onSettle={handleArmorPaySettle}
+          onRefreshData={loadData}
         />
       )}
 

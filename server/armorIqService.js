@@ -198,8 +198,8 @@ class ArmorIQService {
         step: 1,
         tool: 'airwallex.transfers.validate_beneficiary',
         params: {
-          vendor_id: invoice.vendor_id,
-          vendor_name: invoice.vendor_name,
+          vendor_id: invoice.vendor_id || 'ven_default',
+          vendor_name: invoice.vendor_name || 'Vendor',
           country: invoice.vendor_country || 'DE'
         }
       },
@@ -207,26 +207,26 @@ class ArmorIQService {
         step: 2,
         tool: 'airwallex.fx.quote_lock',
         params: {
-          currency: invoice.currency,
-          gross_amount: invoice.amount,
-          corridor_method: paymentMethod || invoice.payment_method
+          currency: invoice.currency || 'USD',
+          gross_amount: Number(invoice.amount) || 0,
+          corridor_method: paymentMethod || invoice.payment_method || 'LOCAL'
         }
       },
       {
         step: 3,
         tool: 'flowguard.treasury.assert_reserve_floor',
         params: {
-          minimum_reserve_usd: reserveFloor,
-          payout_usd_equivalent: invoice.totalOutflowUsd || invoice.amount
+          minimum_reserve_usd: Number(reserveFloor) || 15000,
+          payout_usd_equivalent: Number(invoice.totalOutflowUsd || invoice.amount || 0)
         }
       },
       {
         step: 4,
         tool: 'airwallex.transfers.create',
         params: {
-          transfer_currency: invoice.currency,
-          transfer_amount: invoice.amount,
-          reference: `INV-${invoice.invoice_number}`,
+          transfer_currency: invoice.currency || 'USD',
+          transfer_amount: Number(invoice.amount) || 0,
+          reference: `INV-${invoice.invoice_number || 'UNKNOWN'}`,
           reason: 'goods_trade'
         }
       }

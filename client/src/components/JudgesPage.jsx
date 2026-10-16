@@ -103,6 +103,12 @@ export default function JudgesPage({ onNavigate }) {
       where: "Voice Gateway screen (/api/voice/gateway/tool-call)",
       verification: "The gateway answers within the ~5-second voice window (holding speech) or returns an explicit governed error with the real reason.",
       status: "Live"
+    },
+    {
+      claim: "ArmorPay Protocol: Deterministic duplicate collision shield & intent-token settlement for AP invoices",
+      where: "Invoice Guard screen (/invoices) and server/armorPayService.js",
+      verification: "Deterministic pre-flight checks exact collisions, Levenshtein fuzzy suffixes, and reserve floor ($15,000). Mints signed ArmorIQ Intent Token and settles via Airwallex rails with cryptographic Merkle receipt.",
+      status: "Live & Verified"
     }
   ];
 

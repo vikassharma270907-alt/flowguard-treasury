@@ -76,6 +76,13 @@ flowchart TD
    - Live stream of pending holds with caller context, matched policy, plan hash, and Approve/Deny controls.
    - Dual-supervisor quorum: requires 2 approvals before releasing refunds.
 
+5. **ArmorPay Intent Settlement Protocol (`server/armorPayService.js`)**:
+   - Deterministic AP duplicate collision shield & reserve floor protection ($15,000 threshold).
+   - Pre-flight checks exact collisions, Levenshtein fuzzy suffixes (`-A`, `-B`), and vendor-amount proximity.
+   - Cryptographically gates payouts with signed ArmorIQ Intent Tokens and Merkle step proofs.
+   - Executes disbursements across multi-currency corridors via Airwallex Sandbox rails (Local $0 vs SWIFT €12.85).
+   - Generates tamper-evident cryptographic receipts (`ap_rcpt_...`) with instant verification.
+
 ---
 
 ## 🚀 Quickstart & How to Run the Demo

@@ -17,6 +17,7 @@ const { randomUUID: uuidv4 } = require('crypto');
 
 const airwallexService = require('./airwallexService');
 const armorIqService = require('./armorIqService');
+const armorPayService = require('./armorPayService');
 const securityEngine = require('./securityEngine');
 const voiceGatewayService = require('./voiceGatewayService');
 const { flowguardMcpServer, FLOWGUARD_MCP_TOOLS, FLOWGUARD_APP_TOOLS } = require('./mcpServer');
@@ -919,6 +920,80 @@ app.post('/api/payments/transition', async (req, res) => {
   const { transferId, nextStatus = 'PAID' } = req.body;
   const result = await airwallexService.transitionTransferStatus(transferId, nextStatus);
   res.json(result);
+});
+
+// --- ArmorPay Intent Settlement for Invoices & AP Tasks ---
+app.get('/api/armorpay/status', async (req, res) => {
+  try {
+    const status = await armorPayService.getStatus(
+      stateInvoices,
+      stateVendors,
+      currentReserveFloor,
+      stateReceivables
+    );
+    res.json(status);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/armorpay/settle', async (req, res) => {
+  try {
+    const {
+      invoiceId,
+      approverName = 'Finance Director (ArmorPay Officer)',
+      paymentMethod,
+      expedited = false
+    } = req.body;
+
+    const result = await armorPayService.settleInvoice({
+      invoiceId,
+      invoices: stateInvoices,
+      vendors: stateVendors,
+      reserveFloor: currentReserveFloor,
+      receivables: stateReceivables,
+      approverName,
+      paymentMethod,
+      expedited
+    });
+
+    if (!result.success) {
+      const statusCode = result.error === 'INVOICE_NOT_FOUND' ? 404
+        : result.error === 'ALREADY_PAID' ? 400
+        : result.error === 'ARMORPAY_DUPLICATE_RISK_BLOCKED' ? 403
+        : result.error === 'ARMORPAY_RESERVE_FLOOR_HOLD' ? 409
+        : 400;
+      return res.status(statusCode).json(result);
+    }
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/armorpay/batch', async (req, res) => {
+  try {
+    const { approverName = 'Finance Director (ArmorPay Batch)' } = req.body;
+    const result = await armorPayService.batchSettleInvoices({
+      invoices: stateInvoices,
+      vendors: stateVendors,
+      reserveFloor: currentReserveFloor,
+      receivables: stateReceivables,
+      approverName
+    });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/armorpay/receipt/:receiptId', (req, res) => {
+  const receipt = armorPayService.getReceipt(req.params.receiptId);
+  if (!receipt) {
+    return res.status(404).json({ error: 'RECEIPT_NOT_FOUND', message: 'ArmorPay receipt not found.' });
+  }
+  res.json({ success: true, receipt });
 });
 
 // --- Simulations & Scenarios ---
