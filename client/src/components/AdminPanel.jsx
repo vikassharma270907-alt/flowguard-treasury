@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Shield, Sliders, Globe, Users, Activity, CheckCircle2,
   AlertTriangle, Lock, Save, RefreshCw, UserPlus, Server, Key, ExternalLink,
-  ShieldCheck, Cpu, Flame, Zap, Database, Copy, Check
+  ShieldCheck, Cpu, Flame, Zap, Database, Copy, Check, Terminal
 } from 'lucide-react';
 import StepUpSecurityModal from './StepUpSecurityModal';
 

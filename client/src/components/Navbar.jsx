@@ -91,12 +91,12 @@ export default function Navbar({
             border: '1px solid var(--border)',
             boxShadow: '0 0 15px rgba(16, 185, 129, 0.2)'
           }}>
-            <img src="/logo.svg" alt="Veratone Logo" style={{ width: '24px', height: '24px' }} />
+            <img src="/logo.svg" alt="FlowGuard Logo" style={{ width: '24px', height: '24px' }} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--foreground)' }}>
-                Vera<span style={{ color: '#10b981' }}>tone</span>
+                Flow<span style={{ color: '#10b981' }}>Guard</span>
               </span>
               <span className="badge badge-live" style={{ fontSize: '0.62rem' }}>
                 <span className="pulse-dot green"></span>

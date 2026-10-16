@@ -1,5 +1,13 @@
-import React, { Suspense, lazy } from 'react';
-import { Wallet, ShieldCheck, ArrowUpRight, ArrowDownLeft, Clock, AlertTriangle, CheckCircle2, TrendingUp, DollarSign, PhoneCall, ArrowRight, Shield, Server, ExternalLink, Activity, Box, Sparkles } from 'lucide-react';
+import React, { useState, Suspense, lazy } from 'react';
+import {
+  Wallet, ShieldCheck, ArrowUpRight, ArrowDownLeft, Clock,
+  AlertTriangle, CheckCircle2, TrendingUp, DollarSign, PhoneCall,
+  ArrowRight, Shield, Server, ExternalLink, Activity, Box,
+  Sparkles, Video, Play, X, Info, ChevronRight, ChevronLeft,
+  Check, Terminal, Lock, Cpu
+} from 'lucide-react';
+import BoundaryTestSection from './BoundaryTestSection';
+import HowWeUseArmorIQSection from './HowWeUseArmorIQSection';
 
 const RotatingHeroVault = lazy(() => import('./3d/RotatingHeroVault'));
 
@@ -10,6 +18,68 @@ export default function OverviewScreen({
   onNavigate,
   onSimulateDeposit
 }) {
+  const [showDemoVideo, setShowDemoVideo] = useState(false);
+  const [explainerStep, setExplainerStep] = useState(0);
+
+  const walkthroughSteps = [
+    {
+      time: "00s - 15s",
+      badge: "Plan Capture & Hashing",
+      badgeColor: "#38bdf8",
+      title: "1. Intent Plan Capture & SHA-256 Merkle Hashing",
+      headline: "The agent formally declares its goal and tool parameters before execution begins.",
+      explanation: "When an operator or voice caller triggers an operation (e.g. checking order status, changing payout destination, or issuing a refund), FlowGuard intercepts the intent. The client invokes client.capturePlan(agentId, goal, plan). The plan binds every step, target MCP server, and parameter. FlowGuard computes an immutable SHA-256 Merkle hash, locking the agent's intent in place.",
+      keyPoints: [
+        "Prevents prompt injection, tool poisoning, and agent drift at the source",
+        "Deterministic Plan Hash: b3e6889fe267adb6c3a64790176...",
+        "Zero tool access or banking API execution permitted prior to validation"
+      ],
+      codeSnippet: "// 1. Declare intent & capture deterministic plan\nconst capture = client.capturePlan(\n  'intentgate-agent',\n  'Check order status ORD-1001',\n  {\n    goal: 'Check order status ORD-1001',\n    steps: [{\n      action: 'lookup_order',\n      mcp: 'intentgate-support-mcp',\n      params: { order_id: 'ORD-1001' }\n    }]\n  }\n);"
+    },
+    {
+      time: "15s - 30s",
+      badge: "Cryptographic Authorization",
+      badgeColor: "#818cf8",
+      title: "2. Ed25519 Intent Token Minting at iap.armoriq.ai",
+      headline: "ArmorIQ verifies policy permissions and issues a single-use authorization token.",
+      explanation: "FlowGuard submits the captured plan to ArmorIQ's Identity & Policy Assertion (IAP) service at https://iap.armoriq.ai. ArmorIQ evaluates the registered agent identity (intentgate-agent), user permissions, and the active workspace policy (cli-intentgate-agent-intentgate-support-mcp). If approved, ArmorIQ mints an Ed25519 cryptographically signed Intent Token containing the plan hash and step Merkle root.",
+      keyPoints: [
+        "Real platform token ID: 4f53c348a1104f1cbfb463fbad0ee1b1",
+        "Asymmetrically signed by ArmorIQ private key; verifiable by public key",
+        "Strict TTL expiration (e.g. 3600s) preventing replay attacks"
+      ],
+      codeSnippet: "// 2. Request Ed25519 token from ArmorIQ IAP\nconst token = await client.getIntentToken(capture);\n// Output from real run:\n// token.id = \"4f53c348a1104f1cbfb463fbad0ee1b1\"\n// token.plan_hash = \"b3e6889fe267adb6c3a64790176...\"\n// token.expires = 3600 (seconds)"
+    },
+    {
+      time: "30s - 45s",
+      badge: "Inline PEP Interception",
+      badgeColor: "#34d399",
+      title: "3. Deterministic PEP Enforcement at proxy.armoriq.ai",
+      headline: "Every tool call passes through ArmorIQ's Policy Enforcement Point.",
+      explanation: "Tool invocations never communicate with the banking MCP server directly. Instead, client.invoke() routes every call through proxy.armoriq.ai. The proxy verifies the Ed25519 token, validates step compliance against the plan hash, and applies the policy. Safe inquiries (lookup_order) pass with 200 OK. Unauthorized wire changes (change_payout) are blocked immediately with PolicyBlockedException. Large disbursements (issue_refund) are held with PolicyHoldException.",
+      keyPoints: [
+        "ALLOWED: lookup_order executed in ~1911ms total verification latency",
+        "BLOCKED: change_payout blocked in 685ms with tool_not_in_allowlist",
+        "HELD: issue_refund halted in 594ms requiring 2 supervisor approvals"
+      ],
+      codeSnippet: "// 3. PEP enforces policy on tool call\ntry {\n  const res = await client.invoke(\n    token.id, 'intentgate-support-mcp',\n    'change_payout', { new_routing: '021000021' }\n  );\n} catch (err) {\n  // Throws PolicyBlockedException: tool_not_in_allowlist\n  // Wire diversion rejected; $0.00 lost!\n}"
+    },
+    {
+      time: "45s - 60s",
+      badge: "Quorum & Audit Ledger",
+      badgeColor: "#f59e0b",
+      title: "4. Multi-Supervisor Quorum & Immutable Ledger",
+      headline: "Dual-sign-off for high-value funds and tamper-evident Merkle auditing.",
+      explanation: "When an action is held, ArmorIQ returns a delegationId (e.g. 65b502cb-6cb0-4e50-b392-934c6dba5bd7). In the FlowGuard Supervisor Playground, designated treasury officers perform step-up authentication. When the 2-approval threshold is satisfied, the action executes against the Airwallex sandbox adapter, and every event is sealed into the cryptographic audit trail.",
+      keyPoints: [
+        "Zero-bypass: MCP tools reject unauthenticated requests without ArmorIQ token",
+        "Dual authorization: Multi-signature approval quorum for high-risk payouts",
+        "Immutable ledger: Searchable audit log with SHA-256 Merkle proofs"
+      ],
+      codeSnippet: "// 4. Resolve delegation with dual quorum\nconst delegation = await client.createDelegationRequest({\n  delegationId: '65b502cb-6cb0-4e50-b392-934c6dba5bd7',\n  requiredApprovals: 2,\n  receivedApprovals: 2\n});\n// Executed in sandbox with cryptographic audit log entry"
+    }
+  ];
+
   const plan = planData?.plan;
   const totalLiquid = plan?.totalLiquidUsd || 0;
   const reserveFloor = plan?.reserveFloor || 15000;
@@ -19,51 +89,258 @@ export default function OverviewScreen({
   const bufferPercent = Math.min(100, Math.round((reserveFloor / (totalLiquid || 1)) * 100));
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      {/* Official Hackathon Rules Compliance Card */}
-      <div className="card" style={{
-        padding: '20px 24px',
-        border: '1px solid rgba(16, 185, 129, 0.35)',
-        boxShadow: 'var(--card-shadow)'
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+      {/* Sandbox Notice Banner - Mandatory Rule 5 */}
+      <div style={{
+        background: 'rgba(56, 189, 248, 0.08)',
+        border: '1px solid rgba(56, 189, 248, 0.25)',
+        borderRadius: '10px',
+        padding: '10px 16px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '10px'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(16, 185, 129, 0.4)' }}>
-              <ShieldCheck size={20} color="#34d399" />
-            </div>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--foreground)', margin: 0 }}>
-                  Hackathon Eligibility Verification: 1 Agent · 1 MCP Server · ArmorIQ Real Enforcement
-                </h3>
-                <span className="badge badge-success" style={{ fontSize: '0.65rem' }}>100% ELIGIBLE</span>
-              </div>
-              <p style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', margin: '2px 0 0 0' }}>
-                Real ArmorIQ workspace integration (Org: <code style={{ color: '#34d399' }}>Vikas Sharma's Workspace</code>) with live MCP JSON-RPC 2.0 endpoint at <code style={{ color: '#38bdf8' }}>/mcp</code>
-              </p>
-            </div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <a
-              href="https://docs.armoriq.ai"
-              target="_blank"
-              rel="noreferrer"
-              className="btn btn-secondary btn-sm"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem' }}
-            >
-              <ExternalLink size={12} color="#a1a1aa" />
-              <span>docs.armoriq.ai</span>
-            </a>
-            <button
-              onClick={() => onNavigate('admin')}
-              className="btn btn-secondary btn-sm"
-              style={{ fontSize: '0.75rem' }}
-            >
-              <span>View MCP & ArmorIQ Console</span>
-              <ArrowRight size={12} />
-            </button>
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#38bdf8', fontSize: '0.82rem', fontWeight: 600 }}>
+          <Info size={16} />
+          <span>Sandbox / test environment. No real funds or customer data.</span>
         </div>
+        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>
+          Synthetic Airwallex balances & test orders (ORD-1001, ACC-4471)
+        </div>
+      </div>
+
+      {/* TIER 1 ITEM 6: First Screen Hero (2 Sentences + 60s Demo Button) */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(9, 13, 22, 0.95) 100%)',
+        border: '1px solid var(--border)',
+        borderRadius: '16px',
+        padding: '40px 32px',
+        boxShadow: '0 16px 40px rgba(0, 0, 0, 0.5)'
+      }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '9999px', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>
+          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#34d399', boxShadow: '0 0 8px #34d399' }}></span>
+          Official Submission · ArmorIQ Flow State Hackathon
+        </div>
+
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1.2, margin: '0 0 16px 0' }}>
+          Autonomous Treasury & Intent Vault Governed by ArmorIQ
+        </h1>
+
+        {/* The 2 Mandated Sentences */}
+        <p style={{ fontSize: '1.15rem', color: '#cbd5e1', lineHeight: 1.6, margin: '0 0 8px 0', fontWeight: 500 }}>
+          FlowGuard is an autonomous treasury and customer support agent that manages multi-currency disbursements, verifies vendor invoices, and handles live telephony inquiries.
+        </p>
+        <p style={{ fontSize: '1.05rem', color: '#94a3b8', lineHeight: 1.6, margin: '0 0 24px 0' }}>
+          ArmorIQ cryptographically bounds every tool invocation to declared intent using Ed25519 tokens and blocks unauthorized bank diversions or prompt injections before any network execution.
+        </p>
+
+        {/* CTA Buttons */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
+          <button
+            onClick={() => setShowDemoVideo(!showDemoVideo)}
+            className="btn btn-primary"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+          >
+            <Play size={16} fill="currentColor" />
+            <span>{showDemoVideo ? 'Hide 60-Second Explainer' : 'Watch the 60-Second Explainer'}</span>
+          </button>
+
+          <a
+            href="/judges"
+            onClick={(e) => { e.preventDefault(); onNavigate('judges'); }}
+            className="btn btn-secondary"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', fontSize: '0.9rem' }}
+          >
+            <ShieldCheck size={16} color="#34d399" />
+            <span>Judge Inspection Dashboard (/judges)</span>
+            <ArrowRight size={14} />
+          </a>
+
+          <a
+            href="/#boundary-test"
+            onClick={(e) => { e.preventDefault(); const el = document.getElementById('boundary-test'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}
+            className="btn btn-secondary"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 18px', fontSize: '0.9rem' }}
+          >
+            <span>Skip to Boundary Test</span>
+            <ArrowRight size={14} />
+          </a>
+        </div>
+
+        {/* Interactive 60-Second Walkthrough Explainer (Replaces Rickroll Video) */}
+        {showDemoVideo && (
+          <div style={{ marginTop: '24px', background: '#030712', border: '1px solid var(--border)', borderRadius: '12px', padding: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(56, 189, 248, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Sparkles size={18} color="#38bdf8" />
+                </div>
+                <div>
+                  <div style={{ color: '#f8fafc', fontWeight: 800, fontSize: '1.05rem', letterSpacing: '-0.01em' }}>
+                    FlowGuard 60-Second Architectural Execution Explainer
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>
+                    Step-by-step breakdown of real ArmorIQ intent verification, proxy PEP enforcement, and quorum governance.
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowDemoVideo(false)}
+                style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px solid var(--border)', color: 'var(--muted-foreground)', borderRadius: '6px', padding: '6px 10px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.78rem' }}
+                aria-label="Close walkthrough explainer"
+              >
+                <X size={15} />
+                <span>Close</span>
+              </button>
+            </div>
+
+            {/* Time Step Buttons */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '8px', marginBottom: '20px' }}>
+              {walkthroughSteps.map((step, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setExplainerStep(idx)}
+                  style={{
+                    background: explainerStep === idx ? 'rgba(56, 189, 248, 0.12)' : 'rgba(255, 255, 255, 0.03)',
+                    border: explainerStep === idx ? '1px solid #38bdf8' : '1px solid var(--border)',
+                    borderRadius: '8px',
+                    padding: '10px 12px',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span style={{ fontSize: '0.68rem', fontWeight: 700, fontFamily: 'monospace', color: explainerStep === idx ? '#38bdf8' : 'var(--muted-foreground)' }}>
+                      {step.time}
+                    </span>
+                    <span style={{ fontSize: '0.62rem', fontWeight: 700, padding: '1px 6px', borderRadius: '4px', background: `${step.badgeColor}22`, color: step.badgeColor }}>
+                      Phase {idx + 1}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 700, color: explainerStep === idx ? '#ffffff' : '#cbd5e1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {step.badge}
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            {/* Active Step Content */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px', background: '#060a12', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px' }}>
+              {/* Left Column: Explanation */}
+              <div>
+                <div style={{ display: 'inline-block', fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: '4px', background: `${walkthroughSteps[explainerStep].badgeColor}22`, color: walkthroughSteps[explainerStep].badgeColor, marginBottom: '8px' }}>
+                  {walkthroughSteps[explainerStep].time} · {walkthroughSteps[explainerStep].badge}
+                </div>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#f8fafc', margin: '0 0 6px 0' }}>
+                  {walkthroughSteps[explainerStep].title}
+                </h3>
+                <p style={{ fontSize: '0.85rem', fontWeight: 600, color: '#38bdf8', margin: '0 0 10px 0' }}>
+                  {walkthroughSteps[explainerStep].headline}
+                </p>
+                <p style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.6, margin: '0 0 16px 0' }}>
+                  {walkthroughSteps[explainerStep].explanation}
+                </p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  {walkthroughSteps[explainerStep].keyPoints.map((pt, pIdx) => (
+                    <div key={pIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.75rem', color: '#e2e8f0' }}>
+                      <CheckCircle2 size={14} color="#34d399" style={{ flexShrink: 0, marginTop: '2px' }} />
+                      <span>{pt}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Column: Code & Trace */}
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>
+                    <Terminal size={14} color="#38bdf8" />
+                    <span>ArmorIQ SDK Execution Trace</span>
+                  </div>
+                  <span style={{ fontSize: '0.65rem', color: '#34d399', fontWeight: 600 }}>Recorded Platform Call</span>
+                </div>
+                <pre style={{
+                  flex: 1,
+                  background: '#04060a',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  borderRadius: '8px',
+                  padding: '14px',
+                  fontSize: '0.72rem',
+                  fontFamily: 'monospace',
+                  color: '#e2e8f0',
+                  lineHeight: 1.5,
+                  margin: 0,
+                  overflowX: 'auto',
+                  whiteSpace: 'pre'
+                }}>
+                  {walkthroughSteps[explainerStep].codeSnippet}
+                </pre>
+              </div>
+            </div>
+
+            {/* Stepper Controls */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', paddingTop: '14px', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
+              <button
+                onClick={() => setExplainerStep(Math.max(0, explainerStep - 1))}
+                disabled={explainerStep === 0}
+                className="btn btn-secondary btn-sm"
+                style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', opacity: explainerStep === 0 ? 0.4 : 1 }}
+              >
+                <ChevronLeft size={14} />
+                <span>Previous Phase</span>
+              </button>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {walkthroughSteps.map((_, dotIdx) => (
+                  <span
+                    key={dotIdx}
+                    onClick={() => setExplainerStep(dotIdx)}
+                    style={{
+                      width: explainerStep === dotIdx ? '20px' : '8px',
+                      height: '8px',
+                      borderRadius: '4px',
+                      background: explainerStep === dotIdx ? '#38bdf8' : 'rgba(255, 255, 255, 0.2)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                  />
+                ))}
+              </div>
+
+              {explainerStep < walkthroughSteps.length - 1 ? (
+                <button
+                  onClick={() => setExplainerStep(explainerStep + 1)}
+                  className="btn btn-primary btn-sm"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem' }}
+                >
+                  <span>Next Phase</span>
+                  <ChevronRight size={14} />
+                </button>
+              ) : (
+                <a
+                  href="/#boundary-test"
+                  onClick={(e) => { e.preventDefault(); const el = document.getElementById('boundary-test'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}
+                  className="btn btn-primary btn-sm"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem' }}
+                >
+                  <span>View Boundary Test Live</span>
+                  <ArrowRight size={14} />
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* TIER 1 ITEM 5: Centerpiece Boundary Test Section */}
+      <BoundaryTestSection />
+
+      {/* TIER 1 ITEM 7: Architecture & Zero-Bypass Flow Section */}
+      <HowWeUseArmorIQSection />
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '12px' }}>
           {/* Card 1: AI Agent */}
@@ -122,7 +399,6 @@ export default function OverviewScreen({
             </div>
           </div>
         </div>
-      </div>
       {/* Top Banner Alert depending on active scenario */}
       {systemStatus?.activeScenario === 'SCENARIO_B' && (
         <div style={{

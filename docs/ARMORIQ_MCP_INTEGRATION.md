@@ -1,4 +1,4 @@
-# FlowGuard & Veratone — MCP Servers & ArmorIQ Governance Architecture
+# FlowGuard — MCP Servers & ArmorIQ Governance Architecture
 
 > **Official Technical Specification & Architecture Blueprint**  
 > Covers: Model Context Protocol (MCP) server implementations, tool schemas, and end-to-end cryptographic intent governance with ArmorIQ.

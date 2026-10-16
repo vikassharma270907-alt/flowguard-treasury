@@ -321,7 +321,7 @@ export default function VoiceGatewayScreen({ userSession }) {
               Voice Agent Gateway & Supervisor Playground
             </h1>
             <p style={{ fontSize: '0.88rem', color: 'var(--muted-foreground)', marginTop: '8px', lineHeight: 1.5 }}>
-              A real ElevenLabs agent handles voice support calls through the Veratone gateway. Every call receives an 
+              A real ElevenLabs agent handles voice support calls through the FlowGuard gateway. Every call receives an 
               <strong> ArmorIQ-signed plan</strong>. When callers attempt unverified payout modifications or refunds, 
               the agent notifies a supervisor. <strong>On this playground, YOU are the supervisor</strong>.
             </p>

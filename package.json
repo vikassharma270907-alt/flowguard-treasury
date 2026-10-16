@@ -1,7 +1,7 @@
 {
-  "name": "veratone",
+  "name": "flowguard",
   "version": "1.0.0",
-  "description": "Veratone - Verifiable Voice AI Governed by ArmorIQ & Powered by ElevenLabs",
+  "description": "FlowGuard - Autonomous Treasury & Intent Vault Governed by ArmorIQ",
   "main": "api/index.js",
   "scripts": {
     "start": "node server/server.js",

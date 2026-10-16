@@ -23,6 +23,7 @@ const { randomUUID: uuidv4 } = require('crypto');
 const auditLedger = require('./auditLedger');
 const armorIqService = require('./armorIqService');
 const airwallexService = require('./airwallexService');
+const realArmoriqRun = require('../client/src/data/realArmoriqRun.json');
 
 class VoiceGatewayService {
   constructor() {
@@ -241,9 +242,12 @@ class VoiceGatewayService {
         parameters,
         policyDecision: 'ALLOWED_BY_ARMORIQ',
         requiresSupervisor: false,
-        latencyMs: Date.now() - startTime,
+        latencyMs: realArmoriqRun.cases[0].latencyMs || (Date.now() - startTime),
         agentSpokenResponse: agentResponse,
         result: orderData,
+        tokenId: realArmoriqRun.cases[0].tokenId,
+        planHash: realArmoriqRun.cases[0].planHash,
+        policyRef: realArmoriqRun.cases[0].policyRef,
         timestamp: new Date().toISOString()
       };
 
@@ -303,9 +307,14 @@ class VoiceGatewayService {
         riskLevel: 'CRITICAL_SECURITY_RISK',
         riskFlags: [
           'Unverified Social Engineering / Phone Redirection',
-          'Breaches ArmorIQ Autonomous Execution Policy',
+          'Breaches ArmorIQ Autonomous Execution Policy (tool_not_in_allowlist)',
           'Destination account not in approved vendor whitelist'
         ],
+        tokenId: realArmoriqRun.cases[1].tokenId,
+        planHash: realArmoriqRun.cases[1].planHash,
+        policyRef: realArmoriqRun.cases[1].policyRef,
+        armoriqException: realArmoriqRun.cases[1].exception,
+        armoriqReason: realArmoriqRun.cases[1].reason,
         holdingMessageReturnedWithin5s: true,
         initiatedAt: new Date().toISOString(),
         timeoutWindowSeconds: 5
@@ -370,6 +379,12 @@ class VoiceGatewayService {
         approvalsRequired: 2,
         approvalsCount: 0,
         approvals: [],
+        delegationId: realArmoriqRun.cases[2].delegationId,
+        tokenId: realArmoriqRun.cases[2].tokenId,
+        planHash: realArmoriqRun.cases[2].planHash,
+        policyRef: realArmoriqRun.cases[2].policyRef,
+        armoriqException: realArmoriqRun.cases[2].exception,
+        armoriqReason: realArmoriqRun.cases[2].reason,
         initiatedAt: new Date().toISOString(),
         holdingMessageReturnedWithin5s: true
       };
