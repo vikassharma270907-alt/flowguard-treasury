@@ -123,7 +123,7 @@ export default function ApprovalModal({
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Beneficiary Vendor:</span>
-                  <strong style={{ color: '#ffffff' }}>{invoice.vendor_name}</strong>
+                  <strong style={{ color: 'var(--foreground)' }}>{invoice.vendor_name}</strong>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Invoice Identifier:</span>
@@ -168,7 +168,7 @@ export default function ApprovalModal({
                 {invoice.currency !== 'USD' && (
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: '6px' }}>
                     <span style={{ color: 'var(--text-muted)' }}>Locked Client Rate:</span>
-                    <span className="mono" style={{ color: '#ffffff', fontWeight: 600 }}>
+                    <span className="mono" style={{ color: 'var(--foreground)', fontWeight: 600 }}>
                       {loadingQuote ? 'Fetching live quote...' : fxQuote ? `1 ${invoice.currency} = ${(1 / fxQuote.client_rate).toFixed(4)} USD` : 'Indicative market rate'}
                     </span>
                   </div>
@@ -176,7 +176,7 @@ export default function ApprovalModal({
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '6px', marginTop: '6px' }}>
                   <span style={{ color: 'var(--text-muted)' }}>Total Net Outflow (USD Eq.):</span>
-                  <span className="mono" style={{ fontWeight: 700, color: '#f8fafc' }}>
+                  <span className="mono" style={{ fontWeight: 700, color: 'var(--foreground)' }}>
                     ${invoice.totalOutflowUsd?.toFixed(2)} USD
                   </span>
                 </div>
@@ -193,7 +193,7 @@ export default function ApprovalModal({
                 gap: '12px'
               }}>
                 <CheckCircle2 size={20} color="#10b981" />
-                <div style={{ fontSize: '0.8rem', color: '#d1fae5' }}>
+                <div style={{ fontSize: '0.8rem', color: 'var(--success)' }}>
                   <strong>Reserve Floor Verified:</strong> Post-payment liquidity remains strictly above the protected reserve floor.
                 </div>
               </div>
@@ -210,10 +210,10 @@ export default function ApprovalModal({
                   style={{
                     width: '100%',
                     padding: '9px 12px',
-                    background: '#1f2937',
-                    border: '1px solid var(--border-subtle)',
+                    background: 'var(--card)',
+                    border: '1px solid var(--border)',
                     borderRadius: '6px',
-                    color: '#ffffff',
+                    color: 'var(--foreground)',
                     fontSize: '0.85rem'
                   }}
                 />

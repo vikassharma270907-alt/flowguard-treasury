@@ -401,7 +401,7 @@ export default function VoiceGatewayScreen({ userSession }) {
             }} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', marginTop: '10px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))', gap: '8px', marginTop: '10px' }}>
             {[
               { time: '00:00 - 00:10', title: '1. Plan & Order Lookup', sub: 'ArmorIQ Allowed (0.2s)' },
               { time: '00:10 - 00:24', title: '2. Payout Change Attack', sub: '<5s Holding Utterance' },
@@ -460,7 +460,7 @@ export default function VoiceGatewayScreen({ userSession }) {
       </div>
 
       {/* Main Grid: Call Card + Live Transcript + Supervisor Control */}
-      <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr 380px', gap: '20px', alignItems: 'start' }}>
+      <div className="voice-gateway-layout">
         
         {/* COLUMN 1: Active Call Visualizer & Caller Info */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -496,7 +496,7 @@ export default function VoiceGatewayScreen({ userSession }) {
 
             {/* Audio Waveform Simulator */}
             <div style={{
-              background: '#040405',
+              background: 'var(--surface-muted)',
               borderRadius: '10px',
               padding: '16px 12px',
               border: '1px solid var(--border)',
@@ -795,13 +795,14 @@ export default function VoiceGatewayScreen({ userSession }) {
                 </div>
 
                 {/* Supervisor Action Buttons */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '6px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 130px), 1fr))', gap: '10px', marginTop: '6px' }}>
                   <button
                     onClick={() => handleSupervisorDecision('DENY')}
                     disabled={isLoading}
                     className="btn btn-danger"
                     style={{
                       padding: '10px',
+                      minHeight: '44px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -819,6 +820,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                     className="btn btn-secondary"
                     style={{
                       padding: '10px',
+                      minHeight: '44px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -877,12 +879,12 @@ export default function VoiceGatewayScreen({ userSession }) {
 
                 {/* Dual Approval Action Buttons */}
                 {pendingAction.approvalsCount === 0 ? (
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 130px), 1fr))', gap: '10px' }}>
                     <button
                       onClick={() => handleSupervisorDecision('APPROVE')}
                       disabled={isLoading}
                       className="btn btn-primary"
-                      style={{ padding: '9px', fontSize: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                      style={{ padding: '9px', minHeight: '44px', fontSize: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                     >
                       <Check size={14} />
                       <span>Approve (Key 1)</span>
@@ -891,7 +893,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                       onClick={() => handleSupervisorDecision('DENY')}
                       disabled={isLoading}
                       className="btn btn-secondary"
-                      style={{ padding: '9px', fontSize: '0.75rem' }}
+                      style={{ padding: '9px', minHeight: '44px', fontSize: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
                       Deny Refund
                     </button>
@@ -908,6 +910,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                       className="btn btn-primary"
                       style={{
                         padding: '10px',
+                        minHeight: '44px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -1055,7 +1058,7 @@ export default function VoiceGatewayScreen({ userSession }) {
             </div>
 
             {/* Modal Navigation Tabs */}
-            <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', padding: '0 24px', background: 'var(--muted)' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', borderBottom: '1px solid var(--border)', padding: '0 24px', background: 'var(--muted)' }}>
               {[
                 { id: 'insights', label: '1. Two Core Voice Insights' },
                 { id: 'schemas', label: '2. ElevenLabs Tool Schemas' },
@@ -1086,26 +1089,26 @@ export default function VoiceGatewayScreen({ userSession }) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                   {dxNotes?.insights?.map(ins => (
                     <div key={ins.id} style={{ background: 'var(--card)', padding: '18px', borderRadius: '10px', border: '1px solid var(--border)' }}>
-                      <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#34d399', margin: '0 0 10px 0' }}>
+                      <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#059669', margin: '0 0 10px 0' }}>
                         {ins.title}
                       </h4>
                       <div style={{ fontSize: '0.82rem', color: 'var(--foreground)', marginBottom: '10px', lineHeight: 1.5 }}>
-                        <strong style={{ color: '#f87171' }}>Problem Encountered: </strong>
+                        <strong style={{ color: '#dc2626' }}>Problem Encountered: </strong>
                         {ins.problem}
                       </div>
-                      <div style={{ fontSize: '0.82rem', color: '#d4d4d8', marginBottom: '14px', lineHeight: 1.5 }}>
-                        <strong style={{ color: '#34d399' }}>Gateway Solution: </strong>
+                      <div style={{ fontSize: '0.82rem', color: 'var(--foreground)', marginBottom: '14px', lineHeight: 1.5 }}>
+                        <strong style={{ color: '#059669' }}>Gateway Solution: </strong>
                         {ins.solution}
                       </div>
                       <div style={{ position: 'relative' }}>
                         <pre style={{
-                          background: '#040405',
+                          background: 'var(--surface-muted)',
                           padding: '12px 16px',
                           borderRadius: '8px',
-                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          border: '1px solid var(--border)',
                           fontSize: '0.75rem',
                           fontFamily: 'monospace',
-                          color: '#e4e4e7',
+                          color: 'var(--foreground)',
                           overflowX: 'auto',
                           margin: 0
                         }}>
@@ -1117,11 +1120,11 @@ export default function VoiceGatewayScreen({ userSession }) {
                             position: 'absolute',
                             top: '8px',
                             right: '8px',
-                            background: 'rgba(255, 255, 255, 0.1)',
-                            border: 'none',
+                            background: 'var(--card)',
+                            border: '1px solid var(--border)',
                             borderRadius: '4px',
                             padding: '4px 8px',
-                            color: '#fafafa',
+                            color: 'var(--foreground)',
                             fontSize: '0.68rem',
                             cursor: 'pointer'
                           }}
@@ -1142,9 +1145,9 @@ export default function VoiceGatewayScreen({ userSession }) {
                   </p>
 
                   {dxNotes?.elevenLabsToolSchemas?.map((schema, idx) => (
-                    <div key={idx} style={{ background: '#09090b', padding: '16px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                    <div key={idx} style={{ background: 'var(--card)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border)' }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                        <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#c084fc', fontSize: '0.82rem' }}>
+                        <span style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--primary)', fontSize: '0.82rem' }}>
                           {schema.name}
                         </span>
                         <button
@@ -1159,12 +1162,13 @@ export default function VoiceGatewayScreen({ userSession }) {
                         {schema.description}
                       </div>
                       <pre style={{
-                        background: '#040405',
+                        background: 'var(--surface-muted)',
                         padding: '10px 14px',
                         borderRadius: '6px',
+                        border: '1px solid var(--border)',
                         fontSize: '0.72rem',
                         fontFamily: 'monospace',
-                        color: '#a1a1aa',
+                        color: 'var(--foreground)',
                         margin: 0,
                         maxHeight: '160px',
                         overflowY: 'auto'
@@ -1178,9 +1182,9 @@ export default function VoiceGatewayScreen({ userSession }) {
 
               {activeDxTab === 'curl' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <div style={{ background: '#09090b', padding: '16px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                  <div style={{ background: 'var(--card)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                      <span style={{ fontWeight: 700, color: '#fafafa', fontSize: '0.82rem' }}>
+                      <span style={{ fontWeight: 700, color: 'var(--foreground)', fontSize: '0.82rem' }}>
                         1. Webhook Tool Call: IntentGate_payoutChange (&lt;5s window response)
                       </span>
                       <button
@@ -1193,16 +1197,16 @@ export default function VoiceGatewayScreen({ userSession }) {
                         {copiedKey === 'curl1' ? 'Copied!' : 'Copy cURL'}
                       </button>
                     </div>
-                    <pre style={{ background: '#040405', padding: '10px 14px', borderRadius: '6px', fontSize: '0.72rem', color: '#38bdf8', margin: 0, overflowX: 'auto' }}>
+                    <pre style={{ background: 'var(--surface-muted)', border: '1px solid var(--border)', padding: '10px 14px', borderRadius: '6px', fontSize: '0.72rem', color: 'var(--foreground)', margin: 0, overflowX: 'auto' }}>
 {`curl -X POST https://flowguard-treasury.vercel.app/api/voice/gateway/tool-call \\
   -H "Content-Type: application/json" \\
   -d '{"rawToolName": "IntentGate_payoutChange", "parameters": {"routingNumber": "021000021", "accountNumber": "987654321"}}'`}
                     </pre>
                   </div>
 
-                  <div style={{ background: '#09090b', padding: '16px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                  <div style={{ background: 'var(--card)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                      <span style={{ fontWeight: 700, color: '#fafafa', fontSize: '0.82rem' }}>
+                      <span style={{ fontWeight: 700, color: 'var(--foreground)', fontSize: '0.82rem' }}>
                         2. Supervisor Press Deny Endpoint
                       </span>
                       <button
@@ -1215,7 +1219,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                         {copiedKey === 'curl2' ? 'Copied!' : 'Copy cURL'}
                       </button>
                     </div>
-                    <pre style={{ background: '#040405', padding: '10px 14px', borderRadius: '6px', fontSize: '0.72rem', color: '#38bdf8', margin: 0, overflowX: 'auto' }}>
+                    <pre style={{ background: 'var(--surface-muted)', border: '1px solid var(--border)', padding: '10px 14px', borderRadius: '6px', fontSize: '0.72rem', color: 'var(--foreground)', margin: 0, overflowX: 'auto' }}>
 {`curl -X POST https://flowguard-treasury.vercel.app/api/voice/supervisor/decision \\
   -H "Content-Type: application/json" \\
   -d '{"decision": "DENY", "supervisorName": "beyond_nothing"}'`}

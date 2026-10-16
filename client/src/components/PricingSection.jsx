@@ -107,7 +107,7 @@ export default function PricingSection({ onBackToHome, onBookDemo }) {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
           gap: '24px',
           alignItems: 'stretch'
         }}
@@ -180,13 +180,16 @@ export default function PricingSection({ onBackToHome, onBookDemo }) {
               target={p.ctaHref.startsWith('http') ? '_blank' : undefined}
               rel={p.ctaHref.startsWith('http') ? 'noopener noreferrer' : undefined}
               style={{
-                display: 'block',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 textAlign: 'center',
                 backgroundColor: p.popular ? '#16a34a' : 'transparent',
                 color: p.popular ? '#ffffff' : 'var(--foreground, #111111)',
                 border: p.popular ? 'none' : '1px solid var(--border, #111111)',
                 borderRadius: '6px',
-                padding: '10px 16px',
+                padding: '12px 16px',
+                minHeight: '44px',
                 fontSize: '13px',
                 fontWeight: 600,
                 textDecoration: 'none',
@@ -209,7 +212,10 @@ export default function PricingSection({ onBackToHome, onBookDemo }) {
               color: '#16a34a',
               cursor: 'pointer',
               fontSize: '13px',
-              fontWeight: 500
+              fontWeight: 500,
+              minHeight: '44px',
+              display: 'inline-flex',
+              alignItems: 'center'
             }}
           >
             ← Back to Overview

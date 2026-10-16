@@ -80,6 +80,7 @@ export default function Footer({
   const { isDark } = useTheme();
   const currentYear = new Date().getFullYear();
   const [isDesktop, setIsDesktop] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const [mailtoHref, setMailtoHref] = useState('');
   const bookingTriggerRef = useRef(null);
 
@@ -97,6 +98,7 @@ export default function Footer({
   useEffect(() => {
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 1024);
+      setIsMobile(window.innerWidth < 640);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -172,7 +174,7 @@ export default function Footer({
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: isDesktop ? '1.4fr 1fr 1fr 1fr 1.1fr' : 'repeat(2, minmax(0, 1fr))',
+            gridTemplateColumns: isDesktop ? '1.4fr 1fr 1fr 1fr 1.1fr' : isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))',
             gap: isDesktop ? '36px' : '28px 20px',
             alignItems: 'start'
           }}

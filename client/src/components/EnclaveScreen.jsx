@@ -225,7 +225,7 @@ export default function EnclaveScreen() {
           {/* 4 Architecture Pillars from the Guide */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
             gap: '12px',
             borderTop: '1px solid var(--border)',
             paddingTop: '16px'
@@ -282,7 +282,7 @@ export default function EnclaveScreen() {
       )}
 
       {/* Grid of the 3 Interactive 3D Elements */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '20px' }}>
         
         {/* Element 1: Rotating Hero Vault */}
         <div className="shadcn-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column' }}>
@@ -404,7 +404,7 @@ export default function EnclaveScreen() {
           <ShieldCheck size={18} color="#10b981" />
           Technical Standards & Quality Compliance for 3D Elements
         </h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', fontSize: '0.82rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '16px', fontSize: '0.82rem' }}>
           <div style={{ padding: '12px', borderRadius: '8px', background: 'var(--secondary)', border: '1px solid var(--border)' }}>
             <div style={{ fontWeight: 600, color: 'var(--foreground)', marginBottom: '4px' }}>60 FPS & Lazy Loading</div>
             <p style={{ color: 'var(--muted-foreground)', margin: 0 }}>

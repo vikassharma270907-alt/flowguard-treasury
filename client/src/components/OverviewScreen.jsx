@@ -113,26 +113,26 @@ export default function OverviewScreen({
 
       {/* TIER 1 ITEM 6: First Screen Hero (2 Sentences + 60s Demo Button) */}
       <div style={{
-        background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(9, 13, 22, 0.95) 100%)',
+        background: 'var(--card)',
         border: '1px solid var(--border)',
         borderRadius: '16px',
-        padding: '40px 32px',
-        boxShadow: '0 16px 40px rgba(0, 0, 0, 0.5)'
+        padding: 'clamp(24px, 5vw, 40px) clamp(16px, 4vw, 32px)',
+        boxShadow: 'var(--card-shadow)'
       }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '9999px', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>
-          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#34d399', boxShadow: '0 0 8px #34d399' }}></span>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '9999px', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)', color: 'var(--success)', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>
+          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }}></span>
           Official Submission · ArmorIQ Flow State Hackathon
         </div>
 
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1.2, margin: '0 0 16px 0' }}>
+        <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.03em', lineHeight: 1.2, margin: '0 0 16px 0' }}>
           Autonomous Treasury & Intent Vault Governed by ArmorIQ
         </h1>
 
         {/* The 2 Mandated Sentences */}
-        <p style={{ fontSize: '1.15rem', color: '#cbd5e1', lineHeight: 1.6, margin: '0 0 8px 0', fontWeight: 500 }}>
+        <p style={{ fontSize: 'clamp(1rem, 2vw, 1.15rem)', color: 'var(--foreground)', lineHeight: 1.6, margin: '0 0 8px 0', fontWeight: 500 }}>
           FlowGuard is an autonomous treasury and customer support agent that manages multi-currency disbursements, verifies vendor invoices, and handles live telephony inquiries.
         </p>
-        <p style={{ fontSize: '1.05rem', color: '#94a3b8', lineHeight: 1.6, margin: '0 0 24px 0' }}>
+        <p style={{ fontSize: 'clamp(0.9rem, 1.8vw, 1.05rem)', color: 'var(--muted-foreground)', lineHeight: 1.6, margin: '0 0 24px 0' }}>
           ArmorIQ cryptographically bounds every tool invocation to declared intent using Ed25519 tokens and blocks unauthorized bank diversions or prompt injections before any network execution.
         </p>
 
@@ -140,8 +140,8 @@ export default function OverviewScreen({
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
           <button
             onClick={() => setShowDemoVideo(!showDemoVideo)}
-            className="btn btn-primary"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+            className="btn btn-primary mobile-tap-target"
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 20px', minHeight: '44px', fontSize: '0.9rem', fontWeight: 700 }}
           >
             <Play size={16} fill="currentColor" />
             <span>{showDemoVideo ? 'Hide 60-Second Explainer' : 'Watch the 60-Second Explainer'}</span>
@@ -150,10 +150,10 @@ export default function OverviewScreen({
           <a
             href="/judges"
             onClick={(e) => { e.preventDefault(); onNavigate('judges'); }}
-            className="btn btn-secondary"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', fontSize: '0.9rem' }}
+            className="btn btn-secondary mobile-tap-target"
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 20px', minHeight: '44px', fontSize: '0.9rem' }}
           >
-            <ShieldCheck size={16} color="#34d399" />
+            <ShieldCheck size={16} color="var(--success)" />
             <span>Judge Inspection Dashboard (/judges)</span>
             <ArrowRight size={14} />
           </a>
@@ -161,8 +161,8 @@ export default function OverviewScreen({
           <a
             href="/#boundary-test"
             onClick={(e) => { e.preventDefault(); const el = document.getElementById('boundary-test'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}
-            className="btn btn-secondary"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 18px', fontSize: '0.9rem' }}
+            className="btn btn-secondary mobile-tap-target"
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 18px', minHeight: '44px', fontSize: '0.9rem' }}
           >
             <span>Skip to Boundary Test</span>
             <ArrowRight size={14} />
@@ -171,14 +171,14 @@ export default function OverviewScreen({
 
         {/* Interactive 60-Second Walkthrough Explainer (Replaces Rickroll Video) */}
         {showDemoVideo && (
-          <div style={{ marginTop: '24px', background: '#030712', border: '1px solid var(--border)', borderRadius: '12px', padding: '24px' }}>
+          <div style={{ marginTop: '24px', background: 'var(--background)', border: '1px solid var(--border)', borderRadius: '12px', padding: 'clamp(16px, 3vw, 24px)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(56, 189, 248, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Sparkles size={18} color="#38bdf8" />
                 </div>
                 <div>
-                  <div style={{ color: '#f8fafc', fontWeight: 800, fontSize: '1.05rem', letterSpacing: '-0.01em' }}>
+                  <div style={{ color: 'var(--foreground)', fontWeight: 800, fontSize: '1.05rem', letterSpacing: '-0.01em' }}>
                     FlowGuard 60-Second Architectural Execution Explainer
                   </div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>
@@ -188,7 +188,7 @@ export default function OverviewScreen({
               </div>
               <button
                 onClick={() => setShowDemoVideo(false)}
-                style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px solid var(--border)', color: 'var(--muted-foreground)', borderRadius: '6px', padding: '6px 10px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.78rem' }}
+                style={{ background: 'var(--secondary)', border: '1px solid var(--border)', color: 'var(--foreground)', borderRadius: '6px', padding: '8px 12px', minHeight: '40px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.78rem' }}
                 aria-label="Close walkthrough explainer"
               >
                 <X size={15} />
@@ -197,19 +197,20 @@ export default function OverviewScreen({
             </div>
 
             {/* Time Step Buttons */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '8px', marginBottom: '20px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 150px), 1fr))', gap: '8px', marginBottom: '20px' }}>
               {walkthroughSteps.map((step, idx) => (
                 <button
                   key={idx}
                   onClick={() => setExplainerStep(idx)}
                   style={{
-                    background: explainerStep === idx ? 'rgba(56, 189, 248, 0.12)' : 'rgba(255, 255, 255, 0.03)',
+                    background: explainerStep === idx ? 'rgba(56, 189, 248, 0.12)' : 'var(--card)',
                     border: explainerStep === idx ? '1px solid #38bdf8' : '1px solid var(--border)',
                     borderRadius: '8px',
                     padding: '10px 12px',
                     textAlign: 'left',
                     cursor: 'pointer',
-                    transition: 'all 0.15s ease'
+                    transition: 'all 0.15s ease',
+                    minHeight: '44px'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
@@ -220,7 +221,7 @@ export default function OverviewScreen({
                       Phase {idx + 1}
                     </span>
                   </div>
-                  <div style={{ fontSize: '0.78rem', fontWeight: 700, color: explainerStep === idx ? '#ffffff' : '#cbd5e1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 700, color: explainerStep === idx ? 'var(--foreground)' : 'var(--muted-foreground)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {step.badge}
                   </div>
                 </button>
@@ -228,26 +229,26 @@ export default function OverviewScreen({
             </div>
 
             {/* Active Step Content */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px', background: '#060a12', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '20px', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '10px', padding: 'clamp(14px, 3vw, 20px)' }}>
               {/* Left Column: Explanation */}
               <div>
                 <div style={{ display: 'inline-block', fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: '4px', background: `${walkthroughSteps[explainerStep].badgeColor}22`, color: walkthroughSteps[explainerStep].badgeColor, marginBottom: '8px' }}>
                   {walkthroughSteps[explainerStep].time} · {walkthroughSteps[explainerStep].badge}
                 </div>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#f8fafc', margin: '0 0 6px 0' }}>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--foreground)', margin: '0 0 6px 0' }}>
                   {walkthroughSteps[explainerStep].title}
                 </h3>
                 <p style={{ fontSize: '0.85rem', fontWeight: 600, color: '#38bdf8', margin: '0 0 10px 0' }}>
                   {walkthroughSteps[explainerStep].headline}
                 </p>
-                <p style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.6, margin: '0 0 16px 0' }}>
+                <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', lineHeight: 1.6, margin: '0 0 16px 0' }}>
                   {walkthroughSteps[explainerStep].explanation}
                 </p>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {walkthroughSteps[explainerStep].keyPoints.map((pt, pIdx) => (
-                    <div key={pIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.75rem', color: '#e2e8f0' }}>
-                      <CheckCircle2 size={14} color="#34d399" style={{ flexShrink: 0, marginTop: '2px' }} />
+                    <div key={pIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.75rem', color: 'var(--foreground)' }}>
+                      <CheckCircle2 size={14} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
                       <span>{pt}</span>
                     </div>
                   ))}
@@ -342,7 +343,7 @@ export default function OverviewScreen({
       {/* TIER 1 ITEM 7: Architecture & Zero-Bypass Flow Section */}
       <HowWeUseArmorIQSection />
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '12px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '12px' }}>
           {/* Card 1: AI Agent */}
           <div style={{ background: 'var(--muted)', padding: '14px', borderRadius: '8px', border: '1px solid var(--border)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
@@ -514,9 +515,9 @@ export default function OverviewScreen({
 
       {/* Interactive 3D Hero Vault Showcase */}
       <div className="glass-card" style={{
-        padding: '20px 24px',
+        padding: 'clamp(16px, 3vw, 24px)',
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
         gap: '24px',
         alignItems: 'center',
         background: 'var(--card)',
@@ -580,7 +581,7 @@ export default function OverviewScreen({
       {/* Primary KPI Grid */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
         gap: '16px'
       }}>
         {/* KPI 1: Total Net Liquid Cash */}
@@ -674,12 +675,12 @@ export default function OverviewScreen({
           </button>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '14px' }}>
           {(plan?.balanceBreakdown || []).map(b => (
             <div
               key={b.currency}
               style={{
-                background: 'rgba(255, 255, 255, 0.03)',
+                background: 'var(--secondary)',
                 border: '1px solid var(--border-subtle)',
                 borderRadius: '10px',
                 padding: '16px'

@@ -232,7 +232,7 @@ export default function Header({
           maxWidth: '1280px',
           height: '56px',
           margin: '0 auto',
-          padding: '0 20px',
+          padding: isDesktop ? '0 20px' : '0 12px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between'
@@ -323,20 +323,23 @@ export default function Header({
         </div>
 
         {/* Right: Theme Toggle (Light/Dark Mode), Language Switcher, Optional Playground Indicator, CTA, Hamburger */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: isDesktop ? '10px' : '6px' }}>
           {/* Light / Dark Mode Button on Top Right Corner */}
           <button
             onClick={toggleTheme}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '6px',
               fontSize: '12px',
               fontWeight: 500,
               color: isDark ? '#f4f4f5' : '#111111',
               backgroundColor: isDark ? '#18181b' : '#f7f7f5',
-              padding: '4px 9px',
-              borderRadius: '4px',
+              padding: isDesktop ? '4px 9px' : '8px 10px',
+              minHeight: '44px',
+              minWidth: isDesktop ? 'auto' : '44px',
+              borderRadius: '6px',
               border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
               cursor: 'pointer',
               transition: 'background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease',
@@ -373,8 +376,9 @@ export default function Header({
               fontWeight: 500,
               color: isDark ? '#a1a1aa' : '#6b6b6b',
               backgroundColor: isDark ? '#18181b' : '#f7f7f5',
-              padding: '3px 8px',
-              borderRadius: '4px',
+              padding: '2px 4px',
+              minHeight: '44px',
+              borderRadius: '6px',
               border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
               transition: 'background-color 0.15s ease, border-color 0.15s ease'
             }}
@@ -386,7 +390,8 @@ export default function Header({
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                padding: '2px 4px',
+                padding: '8px 6px',
+                minHeight: '36px',
                 fontSize: '12px',
                 fontWeight: language === 'en' ? 700 : 400,
                 color: language === 'en' ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'),
@@ -404,7 +409,8 @@ export default function Header({
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                padding: '2px 4px',
+                padding: '8px 6px',
+                minHeight: '36px',
                 fontSize: '12px',
                 fontWeight: language === 'hi' ? 700 : 400,
                 color: language === 'hi' ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'),
@@ -503,11 +509,13 @@ export default function Header({
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: '34px',
-                height: '34px',
+                width: '44px',
+                height: '44px',
+                minWidth: '44px',
+                minHeight: '44px',
                 background: isDark ? '#18181b' : 'transparent',
                 border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
-                borderRadius: '4px',
+                borderRadius: '6px',
                 color: isDark ? '#fafafa' : '#111111',
                 cursor: 'pointer',
                 padding: 0,
@@ -518,7 +526,7 @@ export default function Header({
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-nav-drawer"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 {mobileMenuOpen ? (
                   <path d="M18 6L6 18M6 6l12 12" />
                 ) : (
@@ -543,13 +551,16 @@ export default function Header({
             top: '57px',
             left: 0,
             width: '100%',
+            height: 'calc(100dvh - 57px)',
+            maxHeight: 'calc(100dvh - 57px)',
+            overflowY: 'auto',
             backgroundColor: isDark ? '#0d0d11' : '#ffffff',
             borderBottom: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
             boxShadow: isDark ? '0 12px 24px rgba(0, 0, 0, 0.6)' : '0 12px 24px rgba(0, 0, 0, 0.08)',
-            padding: '20px',
+            padding: '20px 20px calc(24px + env(safe-area-inset-bottom, 0px)) 20px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '12px',
+            gap: '8px',
             zIndex: 99,
             transition: 'background-color 0.2s ease, border-color 0.2s ease'
           }}
@@ -567,7 +578,8 @@ export default function Header({
                 fontSize: '15px',
                 color: isDark ? '#fafafa' : '#111111',
                 textDecoration: 'none',
-                padding: '10px 4px',
+                padding: '12px 4px',
+                minHeight: '48px',
                 borderBottom: isDark ? '1px solid #1c1c22' : '1px solid #f5f5f5',
                 display: 'flex',
                 alignItems: 'center',

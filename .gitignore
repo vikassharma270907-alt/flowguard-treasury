@@ -27,7 +27,7 @@ Thumbs.db
 .idea
 *.suo
 *.ntvs*
-*.njsproj
-*.sln
-
 .vercel
+
+# Audit artifacts
+audit-screenshots/

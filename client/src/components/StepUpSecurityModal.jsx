@@ -33,21 +33,22 @@ export default function StepUpSecurityModal({ challenge, onClose, onSuccess }) {
 
   return (
     <div className="modal-overlay" onClick={onClose} style={{ zIndex: 350 }}>
-      <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '420px', background: '#09090b', border: '1px solid var(--border)' }}>
+      <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '420px', background: 'var(--card)', border: '1px solid var(--border)' }}>
         <div style={{ padding: '24px', textAlign: 'center', borderBottom: '1px solid var(--border)' }}>
           <div style={{
             width: '44px',
             height: '44px',
             borderRadius: '10px',
-            background: '#ffffff',
+            background: 'var(--primary)',
+            color: 'var(--primary-foreground)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 12px auto'
           }}>
-            <ShieldCheck size={24} color="#000000" />
+            <ShieldCheck size={24} color="var(--primary-foreground)" />
           </div>
-          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#fafafa' }}>
+          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--foreground)' }}>
             Step-Up 2FA Security Challenge
           </h3>
           <p style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', marginTop: '4px' }}>
@@ -56,17 +57,17 @@ export default function StepUpSecurityModal({ challenge, onClose, onSuccess }) {
         </div>
 
         <form onSubmit={handleVerify} style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ background: '#121215', padding: '12px', borderRadius: '6px', border: '1px solid var(--border)' }}>
-            <div style={{ fontSize: '0.72rem', color: '#a1a1aa', textTransform: 'uppercase', fontWeight: 700 }}>
+          <div style={{ background: 'var(--surface-muted)', padding: '12px', borderRadius: '6px', border: '1px solid var(--border)' }}>
+            <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', fontWeight: 700 }}>
               Action Requiring Authorization:
             </div>
-            <div style={{ fontSize: '0.85rem', color: '#ffffff', fontWeight: 600, marginTop: '2px' }}>
+            <div style={{ fontSize: '0.85rem', color: 'var(--foreground)', fontWeight: 600, marginTop: '2px' }}>
               {challenge?.action || 'Sensitive Treasury Modification'}
             </div>
           </div>
 
           <div>
-            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#a1a1aa', display: 'block', marginBottom: '6px' }}>
+            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--muted-foreground)', display: 'block', marginBottom: '6px' }}>
               6-Digit Authenticator OTP Code:
             </label>
             <input

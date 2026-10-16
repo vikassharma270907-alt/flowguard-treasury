@@ -23,12 +23,12 @@ export default function BoundaryTestSection() {
     <section
       id="boundary-test"
       style={{
-        margin: '48px 0',
-        padding: '36px 32px',
+        margin: '36px 0',
+        padding: 'clamp(20px, 4vw, 36px) clamp(16px, 3vw, 32px)',
         borderRadius: '16px',
         background: 'var(--card)',
         border: '1px solid var(--border)',
-        boxShadow: '0 12px 32px rgba(0, 0, 0, 0.4)'
+        boxShadow: 'var(--card-shadow)'
       }}
       aria-labelledby="boundary-test-heading"
     >
@@ -64,16 +64,16 @@ export default function BoundaryTestSection() {
       </div>
 
       {/* 3 Outcome Tabs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px', marginBottom: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '14px', marginBottom: '24px' }}>
         {realRunData.cases.map((c, idx) => {
           const isSelected = selectedCaseIndex === idx;
           const isAllowed = c.verdict === 'ALLOWED';
           const isBlocked = c.verdict === 'BLOCKED';
           const isHeld = c.verdict === 'HELD';
 
-          const badgeBg = isAllowed ? 'rgba(16, 185, 129, 0.15)' : isBlocked ? 'rgba(239, 68, 68, 0.15)' : 'rgba(245, 158, 11, 0.15)';
-          const badgeColor = isAllowed ? '#34d399' : isBlocked ? '#f87171' : '#fbbf24';
-          const borderColor = isSelected ? (isAllowed ? '#10b981' : isBlocked ? '#ef4444' : '#f59e0b') : 'var(--border)';
+          const badgeBg = isAllowed ? 'var(--success-bg)' : isBlocked ? 'var(--danger-bg)' : 'var(--warning-bg)';
+          const badgeColor = isAllowed ? 'var(--success)' : isBlocked ? 'var(--danger)' : 'var(--warning)';
+          const borderColor = isSelected ? (isAllowed ? 'var(--success)' : isBlocked ? 'var(--danger)' : 'var(--warning)') : 'var(--border)';
 
           return (
             <button
@@ -86,17 +86,18 @@ export default function BoundaryTestSection() {
                 textAlign: 'left',
                 padding: '16px 18px',
                 borderRadius: '12px',
-                background: isSelected ? 'var(--secondary)' : 'rgba(255, 255, 255, 0.02)',
+                background: isSelected ? 'var(--secondary)' : 'var(--card)',
                 border: `2px solid ${borderColor}`,
                 cursor: 'pointer',
-                transition: 'all 0.15s ease'
+                transition: 'all 0.15s ease',
+                minHeight: '44px'
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center', marginBottom: '8px' }}>
                 <span style={{ fontFamily: 'monospace', fontWeight: 700, fontSize: '0.9rem', color: 'var(--foreground)' }}>
                   {c.tool}
                 </span>
-                <span style={{ fontSize: '0.72rem', fontWeight: 800, padding: '2px 8px', borderRadius: '4px', background: badgeBg, color: badgeColor }}>
+                <span style={{ fontSize: '0.72rem', fontWeight: 800, padding: '2px 8px', borderRadius: '4px', background: badgeBg, color: badgeColor, border: `1px solid ${badgeColor}33` }}>
                   {c.verdict}
                 </span>
               </div>
@@ -111,7 +112,7 @@ export default function BoundaryTestSection() {
       </div>
 
       {/* Selected Case Deep Dive */}
-      <div style={{ background: 'var(--background)', borderRadius: '12px', border: '1px solid var(--border)', padding: '24px' }}>
+      <div style={{ background: 'var(--background)', borderRadius: '12px', border: '1px solid var(--border)', padding: 'clamp(16px, 3vw, 24px)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '18px', borderBottom: '1px solid var(--border)', paddingBottom: '14px' }}>
           <div>
             <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--muted-foreground)', letterSpacing: '0.05em' }}>
@@ -121,7 +122,7 @@ export default function BoundaryTestSection() {
               {activeCase.action} ({realRunData.mcpServer})
             </div>
           </div>
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
             <span style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)' }}>
               PEP Latency: <strong style={{ color: 'var(--foreground)' }}>{activeCase.latencyMs} ms</strong>
             </span>
@@ -132,7 +133,7 @@ export default function BoundaryTestSection() {
         </div>
 
         {/* Cryptographic Proof Details */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '12px', marginBottom: '18px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '12px', marginBottom: '18px' }}>
           <div style={{ background: 'var(--card)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
             <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', textTransform: 'uppercase' }}>Token ID</div>
             <div style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: '#38bdf8', wordBreak: 'break-all' }}>

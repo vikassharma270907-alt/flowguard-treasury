@@ -138,10 +138,10 @@ export default function CredentialsModal({ onClose, onSaveCredentials, onSaveArm
                 style={{
                   width: '100%',
                   padding: '9px 12px',
-                  background: '#1f2937',
-                  border: '1px solid var(--border-subtle)',
+                  background: 'var(--card)',
+                  border: '1px solid var(--border)',
                   borderRadius: '6px',
-                  color: '#ffffff',
+                  color: 'var(--foreground)',
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.82rem'
                 }}
@@ -161,10 +161,10 @@ export default function CredentialsModal({ onClose, onSaveCredentials, onSaveArm
                 style={{
                   width: '100%',
                   padding: '9px 12px',
-                  background: '#1f2937',
-                  border: '1px solid var(--border-subtle)',
+                  background: 'var(--card)',
+                  border: '1px solid var(--border)',
                   borderRadius: '6px',
-                  color: '#ffffff',
+                  color: 'var(--foreground)',
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.82rem'
                 }}
@@ -229,10 +229,10 @@ export default function CredentialsModal({ onClose, onSaveCredentials, onSaveArm
                 style={{
                   width: '100%',
                   padding: '9px 12px',
-                  background: '#1f2937',
-                  border: '1px solid var(--border-subtle)',
+                  background: 'var(--card)',
+                  border: '1px solid var(--border)',
                   borderRadius: '6px',
-                  color: '#ffffff',
+                  color: 'var(--foreground)',
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.82rem'
                 }}

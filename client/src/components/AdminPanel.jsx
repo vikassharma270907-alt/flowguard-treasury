@@ -215,11 +215,13 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
       {/* Shadcn Tabs Bar */}
       <div style={{
         display: 'flex',
+        flexWrap: 'wrap',
         gap: '6px',
-        background: '#09090b',
+        background: 'var(--surface-muted)',
         border: '1px solid var(--border)',
         padding: '4px',
         borderRadius: 'var(--radius-md)',
+        maxWidth: '100%',
         width: 'fit-content'
       }}>
         {[
@@ -298,12 +300,12 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
               </div>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '20px' }}>
               {/* Policy 1: ArmorIQ Fail Mode */}
-              <div style={{ background: '#121215', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
+              <div style={{ background: 'var(--surface-muted)', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                   <div>
-                    <strong style={{ fontSize: '0.9rem', color: '#ffffff' }}>ArmorIQ Enforcement Mode</strong>
+                    <strong style={{ fontSize: '0.9rem', color: 'var(--foreground)' }}>ArmorIQ Enforcement Mode</strong>
                     <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginTop: '2px' }}>
                       Controls whether transfers halt if ArmorIQ verification encounters an exception.
                     </p>
@@ -318,8 +320,8 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                     className="btn btn-sm"
                     style={{
                       flex: 1,
-                      background: settings.armorIqEnforcementMode === 'FAIL_CLOSED' ? '#ffffff' : 'transparent',
-                      color: settings.armorIqEnforcementMode === 'FAIL_CLOSED' ? '#000000' : '#a1a1aa',
+                      background: settings.armorIqEnforcementMode === 'FAIL_CLOSED' ? 'var(--primary)' : 'transparent',
+                      color: settings.armorIqEnforcementMode === 'FAIL_CLOSED' ? 'var(--primary-foreground)' : 'var(--muted-foreground)',
                       border: '1px solid var(--border)'
                     }}
                   >
@@ -330,8 +332,8 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                     className="btn btn-sm"
                     style={{
                       flex: 1,
-                      background: settings.armorIqEnforcementMode === 'FAIL_OPEN' ? '#ffffff' : 'transparent',
-                      color: settings.armorIqEnforcementMode === 'FAIL_OPEN' ? '#000000' : '#a1a1aa',
+                      background: settings.armorIqEnforcementMode === 'FAIL_OPEN' ? 'var(--primary)' : 'transparent',
+                      color: settings.armorIqEnforcementMode === 'FAIL_OPEN' ? 'var(--primary-foreground)' : 'var(--muted-foreground)',
                       border: '1px solid var(--border)'
                     }}
                   >
@@ -341,9 +343,9 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
               </div>
 
               {/* Policy 2: Single Payout Ceiling */}
-              <div style={{ background: '#121215', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
+              <div style={{ background: 'var(--surface-muted)', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                  <strong style={{ fontSize: '0.9rem', color: '#ffffff' }}>Single Payout Limit</strong>
+                  <strong style={{ fontSize: '0.9rem', color: 'var(--foreground)' }}>Single Payout Limit</strong>
                   <span className="mono" style={{ fontWeight: 700, color: '#38bdf8' }}>
                     ${settings.singlePayoutLimitUsd?.toLocaleString()} USD
                   </span>
@@ -358,14 +360,14 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                   step="5000"
                   value={settings.singlePayoutLimitUsd}
                   onChange={e => setSettings({ ...settings, singlePayoutLimitUsd: Number(e.target.value) })}
-                  style={{ width: '100%', accentColor: '#ffffff', cursor: 'pointer' }}
+                  style={{ width: '100%', accentColor: 'var(--primary)', cursor: 'pointer' }}
                 />
               </div>
 
               {/* Policy 3: Strict Cash Reserve Enforcement */}
-              <div style={{ background: '#121215', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ background: 'var(--surface-muted)', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                  <strong style={{ fontSize: '0.9rem', color: '#ffffff' }}>Strict Reserve Floor Inviolability</strong>
+                  <strong style={{ fontSize: '0.9rem', color: 'var(--foreground)' }}>Strict Reserve Floor Inviolability</strong>
                   <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginTop: '2px' }}>
                     Hard block on any payment that violates the $15,000 reserve buffer.
                   </p>
@@ -379,9 +381,9 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
               </div>
 
               {/* Policy 4: Auto-Halt Duplicate Invoices */}
-              <div style={{ background: '#121215', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ background: 'var(--surface-muted)', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                  <strong style={{ fontSize: '0.9rem', color: '#ffffff' }}>Automated Duplicate Block</strong>
+                  <strong style={{ fontSize: '0.9rem', color: 'var(--foreground)' }}>Automated Duplicate Block</strong>
                   <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginTop: '2px' }}>
                     Rejects intent tokens automatically when Levenshtein distance matches existing bills.
                   </p>
@@ -413,18 +415,18 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             </button>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '16px' }}>
             {/* US LOCAL */}
-            <div style={{ background: '#121215', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
+            <div style={{ background: 'var(--surface-muted)', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#ffffff' }}>United States (USD)</div>
+                <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--foreground)' }}>United States (USD)</div>
                 <span className="badge badge-success">LOCAL $0.00 FEE</span>
               </div>
               <div style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', marginBottom: '12px' }}>
                 Corridor: ACH / Fedwire · Instant settlement · Checking & Savings accounts
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.8rem', color: '#a1a1aa' }}>Corridor Active</span>
+                <span style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)' }}>Corridor Active</span>
                 <div className="shadcn-switch checked">
                   <div className="shadcn-switch-thumb"></div>
                 </div>
@@ -432,16 +434,16 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             </div>
 
             {/* GB LOCAL */}
-            <div style={{ background: '#121215', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
+            <div style={{ background: 'var(--surface-muted)', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#ffffff' }}>United Kingdom (GBP)</div>
+                <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--foreground)' }}>United Kingdom (GBP)</div>
                 <span className="badge badge-success">LOCAL $0.00 FEE</span>
               </div>
               <div style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', marginBottom: '12px' }}>
                 Corridor: UK Faster Payments · Sort Code & Account Number validation
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.8rem', color: '#a1a1aa' }}>Corridor Active</span>
+                <span style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)' }}>Corridor Active</span>
                 <div className="shadcn-switch checked">
                   <div className="shadcn-switch-thumb"></div>
                 </div>
@@ -449,16 +451,16 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             </div>
 
             {/* DE SWIFT */}
-            <div style={{ background: '#121215', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
+            <div style={{ background: 'var(--surface-muted)', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#ffffff' }}>European Union (EUR)</div>
+                <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--foreground)' }}>European Union (EUR)</div>
                 <span className="badge badge-warning">SWIFT EUR 12.85 FEE</span>
               </div>
               <div style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', marginBottom: '12px' }}>
                 Corridor: Cross-Border SWIFT · Flat EUR 12.85 fee deducted from source wallet
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.8rem', color: '#a1a1aa' }}>Corridor Active</span>
+                <span style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)' }}>Corridor Active</span>
                 <div className="shadcn-switch checked">
                   <div className="shadcn-switch-thumb"></div>
                 </div>
@@ -517,7 +519,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
 
       {/* TAB 4: SYSTEM TELEMETRY */}
       {activeAdminTab === 'telemetry' && telemetry && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '16px' }}>
           <div className="shadcn-card" style={{ padding: '20px' }}>
             <div style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', textTransform: 'uppercase' }}>
               Airwallex API Latency
@@ -669,12 +671,12 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
           </div>
 
           {/* Step-Up 2FA & Perimeter Defenses Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '16px' }}>
             {/* Step-Up 2FA Simulator */}
             <div className="shadcn-card" style={{ padding: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-                <Key size={16} color="#ffffff" />
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>Step-Up 2FA Challenge</h4>
+                <Key size={16} color="var(--foreground)" />
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--foreground)' }}>Step-Up 2FA Challenge</h4>
               </div>
               <p style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', marginBottom: '16px', lineHeight: 1.5 }}>
                 Enforces hardware passkey or 6-digit cryptographic authenticator challenge before high-risk changes (e.g. reserve floor decrease or single transfer &gt; $50,000).
@@ -682,7 +684,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
               <button
                 onClick={handleIssue2FAChallenge}
                 className="btn btn-outline btn-sm"
-                style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '6px' }}
+                style={{ width: '100%', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
               >
                 <Lock size={13} />
                 <span>Simulate Step-Up 2FA Verification</span>
@@ -692,23 +694,23 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             {/* Perimeter & Signature Verification */}
             <div className="shadcn-card" style={{ padding: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-                <Cpu size={16} color="#ffffff" />
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>HMAC Webhook & Perimeter Security</h4>
+                <Cpu size={16} color="var(--foreground)" />
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--foreground)' }}>HMAC Webhook & Perimeter Security</h4>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.78rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#a1a1aa' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--muted-foreground)' }}>
                   <span>Signature Algorithm:</span>
-                  <strong style={{ color: '#ffffff' }}>HMAC-SHA256</strong>
+                  <strong style={{ color: 'var(--foreground)' }}>HMAC-SHA256</strong>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#a1a1aa' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--muted-foreground)' }}>
                   <span>Anti-Replay Protection:</span>
                   <strong style={{ color: '#34d399' }}>±300s Timestamp + Nonces</strong>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#a1a1aa' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--muted-foreground)' }}>
                   <span>Zero-Trust IP Whitelist:</span>
-                  <strong style={{ color: '#ffffff' }}>52.88.0.0/16 (Airwallex Gateway)</strong>
+                  <strong style={{ color: 'var(--foreground)' }}>52.88.0.0/16 (Airwallex Gateway)</strong>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#a1a1aa' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--muted-foreground)' }}>
                   <span>Security Standard:</span>
                   <strong style={{ color: '#38bdf8' }}>SAIF Fintech Tier 3</strong>
                 </div>
@@ -722,7 +724,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
       {activeAdminTab === 'mcp' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {/* Header Card */}
-          <div className="shadcn-card" style={{ padding: '24px', background: 'linear-gradient(135deg, rgba(24, 24, 27, 0.95) 0%, rgba(9, 9, 11, 0.98) 100%)', border: '1px solid var(--border)' }}>
+          <div className="shadcn-card" style={{ padding: '24px', background: 'var(--card)', border: '1px solid var(--border)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px', marginBottom: '16px' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
@@ -738,7 +740,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                     Hackathon Rule 1 & 4 Compliant
                   </span>
                 </div>
-                <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>
+                <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--foreground)', margin: 0 }}>
                   FlowGuard Treasury MCP Server
                 </h3>
                 <p style={{ fontSize: '0.82rem', color: 'var(--muted-foreground)', marginTop: '4px', margin: 0 }}>
@@ -752,7 +754,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                   target="_blank"
                   rel="noreferrer"
                   className="btn btn-secondary btn-sm"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', border: '1px solid rgba(139, 92, 246, 0.4)', color: '#e9d5ff' }}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', border: '1px solid rgba(139, 92, 246, 0.4)', color: '#c084fc' }}
                 >
                   <ExternalLink size={13} color="#c084fc" />
                   <span>platform.armoriq.ai</span>
@@ -771,10 +773,10 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             </div>
 
             {/* Server Specs Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', background: '#040405', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '12px', background: 'var(--surface-muted)', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
               <div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>Server Name</div>
-                <div style={{ fontFamily: 'monospace', fontWeight: 700, color: '#fafafa', fontSize: '0.85rem' }}>flowguard-treasury-mcp</div>
+                <div style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--foreground)', fontSize: '0.85rem' }}>flowguard-treasury-mcp</div>
               </div>
               <div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>ArmorIQ Enforcement</div>
@@ -795,12 +797,12 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
           <div className="shadcn-card" style={{ padding: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
               <ShieldCheck size={18} color="#34d399" />
-              <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff', margin: 0 }}>
+              <h4 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--foreground)', margin: 0 }}>
                 Hackathon Rules & ArmorIQ Integration Verification
               </h4>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '12px' }}>
               {[
                 { rule: 'Rule 1: ArmorIQ Mandatory Integration', status: 'VERIFIED ACTIVE', desc: 'Integrated official @armoriq/sdk in production mode connected to api.armoriq.ai and iap.armoriq.ai.' },
                 { rule: 'Rule 2: ElevenLabs with ArmorIQ', status: 'VERIFIED ACTIVE', desc: 'Every voice support call session mints an ArmorIQ-signed plan with Ed25519 token & SHA-256 hash.' },
@@ -809,9 +811,9 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                 { rule: 'Rule 8: Actual ArmorIQ Enforcement', status: 'VERIFIED ACTIVE', desc: 'Live platform plan capture (capturePlan) & token issuance, not hardcoded simulation.' },
                 { rule: 'Platform Onboarding Requirement', status: 'READY FOR JUDGING', desc: 'Agent ID flowguard-treasury-agent-v1 and MCP flowguard-treasury-mcp onboarded.' }
               ].map((item, idx) => (
-                <div key={idx} style={{ background: '#09090b', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                <div key={idx} style={{ background: 'var(--surface-muted)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#fafafa' }}>{item.rule}</span>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--foreground)' }}>{item.rule}</span>
                     <span style={{ fontSize: '0.65rem', fontWeight: 700, padding: '1px 6px', borderRadius: '4px', background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
                       {item.status}
                     </span>
@@ -825,12 +827,12 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
           </div>
 
           {/* Interactive MCP Tool Runner */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '20px' }}>
+          <div className="admin-two-col">
             {/* Tool List */}
             <div className="shadcn-card" style={{ padding: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
                 <Zap size={16} color="#fbbf24" />
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', margin: 0 }}>
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--foreground)', margin: 0 }}>
                   Interactive MCP Tool Execution & ArmorIQ Gates
                 </h4>
               </div>
@@ -843,10 +845,10 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                   { name: 'assert_reserve_floor', label: '4. assert_reserve_floor', desc: 'Asserts liquidity satisfies $15,000 USD protected cash floor.', badge: 'Floor Protection', color: '#60a5fa', sampleArgs: { minimumReserveUsd: 15000 } },
                   { name: 'verify_audit_merkle', label: '5. verify_audit_merkle', desc: 'Computes cryptographic SHA-256 Merkle root across all ledger events.', badge: 'Immutable Proof', color: '#34d399', sampleArgs: {} }
                 ].map(tool => (
-                  <div key={tool.name} style={{ background: '#09090b', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+                  <div key={tool.name} style={{ background: 'var(--surface-muted)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-                        <span style={{ fontFamily: 'monospace', fontWeight: 700, fontSize: '0.82rem', color: '#fafafa' }}>{tool.label}</span>
+                        <span style={{ fontFamily: 'monospace', fontWeight: 700, fontSize: '0.82rem', color: 'var(--foreground)' }}>{tool.label}</span>
                         <span style={{ fontSize: '0.62rem', fontWeight: 700, padding: '1px 6px', borderRadius: '4px', background: `${tool.color}22`, color: tool.color, border: `1px solid ${tool.color}44` }}>
                           {tool.badge}
                         </span>
@@ -886,10 +888,10 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
               <pre style={{
                 flex: 1,
                 minHeight: '260px',
-                background: '#040405',
+                background: 'var(--surface-muted)',
                 padding: '12px 14px',
                 borderRadius: '8px',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                border: '1px solid var(--border)',
                 fontSize: '0.72rem',
                 fontFamily: 'monospace',
                 color: mcpResult?.result?.armorIqPolicy === 'UNVERIFIED_WIRE_OVERRIDE_HALTED' ? '#fca5a5' : '#34d399',
@@ -928,7 +930,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                     {copiedMcpConfig ? 'Copied!' : 'Copy Config'}
                   </button>
                 </div>
-                <pre style={{ background: '#040405', padding: '8px 10px', borderRadius: '6px', fontSize: '0.68rem', color: '#a1a1aa', margin: 0, overflowX: 'auto' }}>
+                <pre style={{ background: 'var(--surface-muted)', border: '1px solid var(--border)', padding: '8px 10px', borderRadius: '6px', fontSize: '0.68rem', color: 'var(--foreground)', margin: 0, overflowX: 'auto' }}>
 {`{
   "mcpServers": {
     "flowguard-treasury": {

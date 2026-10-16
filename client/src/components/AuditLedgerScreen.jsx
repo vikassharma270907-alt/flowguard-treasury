@@ -73,12 +73,12 @@ export default function AuditLedgerScreen() {
                 onChange={e => setSearchQuery(e.target.value)}
                 style={{
                   padding: '7px 12px 7px 32px',
-                  background: '#1f2937',
-                  border: '1px solid var(--border-subtle)',
+                  background: 'var(--card)',
+                  border: '1px solid var(--border)',
                   borderRadius: '6px',
-                  color: '#ffffff',
+                  color: 'var(--foreground)',
                   fontSize: '0.82rem',
-                  width: '240px'
+                  width: 'min(240px, calc(100vw - 120px))'
                 }}
               />
               <Search size={14} color="var(--text-dim)" style={{ position: 'absolute', left: '10px', top: '10px' }} />
@@ -91,7 +91,7 @@ export default function AuditLedgerScreen() {
       </div>
 
       {/* Audit Log Table */}
-      <div className="glass-card" style={{ padding: '24px', overflowX: 'auto' }}>
+      <div className="glass-card table-cards-mobile" style={{ padding: '24px', overflowX: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <div>
             <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Searchable Financial Audit Trail</h3>
@@ -127,7 +127,7 @@ export default function AuditLedgerScreen() {
                 </td>
 
                 <td style={{ padding: '12px 14px' }}>
-                  <div style={{ fontWeight: 600, color: '#f8fafc' }}>{log.action}</div>
+                  <div style={{ fontWeight: 600, color: 'var(--foreground)' }}>{log.action}</div>
                   <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '2px' }}>
                     {log.summary}
                   </div>
@@ -182,8 +182,8 @@ export default function AuditLedgerScreen() {
               </button>
             </div>
 
-            <div style={{ padding: '20px', background: '#0a0d14' }}>
-              <pre className="mono" style={{ fontSize: '0.78rem', color: '#a7f3d0', overflowX: 'auto', maxHeight: '350px' }}>
+            <div style={{ padding: '20px', background: 'var(--surface-muted)' }}>
+              <pre className="mono" style={{ fontSize: '0.78rem', color: 'var(--foreground)', overflowX: 'auto', maxHeight: '350px' }}>
                 {JSON.stringify(selectedEvent.payload, null, 2)}
               </pre>
             </div>

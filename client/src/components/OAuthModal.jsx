@@ -134,7 +134,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
       <div
         className="modal-content"
         onClick={e => e.stopPropagation()}
-        style={{ maxWidth: '460px', background: '#09090b', border: '1px solid var(--border)' }}
+        style={{ maxWidth: '460px', background: 'var(--card)', border: '1px solid var(--border)' }}
       >
         {/* Modal Header */}
         <div style={{ padding: '22px 24px', borderBottom: '1px solid var(--border)', position: 'relative' }}>
@@ -154,7 +154,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
               </svg>
             </div>
             <div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#fafafa' }}>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--foreground)' }}>
                 FlowGuard Admin Portal
               </h3>
               <p style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', marginTop: '2px' }}>
@@ -317,7 +317,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
                       <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
                       <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
                     </svg>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#fafafa' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--foreground)' }}>
                       Choose an account to continue
                     </span>
                   </div>
@@ -376,7 +376,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
                           )}
                         </div>
                         <div>
-                          <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#fafafa' }}>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--foreground)' }}>
                             {acc.name}
                           </div>
                           <div style={{ fontSize: '0.74rem', color: 'var(--muted-foreground)' }}>
@@ -431,7 +431,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
         {viewMode === 'custom_google' && (
           <form onSubmit={handleCustomGoogleSubmit} style={{ padding: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-              <span style={{ fontSize: '0.88rem', fontWeight: 600, color: '#fafafa' }}>
+              <span style={{ fontSize: '0.88rem', fontWeight: 600, color: 'var(--foreground)' }}>
                 Enter your Google Account
               </span>
               <button
@@ -460,7 +460,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
                     borderRadius: '6px',
                     background: 'var(--secondary)',
                     border: '1px solid var(--border)',
-                    color: '#fafafa',
+                    color: 'var(--foreground)',
                     fontSize: '0.85rem'
                   }}
                 />
@@ -481,7 +481,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
                     borderRadius: '6px',
                     background: 'var(--secondary)',
                     border: '1px solid var(--border)',
-                    color: '#fafafa',
+                    color: 'var(--foreground)',
                     fontSize: '0.85rem'
                   }}
                 />
@@ -502,7 +502,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
         {/* Modal Footer */}
         <div style={{
           padding: '14px 24px',
-          background: '#040405',
+          background: 'var(--surface-muted)',
           borderTop: '1px solid var(--border)',
           display: 'flex',
           alignItems: 'center',

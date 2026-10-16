@@ -1,0 +1,7280 @@
+{
+  "timestamp": "2026-10-16T13:45:52.376Z",
+  "overflows": [],
+  "smallTapTargets": [
+    {
+      "viewport": "phone-320x568",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "button",
+          "width": 26,
+          "height": 44,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 32,
+          "height": 48,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        },
+        {
+          "selector": "button",
+          "width": 121,
+          "height": 38,
+          "text": "Audit Trail & API"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-320x568",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "button",
+          "width": 25,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 31,
+          "height": 48,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        },
+        {
+          "selector": "a",
+          "width": 159,
+          "height": 19,
+          "text": "Inspect MCP & Enclave"
+        },
+        {
+          "selector": "a",
+          "width": 116,
+          "height": 19,
+          "text": "Open Audit Trail"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 16,
+          "text": "DISCLOSURES.md"
+        },
+        {
+          "selector": "a",
+          "width": 17,
+          "height": 17,
+          "text": "GitHub"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-320x568",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "button",
+          "width": 25,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 31,
+          "height": 48,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        },
+        {
+          "selector": "button",
+          "width": 121,
+          "height": 38,
+          "text": "Audit Trail & API"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-320x568",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "button",
+          "width": 25,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 31,
+          "height": 48,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        },
+        {
+          "selector": "button",
+          "width": 121,
+          "height": 38,
+          "text": "Audit Trail & API"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-320x568",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "button",
+          "width": 25,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 31,
+          "height": 48,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        },
+        {
+          "selector": "button",
+          "width": 121,
+          "height": 38,
+          "text": "Audit Trail & API"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-320x568",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "button",
+          "width": 25,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 31,
+          "height": 48,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        },
+        {
+          "selector": "button",
+          "width": 121,
+          "height": 38,
+          "text": "Audit Trail & API"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-360x740",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-360x740",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        },
+        {
+          "selector": "a",
+          "width": 159,
+          "height": 19,
+          "text": "Inspect MCP & Enclave"
+        },
+        {
+          "selector": "a",
+          "width": 116,
+          "height": 19,
+          "text": "Open Audit Trail"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 16,
+          "text": "DISCLOSURES.md"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-360x740",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-360x740",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-360x740",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-360x740",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-390x844",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-390x844",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        },
+        {
+          "selector": "a",
+          "width": 159,
+          "height": 19,
+          "text": "Inspect MCP & Enclave"
+        },
+        {
+          "selector": "a",
+          "width": 116,
+          "height": 19,
+          "text": "Open Audit Trail"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 16,
+          "text": "DISCLOSURES.md"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-390x844",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-390x844",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-390x844",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-390x844",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-414x896",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-414x896",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        },
+        {
+          "selector": "a",
+          "width": 159,
+          "height": 19,
+          "text": "Inspect MCP & Enclave"
+        },
+        {
+          "selector": "a",
+          "width": 116,
+          "height": 19,
+          "text": "Open Audit Trail"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 16,
+          "text": "DISCLOSURES.md"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-414x896",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-414x896",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-414x896",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-414x896",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-844x390-land",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-844x390-land",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a.btn.btn-secondary",
+          "width": 176,
+          "height": 37,
+          "text": "Live Production Site"
+        },
+        {
+          "selector": "a.btn.btn-secondary",
+          "width": 190,
+          "height": 37,
+          "text": "Technical Guide (PDF)"
+        },
+        {
+          "selector": "button.btn.btn-secondary",
+          "width": 133,
+          "height": 33,
+          "text": "Share /judges"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-844x390-land",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-844x390-land",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-844x390-land",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-844x390-land",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-768x1024",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-768x1024",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        },
+        {
+          "selector": "a",
+          "width": 159,
+          "height": 19,
+          "text": "Inspect MCP & Enclave"
+        },
+        {
+          "selector": "a",
+          "width": 116,
+          "height": 19,
+          "text": "Open Audit Trail"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 16,
+          "text": "DISCLOSURES.md"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-768x1024",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-768x1024",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-768x1024",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-768x1024",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-820x1180",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-820x1180",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a.btn.btn-secondary",
+          "width": 176,
+          "height": 37,
+          "text": "Live Production Site"
+        },
+        {
+          "selector": "a.btn.btn-secondary",
+          "width": 190,
+          "height": 37,
+          "text": "Technical Guide (PDF)"
+        },
+        {
+          "selector": "button.btn.btn-secondary",
+          "width": 133,
+          "height": 33,
+          "text": "Share /judges"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-820x1180",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-820x1180",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-820x1180",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-820x1180",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768-land",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 42,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 42,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 83,
+          "height": 42,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 93,
+          "height": 42,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 53,
+          "height": 42,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 65,
+          "height": 42,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 35,
+          "height": 48,
+          "text": "हिन्दी"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768-land",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 38,
+          "height": 42,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 115,
+          "height": 42,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 83,
+          "height": 42,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 93,
+          "height": 42,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 53,
+          "height": 42,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 65,
+          "height": 42,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 35,
+          "height": 48,
+          "text": "हिन्दी"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768-land",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 42,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 42,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 83,
+          "height": 42,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 93,
+          "height": 42,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 53,
+          "height": 42,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 65,
+          "height": 42,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 35,
+          "height": 48,
+          "text": "हिन्दी"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768-land",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 42,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 42,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 83,
+          "height": 42,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 93,
+          "height": 42,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 53,
+          "height": 42,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 65,
+          "height": 42,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 35,
+          "height": 48,
+          "text": "हिन्दी"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768-land",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 42,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 42,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 83,
+          "height": 42,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 93,
+          "height": 42,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 53,
+          "height": 42,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 65,
+          "height": 42,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 35,
+          "height": 48,
+          "text": "हिन्दी"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768-land",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 42,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 42,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 83,
+          "height": 42,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 93,
+          "height": 42,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 53,
+          "height": 42,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 65,
+          "height": 42,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 35,
+          "height": 48,
+          "text": "हिन्दी"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1280x720",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1280x720",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 119,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1280x720",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1280x720",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1280x720",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1280x720",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1440x900",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1440x900",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 119,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1440x900",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1440x900",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1440x900",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1440x900",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1920x1080",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1920x1080",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 119,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1920x1080",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1920x1080",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1920x1080",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1920x1080",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-320x568",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "button",
+          "width": 25,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 31,
+          "height": 48,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        },
+        {
+          "selector": "button",
+          "width": 121,
+          "height": 38,
+          "text": "Audit Trail & API"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-320x568",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "button",
+          "width": 25,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 31,
+          "height": 48,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        },
+        {
+          "selector": "a",
+          "width": 159,
+          "height": 19,
+          "text": "Inspect MCP & Enclave"
+        },
+        {
+          "selector": "a",
+          "width": 116,
+          "height": 19,
+          "text": "Open Audit Trail"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 16,
+          "text": "DISCLOSURES.md"
+        },
+        {
+          "selector": "a",
+          "width": 17,
+          "height": 17,
+          "text": "GitHub"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-320x568",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "button",
+          "width": 25,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 31,
+          "height": 48,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        },
+        {
+          "selector": "button",
+          "width": 121,
+          "height": 38,
+          "text": "Audit Trail & API"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-320x568",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "button",
+          "width": 25,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 31,
+          "height": 48,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        },
+        {
+          "selector": "button",
+          "width": 121,
+          "height": 38,
+          "text": "Audit Trail & API"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-320x568",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "button",
+          "width": 25,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 31,
+          "height": 48,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        },
+        {
+          "selector": "button",
+          "width": 121,
+          "height": 38,
+          "text": "Audit Trail & API"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-320x568",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "button",
+          "width": 25,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 31,
+          "height": 48,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        },
+        {
+          "selector": "button",
+          "width": 121,
+          "height": 38,
+          "text": "Audit Trail & API"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-360x740",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-360x740",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        },
+        {
+          "selector": "a",
+          "width": 159,
+          "height": 19,
+          "text": "Inspect MCP & Enclave"
+        },
+        {
+          "selector": "a",
+          "width": 116,
+          "height": 19,
+          "text": "Open Audit Trail"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 16,
+          "text": "DISCLOSURES.md"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-360x740",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-360x740",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-360x740",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-360x740",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-390x844",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-390x844",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        },
+        {
+          "selector": "a",
+          "width": 159,
+          "height": 19,
+          "text": "Inspect MCP & Enclave"
+        },
+        {
+          "selector": "a",
+          "width": 116,
+          "height": 19,
+          "text": "Open Audit Trail"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 16,
+          "text": "DISCLOSURES.md"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-390x844",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-390x844",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-390x844",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-390x844",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-414x896",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-414x896",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        },
+        {
+          "selector": "a",
+          "width": 159,
+          "height": 19,
+          "text": "Inspect MCP & Enclave"
+        },
+        {
+          "selector": "a",
+          "width": 116,
+          "height": 19,
+          "text": "Open Audit Trail"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 16,
+          "text": "DISCLOSURES.md"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-414x896",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-414x896",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-414x896",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-414x896",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-844x390-land",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-844x390-land",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a.btn.btn-secondary",
+          "width": 176,
+          "height": 37,
+          "text": "Live Production Site"
+        },
+        {
+          "selector": "a.btn.btn-secondary",
+          "width": 190,
+          "height": 37,
+          "text": "Technical Guide (PDF)"
+        },
+        {
+          "selector": "button.btn.btn-secondary",
+          "width": 133,
+          "height": 33,
+          "text": "Share /judges"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-844x390-land",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-844x390-land",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-844x390-land",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "phone-844x390-land",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-768x1024",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-768x1024",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        },
+        {
+          "selector": "a",
+          "width": 159,
+          "height": 19,
+          "text": "Inspect MCP & Enclave"
+        },
+        {
+          "selector": "a",
+          "width": 116,
+          "height": 19,
+          "text": "Open Audit Trail"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 16,
+          "text": "DISCLOSURES.md"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-768x1024",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-768x1024",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-768x1024",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-768x1024",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-820x1180",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-820x1180",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "a.btn.btn-secondary",
+          "width": 176,
+          "height": 37,
+          "text": "Live Production Site"
+        },
+        {
+          "selector": "a.btn.btn-secondary",
+          "width": 190,
+          "height": 37,
+          "text": "Technical Guide (PDF)"
+        },
+        {
+          "selector": "button.btn.btn-secondary",
+          "width": 133,
+          "height": 33,
+          "text": "Share /judges"
+        },
+        {
+          "selector": "a",
+          "width": 160,
+          "height": 19,
+          "text": "Jump to Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 183,
+          "height": 19,
+          "text": "View Architecture Diagram"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-820x1180",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-820x1180",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-820x1180",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-820x1180",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 36,
+          "height": 36,
+          "text": "हिन्दी"
+        },
+        {
+          "selector": "button",
+          "width": 84,
+          "height": 38,
+          "text": "Overview"
+        },
+        {
+          "selector": "button",
+          "width": 112,
+          "height": 38,
+          "text": "3D Enclave"
+        },
+        {
+          "selector": "button",
+          "width": 127,
+          "height": 38,
+          "text": "Payment Planner"
+        },
+        {
+          "selector": "button",
+          "width": 149,
+          "height": 38,
+          "text": "Invoice & Risk Guard"
+        },
+        {
+          "selector": "button",
+          "width": 185,
+          "height": 38,
+          "text": "Voice Gateway\nElevenLabs"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768-land",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 42,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 42,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 84,
+          "height": 42,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 93,
+          "height": 42,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 53,
+          "height": 42,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 65,
+          "height": 42,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 35,
+          "height": 48,
+          "text": "हिन्दी"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768-land",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 38,
+          "height": 42,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 115,
+          "height": 42,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 84,
+          "height": 42,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 93,
+          "height": 42,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 53,
+          "height": 42,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 65,
+          "height": 42,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 35,
+          "height": 48,
+          "text": "हिन्दी"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768-land",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 42,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 42,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 84,
+          "height": 42,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 93,
+          "height": 42,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 53,
+          "height": 42,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 65,
+          "height": 42,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 35,
+          "height": 48,
+          "text": "हिन्दी"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768-land",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 42,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 42,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 84,
+          "height": 42,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 93,
+          "height": 42,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 53,
+          "height": 42,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 65,
+          "height": 42,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 35,
+          "height": 48,
+          "text": "हिन्दी"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768-land",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 42,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 42,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 84,
+          "height": 42,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 93,
+          "height": 42,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 53,
+          "height": 42,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 65,
+          "height": 42,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 35,
+          "height": 48,
+          "text": "हिन्दी"
+        }
+      ]
+    },
+    {
+      "viewport": "tablet-1024x768-land",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 42,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 114,
+          "height": 42,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 84,
+          "height": 42,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 93,
+          "height": 42,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 53,
+          "height": 42,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 65,
+          "height": 42,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 46,
+          "text": "EN"
+        },
+        {
+          "selector": "button",
+          "width": 35,
+          "height": 48,
+          "text": "हिन्दी"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1280x720",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1280x720",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 119,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1280x720",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1280x720",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1280x720",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1280x720",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1440x900",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1440x900",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 119,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1440x900",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1440x900",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1440x900",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "laptop-1440x900",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1920x1080",
+      "route": "home",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1920x1080",
+      "route": "judges",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 39,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 119,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1920x1080",
+      "route": "boundary-test",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1920x1080",
+      "route": "architecture",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1920x1080",
+      "route": "playground",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1920x1080",
+      "route": "404",
+      "targets": [
+        {
+          "selector": "a",
+          "width": 110,
+          "height": 24,
+          "text": "FlowGuard"
+        },
+        {
+          "selector": "a",
+          "width": 40,
+          "height": 21,
+          "text": "Home"
+        },
+        {
+          "selector": "a",
+          "width": 118,
+          "height": 21,
+          "text": "For Judges\nTour"
+        },
+        {
+          "selector": "a",
+          "width": 86,
+          "height": 21,
+          "text": "How it works"
+        },
+        {
+          "selector": "a",
+          "width": 96,
+          "height": 21,
+          "text": "Boundary Test"
+        },
+        {
+          "selector": "a",
+          "width": 55,
+          "height": 21,
+          "text": "Docs"
+        },
+        {
+          "selector": "a",
+          "width": 67,
+          "height": 21,
+          "text": "GitHub"
+        },
+        {
+          "selector": "button",
+          "width": 28,
+          "height": 36,
+          "text": "EN"
+        }
+      ]
+    }
+  ],
+  "smallInputs": [],
+  "contrastIssues": [],
+  "screenshots": [
+    "home_phone-320x568_dark.png",
+    "judges_phone-320x568_dark.png",
+    "boundary-test_phone-320x568_dark.png",
+    "architecture_phone-320x568_dark.png",
+    "playground_phone-320x568_dark.png",
+    "404_phone-320x568_dark.png",
+    "mobile_drawer_phone-320x568_dark.png",
+    "home_phone-360x740_dark.png",
+    "judges_phone-360x740_dark.png",
+    "boundary-test_phone-360x740_dark.png",
+    "architecture_phone-360x740_dark.png",
+    "playground_phone-360x740_dark.png",
+    "404_phone-360x740_dark.png",
+    "mobile_drawer_phone-360x740_dark.png",
+    "home_phone-390x844_dark.png",
+    "judges_phone-390x844_dark.png",
+    "boundary-test_phone-390x844_dark.png",
+    "architecture_phone-390x844_dark.png",
+    "playground_phone-390x844_dark.png",
+    "404_phone-390x844_dark.png",
+    "mobile_drawer_phone-390x844_dark.png",
+    "home_phone-414x896_dark.png",
+    "judges_phone-414x896_dark.png",
+    "boundary-test_phone-414x896_dark.png",
+    "architecture_phone-414x896_dark.png",
+    "playground_phone-414x896_dark.png",
+    "404_phone-414x896_dark.png",
+    "mobile_drawer_phone-414x896_dark.png",
+    "home_phone-844x390-land_dark.png",
+    "judges_phone-844x390-land_dark.png",
+    "boundary-test_phone-844x390-land_dark.png",
+    "architecture_phone-844x390-land_dark.png",
+    "playground_phone-844x390-land_dark.png",
+    "404_phone-844x390-land_dark.png",
+    "home_tablet-768x1024_dark.png",
+    "judges_tablet-768x1024_dark.png",
+    "boundary-test_tablet-768x1024_dark.png",
+    "architecture_tablet-768x1024_dark.png",
+    "playground_tablet-768x1024_dark.png",
+    "404_tablet-768x1024_dark.png",
+    "mobile_drawer_tablet-768x1024_dark.png",
+    "home_tablet-820x1180_dark.png",
+    "judges_tablet-820x1180_dark.png",
+    "boundary-test_tablet-820x1180_dark.png",
+    "architecture_tablet-820x1180_dark.png",
+    "playground_tablet-820x1180_dark.png",
+    "404_tablet-820x1180_dark.png",
+    "home_tablet-1024x768-land_dark.png",
+    "judges_tablet-1024x768-land_dark.png",
+    "boundary-test_tablet-1024x768-land_dark.png",
+    "architecture_tablet-1024x768-land_dark.png",
+    "playground_tablet-1024x768-land_dark.png",
+    "404_tablet-1024x768-land_dark.png",
+    "home_laptop-1280x720_dark.png",
+    "judges_laptop-1280x720_dark.png",
+    "boundary-test_laptop-1280x720_dark.png",
+    "architecture_laptop-1280x720_dark.png",
+    "playground_laptop-1280x720_dark.png",
+    "404_laptop-1280x720_dark.png",
+    "home_laptop-1440x900_dark.png",
+    "judges_laptop-1440x900_dark.png",
+    "boundary-test_laptop-1440x900_dark.png",
+    "architecture_laptop-1440x900_dark.png",
+    "playground_laptop-1440x900_dark.png",
+    "404_laptop-1440x900_dark.png",
+    "home_desktop-1920x1080_dark.png",
+    "judges_desktop-1920x1080_dark.png",
+    "boundary-test_desktop-1920x1080_dark.png",
+    "architecture_desktop-1920x1080_dark.png",
+    "playground_desktop-1920x1080_dark.png",
+    "404_desktop-1920x1080_dark.png",
+    "home_phone-320x568_light.png",
+    "judges_phone-320x568_light.png",
+    "boundary-test_phone-320x568_light.png",
+    "architecture_phone-320x568_light.png",
+    "playground_phone-320x568_light.png",
+    "404_phone-320x568_light.png",
+    "mobile_drawer_phone-320x568_light.png",
+    "home_phone-360x740_light.png",
+    "judges_phone-360x740_light.png",
+    "boundary-test_phone-360x740_light.png",
+    "architecture_phone-360x740_light.png",
+    "playground_phone-360x740_light.png",
+    "404_phone-360x740_light.png",
+    "mobile_drawer_phone-360x740_light.png",
+    "home_phone-390x844_light.png",
+    "judges_phone-390x844_light.png",
+    "boundary-test_phone-390x844_light.png",
+    "architecture_phone-390x844_light.png",
+    "playground_phone-390x844_light.png",
+    "404_phone-390x844_light.png",
+    "mobile_drawer_phone-390x844_light.png",
+    "home_phone-414x896_light.png",
+    "judges_phone-414x896_light.png",
+    "boundary-test_phone-414x896_light.png",
+    "architecture_phone-414x896_light.png",
+    "playground_phone-414x896_light.png",
+    "404_phone-414x896_light.png",
+    "mobile_drawer_phone-414x896_light.png",
+    "home_phone-844x390-land_light.png",
+    "judges_phone-844x390-land_light.png",
+    "boundary-test_phone-844x390-land_light.png",
+    "architecture_phone-844x390-land_light.png",
+    "playground_phone-844x390-land_light.png",
+    "404_phone-844x390-land_light.png",
+    "home_tablet-768x1024_light.png",
+    "judges_tablet-768x1024_light.png",
+    "boundary-test_tablet-768x1024_light.png",
+    "architecture_tablet-768x1024_light.png",
+    "playground_tablet-768x1024_light.png",
+    "404_tablet-768x1024_light.png",
+    "mobile_drawer_tablet-768x1024_light.png",
+    "home_tablet-820x1180_light.png",
+    "judges_tablet-820x1180_light.png",
+    "boundary-test_tablet-820x1180_light.png",
+    "architecture_tablet-820x1180_light.png",
+    "playground_tablet-820x1180_light.png",
+    "404_tablet-820x1180_light.png",
+    "home_tablet-1024x768-land_light.png",
+    "judges_tablet-1024x768-land_light.png",
+    "boundary-test_tablet-1024x768-land_light.png",
+    "architecture_tablet-1024x768-land_light.png",
+    "playground_tablet-1024x768-land_light.png",
+    "404_tablet-1024x768-land_light.png",
+    "home_laptop-1280x720_light.png",
+    "judges_laptop-1280x720_light.png",
+    "boundary-test_laptop-1280x720_light.png",
+    "architecture_laptop-1280x720_light.png",
+    "playground_laptop-1280x720_light.png",
+    "404_laptop-1280x720_light.png",
+    "home_laptop-1440x900_light.png",
+    "judges_laptop-1440x900_light.png",
+    "boundary-test_laptop-1440x900_light.png",
+    "architecture_laptop-1440x900_light.png",
+    "playground_laptop-1440x900_light.png",
+    "404_laptop-1440x900_light.png",
+    "home_desktop-1920x1080_light.png",
+    "judges_desktop-1920x1080_light.png",
+    "boundary-test_desktop-1920x1080_light.png",
+    "architecture_desktop-1920x1080_light.png",
+    "playground_desktop-1920x1080_light.png",
+    "404_desktop-1920x1080_light.png"
+  ]
+}

@@ -6,12 +6,12 @@ export default function HowWeUseArmorIQSection() {
     <section
       id="how-we-use-armoriq"
       style={{
-        margin: '48px 0',
-        padding: '36px 32px',
+        margin: '36px 0',
+        padding: 'clamp(20px, 4vw, 36px) clamp(16px, 3vw, 32px)',
         borderRadius: '16px',
         background: 'var(--card)',
         border: '1px solid var(--border)',
-        boxShadow: '0 12px 32px rgba(0, 0, 0, 0.4)'
+        boxShadow: 'var(--card-shadow)'
       }}
       aria-labelledby="architecture-heading"
     >
@@ -28,14 +28,15 @@ export default function HowWeUseArmorIQSection() {
         </p>
       </div>
 
-      {/* Theme-Aware Inline SVG Diagram */}
+      {/* Theme-Aware Inline SVG Diagram with horizontal containment on medium/desktop */}
       <div
         style={{
           background: 'var(--background)',
           borderRadius: '12px',
           border: '1px solid var(--border)',
-          padding: '24px 16px',
+          padding: 'clamp(16px, 3vw, 24px) 16px',
           overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch',
           marginBottom: '28px'
         }}
       >
@@ -43,7 +44,7 @@ export default function HowWeUseArmorIQSection() {
           viewBox="0 0 960 420"
           width="100%"
           height="auto"
-          style={{ minWidth: '700px', display: 'block' }}
+          style={{ minWidth: 'min(100%, 700px)', display: 'block' }}
           role="img"
           aria-labelledby="svg-arch-title svg-arch-desc"
         >
@@ -73,10 +74,10 @@ export default function HowWeUseArmorIQSection() {
           {/* Node 1: AI Agents */}
           <rect x="30" y="50" width="230" height="150" rx="10" fill="url(#agentGrad)" stroke="#38bdf8" strokeWidth="1.5" />
           <text x="145" y="80" textAnchor="middle" fill="#38bdf8" fontWeight="700" fontSize="14">1. Autonomous Agents</text>
-          <text x="145" y="105" textAnchor="middle" fill="#f8fafc" fontWeight="600" fontSize="12">ElevenLabs Voice Support</text>
-          <text x="145" y="125" textAnchor="middle" fill="#94a3b8" fontSize="11">& FlowGuard Treasury Agent</text>
-          <text x="145" y="155" textAnchor="middle" fill="#a5f3fc" fontSize="10" fontFamily="monospace">Tool: IntentGate_&lt;tool&gt;</text>
-          <text x="145" y="175" textAnchor="middle" fill="#34d399" fontSize="10">&lt;5s Voice Timeout Guard</text>
+          <text x="145" y="105" textAnchor="middle" fill="var(--foreground)" fontWeight="600" fontSize="12">ElevenLabs Voice Support</text>
+          <text x="145" y="125" textAnchor="middle" fill="var(--muted-foreground)" fontSize="11">& FlowGuard Treasury Agent</text>
+          <text x="145" y="155" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">Tool: IntentGate_&lt;tool&gt;</text>
+          <text x="145" y="175" textAnchor="middle" fill="var(--success)" fontSize="10">&lt;5s Voice Timeout Guard</text>
 
           {/* Arrow 1 -> 2 */}
           <path d="M 260 125 L 350 125" stroke="#818cf8" strokeWidth="2" strokeDasharray="4 4" markerEnd="url(#arrow)" />
@@ -85,10 +86,10 @@ export default function HowWeUseArmorIQSection() {
           {/* Node 2: IntentGate Gateway */}
           <rect x="360" y="50" width="240" height="150" rx="10" fill="url(#agentGrad)" stroke="#818cf8" strokeWidth="1.5" />
           <text x="480" y="80" textAnchor="middle" fill="#818cf8" fontWeight="700" fontSize="14">2. FlowGuard Gateway (:8790)</text>
-          <text x="480" y="105" textAnchor="middle" fill="#f8fafc" fontWeight="600" fontSize="11">Prefix Strip & Plan Canonicalization</text>
-          <text x="480" y="130" textAnchor="middle" fill="#a5f3fc" fontSize="10" fontFamily="monospace">client.capturePlan(model, prompt, plan)</text>
+          <text x="480" y="105" textAnchor="middle" fill="var(--foreground)" fontWeight="600" fontSize="11">Prefix Strip & Plan Canonicalization</text>
+          <text x="480" y="130" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">client.capturePlan(model, prompt, plan)</text>
           <text x="480" y="150" textAnchor="middle" fill="#c084fc" fontSize="10" fontFamily="monospace">client.getIntentToken(capture)</text>
-          <text x="480" y="175" textAnchor="middle" fill="#34d399" fontSize="10">Answers held calls in &lt;3.5s</text>
+          <text x="480" y="175" textAnchor="middle" fill="var(--success)" fontSize="10">Answers held calls in &lt;3.5s</text>
 
           {/* Arrow 2 -> 3 (Token Minting) */}
           <path d="M 480 200 L 480 260" stroke="#818cf8" strokeWidth="2" markerEnd="url(#arrow)" />
@@ -96,22 +97,22 @@ export default function HowWeUseArmorIQSection() {
 
           {/* Node 3: ArmorIQ Cloud */}
           <rect x="260" y="270" width="440" height="120" rx="12" fill="url(#armoriqGrad)" stroke="#818cf8" strokeWidth="2" />
-          <text x="480" y="295" textAnchor="middle" fill="#ffffff" fontWeight="800" fontSize="15">3. ArmorIQ Governance Cloud</text>
+          <text x="480" y="295" textAnchor="middle" fill="var(--foreground)" fontWeight="800" fontSize="15">3. ArmorIQ Governance Cloud</text>
           <text x="480" y="320" textAnchor="middle" fill="#c084fc" fontSize="12" fontWeight="600">CSRG-IAP Platform (iap.armoriq.ai) · PEP Proxy (proxy.armoriq.ai)</text>
-          <text x="480" y="345" textAnchor="middle" fill="#94a3b8" fontSize="11">Ed25519 Intent Token Minting · SHA-256 Merkle Proofs · OPA Policy Engine</text>
-          <text x="480" y="368" textAnchor="middle" fill="#34d399" fontSize="11" fontWeight="600">Verdicts: ALLOWED · BLOCKED · HELD (Dual-Supervisor Delegation)</text>
+          <text x="480" y="345" textAnchor="middle" fill="var(--muted-foreground)" fontSize="11">Ed25519 Intent Token Minting · SHA-256 Merkle Proofs · OPA Policy Engine</text>
+          <text x="480" y="368" textAnchor="middle" fill="var(--success)" fontSize="11" fontWeight="600">Verdicts: ALLOWED · BLOCKED · HELD (Dual-Supervisor Delegation)</text>
 
           {/* Arrow 3 -> 4 (Proxy to MCP) */}
-          <path d="M 700 330 L 750 330 L 750 150 L 790 150" fill="none" stroke="#34d399" strokeWidth="2" markerEnd="url(#arrow)" />
-          <text x="755" y="240" textAnchor="start" fill="#34d399" fontSize="10" fontFamily="monospace">SSE JSON-RPC 2.0</text>
+          <path d="M 700 330 L 750 330 L 750 150 L 790 150" fill="none" stroke="var(--success)" strokeWidth="2" markerEnd="url(#arrow)" />
+          <text x="755" y="240" textAnchor="start" fill="var(--success)" fontSize="10" fontFamily="monospace">SSE JSON-RPC 2.0</text>
 
           {/* Node 4: MCP Servers */}
-          <rect x="800" y="50" width="220" height="150" rx="10" fill="url(#mcpGrad)" stroke="#34d399" strokeWidth="1.5" />
-          <text x="910" y="80" textAnchor="middle" fill="#34d399" fontWeight="700" fontSize="14">4. Governed MCP Servers</text>
-          <text x="910" y="105" textAnchor="middle" fill="#f8fafc" fontWeight="600" fontSize="12">intentgate-support-mcp</text>
-          <text x="910" y="125" textAnchor="middle" fill="#94a3b8" fontSize="11">& flowguard-treasury-mcp</text>
-          <text x="910" y="150" textAnchor="middle" fill="#a5f3fc" fontSize="10" fontFamily="monospace">lookup_order</text>
-          <text x="910" y="170" textAnchor="middle" fill="#a5f3fc" fontSize="10" fontFamily="monospace">change_payout | issue_refund</text>
+          <rect x="800" y="50" width="220" height="150" rx="10" fill="url(#mcpGrad)" stroke="var(--success)" strokeWidth="1.5" />
+          <text x="910" y="80" textAnchor="middle" fill="var(--success)" fontWeight="700" fontSize="14">4. Governed MCP Servers</text>
+          <text x="910" y="105" textAnchor="middle" fill="var(--foreground)" fontWeight="600" fontSize="12">intentgate-support-mcp</text>
+          <text x="910" y="125" textAnchor="middle" fill="var(--muted-foreground)" fontSize="11">& flowguard-treasury-mcp</text>
+          <text x="910" y="150" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">lookup_order</text>
+          <text x="910" y="170" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">change_payout | issue_refund</text>
         </svg>
       </div>
 
@@ -119,7 +120,7 @@ export default function HowWeUseArmorIQSection() {
       <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--foreground)', marginBottom: '14px' }}>
         Exact ArmorIQ SDK Methods Called in Production
       </h3>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '14px' }}>
         <div style={{ background: 'var(--background)', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#38bdf8', fontWeight: 700, fontSize: '0.88rem', marginBottom: '6px' }}>
             <FileCode size={16} />

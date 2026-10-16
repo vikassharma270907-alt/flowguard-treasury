@@ -40,14 +40,14 @@ export default function InvoiceGuardScreen({
       {/* Risk Metrics Banner */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
         gap: '16px'
       }}>
         <div className="glass-card" style={{ padding: '20px' }}>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
             Invoices Inspected
           </div>
-          <div className="mono" style={{ fontSize: '1.85rem', fontWeight: 800, color: '#ffffff', marginTop: '6px' }}>
+          <div className="mono" style={{ fontSize: '1.85rem', fontWeight: 800, color: 'var(--foreground)', marginTop: '6px' }}>
             {inspectionList.length}
           </div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '4px' }}>
@@ -93,7 +93,7 @@ export default function InvoiceGuardScreen({
       </div>
 
       {/* Main Inspection Table */}
-      <div className="glass-card" style={{ padding: '24px', overflowX: 'auto' }}>
+      <div className="glass-card table-cards-mobile" style={{ padding: '24px', overflowX: 'auto' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -143,7 +143,7 @@ export default function InvoiceGuardScreen({
                     </span>
                   </td>
 
-                  <td style={{ padding: '14px', fontSize: '0.88rem', color: '#f8fafc' }}>
+                  <td style={{ padding: '14px', fontSize: '0.88rem', color: 'var(--foreground)' }}>
                     {item.vendorName}
                   </td>
 
@@ -338,10 +338,10 @@ export default function InvoiceGuardScreen({
                   style={{
                     width: '100%',
                     padding: '9px 12px',
-                    background: '#1f2937',
-                    border: '1px solid var(--border-subtle)',
+                    background: 'var(--card)',
+                    border: '1px solid var(--border)',
                     borderRadius: '6px',
-                    color: '#ffffff',
+                    color: 'var(--foreground)',
                     fontFamily: 'var(--font-mono)'
                   }}
                   placeholder="e.g. INV-2024-884 or INV-2024-884B"
@@ -351,7 +351,7 @@ export default function InvoiceGuardScreen({
                 </span>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))', gap: '12px' }}>
                 <div>
                   <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>
                     Amount
@@ -365,10 +365,10 @@ export default function InvoiceGuardScreen({
                     style={{
                       width: '100%',
                       padding: '9px 12px',
-                      background: '#1f2937',
-                      border: '1px solid var(--border-subtle)',
+                      background: 'var(--card)',
+                      border: '1px solid var(--border)',
                       borderRadius: '6px',
-                      color: '#ffffff',
+                      color: 'var(--foreground)',
                       fontFamily: 'var(--font-mono)'
                     }}
                   />
@@ -383,10 +383,10 @@ export default function InvoiceGuardScreen({
                     style={{
                       width: '100%',
                       padding: '9px 12px',
-                      background: '#1f2937',
-                      border: '1px solid var(--border-subtle)',
+                      background: 'var(--card)',
+                      border: '1px solid var(--border)',
                       borderRadius: '6px',
-                      color: '#ffffff'
+                      color: 'var(--foreground)'
                     }}
                   >
                     <option value="EUR">EUR</option>
@@ -407,10 +407,10 @@ export default function InvoiceGuardScreen({
                   style={{
                     width: '100%',
                     padding: '9px 12px',
-                    background: '#1f2937',
-                    border: '1px solid var(--border-subtle)',
+                    background: 'var(--card)',
+                    border: '1px solid var(--border)',
                     borderRadius: '6px',
-                    color: '#ffffff'
+                    color: 'var(--foreground)'
                   }}
                 >
                   <option value="CRITICAL">CRITICAL (Halts operations if unpaid)</option>

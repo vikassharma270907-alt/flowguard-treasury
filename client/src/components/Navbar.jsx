@@ -62,24 +62,24 @@ export default function Navbar({
   return (
     <header style={{
       borderBottom: '1px solid var(--border)',
-      background: 'rgba(0, 0, 0, 0.85)',
+      background: 'var(--glass-bg)',
       backdropFilter: 'blur(16px)',
       position: 'sticky',
       top: 0,
-      zIndex: 100
+      zIndex: 90
     }}>
       <div style={{
         maxWidth: '1440px',
         margin: '0 auto',
-        padding: '12px 24px',
+        padding: '10px 16px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
-        gap: '16px'
+        gap: '12px'
       }}>
         {/* Brand & Sandbox Badges */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', maxWidth: '100%' }}>
           <div style={{
             width: '36px',
             height: '36px',
@@ -94,7 +94,7 @@ export default function Navbar({
             <img src="/logo.svg" alt="FlowGuard Logo" style={{ width: '24px', height: '24px' }} />
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               <span style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--foreground)' }}>
                 Flow<span style={{ color: '#10b981' }}>Guard</span>
               </span>
@@ -136,9 +136,13 @@ export default function Navbar({
           alignItems: 'center',
           gap: '4px',
           background: 'var(--card)',
-          padding: '3px',
+          padding: '4px',
           borderRadius: '8px',
-          border: '1px solid var(--border)'
+          border: '1px solid var(--border)',
+          overflowX: 'auto',
+          maxWidth: '100%',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none'
         }}>
           {[
             { id: 'overview', label: 'Overview' },
@@ -157,14 +161,17 @@ export default function Navbar({
                 color: activeTab === tab.id ? 'var(--foreground)' : 'var(--muted-foreground)',
                 border: activeTab === tab.id ? '1px solid var(--border)' : '1px solid transparent',
                 borderRadius: '6px',
-                padding: '6px 12px',
+                padding: '8px 12px',
                 fontSize: '0.82rem',
                 fontWeight: activeTab === tab.id ? 600 : 500,
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
-                display: 'flex',
+                display: 'inline-flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '6px',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
+                minHeight: '38px'
               }}
             >
               {tab.is3D && <Box size={13} color={activeTab === tab.id ? '#6366f1' : 'var(--muted-foreground)'} />}
@@ -188,7 +195,7 @@ export default function Navbar({
                   fontSize: '0.62rem',
                   padding: '1px 5px',
                   borderRadius: '9999px',
-                  background: userSession?.authenticated ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255,255,255,0.06)',
+                  background: userSession?.authenticated ? 'rgba(16, 185, 129, 0.15)' : 'var(--muted)',
                   color: userSession?.authenticated ? '#34d399' : 'var(--muted-foreground)',
                   border: '1px solid var(--border)',
                   fontWeight: 600
@@ -201,7 +208,7 @@ export default function Navbar({
         </nav>
 
         {/* Actions & Scenario Switcher */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           {/* Theme Toggle Button (Light/Dark Mode) */}
           <button
             onClick={toggleTheme}
@@ -270,7 +277,8 @@ export default function Navbar({
                 background: 'var(--card)',
                 border: '1px solid var(--border)',
                 borderRadius: '10px',
-                width: '360px',
+                width: 'min(360px, calc(100vw - 24px))',
+                maxWidth: 'calc(100vw - 24px)',
                 boxShadow: 'var(--card-shadow)',
                 zIndex: 150,
                 padding: '10px'
@@ -308,8 +316,8 @@ export default function Navbar({
                           padding: '10px 12px',
                           borderRadius: '8px',
                           cursor: 'pointer',
-                          background: isSelected ? 'var(--secondary)' : '#121215',
-                          border: isSelected ? '1px solid #ffffff' : '1px solid var(--border)',
+                          background: isSelected ? 'var(--secondary)' : 'var(--card)',
+                          border: isSelected ? '1px solid var(--primary)' : '1px solid var(--border)',
                           transition: 'all 0.15s ease'
                         }}
                       >
@@ -405,13 +413,13 @@ export default function Navbar({
                   background: 'var(--card)',
                   border: '1px solid var(--border)',
                   borderRadius: '8px',
-                  width: '220px',
+                  width: 'min(220px, calc(100vw - 24px))',
                   boxShadow: 'var(--card-shadow)',
                   zIndex: 150,
                   padding: '6px'
                 }}>
                   <div style={{ padding: '8px 10px', borderBottom: '1px solid var(--border)' }}>
-                    <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#fafafa' }}>{userSession.user?.name || 'beyond_nothing'}</div>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--foreground)' }}>{userSession.user?.name || 'beyond_nothing'}</div>
                     <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>{userSession.user?.email || 'beyond_nothing@flowguard.io'}</div>
                     <div style={{ marginTop: '4px' }}>
                       <span className="badge badge-live" style={{ fontSize: '0.62rem', padding: '1px 6px' }}>
@@ -433,7 +441,7 @@ export default function Navbar({
                         gap: '8px',
                         background: 'transparent',
                         border: 'none',
-                        color: '#fafafa',
+                        color: 'var(--foreground)',
                         fontSize: '0.78rem',
                         cursor: 'pointer',
                         borderRadius: '4px',
