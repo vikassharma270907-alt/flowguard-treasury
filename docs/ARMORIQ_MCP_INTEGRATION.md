@@ -63,13 +63,13 @@ The repository contains one ArmorIQ-registered MCP server plus a local/stdio imp
 
 ## 3. Governed MCP Tool Definitions & Schemas
 
-| Tool Name | Risk Level | Target Action | Governance Path | Observed Outcome (16 Oct 2026 run) |
-| :--- | :--- | :--- | :--- | :--- |
-| `lookup_order` / `order_lookup` | **Low (Read-only)** | Query order status, invoice date, delivery details | ArmorIQ policy `flowguard-treasury-allowlist` | **ALLOWED** (887 ms round-trip, real payload, `verified: true`) |
-| `change_payout` / `payout_change` | **Critical Security Risk** | Modifies beneficiary ABA routing / bank account | Same policy — tool not in allowlist | **BLOCKED** (`PolicyBlockedException`, HTTP 403 `tool_not_in_allowlist`) |
-| `issue_refund` | **High Financial Risk** | Authorizes monetary disbursement / refund | FlowGuard hold path → real ArmorIQ platform delegation | **HELD** (delegation `eb63aac7-…`, pending, 2 supervisor approvals) |
-| `assert_reserve_floor` | **Treasury Invariant** | Asserts total wallet balance >= $15,000 USD reserve | App-side tool (not registered on ArmorIQ) | **EVALUATED** against the sandbox ledger |
-| `verify_audit_merkle` | **Zero-Trust Audit** | Calculates SHA-256 Merkle root across all events | App-side tool (not registered on ArmorIQ) | **VERIFIED** over the audit log (tamper-evident SHA-256 tree) |
+| Tool Name | Decision Authority | Risk Level | Target Action | Governance Mechanism | Observed Outcome (16 Oct 2026 run) |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `lookup_order` / `order_lookup` | **ArmorIQ decision** | Low (Read-only) | Query order status, invoice date, delivery details | Policy `flowguard-treasury-allowlist` on platform.armoriq.ai | **ALLOWED** (887 ms round-trip, real payload, `verified: true`) |
+| `change_payout` / `payout_change` | **ArmorIQ decision** | Critical Security Risk | Modifies beneficiary ABA routing / bank account | Platform policy enforcement (tool not in allowlist) | **BLOCKED** (`PolicyBlockedException`, HTTP 403 `tool_not_in_allowlist`) |
+| `issue_refund` | **ArmorIQ decision** | High Financial Risk | Authorizes monetary disbursement / refund | Platform delegation request (`/delegation/request`) | **HELD** (delegation `eb63aac7-…`, pending, 2 supervisor approvals) |
+| `assert_reserve_floor` | **app-side check** | Treasury Invariant | Asserts total wallet balance >= $15,000 USD reserve | Local sandbox state check (not registered on ArmorIQ) | **EVALUATED** against the sandbox ledger |
+| `verify_audit_merkle` | **app-side check** | Zero-Trust Audit | Calculates SHA-256 Merkle root across all events | Local SHA-256 tree check (not registered on ArmorIQ) | **VERIFIED** over the audit log (tamper-evident SHA-256 tree) |
 
 ### Detailed Tool Input Schemas
 
