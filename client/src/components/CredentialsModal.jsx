@@ -218,7 +218,7 @@ export default function CredentialsModal({ onClose, onSaveCredentials, onSaveArm
 
             <div>
               <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>
-                ArmorIQ API Key (ak_live_ / ak_test_ / ak_claw_)
+                ArmorIQ Platform API Key
               </label>
               <input
                 type="password"

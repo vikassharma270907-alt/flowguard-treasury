@@ -43,7 +43,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
 
   // Device Approval state
   const [deviceUserCode, setDeviceUserCode] = useState('AQ-9482-T');
-  const [selectedApiKey, setSelectedApiKey] = useState('ak_live_b4f92a10c83d4e7f (FlowGuard Production)');
+  const [selectedApiKey, setSelectedApiKey] = useState('FlowGuard Production Key');
   const [deviceApproved, setDeviceApproved] = useState(false);
   const [deviceCountdown, setDeviceCountdown] = useState(3);
 
@@ -874,11 +874,11 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
                     className="input"
                     style={{ width: '100%', padding: '9px 12px', fontSize: '0.82rem' }}
                   >
-                    <option value="ak_live_b4f92a10c83d4e7f (FlowGuard Production)">
-                      ak_live_b4f9... (FlowGuard Production · Full Policy)
+                    <option value="FlowGuard Production Key">
+                      Production Workspace Key (Active Policy)
                     </option>
-                    <option value="ak_test_7a18f920d33e5c1a (Sandbox Testing)">
-                      ak_test_7a18... (Sandbox Testing · Read-Only)
+                    <option value="Sandbox Testing Key">
+                      Sandbox Testing Key (Read-Only)
                     </option>
                   </select>
                 </div>

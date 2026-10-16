@@ -37,6 +37,21 @@ export default function InvoiceGuardScreen({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* Sandbox Notice Banner - Mandatory Rule 5 */}
+      <div style={{
+        background: 'rgba(56, 189, 248, 0.08)',
+        border: '1px solid rgba(56, 189, 248, 0.25)',
+        borderRadius: '10px',
+        padding: '10px 16px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        fontSize: '0.82rem',
+        color: 'var(--muted-foreground)'
+      }}>
+        <ShieldAlert size={16} color="#38bdf8" />
+        <span><strong>Sandbox / test environment.</strong> No real funds or customer data. Synthetic transactions only.</span>
+      </div>
       {/* Risk Metrics Banner */}
       <div style={{
         display: 'grid',
