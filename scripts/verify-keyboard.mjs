@@ -1,5 +1,5 @@
 /**
- * Keyboard-only verification pass for FlowGuard.
+ * Keyboard-only verification pass for IntentGate.
  *
  * Drives a real Chrome (system channel) through a scripted keyboard-only
  * journey and asserts the accessibility behaviour of the shipped UI:

@@ -1,7 +1,7 @@
 {
-  "name": "flowguard",
+  "name": "intentgate",
   "version": "1.0.0",
-  "description": "FlowGuard - Autonomous Treasury & Intent Vault Governed by ArmorIQ",
+  "description": "IntentGate - Autonomous Treasury & Intent Vault Governed by ArmorIQ",
   "main": "api/index.js",
   "scripts": {
     "start": "node server/server.js",
@@ -20,7 +20,7 @@
     "test:intent": "node --env-file=.env scripts/test-intent-mismatch.mjs",
     "demo": "node --env-file=.env scripts/run-demo.mjs",
     "docs:pdf": "node scripts/generate-user-guide.mjs",
-    "docs:overview": "node scripts/generate-flowguard-overview.mjs",
+    "docs:overview": "node scripts/generate-intentgate-overview.mjs",
     "postinstall": "npm --prefix client install",
     "install:all": "npm install && npm --prefix client install"
   },

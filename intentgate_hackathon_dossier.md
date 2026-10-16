@@ -1,4 +1,4 @@
-# FlowGuard: Adaptive Treasury Controller & AP Duplicate Shield
+# IntentGate: Adaptive Treasury Controller & AP Duplicate Shield
 ### Airwallex Developer Hackathon — Complete Project Research, Architecture & Build Dossier
 
 > [!NOTE]
@@ -20,7 +20,7 @@ Before choosing an idea or writing code, we analyzed the official [Airwallex API
 | :--- | :--- | :---: | :--- | :--- |
 | **Kit 1: Adaptive Treasury Controller** | Treasury & Ops | **100% Native** | None. Standard sandbox account only. | **Primary Architecture Choice** |
 | **Kit 2: Intent-Bound Purchase Agent** | Cards & Expense | **100% Native** | None. Standard sandbox cards/issuing. | Viable secondary feature |
-| **Kit 3: Payment Ops Incident Commander** | Payments & Ops | **100% Native** | None. Sandbox simulation endpoints only. | **Integrated into FlowGuard** |
+| **Kit 3: Payment Ops Incident Commander** | Payments & Ops | **100% Native** | None. Sandbox simulation endpoints only. | **Integrated into IntentGate** |
 | **Kit 4: Dispute Response Agent** | Revenue Protection | **100% Native** | None. Sandbox dispute simulation. | Alternative track |
 | **Kits 5–8: Multi-Tenant / Platform Kits** | Connected Accounts | Gated | Requires manual devhelp approval for platform payments & connected accounts. | **Avoid:** Cannot self-enable |
 | **Kit 9: Approval-Bound Shopping Agent** | Agentic Commerce | Gated | Requires allowlisted Airi CLI beta access. | **Avoid:** Blocked by allowlist |
@@ -40,29 +40,29 @@ Before choosing an idea or writing code, we analyzed the official [Airwallex API
 
 ## 2. Research-Backed Problem Identification
 
-We grounded FlowGuard in peer-reviewed and institutional research on small business liquidity, cross-border payment friction, accounts payable errors, and agentic intent security.
+We grounded IntentGate in peer-reviewed and institutional research on small business liquidity, cross-border payment friction, accounts payable errors, and agentic intent security.
 
 ### Verified Institutional & Academic Citations
 
 1. **Bank for International Settlements (BIS) / Committee on Payments and Market Infrastructures (CPMI)**
    - *Citation:* CPMI-G20 Roadmap for Enhancing Cross-Border Payments (2020; revisions 2022, 2023). [bis.org](https://www.bis.org/cpmi/publ/d193.htm)
    - *Key Finding:* Cross-border payments suffer from fragmented data structures, opaque FX markup spreads (1.5% to 6% for SMEs), multi-day settlement lags, and liquidity traps where working capital is frozen in transit.
-   - *Relevance to FlowGuard:* Demonstrates the necessity of automated corridor selection (LOCAL vs. SWIFT) and predictive fee inclusion before disbursing funds.
+   - *Relevance to IntentGate:* Demonstrates the necessity of automated corridor selection (LOCAL vs. SWIFT) and predictive fee inclusion before disbursing funds.
 
 2. **Federal Reserve System**
    - *Citation:* Federal Reserve Small Business Credit Survey (SBCS Reports on Employer Firms and Payments, 2023 & 2024). [fedsmallbusiness.org](https://www.fedsmallbusiness.org/survey/2024/report-on-employer-firms)
    - *Key Finding:* Over 60% of small businesses cite cash flow volatility and uneven supplier payment obligations as their primary operational existential risk. Delayed receivables cascade into supplier delinquencies, forcing businesses into emergency short-term debt.
-   - *Relevance to FlowGuard:* Directly drives FlowGuard's core feature: protecting a configurable Cash Reserve Floor ($15,000 USD default) and dynamically recalculating payment schedules when incoming receivables are delayed.
+   - *Relevance to IntentGate:* Directly drives IntentGate's core feature: protecting a configurable Cash Reserve Floor ($15,000 USD default) and dynamically recalculating payment schedules when incoming receivables are delayed.
 
 3. **Institute of Finance & Management (IOFM) & SAP Concur SMB Research**
    - *Citation:* IOFM Accounts Payable Benchmark Studies & SAP Concur Small Business Invoice Duplication Report.
    - *Key Finding:* Erroneous and duplicate payments account for **0.5% to 1.5% of total annual accounts payable disbursements**, with SMBs experiencing an average duplicate invoice rate of **1.29%** (~$2,000 average loss per incident). Primary root causes: multi-channel invoice arrival (email PDF + postal + portal) and minor typographical variations in invoice numbers (e.g. `INV-1002` vs. `INV1002-R`).
-   - *Relevance to FlowGuard:* Proves that simple exact-string matching is inadequate; deterministic fuzzy matching and triple-vector proximity checks (Vendor + Amount + ±14 Day Date Window) are essential to prevent double payment.
+   - *Relevance to IntentGate:* Proves that simple exact-string matching is inadequate; deterministic fuzzy matching and triple-vector proximity checks (Vendor + Amount + ±14 Day Date Window) are essential to prevent double payment.
 
 4. **Association for Financial Professionals (AFP)**
    - *Citation:* AFP Payments Fraud and Control Survey Report. [afponline.org](https://www.afponline.org)
    - *Key Finding:* Accounts payable departments are the #1 attack surface for financial loss, with altered bank remittance details and compromised email invoices causing substantial unrecoverable wire losses.
-   - *Relevance to FlowGuard:* Mandates bank details / IBAN cross-referencing against verified master vendor ledgers before payment dispatch.
+   - *Relevance to IntentGate:* Mandates bank details / IBAN cross-referencing against verified master vendor ledgers before payment dispatch.
 
 ---
 
@@ -70,14 +70,14 @@ We grounded FlowGuard in peer-reviewed and institutional research on small busin
 
 | Project Concept | Problem Solved | Key Research Evidence | Differentiation & Innovation | Airwallex Sandbox APIs | Feasibility | Demo Potential |
 | :--- | :--- | :--- | :--- | :--- | :---: | :---: |
-| **1. FlowGuard (Selected)** | SME cash flow squeezes, duplicate invoices, cross-border fee opacity, reserve protection | Fed SBCS (60% cash volatility) + IOFM (1.29% duplicate rate) | Combines deterministic duplicate detection + treasury reserve floor + ArmorIQ intent verification | `balances`, `fx/rates`, `fx/quotes`, `transfers`, `simulation/deposit` | **High (10/10)** | **Exceptional (10/10)** |
+| **1. IntentGate (Selected)** | SME cash flow squeezes, duplicate invoices, cross-border fee opacity, reserve protection | Fed SBCS (60% cash volatility) + IOFM (1.29% duplicate rate) | Combines deterministic duplicate detection + treasury reserve floor + ArmorIQ intent verification | `balances`, `fx/rates`, `fx/quotes`, `transfers`, `simulation/deposit` | **High (10/10)** | **Exceptional (10/10)** |
 | **2. CorriClear** | Multi-corridor routing fee optimization and ISO 20022 schema pre-validation | BIS CPMI Cross-Border Targets (2027) | Validates country schemas (ABA, Sort Code, IBAN) to prevent 010/016 errors | `beneficiaries/schema`, `beneficiaries/validate`, `fx/rates` | High (9/10) | Moderate (7/10) |
 | **3. SpendLock** | Autonomous SaaS subscription spend drift and rogue card authorizations | AFP Spend Controls + Fed Payments Survey | Dynamic virtual cards with strict merchant MCC and inclusive per-transaction limits | `issuing/cardholders`, `issuing/cards`, `simulation/issuing` | High (8/10) | Good (8/10) |
 | **4. DisputeSentry** | Chargeback queue economics and automated evidence submission | Nilson Report on Merchant Chargeback Overhead | Compares dispute fees vs. amount at risk; auto-accepts un-economic claims | `pa/payment_intents`, `pa/payment_disputes`, `files/upload` | Medium (7/10) | Good (8/10) |
 | **5. MultiPay Isolated** | Multi-employer cross-border contractor payroll allocation | World Bank Remittances + IOFM multi-entity payroll | Guarantees strict multi-tenant wallet isolation during payroll runs | `connected_accounts`, `connected_account_transfers`, `fx/conversions` | Low (4/10) | High (8/10) |
 
 ### Recommendation Rationale
-**FlowGuard** was chosen as the champion concept because:
+**IntentGate** was chosen as the champion concept because:
 1. It requires **zero gated account permissions** (fully operational on a basic sandbox account).
 2. It addresses the two most critical pain points identified by the Federal Reserve and IOFM: **working capital reserve exhaustion** and **duplicate invoice disbursements**.
 3. It integrates **ArmorIQ Intent Assurance**, providing an AI-governance security layer that cryptographically guarantees an AI agent cannot bypass financial rules or drain cash reserves.
@@ -87,7 +87,7 @@ We grounded FlowGuard in peer-reviewed and institutional research on small busin
 
 ## 4. ArmorIQ Intent Governance & Policy Assurance
 
-To satisfy modern agentic fintech security standards, FlowGuard connects to **ArmorIQ** (`@armoriq/sdk`).
+To satisfy modern agentic fintech security standards, IntentGate connects to **ArmorIQ** (`@armoriq/sdk`).
 
 ```mermaid
 graph TD
@@ -113,8 +113,8 @@ graph TD
 sequenceDiagram
     autonumber
     actor Approver as Finance Director
-    participant UI as FlowGuard React UI
-    participant Server as FlowGuard Express Server
+    participant UI as IntentGate React UI
+    participant Server as IntentGate Express Server
     participant AIQ as ArmorIQ Intent Service
     participant AWX as Airwallex Sandbox API
 
@@ -210,7 +210,7 @@ $$\text{Score} = W_{\text{criticality}} + W_{\text{urgency}} + W_{\text{native\_
 
 ## 8. Reproducible Demo Scenarios
 
-FlowGuard comes with four switchable presets via the top-bar scenario selector:
+IntentGate comes with four switchable presets via the top-bar scenario selector:
 
 | Scenario Code | Scenario Title | Financial Dynamics | Key Observation |
 | :--- | :--- | :--- | :--- |
@@ -228,19 +228,19 @@ FlowGuard comes with four switchable presets via the top-bar scenario selector:
 ### [0:00 – 0:40] The Problem & The Solution
 > "Judges, small cross-border businesses don't fail because they lack sales; they fail because of cash-flow timing. According to the Federal Reserve's Small Business Credit Survey, over 60% of small firms face severe cash-flow volatility. At the same time, IOFM data shows that 1.29% of all invoices paid are accidental duplicates, costing thousands in unrecoverable losses.
 > 
-> This is **FlowGuard**: an adaptive treasury controller and accounts payable shield built on the Airwallex Sandbox API, hardened with ArmorIQ intent verification. FlowGuard guarantees that a business never accidentally breaches its cash reserves and never pays a duplicate invoice."
+> This is **IntentGate**: an adaptive treasury controller and accounts payable shield built on the Airwallex Sandbox API, hardened with ArmorIQ intent verification. IntentGate guarantees that a business never accidentally breaches its cash reserves and never pays a duplicate invoice."
 
 ### [0:40 – 1:20] Overview & Deterministic Payment Planning
 > *(Point to the Overview Screen)*
 > "Here on the Overview screen, we see our live Airwallex sandbox balances across four wallets: US Dollars, Euros, British Pounds, and Australian Dollars. Notice our protected **Reserve Floor of $15,000**.
 > 
-> Let's switch to the **Payment Planner**. Unlike an unconstrained LLM that might hallucinate payment approvals, FlowGuard uses a deterministic financial rules engine. It calculates corridor fees—including the official flat EUR 12.85 SWIFT fee on cross-border European transfers—and schedules payments based on operational impact. Critical shipments like Apex Logistics customs clearance are marked **PAY NOW**, while lower-priority bills are deferred to protect our cash floor."
+> Let's switch to the **Payment Planner**. Unlike an unconstrained LLM that might hallucinate payment approvals, IntentGate uses a deterministic financial rules engine. It calculates corridor fees—including the official flat EUR 12.85 SWIFT fee on cross-border European transfers—and schedules payments based on operational impact. Critical shipments like Apex Logistics customs clearance are marked **PAY NOW**, while lower-priority bills are deferred to protect our cash floor."
 
 ### [1:20 – 2:05] Duplicate Invoice Injection & ArmorIQ Intent Shield
 > *(Select 'Scenario B: Duplicate Invoice Attack' from the top dropdown, then click 'Invoice & Risk Guard')*
 > "Now, watch what happens when an altered duplicate invoice arrives. Here is `INV-2024-884B` from Bavaria Precision Tooling. A human approver skimming this might miss the trailing 'B'.
 > 
-> But FlowGuard's duplicate engine flags it instantly as a **CRITICAL DUPLICATE** using Levenshtein distance and triple-vector proximity matching. 
+> But IntentGate's duplicate engine flags it instantly as a **CRITICAL DUPLICATE** using Levenshtein distance and triple-vector proximity matching. 
 > 
 > Even if an autonomous agent or human attempted to force this payment, **ArmorIQ Intent Assurance** intercepts the execution plan, detects the policy violation, and refuses to mint an Intent Token. The payment cannot reach Airwallex."
 
@@ -257,7 +257,7 @@ FlowGuard comes with four switchable presets via the top-bar scenario selector:
 > *(Click 'Audit Trail & API' tab)*
 > "Every single policy evaluation, ArmorIQ intent token, and Airwallex API request is immutably recorded in our audit trail with millisecond latencies and request IDs.
 > 
-> FlowGuard demonstrates how businesses can safely deploy autonomous financial agents using Airwallex's global infrastructure and ArmorIQ's intent governance—without risking real money or making unrecoverable errors. Thank you!"
+> IntentGate demonstrates how businesses can safely deploy autonomous financial agents using Airwallex's global infrastructure and ArmorIQ's intent governance—without risking real money or making unrecoverable errors. Thank you!"
 
 ---
 

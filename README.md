@@ -1,7 +1,7 @@
-# FlowGuard — Autonomous Treasury & Intent Vault Governed by ArmorIQ
+# IntentGate — Autonomous Treasury & Intent Vault Governed by ArmorIQ
 
 > **Tagline**: *Autonomous treasury operations and MCP tools, cryptographically governed by ArmorIQ.*  
-> **Description**: FlowGuard is an autonomous treasury agent and conversational support enclave where ElevenLabs delivers voice telephony and ArmorIQ cryptographically bounds every real-world MCP action to declared intent.  
+> **Description**: IntentGate is an autonomous treasury agent and conversational support enclave where ElevenLabs delivers voice telephony and ArmorIQ cryptographically bounds every real-world MCP action to declared intent.  
 > **Live Production**: [https://flowguard-treasury.vercel.app](https://flowguard-treasury.vercel.app) · **Judge Dashboard**: [`/judges`](https://flowguard-treasury.vercel.app/judges) · **Architecture Blueprint**: [`docs/ARMORIQ_MCP_INTEGRATION.md`](docs/ARMORIQ_MCP_INTEGRATION.md) · **Real Run Capture**: [`docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json`](docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json)
 
 ---
@@ -10,7 +10,7 @@
 
 | Requirement / Checklist Item | Implementation & Evidence | Status |
 | :--- | :--- | :--- |
-| **Setup Order Followed** | 1. API key created on `platform.armoriq.ai`.<br>2. Public MCP deployed & registered (`flowguard-treasury-mcp`, UUID `7540cd0a-7d76-414a-a849-96b337a0c6ed`, at `https://flowguard-treasury.vercel.app/mcp`).<br>3. Agent onboarded (`flowguard-agent`).<br>4. Policy authored on platform (`flowguard-treasury-allowlist`). | ✅ **PASS** |
+| **Setup Order Followed** | 1. API key created on `platform.armoriq.ai`.<br>2. Public MCP deployed & registered (`intentgate-treasury-mcp`, UUID `7540cd0a-7d76-414a-a849-96b337a0c6ed`, at `https://flowguard-treasury.vercel.app/mcp`).<br>3. Agent onboarded (`intentgate-agent`).<br>4. Policy authored on platform (`intentgate-treasury-allowlist`). | ✅ **PASS** |
 | **Policies Verified with 3-Result Test Script** | `scripts/test-enforcement.mjs` runs real live calls against ArmorIQ (latest run 16 Oct 2026, raw capture in [docs/evidence/](docs/evidence/README.md)):<br>• `lookup_order`: **ALLOWED** (887 ms, real payload, `verified: true`)<br>• `change_payout`: **BLOCKED** (`PolicyBlockedException`, HTTP 403 `tool_not_in_allowlist`, 764 ms)<br>• `issue_refund`: **HELD** (real pending platform delegation `eb63aac7-…` created via the delegation API, 604 ms). | ✅ **PASS** |
 | **Two-Approval Approach Documented** | Confirmed against ArmorIQ SDK docs. ArmorIQ platform evaluates holds (`/delegation/request`); gateway counts 2 supervisor approvals before releasing held execution. Fully documented in [DX_NOTES.md](DX_NOTES.md). | ✅ **PASS** |
 | **MCP Reachable via ArmorIQ Proxy** | MCP server listening on `POST /mcp` (JSON-RPC 2.0 with SSE responses) is served over HTTPS at `https://flowguard-treasury.vercel.app/mcp` and successfully invoked via `https://proxy.armoriq.ai/invoke`. | ✅ **PASS** |
@@ -18,7 +18,7 @@
 | **Intent Mismatch Demonstrated** | `scripts/test-intent-mismatch.mjs` mints a token for `lookup_order` only, then attempts to invoke `issue_refund` -> immediately raises `IntentMismatchException` before network execution. | ✅ **PASS** |
 | **Decisions from ArmorIQ, Not Code `if` Statements** | Every allow/block decision is returned directly by the ArmorIQ proxy (`proxy.armoriq.ai`). The gateway contains no hardcoded allow/deny rules. | ✅ **PASS** |
 | **Held Calls Answer Within 5s Window** | Real measured latencies: `lookup_order` (3.7s–4.3s), `change_payout` (2.7s), `issue_refund` (2.8s–3.9s). Held calls reply immediately with holding message; final decision relayed via `check_supervisor_decision`. | ✅ **PASS** |
-| **Prefix Mapping & Zero Real Data** | Gateway transparently strips the `FlowGuard_` prefix from ElevenLabs tool calls (legacy `IntentGate_` still accepted). 100% synthetic sandbox data (`ORD-1001`, `ORD-1002`, `ACC-4471`). | ✅ **PASS** |
+| **Prefix Mapping & Zero Real Data** | Gateway transparently strips the `IntentGate_` prefix from ElevenLabs tool calls (legacy `FlowGuard_` still accepted). 100% synthetic sandbox data (`ORD-1001`, `ORD-1002`, `ACC-4471`). | ✅ **PASS** |
 | **No Secrets & Complete Disclosures** | `.env` gitignored; safe `.env.example` provided. Full [DISCLOSURES.md](DISCLOSURES.md) and [DX_NOTES.md](DX_NOTES.md) included. | ✅ **PASS** |
 
 ---
@@ -28,7 +28,7 @@
 ```mermaid
 flowchart TD
     User([Caller Voice / Web Client]) <--> ElevenLabs[ElevenLabs Conversational AI Agent]
-    ElevenLabs -- "Webhook Tool Call (FlowGuard_<tool>)" --> Gateway[FlowGuard Gateway Service :8790]
+    ElevenLabs -- "Webhook Tool Call (IntentGate_<tool>)" --> Gateway[IntentGate Gateway Service :8790]
     
     subgraph ArmorIQ Platform ["ArmorIQ Governance Cloud (platform.armoriq.ai)"]
         IAP["CSRG-IAP Intent Backend (iap.armoriq.ai)"]
@@ -41,7 +41,7 @@ flowchart TD
     Gateway -- "3. invoke(mcp, tool, token, params)" --> Proxy
     
     Proxy -- "Enforce Stored Policies (allow/block)" --> Proxy
-    Proxy -- "4. Validated SSE Tool Call" --> MCPServer[FlowGuard MCP Server (Vercel /mcp, SSE)]
+    Proxy -- "4. Validated SSE Tool Call" --> MCPServer[IntentGate MCP Server (Vercel /mcp, SSE)]
     
     Gateway -- "Hold Escalation (/delegation/request)" --> PlatformAPI
     Supervisor([Supervisor]) <--> Playground[Supervisor Playground UI /api/pending]
@@ -55,8 +55,8 @@ flowchart TD
 
 1. **AI Voice Agent**:
    - ElevenLabs Conversational Voice Agent receiving customer voice calls.
-   - Tools exposed via gateway: `FlowGuard_orderLookup`, `FlowGuard_payoutChange`, `FlowGuard_issueRefund`, `check_supervisor_decision`.
-   - Tool prefix `FlowGuard_` is mapped back to the canonical MCP tool names (legacy `IntentGate_` still accepted).
+   - Tools exposed via gateway: `IntentGate_orderLookup`, `IntentGate_payoutChange`, `IntentGate_issueRefund`, `check_supervisor_decision`.
+   - Tool prefix `IntentGate_` is mapped back to the canonical MCP tool names (legacy `FlowGuard_` still accepted).
 
 2. **Model Context Protocol (MCP) Server (`mcp-server/server.mjs`)**:
    - JSON-RPC 2.0 over HTTP (`POST /mcp`), responding with Server-Sent Events (`Content-Type: text/event-stream`, `event: message\ndata: {json}\n\n`).
@@ -151,10 +151,10 @@ This executes:
 
 ## 🎨 3D Interactive Elements (Three.js 60 FPS)
 
-FlowGuard features three interactive, hardware-accelerated 3D elements built with Three.js (located in `client/src/components/3d/`):
+IntentGate features three interactive, hardware-accelerated 3D elements built with Three.js (located in `client/src/components/3d/`):
 
 1. **`RotatingHeroVault.jsx` (Hero Object)**:
-   - Visualizes the FlowGuard Cryptographic Treasury Vault.
+   - Visualizes the IntentGate Cryptographic Treasury Vault.
    - Inner crystalline icosahedron core surrounded by an outer holographic protective wireframe cage and an equatorial intent verification ring.
    - Interactive: Tracks cursor hover and drag to tilt perspective; dynamically speeds up on interaction.
 
@@ -178,7 +178,7 @@ FlowGuard features three interactive, hardware-accelerated 3D elements built wit
 
 ## 🌓 Light & Dark Theme System
 
-FlowGuard implements an adaptive theme engine with strict WCAG AA contrast compliance:
+IntentGate implements an adaptive theme engine with strict WCAG AA contrast compliance:
 - **Design Tokens**: Standardized CSS variables defined in `client/src/index.css` for both `:root, [data-theme="dark"]` and `[data-theme="light"]`.
 - **Theme Toggle**: Accessible Sun/Moon toggle button in the top navigation bar with `aria-label`.
 - **Zero-Flash First Load**: Inline blocking script in `client/index.html` checks `localStorage` and `prefers-color-scheme` before rendering body.
@@ -189,18 +189,18 @@ FlowGuard implements an adaptive theme engine with strict WCAG AA contrast compl
 ## 📖 PDF Technical Architectural Guides
 
 Two comprehensive technical architectural documents are generated and committed to the repository:
-- **`FlowGuard_Overview.pdf`**: [`docs/FlowGuard_Overview.pdf`](docs/FlowGuard_Overview.pdf) — Complete 9-page guide covering the ElevenLabs voice layer, ArmorIQ cryptographic intent enforcement, sub-5s timeout protection, comparative tables, and production roadmap.
+- **`IntentGate_Overview.pdf`**: [`docs/IntentGate_Overview.pdf`](docs/IntentGate_Overview.pdf) — Complete 9-page guide covering the ElevenLabs voice layer, ArmorIQ cryptographic intent enforcement, sub-5s timeout protection, comparative tables, and production roadmap.
 - **`USER_GUIDE.pdf`**: [`docs/USER_GUIDE.pdf`](docs/USER_GUIDE.pdf) — Complete operator manual for local deployment, 3D controls, theme tokens, and troubleshooting.
 - **Regenerate via scripts**:
   ```bash
-  npm run docs:overview   # Generates docs/FlowGuard_Overview.pdf
+  npm run docs:overview   # Generates docs/IntentGate_Overview.pdf
   npm run docs:pdf        # Generates docs/USER_GUIDE.pdf
   ```
 
 ---
 
 ## 📚 Deliverable References
-- [docs/FlowGuard_Overview.pdf](docs/FlowGuard_Overview.pdf): Technical overview of ElevenLabs + ArmorIQ integration.
+- [docs/IntentGate_Overview.pdf](docs/IntentGate_Overview.pdf): Technical overview of ElevenLabs + ArmorIQ integration.
 - [docs/USER_GUIDE.pdf](docs/USER_GUIDE.pdf): Complete 9-page printed technical architectural guide.
 - [DX_NOTES.md](DX_NOTES.md): Comprehensive documentation of the ElevenLabs ~5s timeout pattern, prefix normalization, measured latencies, 2-approval counter approach, and ArmorIQ SDK error typing gotchas.
 - [DISCLOSURES.md](DISCLOSURES.md): Complete disclosures of all pre-existing libraries, AI assistants, and open-source packages.
@@ -269,13 +269,13 @@ Dedicated stub routes with prominent `"Draft – replace with reviewed legal tex
 - **WCAG AA Contrast**: Tested against WCAG AA standards (minimum 4.5:1 text contrast ratio).
 - **No External Images / Emoji Flags**: Social links use lightweight inline SVGs with `aria-label` attributes. "Made with ♥ in India" uses text formatting without emoji flags.
 
-### 📄 FlowGuard Guide (PDF) Configuration & Maintenance
-- **File Location**: The guide PDF is generated at `docs/USER_GUIDE.pdf` and mirrored automatically by the generator to `client/public/docs/flowguard-guide.pdf` and `public/docs/flowguard-guide.pdf`. It is served at route `/docs/flowguard-guide.pdf`.
+### 📄 IntentGate Guide (PDF) Configuration & Maintenance
+- **File Location**: The guide PDF is generated at `docs/USER_GUIDE.pdf` and mirrored automatically by the generator to `client/public/docs/intentgate-guide.pdf` and `public/docs/intentgate-guide.pdf`. It is served at route `/docs/intentgate-guide.pdf`.
 - **Single Source of Truth**: Configured in `client/src/siteConfig.js` under `siteConfig.guidePdf` (the size label is re-computed at build time):
   ```javascript
   guidePdf: {
     enabled: true,
-    path: "/docs/flowguard-guide.pdf",
+    path: "/docs/intentgate-guide.pdf",
     pages: 24,
     sizeLabel: typeof __GUIDE_PDF_SIZE_LABEL__ !== 'undefined' ? __GUIDE_PDF_SIZE_LABEL__ : "32 KB"
   }

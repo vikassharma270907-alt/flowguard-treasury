@@ -1,5 +1,5 @@
 /**
- * Vendors the exact Google Fonts woff2 subsets used by the FlowGuard client
+ * Vendors the exact Google Fonts woff2 subsets used by the IntentGate client
  * into client/public/fonts and regenerates client/src/fonts.css with
  * same-origin @font-face rules.
  *
@@ -17,7 +17,7 @@ const CSS_URL =
   '&family=Noto+Sans+Devanagari:wght@400;500;600;700' +
   '&family=JetBrains+Mono:wght@400;500&display=swap';
 
-// Subsets that can appear in FlowGuard content (English + Hindi UI).
+// Subsets that can appear in IntentGate content (English + Hindi UI).
 const KEEP_SUBSETS = new Set(['latin', 'latin-ext', 'devanagari']);
 
 // Google only serves woff2 URLs to modern browsers.

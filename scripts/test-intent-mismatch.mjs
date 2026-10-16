@@ -21,8 +21,8 @@ import { ArmorIQClient } from '@armoriq/sdk';
 import { classifyError } from '../lib/verdicts.mjs';
 
 const MCP = process.env.ARMORIQ_MCP_ID;
-const AGENT = process.env.ARMORIQ_AGENT_ID || 'flowguard-agent';
-const USER = process.env.USER_ID || 'flowguard-operator';
+const AGENT = process.env.ARMORIQ_AGENT_ID || 'intentgate-agent';
+const USER = process.env.USER_ID || 'intentgate-operator';
 
 const client = new ArmorIQClient({ apiKey: process.env.ARMORIQ_API_KEY, userId: USER, agentId: AGENT });
 
@@ -31,7 +31,7 @@ function plan(action, inputs, goal) {
 }
 
 async function mint(action, inputs, goal) {
-  const capture = client.capturePlan('flowguard-test', goal, plan(action, inputs, goal));
+  const capture = client.capturePlan('intentgate-test', goal, plan(action, inputs, goal));
   return client.getIntentToken(capture);
 }
 
@@ -68,7 +68,7 @@ const case2 = await report('Case 2 — issue_refund(89) token used to invoke iss
 });
 
 // --- Case 3: expired token --------------------------------------------------
-const shortCapture = client.capturePlan('flowguard-test', 'expiry test', plan('lookup_order', { order_id: 'ORD-1002' }, 'expiry test'));
+const shortCapture = client.capturePlan('intentgate-test', 'expiry test', plan('lookup_order', { order_id: 'ORD-1002' }, 'expiry test'));
 const shortToken = await client.getIntentToken(shortCapture, undefined, 5);
 console.log(`minted short-lived token    expiresAt=${new Date(shortToken.expiresAt * 1000).toISOString()} (5s validity)`);
 console.log('waiting 7s for it to lapse…');

@@ -1,5 +1,5 @@
 /**
- * Synthetic sandbox data for the FlowGuard MCP server. (CommonJS core —
+ * Synthetic sandbox data for the IntentGate MCP server. (CommonJS core —
  * consumed by server/mcpServer.js via require() and re-exported by
  * mcp-server/sandbox-data.mjs for the standalone ESM MCP server.)
  *

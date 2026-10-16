@@ -21,7 +21,7 @@ export default function HowWeUseArmorIQSection() {
           Policy-Enforced Intent Pipeline
         </div>
         <h2 id="architecture-heading" style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.02em', margin: 0 }}>
-          How FlowGuard Uses ArmorIQ
+          How IntentGate Uses ArmorIQ
         </h2>
         <p style={{ color: 'var(--muted-foreground)', fontSize: '0.92rem', marginTop: '6px', maxWidth: '820px', lineHeight: 1.5 }}>
           Autonomous conversational agents cannot call tools or financial gateways directly. Every real-world action must pass through ArmorIQ's Policy Enforcement Point (PEP) proxy to prove compliance with declared user intent.
@@ -47,9 +47,9 @@ export default function HowWeUseArmorIQSection() {
           role="img"
           aria-labelledby="svg-arch-title svg-arch-desc"
         >
-          <title id="svg-arch-title">FlowGuard & ArmorIQ Architectural Flow</title>
+          <title id="svg-arch-title">IntentGate & ArmorIQ Architectural Flow</title>
           <desc id="svg-arch-desc">
-            Visual sequence showing the ElevenLabs Voice Agent passing through the FlowGuard gateway, which captures the plan, mints an intent token at iap.armoriq.ai, and invokes the tool through proxy.armoriq.ai before reaching the platform-onboarded flowguard-treasury-mcp server.
+            Visual sequence showing the ElevenLabs Voice Agent passing through the IntentGate gateway, which captures the plan, mints an intent token at iap.armoriq.ai, and invokes the tool through proxy.armoriq.ai before reaching the platform-onboarded intentgate-treasury-mcp server.
           </desc>
 
           <defs>
@@ -74,17 +74,17 @@ export default function HowWeUseArmorIQSection() {
           <rect x="30" y="50" width="230" height="150" rx="10" fill="url(#agentGrad)" stroke="#38bdf8" strokeWidth="1.5" />
           <text x="145" y="80" textAnchor="middle" fill="#38bdf8" fontWeight="700" fontSize="14">1. Autonomous Agents</text>
           <text x="145" y="105" textAnchor="middle" fill="var(--foreground)" fontWeight="600" fontSize="12">ElevenLabs Voice Support</text>
-          <text x="145" y="125" textAnchor="middle" fill="var(--muted-foreground)" fontSize="11">& FlowGuard Treasury Agent</text>
-          <text x="145" y="155" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">Tool: FlowGuard_&lt;tool&gt;</text>
+          <text x="145" y="125" textAnchor="middle" fill="var(--muted-foreground)" fontSize="11">& IntentGate Treasury Agent</text>
+          <text x="145" y="155" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">Tool: IntentGate_&lt;tool&gt;</text>
           <text x="145" y="175" textAnchor="middle" fill="var(--success)" fontSize="10">&lt;5s Voice Timeout Guard</text>
 
           {/* Arrow 1 -> 2 */}
           <path d="M 260 125 L 350 125" stroke="#818cf8" strokeWidth="2" strokeDasharray="4 4" markerEnd="url(#arrow)" />
           <text x="305" y="115" textAnchor="middle" fill="#c084fc" fontSize="10" fontFamily="monospace">Webhook</text>
 
-          {/* Node 2: FlowGuard Gateway */}
+          {/* Node 2: IntentGate Gateway */}
           <rect x="360" y="50" width="240" height="150" rx="10" fill="url(#agentGrad)" stroke="#818cf8" strokeWidth="1.5" />
-          <text x="480" y="80" textAnchor="middle" fill="#818cf8" fontWeight="700" fontSize="14">2. FlowGuard Gateway (:8790)</text>
+          <text x="480" y="80" textAnchor="middle" fill="#818cf8" fontWeight="700" fontSize="14">2. IntentGate Gateway (:8790)</text>
           <text x="480" y="105" textAnchor="middle" fill="var(--foreground)" fontWeight="600" fontSize="11">Prefix Strip & Plan Canonicalization</text>
           <text x="480" y="130" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">client.capturePlan(model, prompt, plan)</text>
           <text x="480" y="150" textAnchor="middle" fill="#c084fc" fontSize="10" fontFamily="monospace">client.getIntentToken(capture)</text>
@@ -108,8 +108,8 @@ export default function HowWeUseArmorIQSection() {
           {/* Node 4: MCP Servers */}
           <rect x="800" y="50" width="220" height="150" rx="10" fill="url(#mcpGrad)" stroke="var(--success)" strokeWidth="1.5" />
           <text x="910" y="80" textAnchor="middle" fill="var(--success)" fontWeight="700" fontSize="14">4. Governed MCP Servers</text>
-          <text x="910" y="105" textAnchor="middle" fill="var(--foreground)" fontWeight="600" fontSize="12">flowguard-treasury-mcp</text>
-          <text x="910" y="125" textAnchor="middle" fill="var(--muted-foreground)" fontSize="11">& flowguard-treasury-mcp</text>
+          <text x="910" y="105" textAnchor="middle" fill="var(--foreground)" fontWeight="600" fontSize="12">intentgate-treasury-mcp</text>
+          <text x="910" y="125" textAnchor="middle" fill="var(--muted-foreground)" fontSize="11">& intentgate-treasury-mcp</text>
           <text x="910" y="150" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">lookup_order</text>
           <text x="910" y="170" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">change_payout | issue_refund</text>
         </svg>

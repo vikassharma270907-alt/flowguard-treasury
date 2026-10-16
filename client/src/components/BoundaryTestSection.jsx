@@ -80,13 +80,13 @@ export default function BoundaryTestSection() {
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
             Registered Agent
           </span>
-          <strong style={{ color: '#38bdf8', fontFamily: 'monospace' }}>flowguard-agent</strong>
+          <strong style={{ color: '#38bdf8', fontFamily: 'monospace' }}>intentgate-agent</strong>
         </div>
         <div>
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
             Governed MCP Server
           </span>
-          <strong style={{ color: '#34d399', fontFamily: 'monospace' }}>flowguard-treasury-mcp</strong>
+          <strong style={{ color: '#34d399', fontFamily: 'monospace' }}>intentgate-treasury-mcp</strong>
         </div>
         <div>
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
@@ -98,7 +98,7 @@ export default function BoundaryTestSection() {
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
             Active Policy
           </span>
-          <strong style={{ color: '#c084fc', fontFamily: 'monospace' }}>flowguard-treasury-allowlist</strong>
+          <strong style={{ color: '#c084fc', fontFamily: 'monospace' }}>intentgate-treasury-allowlist</strong>
         </div>
         <div>
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>

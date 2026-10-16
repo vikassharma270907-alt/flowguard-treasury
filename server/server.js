@@ -1,5 +1,5 @@
 /**
- * FlowGuard - Backend API Server
+ * IntentGate - Backend API Server
  * 
  * Provides clean REST endpoints for:
  * - Airwallex Sandbox connection status & auth verification
@@ -19,7 +19,7 @@ const airwallexService = require('./airwallexService');
 const armorIqService = require('./armorIqService');
 const securityEngine = require('./securityEngine');
 const voiceGatewayService = require('./voiceGatewayService');
-const { flowguardMcpServer, FLOWGUARD_MCP_TOOLS, FLOWGUARD_APP_TOOLS } = require('./mcpServer');
+const { intentgateMcpServer, INTENTGATE_MCP_TOOLS, INTENTGATE_APP_TOOLS } = require('./mcpServer');
 const armorIqEnforcement = require('./armorIqEnforcement');
 const { scanAllInvoices, inspectInvoice } = require('./duplicateDetector');
 const { planPayments } = require('./rulesEngine');
@@ -50,7 +50,7 @@ let activeScenario = 'SCENARIO_A';
 let currentUserSession = {
   id: 'usr_admin_01',
   name: 'beyond_nothing',
-  email: 'beyond_nothing@flowguard.io',
+  email: 'beyond_nothing@intentgate.io',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
   role: 'SUPER_ADMIN',
   provider: 'Google Workspace OAuth',
@@ -77,10 +77,10 @@ let adminGovernanceSettings = {
 };
 
 let adminOrgMembers = [
-  { id: 'usr_01', name: 'beyond_nothing', email: 'beyond_nothing@flowguard.io', role: 'SUPER_ADMIN', department: 'Treasury & Risk', status: 'ACTIVE', lastLogin: 'Just now' },
-  { id: 'usr_02', name: 'Sarah Chen', email: 'sarah.chen@flowguard.io', role: 'FINANCE_DIRECTOR', department: 'Accounts Payable', status: 'ACTIVE', lastLogin: '2 hours ago' },
-  { id: 'usr_03', name: 'Marcus Sterling', email: 'm.sterling@flowguard.io', role: 'COMPLIANCE_AUDITOR', department: 'Internal Audit', status: 'ACTIVE', lastLogin: '1 day ago' },
-  { id: 'usr_04', name: 'Airwallex Agent Bot', email: 'agent@flowguard.bot', role: 'AUTONOMOUS_AGENT', department: 'Automated Operations', status: 'MANAGED_BY_ARMORIQ', lastLogin: 'Continuous' }
+  { id: 'usr_01', name: 'beyond_nothing', email: 'beyond_nothing@intentgate.io', role: 'SUPER_ADMIN', department: 'Treasury & Risk', status: 'ACTIVE', lastLogin: 'Just now' },
+  { id: 'usr_02', name: 'Sarah Chen', email: 'sarah.chen@intentgate.io', role: 'FINANCE_DIRECTOR', department: 'Accounts Payable', status: 'ACTIVE', lastLogin: '2 hours ago' },
+  { id: 'usr_03', name: 'Marcus Sterling', email: 'm.sterling@intentgate.io', role: 'COMPLIANCE_AUDITOR', department: 'Internal Audit', status: 'ACTIVE', lastLogin: '1 day ago' },
+  { id: 'usr_04', name: 'Airwallex Agent Bot', email: 'agent@intentgate.bot', role: 'AUTONOMOUS_AGENT', department: 'Automated Operations', status: 'MANAGED_BY_ARMORIQ', lastLogin: 'Continuous' }
 ];
 
 // --- ArmorIQ Platform Authentication Endpoints (docs.armoriq.ai/platform/authentication) ---
@@ -204,7 +204,7 @@ app.post('/api/auth/refresh', (req, res) => {
 
 // 6. OAuth Sign In (Google / GitHub / ArmorIQ SSO)
 app.post('/api/auth/oauth/login', (req, res) => {
-  const { provider = 'Google Workspace OAuth', email = 'beyond_nothing@flowguard.io', name = 'beyond_nothing', avatar } = req.body || {};
+  const { provider = 'Google Workspace OAuth', email = 'beyond_nothing@intentgate.io', name = 'beyond_nothing', avatar } = req.body || {};
 
   const result = authService.authenticateWithOAuth(provider, email, name, avatar);
   currentUserSession = result.user;
@@ -222,7 +222,7 @@ app.post('/api/auth/oauth/login', (req, res) => {
 
 // 7. Google Identity Services (PKCE)
 app.post('/api/auth/google', (req, res) => {
-  const { email = 'beyond_nothing@flowguard.io', name, avatar } = req.body || {};
+  const { email = 'beyond_nothing@intentgate.io', name, avatar } = req.body || {};
   const result = authService.authenticateWithOAuth('Google Identity Services (OAuth 2.0 PKCE)', email, name, avatar);
   currentUserSession = result.user;
 
@@ -300,7 +300,7 @@ app.post('/api/admin/users', (req, res) => {
   const newMember = {
     id: 'usr_' + uuidv4().substring(0, 6),
     name: name || 'New Operator',
-    email: email || 'operator@flowguard.io',
+    email: email || 'operator@intentgate.io',
     role: role || 'FINANCE_OPERATOR',
     department: department || 'Treasury',
     status: 'ACTIVE',
@@ -447,17 +447,17 @@ app.post('/api/voice/synthesize', async (req, res) => {
   }
 });
 
-// --- FlowGuard Model Context Protocol (MCP) Server Endpoints ---
+// --- IntentGate Model Context Protocol (MCP) Server Endpoints ---
 app.get('/api/mcp/status', (req, res) => {
   const connected = !!armorIqEnforcement.getClient();
   res.json({
-    name: 'flowguard-treasury-mcp',
+    name: 'intentgate-treasury-mcp',
     version: '1.0.0',
     protocolVersion: '2024-11-05',
     status: connected ? 'ONLINE' : 'NOT_CONNECTED',
     transport: ['stdio', 'http-jsonrpc', 'rest'],
-    governedTools: FLOWGUARD_MCP_TOOLS.map((t) => t.name),
-    appSideTools: FLOWGUARD_APP_TOOLS.map((t) => t.name),
+    governedTools: INTENTGATE_MCP_TOOLS.map((t) => t.name),
+    appSideTools: INTENTGATE_APP_TOOLS.map((t) => t.name),
     governance: {
       enforcedBy: 'ArmorIQ proxy — governed calls are routed through proxy.armoriq.ai before they reach this server',
       armorIqMode: connected ? 'ARMORIQ_LIVE' : 'NOT_CONFIGURED',
@@ -468,14 +468,14 @@ app.get('/api/mcp/status', (req, res) => {
 });
 
 app.get('/api/mcp/tools', (req, res) => {
-  res.json({ tools: FLOWGUARD_MCP_TOOLS, appSideTools: FLOWGUARD_APP_TOOLS });
+  res.json({ tools: INTENTGATE_MCP_TOOLS, appSideTools: INTENTGATE_APP_TOOLS });
 });
 
 app.post('/api/mcp/execute', async (req, res) => {
   const { tool, name, arguments: toolArgs = {} } = req.body;
   const toolName = tool || name;
   try {
-    const result = await flowguardMcpServer.executeTool(toolName, toolArgs);
+    const result = await intentgateMcpServer.executeTool(toolName, toolArgs);
     let payload = null;
     try {
       payload = JSON.parse(result.content?.[0]?.text ?? 'null');
@@ -500,7 +500,7 @@ app.get('/api/mcp/config', (req, res) => {
   res.json({
     claudeDesktopConfig: {
       mcpServers: {
-        'flowguard-treasury': {
+        'intentgate-treasury': {
           command: 'node',
           args: ['server/mcpServer.js', '--stdio'],
           env: {
@@ -510,11 +510,11 @@ app.get('/api/mcp/config', (req, res) => {
       }
     },
     platformOnboarding: {
-      serverName: 'flowguard-treasury-mcp',
-      agentId: process.env.ARMORIQ_AGENT_ID || 'flowguard-agent',
+      serverName: 'intentgate-treasury-mcp',
+      agentId: process.env.ARMORIQ_AGENT_ID || 'intentgate-agent',
       platformUrl: 'https://platform.armoriq.ai',
-      supportedTools: FLOWGUARD_MCP_TOOLS.map(t => t.name),
-      appSideTools: FLOWGUARD_APP_TOOLS.map(t => t.name)
+      supportedTools: INTENTGATE_MCP_TOOLS.map(t => t.name),
+      appSideTools: INTENTGATE_APP_TOOLS.map(t => t.name)
     }
   });
 });
@@ -539,13 +539,13 @@ const buildMcpEnvelope = async (req) => {
     return { body: { jsonrpc: '2.0', id: id ?? 1, result: {} } };
   }
   if (method === 'tools/list') {
-    return { body: { jsonrpc: '2.0', id: id ?? 1, result: { tools: FLOWGUARD_MCP_TOOLS } } };
+    return { body: { jsonrpc: '2.0', id: id ?? 1, result: { tools: INTENTGATE_MCP_TOOLS } } };
   }
   if (method === 'tools/call') {
     const toolName = params.name || params.tool;
     const toolArgs = params.arguments || params.args || {};
     try {
-      const toolResult = await flowguardMcpServer.executeTool(toolName, toolArgs);
+      const toolResult = await intentgateMcpServer.executeTool(toolName, toolArgs);
       return { body: { jsonrpc: '2.0', id: id ?? 1, result: toolResult } };
     } catch (err) {
       return { body: { jsonrpc: '2.0', id: id ?? 1, error: { code: err.code ?? -32000, message: err.message } } };
@@ -559,7 +559,7 @@ const buildMcpEnvelope = async (req) => {
         result: {
           protocolVersion: '2024-11-05',
           capabilities: { tools: { listChanged: false } },
-          serverInfo: { name: 'flowguard-treasury-mcp', version: '1.0.0' }
+          serverInfo: { name: 'intentgate-treasury-mcp', version: '1.0.0' }
         }
       }
     };
@@ -622,7 +622,7 @@ app.get('/api/status', async (req, res) => {
   }
 
   res.json({
-    appName: 'FlowGuard - Airwallex Sandbox Decision Assistant',
+    appName: 'IntentGate - Airwallex Sandbox Decision Assistant',
     isLiveSandbox: authStatus.success,
     mode: authStatus.success ? 'AIRWALLEX_LIVE_SANDBOX' : 'SANDBOX_MOCK_ADAPTER',
     armorIq: {
@@ -986,16 +986,16 @@ app.get('/api/audit-logs', (req, res) => {
   res.json({ events });
 });
 
-// --- FlowGuard Guide PDF Endpoint with Strict Header Compliance ---
+// --- IntentGate Guide PDF Endpoint with Strict Header Compliance ---
 const fs = require('fs');
 const path = require('path');
 const distPath = path.join(__dirname, '../client/dist');
 
-app.get('/docs/flowguard-guide.pdf', (req, res) => {
+app.get('/docs/intentgate-guide.pdf', (req, res) => {
   const possiblePaths = [
-    path.join(distPath, 'docs/flowguard-guide.pdf'),
-    path.join(__dirname, '../client/public/docs/flowguard-guide.pdf'),
-    path.join(__dirname, '../public/docs/flowguard-guide.pdf')
+    path.join(distPath, 'docs/intentgate-guide.pdf'),
+    path.join(__dirname, '../client/public/docs/intentgate-guide.pdf'),
+    path.join(__dirname, '../public/docs/intentgate-guide.pdf')
   ];
   const targetPath = possiblePaths.find(p => fs.existsSync(p));
 
@@ -1024,8 +1024,8 @@ app.use((req, res, next) => {
 // (skip when imported as a module — e.g. the Vercel handler or the test suite)
 if (!process.env.VERCEL && require.main === module) {
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[FlowGuard Server] Running on http://localhost:${PORT} and http://127.0.0.1:${PORT}`);
-    console.log(`[FlowGuard Server] Airwallex Sandbox Mode: ${airwallexService.isConfigured() ? 'LIVE_SANDBOX' : 'MOCK_ADAPTER'}`);
+    console.log(`[IntentGate Server] Running on http://localhost:${PORT} and http://127.0.0.1:${PORT}`);
+    console.log(`[IntentGate Server] Airwallex Sandbox Mode: ${airwallexService.isConfigured() ? 'LIVE_SANDBOX' : 'MOCK_ADAPTER'}`);
   });
 }
 

@@ -24,7 +24,7 @@ ArmorAntigravity bridges Google Antigravity with the ArmorIQ Intent Security Pla
 
 ## Registered MCP Tools
 
-The `flowguard-treasury` MCP server exposes governed tools to Antigravity:
+The `intentgate-treasury` MCP server exposes governed tools to Antigravity:
 - `lookup_order`: Read-only order query with simulated latency.
 - `change_payout`: Modifies settlement bank details (governed by beneficiary whitelist policy).
 - `issue_refund`: Executes refund against an order (governed by transaction velocity and limit policy).

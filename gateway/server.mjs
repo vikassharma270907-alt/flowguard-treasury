@@ -1,5 +1,5 @@
 /**
- * FlowGuard gateway (live ArmorIQ enforcement).
+ * IntentGate gateway (live ArmorIQ enforcement).
  *
  * Two jobs:
  *   1. Tool endpoint for the ElevenLabs agent. Every call is routed through
@@ -23,11 +23,11 @@ const PORT = Number(process.env.GATEWAY_PORT || 8790);
 const SHARED_SECRET = process.env.GATEWAY_SHARED_SECRET || '';
 const PLAYGROUND_TOKEN = process.env.PLAYGROUND_TOKEN || '';
 /**
- * ElevenLabs exposes tools with a namespace prefix. FlowGuard_ is the current
- * prefix; IntentGate_ (earlier prototype) is still accepted so existing agent
+ * ElevenLabs exposes tools with a namespace prefix. IntentGate_ is the current
+ * prefix; the legacy FlowGuard_ prefix (pre-rename) is still accepted so existing
  * configurations keep working.
  */
-const TOOL_PREFIXES = ['FlowGuard_', 'IntentGate_'];
+const TOOL_PREFIXES = ['IntentGate_', 'FlowGuard_'];
 const HOLD_TTL_MS = Number(process.env.HOLD_TTL_MS || 15 * 60 * 1000);
 const REQUIRED_APPROVALS = {
   issue_refund: Number(process.env.REQUIRED_APPROVALS_ISSUE_REFUND || 2),
@@ -221,9 +221,9 @@ const server = http.createServer(async (req, res) => {
   try {
     /* ---- ElevenLabs tool endpoint -------------------------------------- */
     if (req.method === 'POST' && url.pathname.startsWith('/tools/')) {
-      // x-flowguard-token is the current shared-secret header; the legacy
-      // x-intentgate-token name from the earlier prototype is still accepted.
-      const presentedToken = req.headers['x-flowguard-token'] || req.headers['x-intentgate-token'];
+      // x-intentgate-token is the current shared-secret header; the legacy
+      // x-flowguard-token name from the pre-rename prototype is still accepted.
+      const presentedToken = req.headers['x-intentgate-token'] || req.headers['x-flowguard-token'];
       if (SHARED_SECRET && presentedToken !== SHARED_SECRET) {
         log('tool.unauthorized', { path: url.pathname });
         return json(res, 401, { error: 'unauthorized' });
@@ -346,7 +346,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (route === 'GET /health') {
-      return json(res, 200, { ok: true, mcp: process.env.ARMORIQ_MCP_ID, agent: process.env.ARMORIQ_AGENT_ID || 'flowguard-agent' });
+      return json(res, 200, { ok: true, mcp: process.env.ARMORIQ_MCP_ID, agent: process.env.ARMORIQ_AGENT_ID || 'intentgate-agent' });
     }
 
     return json(res, 404, { error: 'not found' });

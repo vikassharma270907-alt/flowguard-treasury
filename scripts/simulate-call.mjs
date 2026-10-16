@@ -18,13 +18,13 @@ const TOKEN = process.env.GATEWAY_SHARED_SECRET || '';
 const scenario = (process.argv[2] || 'all').toLowerCase();
 
 async function callTool(tool, args) {
-  const url = `${BASE}/tools/FlowGuard_${tool}`;
+  const url = `${BASE}/tools/IntentGate_${tool}`;
   const started = Date.now();
   let res;
   try {
     res = await fetch(url, {
       method: 'POST',
-      headers: { 'content-type': 'application/json', ...(TOKEN ? { 'x-flowguard-token': TOKEN } : {}) },
+      headers: { 'content-type': 'application/json', ...(TOKEN ? { 'x-intentgate-token': TOKEN } : {}) },
       body: JSON.stringify(args),
     });
   } catch (err) {

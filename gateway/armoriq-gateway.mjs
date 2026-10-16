@@ -16,8 +16,8 @@ import { ArmorIQClient } from '@armoriq/sdk';
 import { classifyError } from '../lib/verdicts.mjs';
 
 const MCP = process.env.ARMORIQ_MCP_ID;
-const AGENT = process.env.ARMORIQ_AGENT_ID || 'flowguard-agent';
-const USER = process.env.USER_ID || 'flowguard-operator';
+const AGENT = process.env.ARMORIQ_AGENT_ID || 'intentgate-agent';
+const USER = process.env.USER_ID || 'intentgate-operator';
 
 if (!process.env.ARMORIQ_API_KEY || !MCP) {
   throw new Error('ARMORIQ_API_KEY and ARMORIQ_MCP_ID must be set (see .env.example)');
@@ -25,7 +25,7 @@ if (!process.env.ARMORIQ_API_KEY || !MCP) {
 
 export const client = new ArmorIQClient({
   apiKey: process.env.ARMORIQ_API_KEY,
-  userId: process.env.USER_ID || 'flowguard-operator',
+  userId: process.env.USER_ID || 'intentgate-operator',
   agentId: AGENT,
 });
 

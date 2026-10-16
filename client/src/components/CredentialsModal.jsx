@@ -238,7 +238,7 @@ export default function CredentialsModal({ onClose, onSaveCredentials, onSaveArm
                 }}
               />
               <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: '4px', display: 'block' }}>
-                If left blank, FlowGuard automatically uses ArmorIQ Cryptographic Intent Simulation.
+                If left blank, IntentGate automatically uses ArmorIQ Cryptographic Intent Simulation.
               </span>
             </div>
 

@@ -1,5 +1,5 @@
 /**
- * FlowGuard - Deterministic Treasury Controller & Payment Planning Engine
+ * IntentGate - Deterministic Treasury Controller & Payment Planning Engine
  * 
  * Implements deterministic financial rules:
  * - Multi-currency wallet balance normalization to USD base
