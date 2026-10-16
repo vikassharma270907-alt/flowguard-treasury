@@ -451,7 +451,7 @@ app.post('/api/voice/synthesize', async (req, res) => {
 app.get('/api/mcp/status', (req, res) => {
   const connected = !!armorIqEnforcement.getClient();
   res.json({
-    name: 'intentgate-support-mcp',
+    name: 'flowguard-treasury-mcp',
     version: '1.0.0',
     protocolVersion: '2024-11-05',
     status: connected ? 'ONLINE' : 'NOT_CONNECTED',
@@ -511,7 +511,7 @@ app.get('/api/mcp/config', (req, res) => {
     },
     platformOnboarding: {
       serverName: 'flowguard-treasury-mcp',
-      agentId: process.env.ARMORIQ_AGENT_ID || 'intentgate-agent',
+      agentId: process.env.ARMORIQ_AGENT_ID || 'flowguard-agent',
       platformUrl: 'https://platform.armoriq.ai',
       supportedTools: FLOWGUARD_MCP_TOOLS.map(t => t.name),
       appSideTools: FLOWGUARD_APP_TOOLS.map(t => t.name)

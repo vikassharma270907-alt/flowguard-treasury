@@ -121,7 +121,7 @@ doc.fillColor(SECONDARY).font('Helvetica-Bold').fontSize(12).text('OFFICIAL HACK
 doc.moveDown(0.8);
 
 doc.fillColor(PRIMARY).font('Helvetica-Bold').fontSize(32).text('FLOWGUARD TREASURY', { align: 'center', letterSpacing: -0.5 });
-doc.fillColor(ACCENT_EMERALD).font('Helvetica-Bold').fontSize(22).text('& INTENTGATE VOICE AGENT', { align: 'center' });
+doc.fillColor(ACCENT_EMERALD).font('Helvetica-Bold').fontSize(22).text('GOVERNED BY ARMORIQ', { align: 'center' });
 doc.moveDown(0.5);
 
 doc.fillColor(MUTED).font('Helvetica').fontSize(13).text('Cryptographic Intent Verification, Dual-Supervisor Governance\n& Hardware-Accelerated 3D Visualizer', { align: 'center', lineGap: 4 });
@@ -142,19 +142,19 @@ doc.text('1. Real ArmorIQ Enforcement: Cryptographic plan capture, intent token 
 doc.text('2. ElevenLabs Conversational Voice: Live support agent with <5s timeout holding logic.', 100, 356, { width: 395 });
 doc.text('3. Multi-Ring 3D Enclave: Three interactive Three.js 60 FPS elements with theme sync.', 100, 376, { width: 395 });
 doc.text('4. Deterministic Dual Approvals: High-risk actions held until 2-supervisor quorum is verified.', 100, 396, { width: 395 });
-doc.text('5. Tamper-Evident Ledger: CSRG-IAP Merkle proofs logged on public/sandbox ledger.', 100, 416, { width: 395 });
+doc.text('5. Tamper-Evident Audit Log: CSRG-IAP plan hashes and token proofs recorded in the sandbox audit store.', 100, 416, { width: 395 });
 
 doc.y = 540;
 doc.fillColor(PRIMARY).font('Helvetica-Bold').fontSize(10).text('METADATA & ENVIRONMENT SPECIFICATIONS', { align: 'center' });
 doc.moveDown(0.5);
 
 const metadata = [
-  ['Project Name', 'FlowGuard Treasury / IntentGate Voice Gateway'],
+  ['Project Name', 'FlowGuard Treasury & Voice Gateway'],
   ['Repository', 'https://github.com/vikassharma270907-alt/flowguard-treasury'],
   ['ArmorIQ Organization', "Vikas Sharma's Workspace (dd9e9695-e58d-4e56-8cff-ef9617ba4c54)"],
-  ['Agent ID', 'intentgate-agent (c8bcbe51-dea4-4459-9fd8-38f88ebc714e)'],
-  ['MCP Server ID', 'intentgate-support-mcp (cd7deb69-adb3-45f7-977b-f0d0e7235ba2)'],
-  ['Frontend Stack', 'React 19 + Vite 8 + Three.js 0.183 (Hardware 60 FPS)'],
+  ['Agent ID', 'flowguard-agent (c8bcbe51-dea4-4459-9fd8-38f88ebc714e)'],
+  ['MCP Server ID', 'flowguard-treasury-mcp (7540cd0a-7d76-414a-a849-96b337a0c6ed)'],
+  ['Frontend Stack', 'React 19 + Vite 8 + Three.js 0.186 (Hardware 60 FPS)'],
   ['Security SDK', '@armoriq/sdk v0.6.10 (Production Platform API)']
 ];
 
@@ -165,7 +165,7 @@ metadata.forEach(([k, v]) => {
 });
 
 doc.y = 720;
-doc.fillColor(MUTED).font('Helvetica').fontSize(8.5).text('Generated: October 2026 | Compliant with ArmorIQ Official Hackathon Requirements', { align: 'center' });
+doc.fillColor(MUTED).font('Helvetica').fontSize(8.5).text('Built for the ArmorIQ Flow State Hackathon · October 2026', { align: 'center' });
 
 /* ==========================================================================
    PAGE 2: TABLE OF CONTENTS
@@ -237,12 +237,12 @@ cd client && npm install && cd ..
 cp .env.example .env`);
 
 p('Populate `.env` with your ArmorIQ credentials generated at platform.armoriq.ai:');
-codeBlock(`ARMORIQ_API_KEY=aiq_live_your_actual_api_key_here
-ARMORIQ_AGENT_ID=intentgate-agent
-ARMORIQ_MCP_ID=intentgate-support-mcp
+codeBlock(`ARMORIQ_API_KEY=ak_live_your_armoriq_api_key_here
+ARMORIQ_AGENT_ID=flowguard-agent
+ARMORIQ_MCP_ID=flowguard-treasury-mcp
 GATEWAY_PORT=8790
-GATEWAY_SHARED_SECRET=intentgate-dev-secret
-PLAYGROUND_TOKEN=intentgate-local`);
+GATEWAY_SHARED_SECRET=flowguard-dev-secret
+PLAYGROUND_TOKEN=flowguard-local`);
 
 subHeading('1.3 Running Locally');
 p('The project includes orchestrators for running the MCP server, ArmorIQ Voice Gateway, and React frontend simultaneously:');
@@ -295,7 +295,7 @@ p('• Toggle Theme: Click the Sun/Moon button in the top navigation bar, or cal
 
 subHeading('1.7 Troubleshooting & FAQ');
 p('• "Tool call times out after 5 seconds": ElevenLabs voice models mandate quick tool responses. The gateway answers with a holding message in ~3.8s, persists the case, and allows the agent to relay the final decision via `check_supervisor_decision`.\n' +
-  '• "Tool not found / IntentGate_ prefix error": ElevenLabs surfaces tools as `IntentGate_<tool>`. The gateway strips this prefix via `canonicalToolName()` so action names match onboarded platform MCP names.\n' +
+  '• "Tool not found / FlowGuard_ prefix error": ElevenLabs surfaces tools as `FlowGuard_<tool>`. The gateway strips this prefix via `canonicalToolName()` so action names match onboarded platform MCP names.\n' +
   '• "IntentMismatchException": Occurs when an agent mints a token for one tool (e.g. `lookup_order`) and attempts to invoke an unauthorized tool (e.g. `issue_refund`). This is ArmorIQ cryptographic binding working as intended.');
 
 /* ==========================================================================
@@ -314,9 +314,9 @@ subHeading('2.2 Cryptographic Intent Verification Lifecycle');
 p('ArmorIQ solves this by replacing implicit model trust with explicit, cryptographic intent verification. Every tool call undergoes a 4-stage lifecycle before reaching the MCP server:');
 
 p('• Stage 1 (Capture Plan): The agent constructs a formal execution plan `{ goal, steps: [{ action, mcp, params }] }`. ArmorIQ generates a deterministic Merkle tree representing the authorized actions.\n' +
-  '• Stage 2 (Verify Intent): The plan is evaluated against stored Open Policy Agent (OPA) policies on `platform.armoriq.ai`. Stored policies enforce allowlists, parameter constraints, and holds.\n' +
-  '• Stage 3 (Mint Intent Token): If permitted, ArmorIQ issues a short-lived cryptographic Intent Token containing the plan hash, step proofs, and expiry timestamp (~60 seconds).\n' +
-  '• Stage 4 (Execute via Proxy): The gateway calls `client.invoke(mcp, tool, token, params)`. The ArmorIQ proxy (`proxy.armoriq.ai`) cryptographically verifies the Merkle step proof before forwarding the call to the MCP server. If mismatched or expired, execution is halted at the network edge.');
+  '• Stage 2 (Verify Intent): The SDK requests a signed intent token for the captured plan from `iap.armoriq.ai`. On every governed invoke, stored Open Policy Agent (OPA) policies on the platform decide the verdict (allow, block, or hold).\n' +
+  '• Stage 3 (Mint Intent Token): ArmorIQ issues a short-lived cryptographic Intent Token containing the plan hash, step proofs, and expiry timestamp (~60 seconds).\n' +
+  '• Stage 4 (Execute via Proxy): The gateway calls `client.invoke(mcp, tool, token, params)`. The SDK refuses actions that were not declared in the plan (`IntentMismatchException`) before any network egress, and the ArmorIQ proxy (`proxy.armoriq.ai`) enforces the stored policy verdict before forwarding the call to the MCP server.');
 
 subHeading('2.3 End-to-End System Architecture');
 
@@ -325,11 +325,11 @@ codeBlock(`                  +--------------------------------------------------
                   |      ElevenLabs Conversational Voice Agent        |
                   +---------------------------------------------------+
                                             |
-                            Tool Call: IntentGate_<tool>
+                            Tool Call: FlowGuard_<tool>
                                             v
                   +---------------------------------------------------+
                   |            ArmorIQ Voice Gateway (8790)           |
-                  |  - Strips IntentGate_ prefix                      |
+                  |  - Strips FlowGuard_ prefix                       |
                   |  - Enforces <5s holding replies                   |
                   |  - Dual-supervisor quorum aggregator (2 approvals)|
                   +---------------------------------------------------+
@@ -364,11 +364,11 @@ plan_hash = MerkleRoot([leaf_0, leaf_1, ... leaf_n])`);
 
 p('When the gateway requests execution:');
 p('1. The intent token supplies the exact Merkle path proving that the current action was declared in the original user-authorized plan.\n' +
-  '2. If an attacker tampers with parameters (e.g. increasing refund from $45 to $5,000) or substitutes the tool name, the Merkle leaf no longer matches the plan hash, triggering an instant `IntentMismatchException`.\n' +
+  '2. Substituting the tool name (e.g. using a lookup_order token to invoke issue_refund) is refused by the SDK before any network call, raising an instant `IntentMismatchException`.\n' +
   '3. Tokens lapse within 60 seconds. Replaying captured tokens triggers `TokenExpiredException`.');
 
 callout('Verified Hackathon Audit Trail Evidence',
-  'During verification testing on our onboarded workspace, lookup_order produced planHash b3e6889f... and verified via Merkle proof in 1.85s. Attempting to invoke issue_refund using the lookup token was refused prior to network egress with IntentMismatchException.',
+  'During verification testing on our onboarded workspace, lookup_order produced planHash b3e6889f... and verified end-to-end in 887 ms. Attempting to invoke issue_refund using the lookup token was refused before network egress with IntentMismatchException. Action binding covers the declared action set; call arguments are validated by each tool (see docs/evidence/README.md).',
   'security'
 );
 
@@ -402,9 +402,9 @@ doc.text('ARMORIQ ENFORCEMENT', 365, tableTop + 7, { width: 175 });
 const rows = [
   ['Authorization Granularity', 'Coarse-grained; broad static API keys valid for all endpoints.', 'Fine-grained; single-use intent token tied strictly to declared plan.'],
   ['Trust Model', 'Implicit; trusts LLM text output to select correct tools and amounts.', 'Zero-Trust; model output is treated as untrusted until verified by OPA.'],
-  ['Parameter Tampering', 'Vulnerable to prompt injection or agent hallucination escalating values.', 'Merkle proof binds exact parameter values to root hash; changes fail.'],
+  ['Parameter Tampering', 'Vulnerable to prompt injection or agent hallucination escalating values.', 'Action binding refuses tool substitution before network egress; each tool enforces its own parameter bounds.'],
   ['Auditability', 'Loose, non-repudiable logs that can be erased or spoofed.', 'Tamper-evident audit trail with CSRG cryptographic signatures.'],
-  ['High-Risk Actions', 'All-or-nothing execution without human verification.', 'PolicyHoldException with multi-supervisor approval quorums.'],
+  ['High-Risk Actions', 'All-or-nothing execution without human verification.', 'Refunds are held via a real ArmorIQ platform delegation; releases require two supervisor approvals.'],
   ['Token Lifetime', 'Indefinite or days-long session tokens.', 'Ephemerally signed tokens expiring within ~60 seconds.']
 ];
 
@@ -460,7 +460,7 @@ const checklist = [
   ['Setup Order Followed', 'PASSED', 'API key generated, MCP onboarded, Agent onboarded, policies stored on platform.'],
   ['3-Result Policy Test', 'PASSED', 'lookup_order ALLOWED, change_payout BLOCKED, issue_refund HELD.'],
   ['Dual-Supervisor Approach', 'PASSED', 'Hold case registered; releases through ArmorIQ only after 2 approvals.'],
-  ['MCP Reachability', 'PASSED', 'Reachable via public HTTPS tunnel and verified through proxy.armoriq.ai.'],
+  ['MCP Reachability', 'PASSED', 'Served at https://flowguard-treasury.vercel.app/mcp and verified through proxy.armoriq.ai.'],
   ['Intent Mismatch Verified', 'PASSED', 'Token minted for lookup_order refused when used for refund.'],
   ['ElevenLabs Timeout Safe', 'PASSED', 'Held tool calls respond inside 5s with holding utterance; decision relayed later.'],
   ['Three 3D Elements', 'PASSED', 'Hero Vault, Particle Field, Gyroscope in Three.js (60 FPS, responsive, clean GPU disposal).'],
@@ -483,7 +483,7 @@ p('1. Production Webhook Integration: Connect the Voice Gateway holding endpoint
 // Final signoff
 doc.moveDown(1);
 hr();
-doc.fillColor(MUTED).font('Helvetica-Bold').fontSize(9).text('FlowGuard Treasury & IntentGate Voice Agent · Hackathon Project Submission', { align: 'center' });
+doc.fillColor(MUTED).font('Helvetica-Bold').fontSize(9).text('FlowGuard Treasury · ArmorIQ Flow State Hackathon Project Submission', { align: 'center' });
 
 /* ==========================================================================
    PAGE NUMBERING (FOOTER ON ALL PAGES)
@@ -495,7 +495,7 @@ for (let i = 0; i < range.count; i++) {
   // Footer text
   doc.fillColor('#94a3b8').font('Helvetica').fontSize(7.5);
   doc.text(
-    `FlowGuard Treasury & IntentGate | ArmorIQ Governed Voice Agent | Page ${i + 1} of ${range.count}`,
+    `FlowGuard Treasury | ArmorIQ Governed Voice Agent | Page ${i + 1} of ${range.count}`,
     54,
     795,
     { align: 'center', width: 487 }
@@ -508,4 +508,16 @@ doc.end();
 writeStream.on('finish', () => {
   const stats = fs.statSync(PDF_PATH);
   console.log(`✅ USER_GUIDE.pdf successfully generated at ${PDF_PATH} (${(stats.size / 1024).toFixed(1)} KB)`);
+
+  // Mirror the final guide to the public download locations used by the web app,
+  // so the shipped guide and the repo document can never drift apart.
+  const PUBLIC_COPIES = [
+    path.resolve('client/public/docs/flowguard-guide.pdf'),
+    path.resolve('public/docs/flowguard-guide.pdf')
+  ];
+  for (const dest of PUBLIC_COPIES) {
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.copyFileSync(PDF_PATH, dest);
+    console.log(`   mirrored to ${dest} (${(fs.statSync(dest).size / 1024).toFixed(1)} KB)`);
+  }
 });

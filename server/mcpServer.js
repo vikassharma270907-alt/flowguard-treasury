@@ -2,7 +2,7 @@
  * FlowGuard - Model Context Protocol (MCP) Server
  *
  * Exposes the SAME three sandbox tools that are registered on the ArmorIQ
- * platform under `intentgate-support-mcp` (see mcp-server/tools.cjs — single
+ * platform under `flowguard-treasury-mcp` (see mcp-server/tools.cjs — single
  * implementation shared with the standalone stdio/SSE server):
  *
  *   - lookup_order   (read-only order lookup)

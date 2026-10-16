@@ -184,7 +184,7 @@ export default function EnclaveScreen() {
                     How to Use FlowGuard — Official Guide & Technical Blueprint
                   </h2>
                   <span className="badge badge-live" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
-                    7 PAGES · {siteConfig.guidePdf.sizeLabel}
+                    {siteConfig.guidePdf.pages} PAGES · {siteConfig.guidePdf.sizeLabel}
                   </span>
                 </div>
                 <p style={{ fontSize: '0.86rem', color: 'var(--muted-foreground)', margin: 0, maxWidth: '760px', lineHeight: 1.5 }}>

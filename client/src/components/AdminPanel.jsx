@@ -747,7 +747,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '12px', background: 'var(--surface-muted)', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
               <div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>Server Name</div>
-               <div style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--foreground)', fontSize: '0.85rem' }}>intentgate-support-mcp</div>
+               <div style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--foreground)', fontSize: '0.85rem' }}>flowguard-treasury-mcp</div>
               </div>
               <div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>ArmorIQ Enforcement</div>
@@ -780,7 +780,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
               { rule: 'Rule 4: At Least One MCP Server', status: 'VERIFIED ACTIVE', desc: 'MCP server implemented in this repo (mcp-server/) and onboarded to the platform with 3 tools.' },
               { rule: 'Rule 7: Sandbox Only / No Real Money', status: 'VERIFIED ACTIVE', desc: 'Synthetic sandbox data only; Airwallex client targets sandbox endpoints when enabled.' },
               { rule: 'Rule 8: Actual ArmorIQ Enforcement', status: 'VERIFIED ACTIVE', desc: 'Verdicts (allow / block / hold) come from the platform at call time — never hardcoded in the app.' },
-              { rule: 'Platform Onboarding', status: 'VERIFIED ACTIVE', desc: 'Agent intentgate-agent and MCP intentgate-support-mcp onboarded (see DISCLOSURES.md on the naming).' }
+              { rule: 'Platform Onboarding', status: 'VERIFIED ACTIVE', desc: 'Agent flowguard-agent and MCP flowguard-treasury-mcp onboarded (see DISCLOSURES.md on the naming).' }
               ].map((item, idx) => (
                 <div key={idx} style={{ background: 'var(--surface-muted)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>

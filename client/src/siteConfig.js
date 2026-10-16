@@ -42,8 +42,8 @@ export const siteConfig = {
   guidePdf: {
     enabled: true,
     path: "/docs/flowguard-guide.pdf",
-    pages: 7,
-    sizeLabel: typeof __GUIDE_PDF_SIZE_LABEL__ !== 'undefined' ? __GUIDE_PDF_SIZE_LABEL__ : "23 KB"
+    pages: 24,
+    sizeLabel: typeof __GUIDE_PDF_SIZE_LABEL__ !== 'undefined' ? __GUIDE_PDF_SIZE_LABEL__ : "32 KB"
   },
 
   // Feature Flags - Security and Compliance defaults

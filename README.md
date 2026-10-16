@@ -270,24 +270,18 @@ Dedicated stub routes with prominent `"Draft – replace with reviewed legal tex
 - **No External Images / Emoji Flags**: Social links use lightweight inline SVGs with `aria-label` attributes. "Made with ♥ in India" uses text formatting without emoji flags.
 
 ### 📄 FlowGuard Guide (PDF) Configuration & Maintenance
-- **File Location**: The static guide PDF is stored at `client/public/docs/flowguard-guide.pdf` (and mirrored at `public/docs/flowguard-guide.pdf`). It is served at route `/docs/flowguard-guide.pdf`.
-- **Single Source of Truth**: Configured in `client/src/siteConfig.js` under `siteConfig.guidePdf`:
+- **File Location**: The guide PDF is generated at `docs/USER_GUIDE.pdf` and mirrored automatically by the generator to `client/public/docs/flowguard-guide.pdf` and `public/docs/flowguard-guide.pdf`. It is served at route `/docs/flowguard-guide.pdf`.
+- **Single Source of Truth**: Configured in `client/src/siteConfig.js` under `siteConfig.guidePdf` (the size label is re-computed at build time):
   ```javascript
   guidePdf: {
     enabled: true,
     path: "/docs/flowguard-guide.pdf",
-    pages: 7,
-    sizeLabel: typeof __GUIDE_PDF_SIZE_LABEL__ !== 'undefined' ? __GUIDE_PDF_SIZE_LABEL__ : "23 KB"
+    pages: 24,
+    sizeLabel: typeof __GUIDE_PDF_SIZE_LABEL__ !== 'undefined' ? __GUIDE_PDF_SIZE_LABEL__ : "32 KB"
   }
   ```
-- **Build-Time Validation & Calculation**: During `npm run build`, `client/vite.config.js` inspects the real file size, computes the `sizeLabel` dynamically (e.g., `23 KB`), and injects it. If `guidePdf.enabled` is `true` and the PDF file is missing, the build fails with a clear error message. If `guidePdf.enabled` is `false`, the links do not render anywhere in the application.
-- **How to Replace the Guide PDF**:
-  1. Overwrite `client/public/docs/flowguard-guide.pdf` with the updated PDF file.
-  2. If the page count changes, update `siteConfig.guidePdf.pages` in `client/src/siteConfig.js`.
-  3. Run `npm run build` to re-calculate the `sizeLabel` and verify the build.
-- **Review Items Before Public Release**:
-  - **Review Item 1**: Page 1 of the PDF has a "Scope and assumptions" box written for internal use, and every page footer says "Draft guide... Verify against current docs before publishing". Remove both before the PDF goes public.
-  - **Review Item 2**: The quickstart commands come from the open-source IntentGate project (MIT). If FlowGuard has its own commands, update them. If the code is derived from IntentGate, keep the MIT notice and credit the author.
-  - **Review Item 3**: Every statement in the PDF must match what FlowGuard really does.
+- **Build-Time Validation & Calculation**: During `npm run build`, `client/vite.config.js` inspects the real file size, computes the `sizeLabel` dynamically (e.g., `32 KB`), and injects it. If `guidePdf.enabled` is `true` and the PDF file is missing, the build fails with a clear error message. If `guidePdf.enabled` is `false`, the links do not render anywhere in the application.
+- **Regenerating the Guide**: Run `npm run docs:pdf` — it regenerates the guide from `scripts/generate-user-guide.mjs` and refreshes both public copies in one step. If the page count changes, update `siteConfig.guidePdf.pages` (and the pinned values in `test/guide-pdf.test.mjs`).
+- **Final Guide Status**: The guide is generated from repo sources, contains no draft markers, and its claims are verified against the code, the live platform, and `docs/evidence/` (see `DISCLOSURES.md` for lineage).
 
 

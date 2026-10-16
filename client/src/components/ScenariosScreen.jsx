@@ -313,12 +313,12 @@ export default function ScenariosScreen({
         </div>
       </div>
 
-      {/* Scenario Cards (Oriented as Grid or Stacked Timeline) */}
+      {/* Scenario Cards (Oriented as 2x2 Balanced Grid on Desktop) */}
       <div style={{
         display: orientationMode === 'grid' ? 'grid' : 'flex',
-        gridTemplateColumns: orientationMode === 'grid' ? 'repeat(auto-fit, minmax(min(100%, 310px), 1fr))' : undefined,
+        gridTemplateColumns: orientationMode === 'grid' ? 'repeat(auto-fit, minmax(min(100%, 520px), 1fr))' : undefined,
         flexDirection: orientationMode === 'timeline' ? 'column' : undefined,
-        gap: '20px',
+        gap: '24px',
         marginBottom: '36px'
       }}>
         {scenariosData.map((s, index) => {
@@ -332,8 +332,8 @@ export default function ScenariosScreen({
               style={{
                 background: isCurrent ? s.bgGlow : 'var(--card)',
                 border: isCurrent ? `2px solid ${s.accentColor}` : '1px solid var(--border)',
-                borderRadius: '14px',
-                padding: '22px',
+                borderRadius: '16px',
+                padding: '24px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
@@ -345,10 +345,10 @@ export default function ScenariosScreen({
               {/* Top Meta */}
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <div style={{
-                      width: '32px',
-                      height: '32px',
+                      width: '36px',
+                      height: '36px',
                       borderRadius: '8px',
                       background: isCurrent ? 'var(--card)' : 'var(--secondary)',
                       border: `1px solid ${s.accentColor}50`,
@@ -356,70 +356,92 @@ export default function ScenariosScreen({
                       alignItems: 'center',
                       justifyContent: 'center'
                     }}>
-                      <Icon size={18} color={s.accentColor} />
+                      <Icon size={20} color={s.accentColor} />
                     </div>
                     <div>
-                      <span style={{ fontSize: '0.74rem', fontWeight: 800, color: s.accentColor, textTransform: 'uppercase' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: s.accentColor, textTransform: 'uppercase' }}>
                         {s.code}
                       </span>
                     </div>
                   </div>
-                  <span className={`badge ${s.badgeClass}`} style={{ fontSize: '0.64rem' }}>
+                  <span className={`badge ${s.badgeClass}`} style={{ fontSize: '0.68rem', padding: '3px 8px' }}>
                     {s.badge}
                   </span>
                 </div>
 
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--foreground)', marginBottom: '6px' }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--foreground)', marginBottom: '6px' }}>
                   {s.title}
                 </h3>
-                <p style={{ fontSize: '0.82rem', color: 'var(--muted-foreground)', lineHeight: 1.45, marginBottom: '16px' }}>
+                <p style={{ fontSize: '0.86rem', color: 'var(--muted-foreground)', lineHeight: 1.5, marginBottom: '16px' }}>
                   {s.subtitle}
                 </p>
 
-                {/* Key Dynamics Box */}
+                {/* 2-Column Balanced Internal Grid: Dynamics + ArmorIQ Policy Role */}
                 <div style={{
-                  background: 'var(--secondary)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '8px',
-                  padding: '10px 12px',
-                  marginBottom: '14px'
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
+                  gap: '12px',
+                  marginBottom: '16px'
                 }}>
-                  <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--muted-foreground)', fontWeight: 700, letterSpacing: '0.04em', marginBottom: '6px' }}>
-                    Financial Dynamics
-                  </div>
-                  {s.dynamics.map((d, i) => (
-                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', marginBottom: '3px', color: 'var(--foreground)' }}>
-                      <span style={{ color: 'var(--muted-foreground)' }}>{d.label}:</span>
-                      <strong style={{ fontWeight: 600 }}>{d.val}</strong>
+                  {/* Left Column: Key Dynamics Box */}
+                  <div style={{
+                    background: 'var(--secondary)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '10px',
+                    padding: '12px 14px'
+                  }}>
+                    <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--muted-foreground)', fontWeight: 700, letterSpacing: '0.04em', marginBottom: '8px' }}>
+                      Financial Dynamics
                     </div>
-                  ))}
-                </div>
-
-                {/* ArmorIQ Policy Role */}
-                <div style={{ marginBottom: '16px' }}>
-                  <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: s.accentColor, fontWeight: 700, letterSpacing: '0.04em', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    <Shield size={12} />
-                    <span>ArmorIQ Policy Enforcement</span>
+                    {s.dynamics.map((d, i) => (
+                      <div key={i} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', marginBottom: '4px', color: 'var(--foreground)' }}>
+                        <span style={{ color: 'var(--muted-foreground)' }}>{d.label}:</span>
+                        <strong style={{ fontWeight: 600, textAlign: 'right' }}>{d.val}</strong>
+                      </div>
+                    ))}
                   </div>
-                  <p style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', lineHeight: 1.45, margin: 0 }}>
-                    {s.armorIqAction}
-                  </p>
+
+                  {/* Right Column: ArmorIQ Policy Role */}
+                  <div style={{
+                    background: 'var(--secondary)',
+                    border: `1px solid ${s.accentColor}35`,
+                    borderRadius: '10px',
+                    padding: '12px 14px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                  }}>
+                    <div>
+                      <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: s.accentColor, fontWeight: 700, letterSpacing: '0.04em', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                        <Shield size={12} />
+                        <span>ArmorIQ Policy Enforcement</span>
+                      </div>
+                      <p style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', lineHeight: 1.45, margin: 0 }}>
+                        {s.armorIqAction}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div style={{ borderTop: '1px solid var(--border)', paddingTop: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {/* Action Buttons (Horizontal Row on Desktop) */}
+              <div style={{
+                borderTop: '1px solid var(--border)',
+                paddingTop: '16px',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))',
+                gap: '10px'
+              }}>
                 <button
                   onClick={() => handleTrigger(s.id, s.title)}
                   disabled={isCurrent || isSwitching}
                   className={isCurrent ? "btn btn-secondary btn-sm" : "btn btn-primary btn-sm"}
                   style={{
-                    width: '100%',
                     justifyContent: 'center',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '8px',
-                    padding: '9px 16px',
+                    padding: '10px 16px',
                     cursor: isCurrent ? 'default' : 'pointer',
                     background: isCurrent ? 'var(--card)' : undefined,
                     borderColor: isCurrent ? s.accentColor : undefined,
@@ -443,10 +465,10 @@ export default function ScenariosScreen({
                 <button
                   onClick={() => onNavigate(s.targetView)}
                   className="btn btn-secondary btn-sm"
-                  style={{ width: '100%', justifyContent: 'center', fontSize: '0.75rem', padding: '6px 12px' }}
+                  style={{ justifyContent: 'center', fontSize: '0.78rem', padding: '10px 14px' }}
                 >
                   <span>{s.targetLabel}</span>
-                  <ArrowRight size={12} />
+                  <ArrowRight size={13} />
                 </button>
               </div>
             </div>

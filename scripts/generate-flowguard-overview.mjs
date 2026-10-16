@@ -151,8 +151,8 @@ const metaRows = [
   ['Production URL', 'https://flowguard-treasury.vercel.app'],
   ['Voice Engine', 'ElevenLabs Conversational AI & Text-to-Speech API'],
   ['Governance Platform', "ArmorIQ Platform (Org: Vikas Sharma's Workspace, dd9e9695-e58d)"],
-  ['Agent ID', 'intentgate-agent (UUID c8bcbe51-dea4-4459-9fd8-38f88ebc714e)'],
-  ['MCP Server ID', 'intentgate-support-mcp (UUID cd7deb69-adb3-45f7-977b-f0d0e7235ba2)'],
+  ['Agent ID', 'flowguard-agent (UUID c8bcbe51-dea4-4459-9fd8-38f88ebc714e)'],
+  ['MCP Server ID', 'flowguard-treasury-mcp (UUID 7540cd0a-7d76-414a-a849-96b337a0c6ed)'],
   ['License', 'MIT Open Source License']
 ];
 
@@ -163,7 +163,7 @@ metaRows.forEach(([k, v]) => {
 });
 
 doc.y = 730;
-doc.fillColor(MUTED).font('Helvetica').fontSize(8).text('Published: October 2026 | Compliant with ElevenLabs & ArmorIQ Developer Guidelines', { align: 'center' });
+doc.fillColor(MUTED).font('Helvetica').fontSize(8).text('Published: October 2026 | ArmorIQ Flow State Hackathon Project · ElevenLabs + ArmorIQ Integration', { align: 'center' });
 
 /* ==========================================================================
    PAGE 2: TABLE OF CONTENTS
@@ -223,13 +223,13 @@ tocSections.forEach(sec => {
 sectionHeading('1', 'How It Works (End-to-End Execution Flow)');
 
 subHeading('1.1 The 6-Stage Lifecycle');
-p('FlowGuard bridges natural human speech with deterministic cryptographic governance. Every interaction follows a rigorous, non-bypassable sequence:');
+p('FlowGuard bridges natural human speech with deterministic platform governance. Every governed interaction follows the same sequence:');
 
 p('1. User Speaks:\n' +
   '   The caller speaks to the ElevenLabs Conversational Voice Agent via phone, WebRTC, or browser audio stream (e.g. "Can you look up order ORD-1002, and issue a refund of $45?").');
 
 p('2. Agent Formulates Plan:\n' +
-  '   The voice agent extracts caller intent and dispatches tool webhook calls to the FlowGuard Gateway. Tools are presented with security namespaces (e.g. `IntentGate_lookup_order`). The gateway strips this namespace and captures a formal plan `{ goal, steps: [{ action, mcp, params }] }`.');
+  '   The voice agent extracts caller intent and dispatches tool webhook calls to the FlowGuard Gateway. Tools are presented with security namespaces (e.g. `FlowGuard_lookup_order`). The gateway strips this namespace and captures a formal plan `{ goal, steps: [{ action, mcp, params }] }`.');
 
 p('3. ArmorIQ Verifies Intent:\n' +
   '   The plan is submitted to ArmorIQ (`client.capturePlan` -> `client.getIntentToken`). Stored platform policies evaluate the plan against Open Policy Agent (OPA) rules. If compliant, an Ed25519-signed Intent Token containing a Merkle proof of the plan hash is minted with a 60-second expiration.');
@@ -241,7 +241,7 @@ p('5. ElevenLabs Speaks Result:\n' +
   '   The MCP execution result is synthesized into conversational language and converted into natural audio by ElevenLabs (`POST /api/voice/synthesize`), answering the caller in real time.');
 
 p('6. Audit Trail Saved:\n' +
-  '   The plan hash, token ID, execution latency, and supervisor approval signatures are logged into an immutable cryptographic audit ledger, verifiable via CSRG-IAP.');
+  '   The plan hash, token ID, execution latency, and approval records are written to the sandbox audit log, with CSRG-IAP Merkle proofs retained for each decision.');
 
 subHeading('1.2 Architecture Diagram & Topology');
 codeBlock(`                      [ Caller Voice Stream ]
@@ -252,11 +252,11 @@ codeBlock(`                      [ Caller Voice Stream ]
           |  (Speech-to-Text + LLM + Voice Synthesis)    |
           +----------------------------------------------+
                                  |
-                 Webhook: IntentGate_<tool>
+                 Webhook: FlowGuard_<tool>
                                  v
           +----------------------------------------------+
           |         FlowGuard Gateway Service (:8790)     |
-          |  - Strips IntentGate_ namespace              |
+          |  - Strips FlowGuard_ namespace               |
           |  - Sub-5s timeout holding response           |
           |  - 2-Supervisor Quorum Governance Tracker    |
           +----------------------------------------------+
@@ -294,18 +294,18 @@ cp .env.example .env`);
 
 p('Step 2: Populate Server Credentials in `.env`:');
 codeBlock(`ARMORIQ_API_KEY=ak_live_your_key_here
-ARMORIQ_AGENT_ID=intentgate-agent
-ARMORIQ_MCP_ID=intentgate-support-mcp
+ARMORIQ_AGENT_ID=flowguard-agent
+ARMORIQ_MCP_ID=flowguard-treasury-mcp
 ELEVENLABS_API_KEY=elevenlabs_live_your_key_here
 ELEVENLABS_VOICE_ID=21m00Tcm4TlvDq8ikWAM
-GATEWAY_SHARED_SECRET=intentgate-dev-secret`);
+GATEWAY_SHARED_SECRET=flowguard-dev-secret`);
 
 p('Step 3: Run the 3-Result Verification Suite:');
 codeBlock(`npm run test:enforcement
 # Output confirms:
-# lookup_order  -> ALLOWED (1,850 ms)
-# change_payout -> BLOCKED (614 ms, tool_not_in_allowlist)
-# issue_refund  -> HELD (630 ms, awaiting dual approval)`);
+# lookup_order  -> ALLOWED (887 ms)
+# change_payout -> BLOCKED (764 ms, tool_not_in_allowlist)
+# issue_refund  -> HELD (604 ms, real pending platform delegation)`);
 
 p('Step 4: Launch the Live Demo Simulation:');
 codeBlock(`npm run demo
@@ -329,13 +329,13 @@ sectionHeading('2', 'The Major Role of ElevenLabs');
 
 subHeading('2.1 Conversational Voice Agents & Low-Latency Synthesis');
 p('ElevenLabs provides the voice foundation for FlowGuard. Voice interfaces demand an entirely different standard of technical execution than text chat:');
-p('• Ultra-Low Latency Speech: Through ElevenLabs Turbo v2.5 and WebSocket streaming, speech generation occurs in under 250 milliseconds, eliminating awkward conversational pauses.\n' +
+p('• Ultra-Low Latency Speech: ElevenLabs streaming voices generate speech fast enough to keep conversations natural and avoid awkward pauses.\n' +
   '• Conversational Context & Tone: ElevenLabs voices reflect appropriate emotional cadence, empathy, and clarity, transforming robotic prompts into trustworthy enterprise dialogue.\n' +
   '• Conversational Agent Framework: Enables full-duplex speech recognition, endpointing (detecting when the user finishes speaking), and dynamic tool calling.');
 
 subHeading('2.2 Why Natural Voice Matters in High-Stakes Interactions');
 p('In corporate treasury and sensitive customer operations, caller anxiety is elevated. A customer calling about an undelivered shipment or a vendor querying a delayed wire transfer requires reassurance and immediate feedback.');
-p('If an AI agent sounds monotone, hesitates unnaturally, or glitches during execution, caller trust collapses immediately. ElevenLabs bridges this psychological barrier by delivering human-grade speech synthesis, providing confidence that the caller is being assisted by an enterprise-grade system.');
+p('If an AI agent sounds monotone, hesitates unnaturally, or glitches during execution, caller trust collapses immediately. ElevenLabs bridges this psychological barrier by delivering natural speech synthesis, providing confidence that the caller is being assisted by an enterprise-grade system.');
 
 subHeading('2.3 Server-Side Speech Output Proxy Implementation');
 p('FlowGuard implements an enterprise audio proxy (`POST /api/voice/synthesize`) in `server/server.js`. This guarantees that:');
@@ -349,11 +349,11 @@ p('1. The ElevenLabs API key remains hidden in environment variables on the serv
 sectionHeading('3', 'The Major Role of ArmorIQ');
 
 subHeading('3.1 Cryptographic Intent Verification & Plan Authorization');
-p('While ElevenLabs provides natural voice delivery, ArmorIQ delivers absolute operational security. In an autonomous agent system, the LLM is an untrusted reasoning engine susceptible to manipulation. ArmorIQ acts as an immutable mathematical gatekeeper:');
+p('While ElevenLabs provides natural voice delivery, ArmorIQ provides platform-enforced action governance. In an autonomous agent system, the LLM is an untrusted reasoning engine susceptible to manipulation. ArmorIQ acts as a deterministic policy gatekeeper:');
 p('• Canonical Plan Capture: Before any action touches an API, the agent must commit to a structured plan with declared goals and parameters.\n' +
   '• Merkle Tree Proofs: Each step in the plan is hashed into a Merkle leaf. The root hash is signed into a cryptographic Intent Token.\n' +
-  '• Stored Platform Policies: ArmorIQ evaluates plans against Open Policy Agent (OPA) rules stored on the platform, eliminating hardcoded logic.\n' +
-  '• Policy Enforcement Point (PEP): The proxy at `proxy.armoriq.ai` intercepts every tool call, verifies the Merkle proof, and rejects uncommitted or altered actions at the network boundary.');
+  '• Stored Platform Policies: ArmorIQ evaluates every governed invoke against Open Policy Agent (OPA) rules stored on the platform, removing hardcoded allow/block logic.\n' +
+  '• Policy Enforcement Point (PEP): The proxy at `proxy.armoriq.ai` intercepts every tool call, checks the token and the stored policy verdict, and only then forwards the call to the registered MCP endpoint.');
 
 subHeading('3.2 Why Voice Agents Specifically Require Intent Governance');
 p('Voice agents face unique security vectors that text models do not:');
@@ -362,10 +362,10 @@ p('1. Spoken Prompt Injections: Attackers use voice modulations, social engineer
   '3. Irreversible Financial Egress: Voice agents connected to treasury systems can execute bank transfers or refunds before a human can intervene.');
 
 subHeading('3.3 Handling Voice Jailbreaks, Tool Hijacking & Mishearing');
-p('ArmorIQ neutralizes these vectors mathematically:');
-p('• Even if an attacker tricks the voice LLM into requesting an unauthorized tool (`change_payout`), ArmorIQ stored policy instantly triggers `PolicyBlockedException` (HTTP 403), halting the request before network egress.\n' +
-  '• Even if an agent mints a token for `lookup_order` and hallucinations command `issue_refund`, the proxy detects an invalid Merkle path and raises `IntentMismatchException`.\n' +
-  '• If parameter values are mutated between planning and invocation, the Merkle leaf hash diverges, preventing unauthorized disbursements.');
+p('These vectors are neutralized by platform enforcement:');
+p('• Even if an attacker tricks the voice LLM into requesting an unauthorized tool (`change_payout`), the stored ArmorIQ policy returns `PolicyBlockedException` (HTTP 403) at the proxy and the call is never forwarded to the MCP server.\n' +
+  '• Even if an agent mints a token for `lookup_order` and then attempts `issue_refund`, the SDK refuses the call before any network egress with `IntentMismatchException` (action binding).\n' +
+  '• Call arguments are not bound end-to-end today: a mutated parameter reaches the upstream tool, which enforces its own bounds (documented honestly in docs/evidence/README.md).');
 
 /* ==========================================================================
    PAGE 7: SECTION 4 - INDUSTRY COMPARISON
@@ -390,10 +390,10 @@ doc.text('FLOWGUARD (ELEVENLABS + ARMORIQ)', 364, tableTop + 7, { width: 175 });
 
 const compData = [
   ['Authorization Model', 'Broad API keys valid for all endpoints indefinitely.', 'Single-use cryptographic intent token valid for ~60s.'],
-  ['Trust Baseline', 'Implicit trust; assumes LLM tool selections are correct.', 'Zero-trust; all actions blocked until verified by OPA policies.'],
-  ['Voice Jailbreak Defense', 'Soft system prompts; easily bypassed by social engineering.', 'Hard cryptographic enforcement; stored policies cannot be bypassed.'],
-  ['Parameter Mutation', 'Vulnerable to phoneme mishearing or hallucinated values.', 'Merkle leaf binds parameters; unauthorized alterations fail instantly.'],
-  ['High-Risk Decisions', 'All-or-nothing execution without human verification.', 'PolicyHoldException triggers dual-supervisor approval quorum.'],
+  ['Trust Baseline', 'Implicit trust; assumes LLM tool selections are correct.', 'Zero-trust; each action requires a signed intent token and a stored policy verdict.'],
+  ['Voice Jailbreak Defense', 'Soft system prompts; easily bypassed by social engineering.', 'Policy enforcement at the platform proxy; verdicts come from stored platform policies.'],
+  ['Parameter Mutation', 'Vulnerable to phoneme mishearing or hallucinated values.', 'Action binding refuses tool substitution before network egress; upstream tools enforce their own parameter bounds.'],
+  ['High-Risk Decisions', 'All-or-nothing execution without human verification.', 'Refunds are held via a real ArmorIQ platform delegation; releases require two supervisor approvals.'],
   ['Audit Evidence', 'Mutable application log files subject to erasure.', 'Tamper-evident CSRG cryptographic execution trail.']
 ];
 
@@ -431,14 +431,14 @@ p('• Corporate Treasury & Disbursements: Governs voice agents handling payment
 subHeading('5.2 Acute Risks of Unsecured Voice Agents');
 p('Unsecured autonomous agents expose enterprises to severe financial and legal liabilities:');
 p('1. Unauthorized Fund Exfiltration: Attackers exploit naive refund tools to divert capital.\n' +
-  '2. Regulatory Non-Compliance: Automated actions without verifiable cryptographic audit trails fail SOC 2, SOX, and HIPAA audits.\n' +
+  '2. Regulatory & Audit Pressure: Automated actions without verifiable audit trails are difficult to defend in SOC 2, SOX, and HIPAA reviews.\n' +
   '3. Brand Reputation Damage: A compromised voice agent making erratic or fraudulent statements on recorded phone calls destroys customer confidence.');
 
 subHeading('5.3 Stakeholder Beneficiaries');
 p('• AI Engineers: Focus on conversational flows and voice prompts without having to invent custom security proxies and cryptographic signers.\n' +
   '• CISOs & Security Operations: Maintain centralized control over all agent tool policies from a unified platform dashboard.\n' +
   '• Finance & Treasury Leaders: Eliminate rogue automated disbursements through deterministic dual-supervisor quorums.\n' +
-  '• Callers & Customers: Enjoy instantaneous, human-like voice support with guaranteed data privacy and zero fraudulent diversions.');
+  '• Callers & Customers: Enjoy instantaneous, human-like voice support with platform-enforced limits on sensitive actions.');
 
 /* ==========================================================================
    PAGE 9: SECTION 6 - ROADMAP & CONCLUSION

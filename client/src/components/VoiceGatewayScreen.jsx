@@ -437,7 +437,7 @@ export default function VoiceGatewayScreen({ userSession }) {
               <span style={{ fontWeight: 700, color: 'var(--foreground)' }}>Hackathon Rules Verification:</span>
               <span style={{ color: 'var(--muted-foreground)' }}>1. AI Agent: <strong style={{ color: 'var(--foreground)' }}>ElevenLabs Support Agent</strong></span>
               <span style={{ color: '#71717a' }}>·</span>
-              <span style={{ color: 'var(--muted-foreground)' }}>2. MCP: <code style={{ color: '#c084fc', background: 'rgba(255,255,255,0.05)', padding: '2px 4px', borderRadius: '4px' }}>intentgate-support-mcp</code></span>
+              <span style={{ color: 'var(--muted-foreground)' }}>2. MCP: <code style={{ color: '#c084fc', background: 'rgba(255,255,255,0.05)', padding: '2px 4px', borderRadius: '4px' }}>flowguard-treasury-mcp</code></span>
               <span style={{ color: '#71717a' }}>·</span>
               <span style={{ color: '#a1a1aa' }}>3. ArmorIQ:</span>
               <span className="badge badge-success" style={{ fontSize: '0.65rem', padding: '2px 6px' }}>✅ Allowed: lookup_order</span>

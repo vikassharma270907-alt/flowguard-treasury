@@ -346,7 +346,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (route === 'GET /health') {
-      return json(res, 200, { ok: true, mcp: process.env.ARMORIQ_MCP_ID, agent: process.env.ARMORIQ_AGENT_ID || 'intentgate-agent' });
+      return json(res, 200, { ok: true, mcp: process.env.ARMORIQ_MCP_ID, agent: process.env.ARMORIQ_AGENT_ID || 'flowguard-agent' });
     }
 
     return json(res, 404, { error: 'not found' });

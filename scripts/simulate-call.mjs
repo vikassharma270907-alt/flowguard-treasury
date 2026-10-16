@@ -18,7 +18,7 @@ const TOKEN = process.env.GATEWAY_SHARED_SECRET || '';
 const scenario = (process.argv[2] || 'all').toLowerCase();
 
 async function callTool(tool, args) {
-  const url = `${BASE}/tools/IntentGate_${tool}`;
+  const url = `${BASE}/tools/FlowGuard_${tool}`;
   const started = Date.now();
   let res;
   try {

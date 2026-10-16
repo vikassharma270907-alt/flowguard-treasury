@@ -5,9 +5,9 @@
 
 export const headerConfig = {
   brand: {
-    name: 'intentgate',
+    name: 'flowguard',
     href: '/',
-    badge: 'M'
+    badge: 'F'
   },
   navLinks: [
     { label: 'Home', href: '/', id: 'overview', isExternal: false },

@@ -50,7 +50,7 @@ export default function HowWeUseArmorIQSection() {
         >
           <title id="svg-arch-title">FlowGuard & ArmorIQ Architectural Flow</title>
           <desc id="svg-arch-desc">
-            Visual sequence showing the ElevenLabs Voice Agent passing through the FlowGuard gateway, which captures the plan, mints an intent token at iap.armoriq.ai, and invokes the tool through proxy.armoriq.ai before reaching the platform-onboarded intentgate-support-mcp server.
+            Visual sequence showing the ElevenLabs Voice Agent passing through the FlowGuard gateway, which captures the plan, mints an intent token at iap.armoriq.ai, and invokes the tool through proxy.armoriq.ai before reaching the platform-onboarded flowguard-treasury-mcp server.
           </desc>
 
           <defs>
@@ -109,7 +109,7 @@ export default function HowWeUseArmorIQSection() {
           {/* Node 4: MCP Servers */}
           <rect x="800" y="50" width="220" height="150" rx="10" fill="url(#mcpGrad)" stroke="var(--success)" strokeWidth="1.5" />
           <text x="910" y="80" textAnchor="middle" fill="var(--success)" fontWeight="700" fontSize="14">4. Governed MCP Servers</text>
-          <text x="910" y="105" textAnchor="middle" fill="var(--foreground)" fontWeight="600" fontSize="12">intentgate-support-mcp</text>
+          <text x="910" y="105" textAnchor="middle" fill="var(--foreground)" fontWeight="600" fontSize="12">flowguard-treasury-mcp</text>
           <text x="910" y="125" textAnchor="middle" fill="var(--muted-foreground)" fontSize="11">& flowguard-treasury-mcp</text>
           <text x="910" y="150" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">lookup_order</text>
           <text x="910" y="170" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">change_payout | issue_refund</text>

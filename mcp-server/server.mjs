@@ -20,7 +20,7 @@ import { MUTATIONS } from './sandbox-data.mjs';
 
 const PORT = Number(process.env.MCP_PORT || 8791);
 const AUTH_TOKEN = process.env.MCP_AUTH_TOKEN || '';
-const SERVER_NAME = process.env.MCP_SERVER_NAME || 'intentgate-support-mcp';
+const SERVER_NAME = process.env.MCP_SERVER_NAME || 'flowguard-treasury-mcp';
 const PROTOCOL_VERSION = '2024-11-05';
 
 if (!AUTH_TOKEN) {

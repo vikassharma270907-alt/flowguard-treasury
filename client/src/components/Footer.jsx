@@ -371,8 +371,8 @@ export default function Footer({
                     if (!config.guidePdf?.enabled || link.enabled === false) {
                       return null;
                     }
-                    const sizeText = config.guidePdf?.sizeLabel || '23 KB';
-                    const pagesCount = config.guidePdf?.pages || 7;
+                    const sizeText = config.guidePdf?.sizeLabel || '32 KB';
+                    const pagesCount = config.guidePdf?.pages || 24;
                     const pdfHref = config.guidePdf?.path || link.href;
                     const ariaLabel = t('links.guidePdfAria', { pages: pagesCount, size: sizeText });
 

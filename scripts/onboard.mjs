@@ -18,7 +18,7 @@ const BASE = process.env.BACKEND_ENDPOINT || 'https://api.armoriq.ai';
 const MCP_URL = process.env.MCP_PUBLIC_URL;
 const MCP_ID = process.env.ARMORIQ_MCP_ID;
 const MCP_TOKEN = process.env.MCP_AUTH_TOKEN;
-const AGENT_ID = process.env.ARMORIQ_AGENT_ID || 'intentgate-agent';
+const AGENT_ID = process.env.ARMORIQ_AGENT_ID || 'flowguard-agent';
 
 if (!KEY || !MCP_URL || !MCP_ID || !MCP_TOKEN) {
   console.error('Need ARMORIQ_API_KEY, MCP_PUBLIC_URL, ARMORIQ_MCP_ID and MCP_AUTH_TOKEN in .env');
@@ -43,14 +43,14 @@ async function api(method, path, body) {
 
 const config = {
   version: 'v1',
-  identity: { api_key: KEY, user_id: process.env.USER_ID || 'intentgate-operator', agent_id: AGENT_ID },
+  identity: { api_key: KEY, user_id: process.env.USER_ID || 'flowguard-operator', agent_id: AGENT_ID },
   environment: 'sandbox',
   proxy: { url: 'https://proxy.armoriq.ai', timeout: 30, max_retries: 3 },
   mcp_servers: [
     {
       id: MCP_ID,
       url: MCP_URL,
-      description: 'IntentGate synthetic support tools: lookup_order, change_payout, issue_refund',
+      description: 'FlowGuard synthetic treasury tools: lookup_order, change_payout, issue_refund',
       auth: { type: 'bearer', token: MCP_TOKEN },
     },
   ],
@@ -77,7 +77,7 @@ for (const [method, path] of [
 
 const client = new ArmorIQClient({
   apiKey: KEY,
-  userId: process.env.USER_ID || 'intentgate-operator',
+  userId: process.env.USER_ID || 'flowguard-operator',
   agentId: AGENT_ID,
 });
 

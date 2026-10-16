@@ -23,7 +23,7 @@ test('1. FlowGuard guide PDF file exists and is valid', () => {
 
   const countMatch = text.match(/\/Count\s+(\d+)/);
   assert.ok(countMatch, 'PDF must contain /Count page count');
-  assert.equal(Number(countMatch[1]), 7, 'PDF must have exactly 7 pages');
+  assert.equal(Number(countMatch[1]), 24, 'PDF must have exactly 24 pages');
 });
 
 test('2. siteConfig has guidePdf single source of truth', async () => {
@@ -32,8 +32,8 @@ test('2. siteConfig has guidePdf single source of truth', async () => {
   assert.ok(siteConfig.guidePdf, 'siteConfig.guidePdf must exist');
   assert.equal(siteConfig.guidePdf.enabled, true, 'guidePdf.enabled must be true');
   assert.equal(siteConfig.guidePdf.path, '/docs/flowguard-guide.pdf', 'guidePdf.path must be /docs/flowguard-guide.pdf');
-  assert.equal(siteConfig.guidePdf.pages, 7, 'guidePdf.pages must be 7');
-  assert.equal(siteConfig.guidePdf.sizeLabel, '23 KB', 'guidePdf.sizeLabel must be 23 KB');
+  assert.equal(siteConfig.guidePdf.pages, 24, 'guidePdf.pages must be 24');
+  assert.equal(siteConfig.guidePdf.sizeLabel, '32 KB', 'guidePdf.sizeLabel must be 32 KB');
 
   // Developers column in footer
   const devCol = siteConfig.footerColumns.find(c => c.titleKey === 'columns.developers');
@@ -75,7 +75,7 @@ test('4. Backend Express server delivers PDF with required headers', async () =>
     assert.equal(res.headers.get('x-robots-tag'), 'noindex');
 
     const arrayBuffer = await res.arrayBuffer();
-    assert.equal(arrayBuffer.byteLength, 23358, 'Downloaded PDF size must match exactly');
+    assert.equal(arrayBuffer.byteLength, 33075, 'Downloaded PDF size must match exactly');
   } finally {
     server.close();
   }

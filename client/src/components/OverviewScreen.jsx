@@ -34,7 +34,7 @@ export default function OverviewScreen({
         "Deterministic Plan Hash: b3e6889fe267adb6c3a64790176...",
         "Zero tool access or banking API execution permitted prior to validation"
       ],
-      codeSnippet: "// 1. Declare intent & capture deterministic plan\nconst capture = client.capturePlan(\n  'intentgate-agent',\n  'Check order status ORD-1001',\n  {\n    goal: 'Check order status ORD-1001',\n    steps: [{\n      action: 'lookup_order',\n      mcp: 'intentgate-support-mcp',\n      params: { order_id: 'ORD-1001' }\n    }]\n  }\n);"
+      codeSnippet: "// 1. Declare intent & capture deterministic plan\nconst capture = client.capturePlan(\n  'flowguard-agent',\n  'Check order status ORD-1001',\n  {\n    goal: 'Check order status ORD-1001',\n    steps: [{\n      action: 'lookup_order',\n      mcp: 'flowguard-treasury-mcp',\n      params: { order_id: 'ORD-1001' }\n    }]\n  }\n);"
     },
     {
       time: "15s - 30s",
@@ -42,7 +42,7 @@ export default function OverviewScreen({
       badgeColor: "#818cf8",
       title: "2. Ed25519 Intent Token Minting at iap.armoriq.ai",
       headline: "ArmorIQ verifies policy permissions and issues a single-use authorization token.",
-      explanation: "FlowGuard submits the captured plan to ArmorIQ's Identity & Policy Assertion (IAP) service at https://iap.armoriq.ai. ArmorIQ evaluates the registered agent identity (intentgate-agent), user permissions, and the active workspace policy (cli-intentgate-agent-intentgate-support-mcp). If approved, ArmorIQ mints an Ed25519 cryptographically signed Intent Token containing the plan hash and step Merkle root.",
+      explanation: "FlowGuard submits the captured plan to ArmorIQ's Identity & Policy Assertion (IAP) service at https://iap.armoriq.ai. ArmorIQ evaluates the registered agent identity (flowguard-agent), user permissions, and the active workspace policy (flowguard-treasury-allowlist). If approved, ArmorIQ mints an Ed25519 cryptographically signed Intent Token containing the plan hash and step Merkle root.",
       keyPoints: [
         "Real platform token ID: 4f53c348a1104f1cbfb463fbad0ee1b1",
         "Asymmetrically signed by ArmorIQ private key; verifiable by public key",
@@ -62,7 +62,7 @@ export default function OverviewScreen({
         "BLOCKED: change_payout blocked in 685ms with tool_not_in_allowlist",
         "HELD: issue_refund halted in 594ms requiring 2 supervisor approvals"
       ],
-      codeSnippet: "// 3. PEP enforces policy on tool call\ntry {\n  const res = await client.invoke(\n    token.id, 'intentgate-support-mcp',\n    'change_payout', { new_routing: '021000021' }\n  );\n} catch (err) {\n  // Throws PolicyBlockedException: tool_not_in_allowlist\n  // Wire diversion rejected; $0.00 lost!\n}"
+      codeSnippet: "// 3. PEP enforces policy on tool call\ntry {\n  const res = await client.invoke(\n    token.id, 'flowguard-treasury-mcp',\n    'change_payout', { new_routing: '021000021' }\n  );\n} catch (err) {\n  // Throws PolicyBlockedException: tool_not_in_allowlist\n  // Wire diversion rejected; $0.00 lost!\n}"
     },
     {
       time: "45s - 60s",
@@ -465,6 +465,142 @@ export default function OverviewScreen({
           </button>
         </div>
       )}
+
+      {/* 4 Reproducible Demo Scenarios (2x2 Balanced Grid on Desktop) */}
+      <section style={{
+        background: 'var(--card)',
+        border: '1px solid var(--border)',
+        borderRadius: '16px',
+        padding: '24px 28px',
+        boxShadow: 'var(--card-shadow)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '20px' }}>
+          <div>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', fontWeight: 700, color: 'var(--success)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>
+              <span className="pulse-dot green"></span>
+              Interactive Hackathon Scenarios
+            </div>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--foreground)', margin: 0 }}>
+              🕹️ Reproducible Demo Scenarios (Scenario A, B, C, D)
+            </h2>
+            <p style={{ fontSize: '0.86rem', color: 'var(--muted-foreground)', marginTop: '4px' }}>
+              Select any hackathon scenario preset to test real multi-currency balance dynamics, duplicate invoice attacks, delayed customer receivables, and sandbox deposits.
+            </p>
+          </div>
+          <button
+            onClick={() => onNavigate('scenarios')}
+            className="btn btn-secondary btn-sm"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+          >
+            <span>Open Dedicated Scenarios Page</span>
+            <ArrowRight size={13} />
+          </button>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 480px), 1fr))', gap: '18px' }}>
+          {[
+            {
+              id: 'SCENARIO_A',
+              code: 'Scenario A',
+              title: 'Baseline Multi-Currency Run',
+              desc: '$33,110 cash across 4 wallets, $15,000 reserve floor, 5 supplier bills. Normal operations preserved.',
+              badge: 'NORMAL OPS',
+              color: '#10b981',
+              actionLabel: 'View in Planner',
+              targetView: 'planner'
+            },
+            {
+              id: 'SCENARIO_B',
+              code: 'Scenario B',
+              title: 'Duplicate Invoice Attack',
+              desc: 'Injects invoice INV-2024-884B (€4,250) with 91.2% similarity. Caught by duplicate shield & blocked.',
+              badge: 'ATTACK SIM',
+              color: '#ef4444',
+              actionLabel: 'Inspect Risk Guard',
+              targetView: 'invoices'
+            },
+            {
+              id: 'SCENARIO_C',
+              code: 'Scenario C',
+              title: 'Delayed Receivable Shock',
+              desc: '$14,500 customer receipt delayed by 14 days. Rules engine defers low-priority bills to protect floor.',
+              badge: 'STRESS SHOCK',
+              color: '#f59e0b',
+              actionLabel: 'View Deferred Bills',
+              targetView: 'planner'
+            },
+            {
+              id: 'SCENARIO_D',
+              code: 'Scenario D',
+              title: 'Sandbox Deposit (+ $25,000)',
+              desc: 'Calls Airwallex sandbox deposit to inject +$25,000 USD, unlocking held obligations automatically.',
+              badge: 'REPLENISHMENT',
+              color: '#38bdf8',
+              actionLabel: 'View Audit Ledger',
+              targetView: 'audit'
+            }
+          ].map((item, idx) => {
+            const isCurrent = systemStatus?.activeScenario === item.id;
+            return (
+              <div
+                key={idx}
+                style={{
+                  background: isCurrent ? `${item.color}10` : 'var(--secondary)',
+                  padding: '20px',
+                  borderRadius: '12px',
+                  border: isCurrent ? `2px solid ${item.color}` : '1px solid var(--border)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '0.84rem', fontWeight: 800, color: item.color }}>
+                        {item.code}
+                      </span>
+                      {isCurrent && (
+                        <span className="badge badge-live" style={{ fontSize: '0.62rem' }}>
+                          Active Now
+                        </span>
+                      )}
+                    </div>
+                    <span className="badge badge-neutral" style={{ fontSize: '0.65rem' }}>
+                      {item.badge}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--foreground)', marginBottom: '6px' }}>
+                    {item.title}
+                  </div>
+                  <p style={{ fontSize: '0.82rem', color: 'var(--muted-foreground)', lineHeight: 1.5, margin: 0 }}>
+                    {item.desc}
+                  </p>
+                </div>
+                <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}>
+                  <button
+                    onClick={() => onNavigate('scenarios')}
+                    className="btn btn-secondary btn-sm"
+                    style={{ fontSize: '0.76rem', padding: '6px 12px' }}
+                  >
+                    <span>Launch & Run</span>
+                    <Play size={12} style={{ marginLeft: '4px' }} />
+                  </button>
+                  <button
+                    onClick={() => onNavigate(item.targetView)}
+                    className="btn btn-sm"
+                    style={{ background: 'transparent', border: 'none', color: item.color, fontSize: '0.76rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}
+                  >
+                    <span>{item.actionLabel}</span>
+                    <ArrowRight size={12} />
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       {/* ElevenLabs Voice Agent Feature Spotlight Banner */}
       <div style={{

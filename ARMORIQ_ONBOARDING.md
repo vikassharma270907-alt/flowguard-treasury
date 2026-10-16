@@ -34,25 +34,17 @@
 
 ## 🤖 2. Onboarding Agents to platform.armoriq.ai
 
-FlowGuard utilizes two governed agents that must be registered on the ArmorIQ platform:
+FlowGuard registers one governed agent on the ArmorIQ platform; the same identity is used by the voice gateway and the verification scripts.
 
-### Agent 1: FlowGuard Treasury Controller Agent
-* **Agent Identifier:** `flowguard-treasury-agent-v1`
-* **Agent Name:** FlowGuard Autonomous Treasury Planner
-* **Description:** Governs liquidity reserve floors ($15,000 USD default), Airwallex FX corridor selection, and accounts payable payouts.
-* **Governed Policies:**
-  - `DUPLICATE_INVOICE_PROHIBITION` (Levenshtein fuzzy similarity threshold: 85%)
-  - `RESERVE_FLOOR_PROTECTION` (Fail-Closed if payout breaches minimum reserve)
-  - `SINGLE_PAYOUT_THRESHOLD` ($50,000 USD autonomous limit)
-
-### Agent 2: ElevenLabs Voice Support Agent
-* **Agent Identifier:** `elevenlabs-voice-support-agent-v2`
-* **Agent Name:** ElevenLabs Voice Support Gateway Agent
-* **Description:** Takes customer voice support calls through the gateway with 5s timeout window handling.
-* **Governed Tools:**
-  - `IntentGate_orderLookup`: Allowed automatically by ArmorIQ read policy.
-  - `IntentGate_payoutChange`: Intercepted and escalated to human supervisor (Press Deny).
-  - `IntentGate_issueRefund`: Enforces dual-key supervisor quorum (2 approvals required).
+### Agent: `flowguard-agent` (FlowGuard Operator Identity)
+* **Agent UUID:** `c8bcbe51-dea4-4459-9fd8-38f88ebc714e`
+* **Description:** Represents the FlowGuard operator (`flowguard-operator`) when plans are captured and intent tokens are minted.
+* **Attached MCP Server:** `flowguard-treasury-mcp` (`7540cd0a-7d76-414a-a849-96b337a0c6ed`) at `https://flowguard-treasury.vercel.app/mcp`.
+* **Governing Policy:** `flowguard-treasury-allowlist` (`23f8f304-0f6b-44a0-9bba-fa9886ca611b`) — allowed tools `issue_refund` + `lookup_order`, default enforcement `block`, priority 100.
+* **Tools exposed to the voice agent (via the FlowGuard gateway):**
+  - `FlowGuard_orderLookup`: Allowed automatically by the stored read policy.
+  - `FlowGuard_payoutChange`: Blocked by the stored policy (`tool_not_in_allowlist`).
+  - `FlowGuard_issueRefund`: Held for dual-supervisor approval via a real platform delegation.
 
 ---
 
@@ -77,7 +69,7 @@ FlowGuard implements a full MCP server compliant with the **Model Context Protoc
   "mcpServers": {
     "flowguard-treasury": {
       "command": "node",
-      "args": ["d:/hackathon/New folder/server/mcpServer.js", "--stdio"],
+      "args": ["server/mcpServer.js", "--stdio"],
       "env": {
         "ARMORIQ_API_KEY": "ak_live_your_key_here"
       }
@@ -87,26 +79,23 @@ FlowGuard implements a full MCP server compliant with the **Model Context Protoc
 ```
 
 ### Governed MCP Tools
-1. `order_lookup`: Query order status & scheduled payout date. Allowed by ArmorIQ.
-2. `payout_change`: Wire routing override attempt. Halted by ArmorIQ; requires supervisor review.
-3. `issue_refund`: High-value refund disbursement. Requires two supervisor approvals (dual quorum).
-4. `assert_reserve_floor`: Asserts minimum treasury cash reserve floor ($15,000 USD).
-5. `verify_audit_merkle`: Computes cryptographic SHA-256 Merkle root across audit events.
+1. `lookup_order`: Query order status & scheduled payout date. Allowed by the stored ArmorIQ policy.
+2. `change_payout`: Wire routing override attempt. Blocked by the stored policy (`tool_not_in_allowlist`).
+3. `issue_refund`: High-value refund disbursement. Held for two supervisor approvals via a real ArmorIQ platform delegation.
+4. `assert_reserve_floor`: App-side treasury check for the minimum cash reserve floor ($15,000 USD, sandbox ledger).
+5. `verify_audit_merkle`: App-side SHA-256 Merkle root over the audit events.
 
 ---
 
 ## 🧪 4. Verifying Actual ArmorIQ Enforcement
 
 ### Live Test Command
-Run the verification test script against the live ArmorIQ platform:
+Run the real enforcement scripts against the live ArmorIQ platform:
 ```bash
-node -e "
-require('dotenv').config();
-const { ArmorIQClient } = require('@armoriq/sdk');
-const client = new ArmorIQClient({ apiKey: process.env.ARMORIQ_API_KEY });
-client.capturePlan('flowguard-treasury-agent-v1', 'Authorize payout of USD 18500', { steps: [{ step: 1, tool: 'airwallex.transfers.create' }] })
-  .then(res => console.log('✅ Plan captured live on ArmorIQ Platform:', res));
-"
+node --env-file=.env scripts/test-enforcement.mjs
+node --env-file=.env scripts/test-intent-mismatch.mjs
+# Expected: lookup_order ALLOWED · change_payout BLOCKED · issue_refund HELD (pending platform delegation)
+# Raw captures: docs/evidence/
 ```
 
 ### Webhook API Verification (Vercel Production)
@@ -117,5 +106,5 @@ curl https://flowguard-treasury.vercel.app/api/mcp/status
 # 2. Test MCP Tool Execution with ArmorIQ Gate
 curl -X POST https://flowguard-treasury.vercel.app/api/mcp/execute \
   -H "Content-Type: application/json" \
-  -d '{"tool": "order_lookup", "arguments": {"orderId": "ORD-84920"}}'
+  -d '{"tool": "lookup_order", "arguments": {"order_id": "ORD-1001"}}'
 ```

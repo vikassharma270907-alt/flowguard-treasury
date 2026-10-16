@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
   // Resolve guide PDF build-time size label
   const pdfPath = path.resolve(import.meta.dirname, 'public/docs/flowguard-guide.pdf')
   const pdfExists = fs.existsSync(pdfPath)
-  let computedSizeLabel = '23 KB'
+  let computedSizeLabel = '32 KB'
   if (pdfExists) {
     const stats = fs.statSync(pdfPath)
     computedSizeLabel = `${Math.round(stats.size / 1024)} KB`

@@ -16,9 +16,9 @@
  */
 const { classifyError } = require('../lib/verdicts.js');
 
-const MCP_ID = process.env.ARMORIQ_MCP_ID || 'intentgate-support-mcp';
-const AGENT_ID = process.env.ARMORIQ_AGENT_ID || 'intentgate-agent';
-const USER_ID = process.env.USER_ID || 'intentgate-operator';
+const MCP_ID = process.env.ARMORIQ_MCP_ID || 'flowguard-treasury-mcp';
+const AGENT_ID = process.env.ARMORIQ_AGENT_ID || 'flowguard-agent';
+const USER_ID = process.env.USER_ID || 'flowguard-operator';
 
 let sdkClient = null;
 
