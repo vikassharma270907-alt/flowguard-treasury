@@ -520,8 +520,54 @@ app.get('/api/mcp/config', (req, res) => {
 });
 
 // --- Model Context Protocol (MCP) Standard JSON-RPC 2.0 Handler (/mcp & /api/mcp) ---
-// Compliant with MCP 2024-11-05 specification and docs.armoriq.ai cookbook requirements
-const handleMcpJsonRpc = async (req, res) => {
+// Compliant with MCP 2024-11-05 specification and docs.armoriq.ai cookbook requirements.
+//
+// POST /mcp answers with Server-Sent Events exactly as ArmorIQ's proxy expects
+// (`event: message\ndata: {json}\n\n`, Content-Type: text/event-stream) — the
+// same transport mcp-server/server.mjs serves for local/tunnel use.
+// /api/mcp keeps plain JSON envelopes for the in-app admin panel.
+const mcpSseFrame = (obj) => `event: message\ndata: ${JSON.stringify(obj)}\n\n`;
+
+const buildMcpEnvelope = async (req) => {
+  const { id, method, params = {} } = req.body || {};
+
+  // JSON-RPC notifications (e.g. notifications/initialized) expect no response.
+  if (typeof method === 'string' && method.startsWith('notifications/')) {
+    return { notification: true };
+  }
+  if (method === 'ping') {
+    return { body: { jsonrpc: '2.0', id: id ?? 1, result: {} } };
+  }
+  if (method === 'tools/list') {
+    return { body: { jsonrpc: '2.0', id: id ?? 1, result: { tools: FLOWGUARD_MCP_TOOLS } } };
+  }
+  if (method === 'tools/call') {
+    const toolName = params.name || params.tool;
+    const toolArgs = params.arguments || params.args || {};
+    try {
+      const toolResult = await flowguardMcpServer.executeTool(toolName, toolArgs);
+      return { body: { jsonrpc: '2.0', id: id ?? 1, result: toolResult } };
+    } catch (err) {
+      return { body: { jsonrpc: '2.0', id: id ?? 1, error: { code: err.code ?? -32000, message: err.message } } };
+    }
+  }
+  if (method === 'initialize') {
+    return {
+      body: {
+        jsonrpc: '2.0',
+        id: id ?? 1,
+        result: {
+          protocolVersion: '2024-11-05',
+          capabilities: { tools: { listChanged: false } },
+          serverInfo: { name: 'flowguard-treasury-mcp', version: '1.0.0' }
+        }
+      }
+    };
+  }
+  return { body: { jsonrpc: '2.0', id: id ?? 1, error: { code: -32601, message: `Method not found: ${method}` } } };
+};
+
+const handleMcpRequest = (transport) => async (req, res) => {
   // Optional bearer auth: enforced whenever MCP_AUTH_TOKEN is configured.
   // The ArmorIQ platform registration sends this token (auth.type = bearer).
   const expectedToken = process.env.MCP_AUTH_TOKEN;
@@ -536,60 +582,29 @@ const handleMcpJsonRpc = async (req, res) => {
     }
   }
 
-  const { jsonrpc, id, method, params = {} } = req.body || {};
+  const envelope = await buildMcpEnvelope(req);
 
-  // JSON-RPC notifications (e.g. notifications/initialized) expect no response.
-  if (typeof method === 'string' && method.startsWith('notifications/')) {
+  if (transport === 'sse') {
+    if (envelope.notification) {
+      return res.writeHead(202, { 'Content-Type': 'text/event-stream' }).end();
+    }
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache, no-transform',
+      Connection: 'keep-alive'
+    });
+    return res.end(mcpSseFrame(envelope.body));
+  }
+
+  // JSON transport (/api/mcp) for in-app callers.
+  if (envelope.notification) {
     return res.status(204).end();
   }
-  if (method === 'ping') {
-    return res.json({ jsonrpc: '2.0', id: id ?? 1, result: {} });
-  }
-  if (method === 'tools/list') {
-    return res.json({
-      jsonrpc: '2.0',
-      id: id ?? 1,
-      result: { tools: FLOWGUARD_MCP_TOOLS }
-    });
-  }
-  if (method === 'tools/call') {
-    const toolName = params.name || params.tool;
-    const toolArgs = params.arguments || params.args || {};
-    try {
-      const toolResult = await flowguardMcpServer.executeTool(toolName, toolArgs);
-      return res.json({
-        jsonrpc: '2.0',
-        id: id ?? 1,
-        result: toolResult
-      });
-    } catch (err) {
-      return res.status(400).json({
-        jsonrpc: '2.0',
-        id: id ?? 1,
-        error: { code: err.code ?? -32000, message: err.message }
-      });
-    }
-  }
-  if (method === 'initialize') {
-    return res.json({
-      jsonrpc: '2.0',
-      id: id ?? 1,
-      result: {
-        protocolVersion: '2024-11-05',
-        capabilities: { tools: {}, prompts: {}, resources: {} },
-        serverInfo: { name: 'flowguard-treasury-mcp', version: '1.0.0' }
-      }
-    });
-  }
-  return res.status(404).json({
-    jsonrpc: '2.0',
-    id: id ?? 1,
-    error: { code: -32601, message: `Method not found: ${method}` }
-  });
+  return res.status(200).json(envelope.body);
 };
 
-app.post('/mcp', handleMcpJsonRpc);
-app.post('/api/mcp', handleMcpJsonRpc);
+app.post('/mcp', handleMcpRequest('sse'));
+app.post('/api/mcp', handleMcpRequest('json'));
 
 // --- ArmorIQ Platform Bootstrap & Diagnostics (docs.armoriq.ai Step 9) ---
 app.get('/api/armoriq/bootstrap', async (req, res) => {

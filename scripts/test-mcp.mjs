@@ -108,4 +108,7 @@ const note = await rpc('notifications/initialized', undefined, undefined, { noti
 check('notification accepted without a JSON-RPC response', note.status === 202 && !note.raw, `status ${note.status}`);
 
 console.log(`\n${passed} passed, ${failed} failed (${Date.now() - t0} ms)`);
-process.exit(failed === 0 ? 0 : 1);
+// Set the exit code and let the process end on its own: calling process.exit()
+// while fetch keep-alive sockets are still closing trips a libuv assertion on
+// Windows (UV_HANDLE_CLOSING) even when every check passed.
+process.exitCode = failed === 0 ? 0 : 1;
