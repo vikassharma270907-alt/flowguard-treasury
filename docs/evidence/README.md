@@ -82,3 +82,18 @@ and the matching `ARMORIQ_MCP_FLOWGUARD_TREASURY_MCP_*` credential.
   in `EVIDENCE.md` and `DISCLOSURES.md`.
 - **2026-10-16 19:06 UTC** — re-verified on `https://flowguard-treasury.vercel.app/mcp`
   (this folder). These captures supersede earlier partial Oct-16 captures.
+
+## Accessibility & performance verification (2026-10-17)
+
+- **Keyboard-only pass** — `node scripts/verify-keyboard.mjs
+  https://flowguard-treasury.vercel.app/` drives real Chrome (system channel,
+  headless) with keyboard input only: 12 distinct Tab stops with a visible
+  focus ring each, Enter activates the focused “For Judges” nav link, and the
+  mobile drawer opens with Enter, traps Tab, and closes with Escape returning
+  focus to the toggle. Result: 14/14 checks pass, exit code 0. Raw output:
+  `keyboard-pass-2026-10-17.txt`.
+- **Lighthouse mobile** (production URL, `--form-factor=mobile`, Chrome
+  `--headless=new`): Accessibility **100**, SEO **92**, Performance **81** and
+  **91** across two consecutive runs — after route-level code splitting,
+  self-hosted fonts, and `content-visibility` for offscreen sections took
+  total blocking time from 1,780 ms to 80–530 ms.
