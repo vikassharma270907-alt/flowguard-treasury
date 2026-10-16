@@ -250,7 +250,7 @@ export default function EnclaveScreen() {
                 ArmorIQ Cryptographic PEP
               </div>
               <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', margin: 0 }}>
-                Canonical SHA-256 plan hash with Ed25519 tokens preventing unauthorized agent action drift.
+                Plan-hash binding: the intent token authorizes one specific plan — mismatched tool calls or arguments are refused.
               </p>
             </div>
 
@@ -262,7 +262,7 @@ export default function EnclaveScreen() {
                 Airwallex Multi-Currency Rails
               </div>
               <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', margin: 0 }}>
-                $15,000 cash reserve floor guarantee across USD, EUR, and GBP domestic payment rails.
+                $15,000 protected cash floor (sandbox setting) — checked app-side on the planned disbursements.
               </p>
             </div>
 

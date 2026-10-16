@@ -50,7 +50,7 @@ export default function HowWeUseArmorIQSection() {
         >
           <title id="svg-arch-title">FlowGuard & ArmorIQ Architectural Flow</title>
           <desc id="svg-arch-desc">
-            Visual sequence showing the ElevenLabs Voice Agent passing through the IntentGate Gateway, which captures the plan, mints an Ed25519 token at iap.armoriq.ai, and invokes the tool through proxy.armoriq.ai before reaching the intentgate-support-mcp server.
+            Visual sequence showing the ElevenLabs Voice Agent passing through the FlowGuard gateway, which captures the plan, mints an intent token at iap.armoriq.ai, and invokes the tool through proxy.armoriq.ai before reaching the platform-onboarded intentgate-support-mcp server.
           </desc>
 
           <defs>
@@ -76,20 +76,20 @@ export default function HowWeUseArmorIQSection() {
           <text x="145" y="80" textAnchor="middle" fill="#38bdf8" fontWeight="700" fontSize="14">1. Autonomous Agents</text>
           <text x="145" y="105" textAnchor="middle" fill="var(--foreground)" fontWeight="600" fontSize="12">ElevenLabs Voice Support</text>
           <text x="145" y="125" textAnchor="middle" fill="var(--muted-foreground)" fontSize="11">& FlowGuard Treasury Agent</text>
-          <text x="145" y="155" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">Tool: IntentGate_&lt;tool&gt;</text>
+          <text x="145" y="155" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">Tool: FlowGuard_&lt;tool&gt;</text>
           <text x="145" y="175" textAnchor="middle" fill="var(--success)" fontSize="10">&lt;5s Voice Timeout Guard</text>
 
           {/* Arrow 1 -> 2 */}
           <path d="M 260 125 L 350 125" stroke="#818cf8" strokeWidth="2" strokeDasharray="4 4" markerEnd="url(#arrow)" />
           <text x="305" y="115" textAnchor="middle" fill="#c084fc" fontSize="10" fontFamily="monospace">Webhook</text>
 
-          {/* Node 2: IntentGate Gateway */}
+          {/* Node 2: FlowGuard Gateway */}
           <rect x="360" y="50" width="240" height="150" rx="10" fill="url(#agentGrad)" stroke="#818cf8" strokeWidth="1.5" />
           <text x="480" y="80" textAnchor="middle" fill="#818cf8" fontWeight="700" fontSize="14">2. FlowGuard Gateway (:8790)</text>
           <text x="480" y="105" textAnchor="middle" fill="var(--foreground)" fontWeight="600" fontSize="11">Prefix Strip & Plan Canonicalization</text>
           <text x="480" y="130" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace">client.capturePlan(model, prompt, plan)</text>
           <text x="480" y="150" textAnchor="middle" fill="#c084fc" fontSize="10" fontFamily="monospace">client.getIntentToken(capture)</text>
-          <text x="480" y="175" textAnchor="middle" fill="var(--success)" fontSize="10">Answers held calls in &lt;3.5s</text>
+          <text x="480" y="175" textAnchor="middle" fill="var(--success)" fontSize="10">Answers held calls inside the ~5s window</text>
 
           {/* Arrow 2 -> 3 (Token Minting) */}
           <path d="M 480 200 L 480 260" stroke="#818cf8" strokeWidth="2" markerEnd="url(#arrow)" />
@@ -99,7 +99,7 @@ export default function HowWeUseArmorIQSection() {
           <rect x="260" y="270" width="440" height="120" rx="12" fill="url(#armoriqGrad)" stroke="#818cf8" strokeWidth="2" />
           <text x="480" y="295" textAnchor="middle" fill="var(--foreground)" fontWeight="800" fontSize="15">3. ArmorIQ Governance Cloud</text>
           <text x="480" y="320" textAnchor="middle" fill="#c084fc" fontSize="12" fontWeight="600">CSRG-IAP Platform (iap.armoriq.ai) · PEP Proxy (proxy.armoriq.ai)</text>
-          <text x="480" y="345" textAnchor="middle" fill="var(--muted-foreground)" fontSize="11">Ed25519 Intent Token Minting · SHA-256 Merkle Proofs · OPA Policy Engine</text>
+          <text x="480" y="345" textAnchor="middle" fill="var(--muted-foreground)" fontSize="11">Signed intent tokens · plan/step hashes · platform policy engine</text>
           <text x="480" y="368" textAnchor="middle" fill="var(--success)" fontSize="11" fontWeight="600">Verdicts: ALLOWED · BLOCKED · HELD (Dual-Supervisor Delegation)</text>
 
           {/* Arrow 3 -> 4 (Proxy to MCP) */}
@@ -137,7 +137,7 @@ export default function HowWeUseArmorIQSection() {
             <code>client.getIntentToken()</code>
           </div>
           <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', margin: 0, lineHeight: 1.4 }}>
-            Calls <code style={{ color: 'var(--foreground)' }}>iap.armoriq.ai</code>. Issues an Ed25519 cryptographically signed token binding the plan's SHA-256 Merkle proofs and 60-second expiration.
+            Calls <code style={{ color: 'var(--foreground)' }}>iap.armoriq.ai</code>. Issues the intent token that binds the captured plan (with its plan and step hashes) before any tool may run.
           </p>
         </div>
 
@@ -147,7 +147,7 @@ export default function HowWeUseArmorIQSection() {
             <code>client.invoke()</code>
           </div>
           <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', margin: 0, lineHeight: 1.4 }}>
-            Dispatched through <code style={{ color: 'var(--foreground)' }}>proxy.armoriq.ai</code>. The PEP Proxy evaluates stored platform policies before proxying the call to the downstream MCP server over SSE.
+            Dispatched through <code style={{ color: 'var(--foreground)' }}>proxy.armoriq.ai</code>. The proxy evaluates the platform policies and returns the verdict (allow / block / hold) before the call reaches the MCP server over HTTP.
           </p>
         </div>
 

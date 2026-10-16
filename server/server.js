@@ -200,14 +200,14 @@ app.post('/api/admin/users', (req, res) => {
 });
 
 app.get('/api/admin/telemetry', (req, res) => {
+  // Real, process-derived values only — no placeholder metrics presented as live measurements.
   res.json({
     uptimeSeconds: Math.floor(process.uptime()),
-    airwallexSandboxLatencyMs: 42,
-    armorIqHandshakeMs: 28,
-    rateLimitRemaining: 18,
-    intentTokensMinted: auditLedger.events.filter(e => e.eventType === 'POLICY_EVALUATION').length,
+    armorIqMode: armorIqEnforcement.getClient() ? 'ARMORIQ_LIVE' : 'NOT_CONNECTED',
+    verdictsRecorded: auditLedger.events.filter(e => e.eventType === 'POLICY_EVALUATION').length,
+    auditEventsTotal: auditLedger.events.length,
     activeSecurityRules: 6,
-    errorBudgetPercent: 99.98
+    circuitBreakerTripped: securityEngine.circuitBreakerTripped
   });
 });
 
@@ -340,10 +340,10 @@ app.post('/api/voice/synthesize', async (req, res) => {
 app.get('/api/mcp/status', (req, res) => {
   const connected = !!armorIqEnforcement.getClient();
   res.json({
-    name: 'flowguard-treasury-mcp',
+    name: 'intentgate-support-mcp',
     version: '1.0.0',
     protocolVersion: '2024-11-05',
-    status: 'ONLINE',
+    status: connected ? 'ONLINE' : 'NOT_CONNECTED',
     transport: ['stdio', 'http-jsonrpc', 'rest'],
     governedTools: FLOWGUARD_MCP_TOOLS.map((t) => t.name),
     appSideTools: FLOWGUARD_APP_TOOLS.map((t) => t.name),
@@ -526,8 +526,8 @@ app.post('/api/config/armoriq', async (req, res) => {
     success: isConfigured,
     mode: armorIqService.mode,
     message: isConfigured
-      ? 'ArmorIQ API connected successfully. Cryptographic intent tokens will be verified live.'
-      : 'ArmorIQ initialized in intent verification simulation mode (ak_live_, ak_test_, or ak_claw_ expected).'
+      ? 'ArmorIQ connected — tool calls will be gated through the platform.'
+      : 'ArmorIQ NOT connected — expected key prefix ak_live_ / ak_test_ / ak_claw_. Tool calls return NOT_EXECUTED until a valid key is configured.'
   });
 });
 

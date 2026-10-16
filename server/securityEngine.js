@@ -13,18 +13,20 @@ const auditLedger = require('./auditLedger');
 
 class SecurityEngine {
   constructor() {
-    this.webhookSecret = process.env.AIRWALLEX_WEBHOOK_SECRET || 'fg_sec_live_99281a8b7c6d5e4f3a2b1c0d';
+    if (!process.env.AIRWALLEX_WEBHOOK_SECRET) {
+      console.warn('[security] AIRWALLEX_WEBHOOK_SECRET not set — using a random per-boot secret (signatures will not verify across restarts).');
+    }
+    this.webhookSecret = process.env.AIRWALLEX_WEBHOOK_SECRET || crypto.randomBytes(32).toString('hex');
     this.usedNonces = new Set();
     this.circuitBreakerTripped = false;
     this.circuitBreakerReason = null;
     this.active2FAChallenges = new Map(); // challengeId -> { code, expiresAt, action }
     
-    // Default zero-trust allowed IP CIDRs
+    // App-side IP allow-list (local-development defaults; env-configurable in production)
     this.allowedIpRanges = [
       '127.0.0.1/32',
       '10.0.0.0/8',
-      '192.168.0.0/16',
-      '52.88.0.0/16' // Airwallex Webhook Gateway CIDR range
+      '192.168.0.0/16'
     ];
   }
 
@@ -204,7 +206,7 @@ class SecurityEngine {
       hmacSignatureAlgorithm: 'HMAC-SHA256',
       allowedIpRanges: this.allowedIpRanges,
       activeChallengesCount: this.active2FAChallenges.size,
-      zeroTrustCompliance: 'SAIF_FINTECH_TIER_3'
+      writePath: 'sandbox-only (no real money movement)'
     };
   }
 }

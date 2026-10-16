@@ -296,7 +296,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                 marginBottom: '16px'
               }}>
                 <CheckCircle2 size={16} />
-                <span>Policy configuration successfully updated and broadcast to ArmorIQ Agent Governance!</span>
+               <span>App settings saved. These controls configure this sandbox app — ArmorIQ's allow/block/hold decisions come from platform policies, not this screen.</span>
               </div>
             )}
 
@@ -307,38 +307,13 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                   <div>
                     <strong style={{ fontSize: '0.9rem', color: 'var(--foreground)' }}>ArmorIQ Enforcement Mode</strong>
                     <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginTop: '2px' }}>
-                      Controls whether transfers halt if ArmorIQ verification encounters an exception.
+                      Fixed behavior: if ArmorIQ returns no verdict, nothing executes (fail-closed). There is no fail-open mode.
                     </p>
                   </div>
-                  <span className={`badge ${settings.armorIqEnforcementMode === 'FAIL_CLOSED' ? 'badge-success' : 'badge-warning'}`}>
-                    {settings.armorIqEnforcementMode}
-                  </span>
+                  <span className="badge badge-success">FAIL-CLOSED (fixed)</span>
                 </div>
-                <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
-                  <button
-                    onClick={() => setSettings({ ...settings, armorIqEnforcementMode: 'FAIL_CLOSED' })}
-                    className="btn btn-sm"
-                    style={{
-                      flex: 1,
-                      background: settings.armorIqEnforcementMode === 'FAIL_CLOSED' ? 'var(--primary)' : 'transparent',
-                      color: settings.armorIqEnforcementMode === 'FAIL_CLOSED' ? 'var(--primary-foreground)' : 'var(--muted-foreground)',
-                      border: '1px solid var(--border)'
-                    }}
-                  >
-                    FAIL_CLOSED (Strict)
-                  </button>
-                  <button
-                    onClick={() => setSettings({ ...settings, armorIqEnforcementMode: 'FAIL_OPEN' })}
-                    className="btn btn-sm"
-                    style={{
-                      flex: 1,
-                      background: settings.armorIqEnforcementMode === 'FAIL_OPEN' ? 'var(--primary)' : 'transparent',
-                      color: settings.armorIqEnforcementMode === 'FAIL_OPEN' ? 'var(--primary-foreground)' : 'var(--muted-foreground)',
-                      border: '1px solid var(--border)'
-                    }}
-                  >
-                    FAIL_OPEN (Permissive)
-                  </button>
+                <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)', marginTop: '10px' }}>
+                  No setting can make a call proceed without an ArmorIQ verdict.
                 </div>
               </div>
 
@@ -477,7 +452,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             <div>
               <h3 style={{ fontSize: '1.15rem' }}>Enterprise Access & Team Members</h3>
               <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginTop: '2px' }}>
-                Users authenticated via OAuth 2.0 PKCE and assigned Airwallex payout approval roles.
+                Sandbox team directory used by the dual-approval flows. (Prototype sign-in is synthetic — no production IdP or PKCE in this build.)
               </p>
             </div>
             <button onClick={() => setShowInviteModal(true)} className="btn btn-primary btn-sm">
@@ -522,49 +497,49 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '16px' }}>
           <div className="shadcn-card" style={{ padding: '20px' }}>
             <div style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', textTransform: 'uppercase' }}>
-              Airwallex API Latency
+              App Uptime
             </div>
             <div className="mono" style={{ fontSize: '1.8rem', fontWeight: 800, color: '#34d399', marginTop: '6px' }}>
-              {telemetry.airwallexSandboxLatencyMs} ms
+              {Math.floor((telemetry.uptimeSeconds || 0) / 60)} min
             </div>
             <div style={{ fontSize: '0.75rem', color: '#71717a', marginTop: '4px' }}>
-              Average round-trip to api.sandbox.airwallex.com
+              This server process (real)
             </div>
           </div>
 
           <div className="shadcn-card" style={{ padding: '20px' }}>
             <div style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', textTransform: 'uppercase' }}>
-              ArmorIQ Handshake
+              ArmorIQ Enforcement Mode
             </div>
-            <div className="mono" style={{ fontSize: '1.8rem', fontWeight: 800, color: '#a78bfa', marginTop: '6px' }}>
-              {telemetry.armorIqHandshakeMs} ms
+            <div className="mono" style={{ fontSize: '1.2rem', fontWeight: 800, color: '#a78bfa', marginTop: '10px' }}>
+              {telemetry.armorIqMode || '—'}
             </div>
             <div style={{ fontSize: '0.75rem', color: '#71717a', marginTop: '4px' }}>
-              Ed25519 token minting & plan hash verification
+              Verdicts come from the platform (live), never hardcoded
             </div>
           </div>
 
           <div className="shadcn-card" style={{ padding: '20px' }}>
             <div style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', textTransform: 'uppercase' }}>
-              Sandbox Rate Limit Budget
+              ArmorIQ Verdicts Recorded
             </div>
             <div className="mono" style={{ fontSize: '1.8rem', fontWeight: 800, color: '#38bdf8', marginTop: '6px' }}>
-              {telemetry.rateLimitRemaining} / 20 req/s
+              {telemetry.verdictsRecorded ?? 0}
             </div>
             <div style={{ fontSize: '0.75rem', color: '#71717a', marginTop: '4px' }}>
-              Enforced by Airwallex sandbox gateways
+              Allow / block / hold outcomes recorded from platform calls
             </div>
           </div>
 
           <div className="shadcn-card" style={{ padding: '20px' }}>
             <div style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', textTransform: 'uppercase' }}>
-              System Error Budget
+              Audit Ledger Events
             </div>
             <div className="mono" style={{ fontSize: '1.8rem', fontWeight: 800, color: '#ffffff', marginTop: '6px' }}>
-              {telemetry.errorBudgetPercent}%
+              {telemetry.auditEventsTotal ?? 0}
             </div>
             <div style={{ fontSize: '0.75rem', color: '#71717a', marginTop: '4px' }}>
-              Deterministic fail-safe SLA
+              Append-only app-side ledger (real count)
             </div>
           </div>
         </div>
@@ -584,7 +559,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                   </span>
                 </div>
                 <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginTop: '4px' }}>
-                  Emergency kill-switch that instantly suspends all Airwallex payouts (ACH, Faster Payments, SWIFT) if anomaly velocity or agent prompt injection is detected.
+                  App-side emergency kill-switch: while engaged, payment approvals and sandbox transfers are blocked. ArmorIQ's per-call verdicts still apply on top — this switch never overrides them.
                 </p>
               </div>
               <button
@@ -619,7 +594,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
               }}>
                 <AlertTriangle size={18} />
                 <div>
-                  <strong>CIRCUIT BREAKER ENGAGED:</strong> {securityStatus.circuitBreakerReason || 'Emergency halt active'}. All payment approvals and sandbox transfers are hard-blocked.
+                  <strong>CIRCUIT BREAKER ENGAGED:</strong> {securityStatus.circuitBreakerReason || 'Emergency halt active'}. Payment approvals and sandbox transfers are blocked by this app-side switch.
                 </div>
               </div>
             )}
@@ -630,13 +605,13 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <h3 style={{ fontSize: '1.15rem' }}>Immutable Audit Merkle Tree Proof</h3>
+                 <h3 style={{ fontSize: '1.15rem' }}>Tamper-Evident Audit Merkle Proof</h3>
                   <span className="badge badge-neutral" style={{ fontSize: '0.65rem' }}>
                     SHA-256 Binary Tree
                   </span>
                 </div>
                 <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginTop: '4px' }}>
-                  Computes a cryptographic Merkle root hash over all audit trail transactions to mathematically prove the integrity of historical records.
+                 Computes a SHA-256 Merkle root over this app's audit-trail events — a tamper-evident app-side integrity check (separate from ArmorIQ's decisions).
                 </p>
               </div>
               <button
@@ -679,7 +654,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                 <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--foreground)' }}>Step-Up 2FA Challenge</h4>
               </div>
               <p style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)', marginBottom: '16px', lineHeight: 1.5 }}>
-                Enforces hardware passkey or 6-digit cryptographic authenticator challenge before high-risk changes (e.g. reserve floor decrease or single transfer &gt; $50,000).
+               Issues a 6-digit step-up challenge for high-risk actions (e.g. reserve-floor decrease or a single transfer above the configured limit). Demo flow — no real authenticator hardware in this build.
               </p>
               <button
                 onClick={handleIssue2FAChallenge}
@@ -706,14 +681,10 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                   <span>Anti-Replay Protection:</span>
                   <strong style={{ color: '#34d399' }}>±300s Timestamp + Nonces</strong>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--muted-foreground)' }}>
-                  <span>Zero-Trust IP Whitelist:</span>
-                  <strong style={{ color: 'var(--foreground)' }}>52.88.0.0/16 (Airwallex Gateway)</strong>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--muted-foreground)' }}>
-                  <span>Security Standard:</span>
-                  <strong style={{ color: '#38bdf8' }}>SAIF Fintech Tier 3</strong>
-                </div>
+               <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--muted-foreground)' }}>
+                 <span>Write Path:</span>
+                 <strong style={{ color: '#38bdf8' }}>Sandbox only — no real money</strong>
+               </div>
               </div>
             </div>
           </div>
@@ -733,18 +704,18 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                     MCP Server Active (Spec 2024-11-05)
                   </span>
                   <span className="badge" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#c084fc', border: '1px solid rgba(139, 92, 246, 0.3)' }}>
-                    <Shield size={11} style={{ marginRight: '4px' }} />
-                    Live ArmorIQ Platform Enforced
-                  </span>
+                   <Shield size={11} style={{ marginRight: '4px' }} />
+                  {mcpStatus?.governance?.armorIqMode === 'ARMORIQ_LIVE' ? 'ArmorIQ platform connected' : 'ArmorIQ NOT connected'}
+                 </span>
                   <span className="badge" style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.3)' }}>
-                    Hackathon Rule 1 & 4 Compliant
+                   Rule 1 & 4 — evidence on /judges
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--foreground)', margin: 0 }}>
                   FlowGuard Treasury MCP Server
                 </h3>
                 <p style={{ fontSize: '0.82rem', color: 'var(--muted-foreground)', marginTop: '4px', margin: 0 }}>
-                  Standard Model Context Protocol (MCP) server governing Airwallex treasury APIs with live ArmorIQ intent verification.
+                 Model Context Protocol (MCP) server exposing the sandbox treasury tools (lookup_order, change_payout, issue_refund) that ArmorIQ governs on the platform.
                 </p>
               </div>
 
@@ -776,19 +747,19 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '12px', background: 'var(--surface-muted)', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
               <div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>Server Name</div>
-                <div style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--foreground)', fontSize: '0.85rem' }}>flowguard-treasury-mcp</div>
+               <div style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--foreground)', fontSize: '0.85rem' }}>intentgate-support-mcp</div>
               </div>
               <div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>ArmorIQ Enforcement</div>
-                <div style={{ fontWeight: 700, color: '#34d399', fontSize: '0.85rem' }}>Actual Live API (ak_live_...)</div>
+              <div style={{ fontWeight: 700, color: '#34d399', fontSize: '0.85rem' }}>Real platform API (sandbox agent)</div>
               </div>
               <div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>Available Transports</div>
-                <div style={{ fontFamily: 'monospace', color: '#60a5fa', fontSize: '0.85rem' }}>stdio · http-sse · rest</div>
+              <div style={{ fontFamily: 'monospace', color: '#60a5fa', fontSize: '0.85rem' }}>stdio · http-jsonrpc · rest</div>
               </div>
               <div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>Governed Tools</div>
-                <div style={{ fontWeight: 700, color: '#c084fc', fontSize: '0.85rem' }}>5 Managed MCP Tools</div>
+             <div style={{ fontWeight: 700, color: '#c084fc', fontSize: '0.85rem' }}>3 governed · 2 app-side</div>
               </div>
             </div>
           </div>
@@ -804,12 +775,12 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '12px' }}>
               {[
-                { rule: 'Rule 1: ArmorIQ Mandatory Integration', status: 'VERIFIED ACTIVE', desc: 'Integrated official @armoriq/sdk in production mode connected to api.armoriq.ai and iap.armoriq.ai.' },
-                { rule: 'Rule 2: ElevenLabs with ArmorIQ', status: 'VERIFIED ACTIVE', desc: 'Every voice support call session mints an ArmorIQ-signed plan with Ed25519 token & SHA-256 hash.' },
-                { rule: 'Rule 4: At Least One MCP Server', status: 'VERIFIED ACTIVE', desc: 'FlowGuard MCP Server is fully implemented using @modelcontextprotocol/sdk with stdio & REST modes.' },
-                { rule: 'Rule 7: Sandbox Only / No Real Money', status: 'VERIFIED ACTIVE', desc: 'Strictly targeting api.sandbox.airwallex.com and synthetic corporate AP invoices.' },
-                { rule: 'Rule 8: Actual ArmorIQ Enforcement', status: 'VERIFIED ACTIVE', desc: 'Live platform plan capture (capturePlan) & token issuance, not hardcoded simulation.' },
-                { rule: 'Platform Onboarding Requirement', status: 'READY FOR JUDGING', desc: 'Agent ID flowguard-treasury-agent-v1 and MCP flowguard-treasury-mcp onboarded.' }
+              { rule: 'Rule 1: ArmorIQ Mandatory Integration', status: 'VERIFIED ACTIVE', desc: 'Official @armoriq/sdk used in sandbox mode against api.armoriq.ai / iap.armoriq.ai.' },
+              { rule: 'Rule 2: ElevenLabs with ArmorIQ', status: 'VERIFIED ACTIVE', desc: 'Voice sessions mint a real ArmorIQ plan before any tool call; if the platform is unreachable, nothing executes.' },
+              { rule: 'Rule 4: At Least One MCP Server', status: 'VERIFIED ACTIVE', desc: 'MCP server implemented in this repo (mcp-server/) and onboarded to the platform with 3 tools.' },
+              { rule: 'Rule 7: Sandbox Only / No Real Money', status: 'VERIFIED ACTIVE', desc: 'Synthetic sandbox data only; Airwallex client targets sandbox endpoints when enabled.' },
+              { rule: 'Rule 8: Actual ArmorIQ Enforcement', status: 'VERIFIED ACTIVE', desc: 'Verdicts (allow / block / hold) come from the platform at call time — never hardcoded in the app.' },
+              { rule: 'Platform Onboarding', status: 'VERIFIED ACTIVE', desc: 'Agent intentgate-agent and MCP intentgate-support-mcp onboarded (see DISCLOSURES.md on the naming).' }
               ].map((item, idx) => (
                 <div key={idx} style={{ background: 'var(--surface-muted)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
@@ -833,17 +804,17 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
                 <Zap size={16} color="#fbbf24" />
                 <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--foreground)', margin: 0 }}>
-                  Interactive MCP Tool Execution & ArmorIQ Gates
+                  Interactive MCP Tool Execution (direct sandbox calls)
                 </h4>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {[
-                  { name: 'order_lookup', label: '1. order_lookup', desc: 'Read-only order status check. Allowed automatically by ArmorIQ read policy.', badge: 'ArmorIQ Allowed', color: '#34d399', sampleArgs: { orderId: 'ORD-84920' } },
-                  { name: 'payout_change', label: '2. payout_change', desc: 'Attempts to modify destination wire account. High risk; halted & escalated to supervisor.', badge: 'ArmorIQ Halted & Escalated', color: '#f87171', sampleArgs: { routingNumber: '021000021', accountNumber: '987654321', reason: 'Unverified phone change' } },
-                  { name: 'issue_refund', label: '3. issue_refund', desc: 'Issues freight refund. ArmorIQ enforces 2 supervisor approvals before execution.', badge: 'Dual Approval Quorum (2)', color: '#c084fc', sampleArgs: { amount: 4200.00, orderId: 'ORD-84920' } },
-                  { name: 'assert_reserve_floor', label: '4. assert_reserve_floor', desc: 'Asserts liquidity satisfies $15,000 USD protected cash floor.', badge: 'Floor Protection', color: '#60a5fa', sampleArgs: { minimumReserveUsd: 15000 } },
-                  { name: 'verify_audit_merkle', label: '5. verify_audit_merkle', desc: 'Computes cryptographic SHA-256 Merkle root across all ledger events.', badge: 'Immutable Proof', color: '#34d399', sampleArgs: {} }
+                  { name: 'lookup_order', label: '1. lookup_order', desc: 'Read-only order status check. On the agent allow-list — ArmorIQ allows it at call time.', badge: 'ArmorIQ decision', color: '#34d399', sampleArgs: { order_id: 'ORD-1001' } },
+                  { name: 'change_payout', label: '2. change_payout', desc: 'Attempts to change the payout destination. Not in the allow-list — ArmorIQ blocks it and supervisors review the attempt.', badge: 'ArmorIQ decision', color: '#f87171', sampleArgs: { account_id: 'ACC-4471', new_destination: 'GB29 NWBK 6016 1331 9268 19' } },
+                  { name: 'issue_refund', label: '3. issue_refund', desc: 'Refund attempt. ArmorIQ holds it with a delegation; two supervisor approvals precede a release request.', badge: 'ArmorIQ decision', color: '#c084fc', sampleArgs: { order_id: 'ORD-1001', amount: 89 } },
+                  { name: 'assert_reserve_floor', label: '4. assert_reserve_floor', desc: 'App-side check: sandbox liquidity vs the configured reserve floor. Not an ArmorIQ tool.', badge: 'App-side check', color: '#60a5fa', sampleArgs: { minimumReserveUsd: 15000 } },
+                  { name: 'verify_audit_merkle', label: '5. verify_audit_merkle', desc: 'App-side check: SHA-256 Merkle root over this app\'s audit ledger. Not an ArmorIQ tool.', badge: 'App-side check', color: '#34d399', sampleArgs: {} }
                 ].map(tool => (
                   <div key={tool.name} style={{ background: 'var(--surface-muted)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
                     <div style={{ flex: 1 }}>
@@ -881,7 +852,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                   </span>
                 </div>
                 {mcpResult && (
-                  <span className="badge badge-live">200 OK</span>
+                  <span className="badge badge-live">{mcpResult?.direct ? 'Direct — ungoverned' : mcpResult?.governed ? 'ArmorIQ-governed' : 'Result'}</span>
                 )}
               </div>
 
@@ -894,13 +865,13 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                 border: '1px solid var(--border)',
                 fontSize: '0.72rem',
                 fontFamily: 'monospace',
-                color: mcpResult?.result?.armorIqPolicy === 'UNVERIFIED_WIRE_OVERRIDE_HALTED' ? '#fca5a5' : '#34d399',
+                color: mcpResult?.error ? '#fca5a5' : '#34d399',
                 margin: 0,
                 overflowX: 'auto',
                 overflowY: 'auto',
                 maxHeight: '340px'
               }}>
-                {mcpResult ? JSON.stringify(mcpResult, null, 2) : '// Click "Run Tool" on any MCP tool to view live execution and ArmorIQ policy evaluation.'}
+                {mcpResult ? JSON.stringify(mcpResult, null, 2) : '// Click "Run Tool" for a direct sandbox call (labelled ungoverned). Governed calls run through the agent/gateway flows.'}
               </pre>
 
               {/* Claude Desktop Config Snippet */}
@@ -915,8 +886,8 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                         mcpServers: {
                           "flowguard-treasury": {
                             "command": "node",
-                            "args": ["d:/hackathon/New folder/server/mcpServer.js", "--stdio"],
-                            "env": { "ARMORIQ_API_KEY": "ak_live_your_key_here" }
+                           "args": ["server/mcpServer.js", "--stdio"],
+                           "env": { "ARMORIQ_API_KEY": "<your-armoriq-api-key>" }
                           }
                         }
                       };
@@ -936,7 +907,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
     "flowguard-treasury": {
       "command": "node",
       "args": ["server/mcpServer.js", "--stdio"],
-      "env": { "ARMORIQ_API_KEY": "ak_live_..." }
+      "env": { "ARMORIQ_API_KEY": "<your-armoriq-api-key>" }
     }
   }
 }`}

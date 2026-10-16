@@ -379,10 +379,10 @@ export default function OverviewScreen({
               <span className="badge badge-success" style={{ fontSize: '0.62rem' }}>ALLOWED</span>
             </div>
             <div style={{ fontSize: '0.76rem', color: 'var(--foreground)', marginBottom: '4px' }}>
-              Tool: <code style={{ color: '#34d399' }}>order_lookup</code>
+              Tool: <code style={{ color: '#34d399' }}>lookup_order</code>
             </div>
             <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>
-              Read-only inquiry allowed by ArmorIQ policy. Cryptographic intent token & Merkle step proof signed in ~200ms.
+              Read-only inquiry allowed by ArmorIQ at call time; the tool executes with the intent token issued for the call.
             </div>
           </div>
 
@@ -393,7 +393,7 @@ export default function OverviewScreen({
               <span className="badge badge-warning" style={{ fontSize: '0.62rem', background: 'rgba(239, 68, 68, 0.2)', color: '#fca5a5' }}>BLOCKED</span>
             </div>
             <div style={{ fontSize: '0.76rem', color: 'var(--foreground)', marginBottom: '4px' }}>
-              Tool: <code style={{ color: '#f87171' }}>payout_change</code>
+              Tool: <code style={{ color: '#f87171' }}>change_payout</code>
             </div>
             <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>
               Unverified bank diversion halted by ArmorIQ policy. Supervisor presses <strong>DENY</strong> & agent rejects execution.
