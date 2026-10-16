@@ -277,7 +277,17 @@ class VoiceGatewayService {
       };
 
       if (enforcement.decision === 'ALLOWED') {
-        const order = enforcement.result?.order ?? enforcement.result ?? {};
+        // Unwrap the MCP tool-result envelope ({content:[{type:'text',text:'{json}'}]})
+        // so the spoken response cites the real order fields.
+        let payload = enforcement.result ?? {};
+        if (payload && Array.isArray(payload.content)) {
+          try {
+            payload = JSON.parse(payload.content[0]?.text ?? 'null') ?? payload;
+          } catch {
+            // keep the raw envelope when it is not JSON
+          }
+        }
+        const order = payload?.order ?? payload ?? {};
         const agentResponse = `I found order ${orderId}. Status: ${order.status ?? 'unknown'}. Total ${order.currency ?? 'USD'} ${order.total ?? '-'}, refundable ${order.refundable ?? '-'}. How can I help with this order?`;
         invocation.result = order;
         invocation.agentSpokenResponse = agentResponse;
