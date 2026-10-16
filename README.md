@@ -216,7 +216,7 @@ A responsive, production-ready Header and Footer architecture tailored for India
 
 ### 🎨 Visual & Aesthetic Standards
 - **Clean Developer-Tool Palette**: Pure white header (`#ffffff`), light warm-gray footer (`#f7f7f5`), 1px subtle borders (`#e5e5e5`), deep neutral text (`#111111`), muted slate (`#6b6b6b`), and vibrant emerald green accent (`#16a34a`).
-- **Typography**: Inter for clean sans-serif UI, JetBrains Mono for monospace tokens/labels, and Noto Sans Devanagari for proper Hindi vernacular rendering.
+- **Typography**: Inter for clean sans-serif UI, JetBrains Mono for monospace tokens/labels, and Noto Sans Devanagari for proper Hindi vernacular rendering. All three families are self-hosted (`scripts/vendor-fonts.mjs` → `client/public/fonts/`) — the app loads no third-party font CDN at runtime.
 - **Header**: Sticky ~56px bar with max-width 1280px container, brand logo + wordmark, desktop navigation from `lg` (1024px) up, and an accessible mobile hamburger drawer below 1024px.
 - **Footer**: 5-column desktop layout (`lg: 1024px+`), transitioning into a balanced 2-column mobile grid.
 

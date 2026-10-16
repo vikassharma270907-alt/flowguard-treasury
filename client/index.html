@@ -42,14 +42,11 @@
     }
     </script>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Non-blocking font loading: first paint uses the system fallback, then
-         swaps to the brand fonts when they arrive (display=swap is in the URL). -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
-    <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-    </noscript>
+    <!-- Self-hosted fonts (vendored via scripts/vendor-fonts.mjs). Preload the
+         faces used above the fold so first paint already has brand typography. -->
+    <link rel="preload" href="/fonts/inter-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/inter-600-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/inter-700-latin.woff2" as="font" type="font/woff2" crossorigin>
     <script>
       (function() {
         try {

@@ -19,6 +19,7 @@ The following open-source packages and frameworks were utilized:
 - **React (v19.x) & Vite (v8.x)**: Frontend client framework for the reactive web dashboard and supervisor playground.
 - **`three` (v0.186.x)**: Three.js library for hardware-accelerated 60 FPS 3D cryptographic models, orbital vaults, particle fields, and gyroscopic enclaves with WebGL cleanup and reduced-motion compliance.
 - **`pdfkit` (v0.20.x)**: Server-side PDF generation engine used to compile technical architectural documentation.
+- **Self-Hosted Web Fonts (SIL Open Font License)**: Inter, JetBrains Mono, and Noto Sans Devanagari woff2 subsets are vendored into `client/public/fonts/` via `scripts/vendor-fonts.mjs` and served from our own origin — no third-party font CDN is contacted at runtime.
 - **Cloudflare Tunnel (`cloudflared`)**: Used during local development to expose the local MCP port to public HTTPS (`trycloudflare.com`) for ArmorIQ proxy reachability.
 
 ## 4. AI Coding Assistants
