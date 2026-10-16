@@ -7,7 +7,7 @@
 
 ## 1. Executive Summary
 
-This architecture establishes an unbreakable, zero-bypass security perimeter between autonomous conversational agents (ElevenLabs Conversational AI, Claude Desktop, and Treasury Automation Bots) and mission-critical financial APIs (Airwallex banking rails and payout gateways).
+This prototype architecture establishes a policy-enforced security layer between autonomous conversational agents (ElevenLabs Conversational AI and Treasury Automation Bots) and financial APIs (Airwallex sandbox banking rails and payout gateways).
 
 Rather than trusting LLMs to invoke sensitive financial tools directly or relying on fragile prompt engineering and code-level `if` statements, this system routes **every action through ArmorIQ's cryptographic intent verification pipeline** and governs tools over the standardized **Model Context Protocol (MCP spec 2024-11-05)**.
 
@@ -15,7 +15,7 @@ Rather than trusting LLMs to invoke sensitive financial tools directly or relyin
 
 ## 2. Active Model Context Protocol (MCP) Servers
 
-The repository contains two production-grade MCP server implementations:
+The repository contains two prototype MCP server implementations:
 
 ```
                                   +---------------------------------------+

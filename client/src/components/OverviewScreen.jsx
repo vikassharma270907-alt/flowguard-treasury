@@ -72,7 +72,7 @@ export default function OverviewScreen({
       headline: "Dual-sign-off for high-value funds and tamper-evident Merkle auditing.",
       explanation: "When an action is held, ArmorIQ returns a delegationId (e.g. 65b502cb-6cb0-4e50-b392-934c6dba5bd7). In the FlowGuard Supervisor Playground, designated treasury officers perform step-up authentication. When the 2-approval threshold is satisfied, the action executes against the Airwallex sandbox adapter, and every event is sealed into the cryptographic audit trail.",
       keyPoints: [
-        "Zero-bypass: MCP tools reject unauthenticated requests without ArmorIQ token",
+        "Auth-gated: MCP tools reject unauthenticated requests without ArmorIQ token",
         "Dual authorization: Multi-signature approval quorum for high-risk payouts",
         "Immutable ledger: Searchable audit log with SHA-256 Merkle proofs"
       ],

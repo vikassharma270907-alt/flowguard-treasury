@@ -18,7 +18,7 @@ export default function HowWeUseArmorIQSection() {
       <div style={{ marginBottom: '24px' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '9999px', background: 'rgba(129, 140, 248, 0.1)', border: '1px solid rgba(129, 140, 248, 0.3)', color: '#818cf8', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
           <Shield size={12} color="#818cf8" />
-          Zero-Bypass Intent Pipeline
+          Policy-Enforced Intent Pipeline
         </div>
         <h2 id="architecture-heading" style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.02em', margin: 0 }}>
           How FlowGuard Uses ArmorIQ
