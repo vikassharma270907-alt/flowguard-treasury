@@ -1021,7 +1021,8 @@ app.use((req, res, next) => {
 });
 
 // Start Express Server listening on all interfaces (0.0.0.0) when not in serverless runtime
-if (!process.env.VERCEL) {
+// (skip when imported as a module — e.g. the Vercel handler or the test suite)
+if (!process.env.VERCEL && require.main === module) {
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`[FlowGuard Server] Running on http://localhost:${PORT} and http://127.0.0.1:${PORT}`);
     console.log(`[FlowGuard Server] Airwallex Sandbox Mode: ${airwallexService.isConfigured() ? 'LIVE_SANDBOX' : 'MOCK_ADAPTER'}`);
