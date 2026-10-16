@@ -6,8 +6,10 @@
  */
 
 import React, { useState, Suspense, lazy } from 'react';
-import { Box, Shield, ShieldCheck, Sparkles, Sliders, RefreshCw, Layers, Eye, Activity, CheckCircle2 } from 'lucide-react';
+import { Box, Shield, ShieldCheck, Sparkles, Sliders, RefreshCw, Layers, Eye, Activity, CheckCircle2, FileText, BookOpen, ExternalLink } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useI18n } from '../context/I18nContext';
+import { siteConfig } from '../siteConfig';
 
 // Lazy-load all 3D elements for optimal bundle loading & performance
 const RotatingHeroVault = lazy(() => import('./3d/RotatingHeroVault'));
@@ -37,6 +39,7 @@ function Loading3DFallback({ label }) {
 
 export default function EnclaveScreen() {
   const { theme, isDark, toggleTheme } = useTheme();
+  const { t } = useI18n();
   const [activeVisualizer, setActiveVisualizer] = useState('all'); // 'all' | 'vault' | 'gyro' | 'particles'
   const [particleDensity, setParticleDensity] = useState(1200);
 
@@ -77,6 +80,59 @@ export default function EnclaveScreen() {
               Real-time interactive 3D spatial models visualizing ArmorIQ's cryptographic intent verification,
               Merkle proof validation, and multi-ring defense topology.
             </p>
+
+            {/* Download Guide (PDF) Button */}
+            {siteConfig.guidePdf?.enabled && (
+              <div style={{ marginTop: '16px' }}>
+                <a
+                  href={siteConfig.guidePdf.path}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t('links.guidePdfAria', { pages: siteConfig.guidePdf.pages, size: siteConfig.guidePdf.sizeLabel })}
+                  className="btn btn-secondary"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    minHeight: '44px',
+                    padding: '8px 16px',
+                    textDecoration: 'none',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    borderRadius: '6px',
+                    border: '1px solid var(--border)',
+                    backgroundColor: 'var(--surface-muted)',
+                    color: 'var(--text)',
+                    cursor: 'pointer',
+                    outlineOffset: '2px',
+                    transition: 'all 150ms ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = isDark ? '#27272a' : '#e5e7eb';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--surface-muted)';
+                  }}
+                >
+                  <FileText size={15} style={{ color: 'var(--accent)' }} aria-hidden="true" />
+                  <span>{t('links.downloadGuide')}</span>
+                  <span
+                    style={{
+                      fontSize: '11px',
+                      color: 'var(--text-muted)',
+                      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                      padding: '2px 6px',
+                      borderRadius: '4px',
+                      fontWeight: 500,
+                      marginLeft: '2px'
+                    }}
+                  >
+                    PDF · {siteConfig.guidePdf.sizeLabel}
+                  </span>
+                  <span style={{ fontSize: '11px', opacity: 0.7, marginLeft: '2px' }} aria-hidden="true">↗</span>
+                </a>
+              </div>
+            )}
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -91,6 +147,139 @@ export default function EnclaveScreen() {
           </div>
         </div>
       </div>
+
+      {/* How to Use FlowGuard — Official Architecture & Operational Guide (PDF) */}
+      {siteConfig.guidePdf?.enabled && (
+        <div
+          className="card"
+          style={{
+            padding: '24px 28px',
+            border: '1px solid var(--border)',
+            background: 'var(--card)',
+            borderRadius: '12px',
+            boxShadow: 'var(--card-shadow)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '18px'
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
+            <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+              <div style={{
+                width: '46px',
+                height: '46px',
+                borderRadius: '10px',
+                background: 'rgba(56, 189, 248, 0.15)',
+                border: '1px solid rgba(56, 189, 248, 0.35)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <FileText size={22} color="var(--accent)" />
+              </div>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '4px' }}>
+                  <h2 style={{ fontSize: '1.2rem', fontWeight: 800, margin: 0, color: 'var(--foreground)' }}>
+                    How to Use FlowGuard — Official Guide & Technical Blueprint
+                  </h2>
+                  <span className="badge badge-live" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
+                    7 PAGES · {siteConfig.guidePdf.sizeLabel}
+                  </span>
+                </div>
+                <p style={{ fontSize: '0.86rem', color: 'var(--muted-foreground)', margin: 0, maxWidth: '760px', lineHeight: 1.5 }}>
+                  Everything you need to understand, run, and govern the FlowGuard treasury defense system. Covers ElevenLabs conversational voice routing, ArmorIQ CSRG-IAP intent hashing, Airwallex multi-currency corridors, cash-reserve floor enforcement, and duplicate invoice scanning.
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              <a
+                href={siteConfig.guidePdf.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t('links.guidePdfAria', { pages: siteConfig.guidePdf.pages, size: siteConfig.guidePdf.sizeLabel })}
+                className="btn btn-primary"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  minHeight: '44px',
+                  padding: '10px 20px',
+                  textDecoration: 'none',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  borderRadius: '6px'
+                }}
+              >
+                <BookOpen size={16} aria-hidden="true" />
+                <span>{t('links.downloadGuide')}</span>
+                <span style={{ fontSize: '11px', opacity: 0.85, fontWeight: 500 }}>
+                  ({siteConfig.guidePdf.sizeLabel})
+                </span>
+                <ExternalLink size={14} aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+
+          {/* 4 Architecture Pillars from the Guide */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: '12px',
+            borderTop: '1px solid var(--border)',
+            paddingTop: '16px'
+          }}>
+            <div style={{ padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '4px' }}>
+                1. Voice Support Gateway
+              </div>
+              <div style={{ fontSize: '0.84rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '2px' }}>
+                ElevenLabs Conversational AI
+              </div>
+              <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', margin: 0 }}>
+                Natural caller audio with sub-5s timeout safety holding messages and webhook tool parameter extraction.
+              </p>
+            </div>
+
+            <div style={{ padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#10b981', textTransform: 'uppercase', marginBottom: '4px' }}>
+                2. Intent Governance
+              </div>
+              <div style={{ fontSize: '0.84rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '2px' }}>
+                ArmorIQ Cryptographic PEP
+              </div>
+              <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', margin: 0 }}>
+                Canonical SHA-256 plan hash with Ed25519 tokens preventing unauthorized agent action drift.
+              </p>
+            </div>
+
+            <div style={{ padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', marginBottom: '4px' }}>
+                3. Treasury Protection
+              </div>
+              <div style={{ fontSize: '0.84rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '2px' }}>
+                Airwallex Multi-Currency Rails
+              </div>
+              <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', margin: 0 }}>
+                $15,000 cash reserve floor guarantee across USD, EUR, and GBP domestic payment rails.
+              </p>
+            </div>
+
+            <div style={{ padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#ec4899', textTransform: 'uppercase', marginBottom: '4px' }}>
+                4. Fraud Prevention
+              </div>
+              <div style={{ fontSize: '0.84rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '2px' }}>
+                Levenshtein Duplicate Shield
+              </div>
+              <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', margin: 0 }}>
+                Normalized string distance halts duplicate invoices before execution with immutable audit logs.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Grid of the 3 Interactive 3D Elements */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '20px' }}>

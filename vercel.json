@@ -2,6 +2,17 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "client/dist",
+  "headers": [
+    {
+      "source": "/docs/(.*)",
+      "headers": [
+        { "key": "Content-Type", "value": "application/pdf" },
+        { "key": "Content-Disposition", "value": "inline" },
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
+        { "key": "X-Robots-Tag", "value": "noindex" }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/mcp",
@@ -12,7 +23,7 @@
       "destination": "/api/index.js"
     },
     {
-      "source": "/((?!api|mcp).*)",
+      "source": "/((?!api|mcp|docs).*)",
       "destination": "/index.html"
     }
   ]

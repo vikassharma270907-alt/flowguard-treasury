@@ -12,7 +12,6 @@ import EnclaveScreen from './components/EnclaveScreen';
 import ApprovalModal from './components/ApprovalModal';
 import CredentialsModal from './components/CredentialsModal';
 import OAuthModal from './components/OAuthModal';
-import JudgeExplainerModal from './components/JudgeExplainerModal';
 import LegalPages from './components/LegalPages';
 import PricingSection from './components/PricingSection';
 import { Lock, Shield, ArrowRight } from 'lucide-react';
@@ -25,6 +24,9 @@ function getInitialTabFromUrl() {
   if (LEGAL_ROUTES.includes(path)) {
     return path === 'dpdp-act' ? 'dpdp-compliance' : path;
   }
+  if (path === 'how-it-works') return 'enclave';
+  if (path === 'pricing') return 'pricing';
+
   if (window.location.hash) {
     const hash = window.location.hash.replace('#', '');
     if (hash === 'pricing') return 'pricing';
@@ -43,7 +45,6 @@ export default function App() {
   const [selectedInvoiceForApproval, setSelectedInvoiceForApproval] = useState(null);
   const [showCredentialsModal, setShowCredentialsModal] = useState(false);
   const [showOAuthModal, setShowOAuthModal] = useState(false);
-  const [showJudgeExplainer, setShowJudgeExplainer] = useState(false);
   const [userSession, setUserSession] = useState({ authenticated: false, user: null });
 
   const loadData = async () => {
@@ -245,7 +246,6 @@ export default function App() {
           userSession={userSession}
           onOpenOAuth={() => setShowOAuthModal(true)}
           onLogout={handleLogout}
-          onOpenJudgeExplainer={() => setShowJudgeExplainer(true)}
         />
       )}
 
@@ -377,15 +377,6 @@ export default function App() {
         <OAuthModal
           onClose={() => setShowOAuthModal(false)}
           onLoginSuccess={handleOAuthSuccess}
-        />
-      )}
-
-      {/* Judge Explainer & Veo 3 Video Suite Modal */}
-      {showJudgeExplainer && (
-        <JudgeExplainerModal
-          onClose={() => setShowJudgeExplainer(false)}
-          onSelectScenario={handleSelectScenario}
-          activeScenario={systemStatus?.activeScenario}
         />
       )}
 
