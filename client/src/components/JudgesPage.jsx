@@ -26,7 +26,7 @@ export default function JudgesPage({ onNavigate }) {
     {
       rule: "2. ElevenLabs Cannot Replace ArmorIQ",
       requirement: "Third-party services must not bypass or substitute ArmorIQ governance.",
-      evidence: "ElevenLabs Conversational Voice Agent sends tool webhooks with the 'FlowGuard_' prefix (legacy 'IntentGate_' accepted) to the FlowGuard gateway, which captures a canonical plan and gates the call through ArmorIQ before it can reach the MCP server. No tool executes without a platform-minted intent token bound to that plan.",
+      evidence: "ElevenLabs Conversational Voice Agent sends tool webhooks with the 'FlowGuard_' prefix to the FlowGuard gateway, which captures a canonical plan and gates the call through ArmorIQ before it can reach the MCP server. No tool executes without a platform-minted intent token bound to that plan.",
       status: "PASS",
       verified: true
     },
@@ -493,7 +493,7 @@ export default function JudgesPage({ onNavigate }) {
           📜 Open Disclosures & Lineage
         </h2>
         <p style={{ fontSize: '0.88rem', color: 'var(--muted-foreground)', lineHeight: 1.6, margin: '0 0 14px 0' }}>
-         <strong>Developer Statement:</strong> FlowGuard was assembled during the hackathon window and reuses the developer's earlier MIT-licensed IntentGate prototype components (gateway, sandbox adapter) — disclosed in DISCLOSURES.md below. Third-party open-source libraries: <code>@armoriq/sdk</code>, <code>@modelcontextprotocol/sdk</code>, <code>three</code>, <code>react</code>, <code>express</code>. All sensitive operations use synthetic sandbox data only — no live banking rails, no real funds.
+         <strong>Developer Statement:</strong> FlowGuard was assembled during the hackathon window and reuses the developer's earlier MIT-licensed FlowGuard prototype components (gateway, sandbox adapter) — disclosed in DISCLOSURES.md below. Third-party open-source libraries: <code>@armoriq/sdk</code>, <code>@modelcontextprotocol/sdk</code>, <code>three</code>, <code>react</code>, <code>express</code>. All sensitive operations use synthetic sandbox data only — no live banking rails, no real funds.
         </p>
         <p style={{ fontSize: '0.82rem', color: '#94a3b8', margin: 0 }}>
           Detailed dependency disclosures and licensing notices are documented in <a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/DISCLOSURES.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>DISCLOSURES.md</a>.

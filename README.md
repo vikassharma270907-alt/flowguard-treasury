@@ -18,7 +18,7 @@
 | **Intent Mismatch Demonstrated** | `scripts/test-intent-mismatch.mjs` mints a token for `lookup_order` only, then attempts to invoke `issue_refund` -> immediately raises `IntentMismatchException` before network execution. | ✅ **PASS** |
 | **Decisions from ArmorIQ, Not Code `if` Statements** | Every allow/block decision is returned directly by the ArmorIQ proxy (`proxy.armoriq.ai`). The gateway contains no hardcoded allow/deny rules. | ✅ **PASS** |
 | **Held Calls Answer Within 5s Window** | Real measured latencies: `lookup_order` (3.7s–4.3s), `change_payout` (2.7s), `issue_refund` (2.8s–3.9s). Held calls reply immediately with holding message; final decision relayed via `check_supervisor_decision`. | ✅ **PASS** |
-| **Prefix Mapping & Zero Real Data** | Gateway transparently strips the `FlowGuard_` prefix from ElevenLabs tool calls (legacy `IntentGate_` still accepted). 100% synthetic sandbox data (`ORD-1001`, `ORD-1002`, `ACC-4471`). | ✅ **PASS** |
+| **Prefix Mapping & Zero Real Data** | Gateway transparently strips the `FlowGuard_` prefix from ElevenLabs tool calls. 100% synthetic sandbox data (`ORD-1001`, `ORD-1002`, `ACC-4471`). | ✅ **PASS** |
 | **No Secrets & Complete Disclosures** | `.env` gitignored; safe `.env.example` provided. Full [DISCLOSURES.md](DISCLOSURES.md) and [DX_NOTES.md](DX_NOTES.md) included. | ✅ **PASS** |
 
 ---
@@ -56,7 +56,7 @@ flowchart TD
 1. **AI Voice Agent**:
    - ElevenLabs Conversational Voice Agent receiving customer voice calls.
    - Tools exposed via gateway: `FlowGuard_orderLookup`, `FlowGuard_payoutChange`, `FlowGuard_issueRefund`, `check_supervisor_decision`.
-   - Tool prefix `FlowGuard_` is mapped back to the canonical MCP tool names (legacy `IntentGate_` still accepted).
+   - Tool prefix `FlowGuard_` is mapped back to the canonical MCP tool names.
 
 2. **Model Context Protocol (MCP) Server (`mcp-server/server.mjs`)**:
    - JSON-RPC 2.0 over HTTP (`POST /mcp`), responding with Server-Sent Events (`Content-Type: text/event-stream`, `event: message\ndata: {json}\n\n`).

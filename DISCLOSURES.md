@@ -7,8 +7,8 @@ This document discloses all libraries, frameworks, tools, and developer lineage 
 - **Git History**: Commit history reflects iterative authoring of the ArmorIQ policy integration, the Model Context Protocol (MCP) server, the voice gateway holding pattern, and the cryptographic boundary test.
 
 ## 2. Lineage & Development Statement
-- **Developer Statement**: FlowGuard was assembled during the hackathon window and reuses the developer's earlier MIT-licensed IntentGate prototype components (disclosed below), alongside third-party open-source libraries (`@armoriq/sdk`, `@modelcontextprotocol/sdk`, Three.js, React, Express).
-- Earlier architectural prototypes (such as the IntentGate gateway concept for sub-5-second voice holding patterns and the Airwallex sandbox adapter) were adapted and unified into FlowGuard under the MIT License.
+- **Developer Statement**: FlowGuard was assembled during the hackathon window and reuses the developer's earlier MIT-licensed FlowGuard prototype components (disclosed below), alongside third-party open-source libraries (`@armoriq/sdk`, `@modelcontextprotocol/sdk`, Three.js, React, Express).
+- Earlier architectural prototypes (such as the FlowGuard gateway concept for sub-5-second voice holding patterns and the Airwallex sandbox adapter) were adapted and unified into FlowGuard under the MIT License.
 
 ## 3. Third-Party Libraries & Frameworks
 The following open-source packages and frameworks were utilized:

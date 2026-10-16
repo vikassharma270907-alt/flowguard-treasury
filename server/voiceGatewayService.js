@@ -9,8 +9,7 @@
  *      values returned by ArmorIQ — never fabricated.
  * 2. Tool Prefix Normalization & Mapping:
  *    - ElevenLabs agents see tools as "FlowGuard_<tool>" (e.g. FlowGuard_orderLookup)
- *    - The legacy "IntentGate_<tool>" prefix from the earlier prototype is still
- *      accepted, so existing agent configs keep working.
+ *    - The gateway transparently normalizes prefixes into canonical MCP tool names.
  * 3. 5-Second Tool Call Timeout Window & Async Holding Pattern:
  *    - ElevenLabs times tool calls out after ~5 seconds
  *    - The gateway answers inside the window with an app-side holding utterance,
@@ -211,9 +210,8 @@ class VoiceGatewayService {
   }
 
   /**
-   * Normalizes an ElevenLabs tool name. "FlowGuard_<tool>" is the current
-   * namespace; the legacy "IntentGate_<tool>" prefix from the earlier
-   * prototype is still accepted so existing agent configs keep working.
+   * Normalizes an ElevenLabs tool name. "FlowGuard_<tool>" is the standard
+   * namespace that maps to canonical MCP actions.
    */
   normalizeToolName(toolName) {
     if (!toolName) return '';
@@ -904,7 +902,7 @@ if (requiresHumanSupervisor) {
           id: 'insight-2-prefix-mapping',
           title: '2. The FlowGuard_<tool> Agent Tool Prefix Mapping',
           problem: 'When configuring tools in the ElevenLabs agent interface, tools are exposed to the LLM with an explicit namespace such as FlowGuard_<tool> (e.g., FlowGuard_orderLookup, FlowGuard_payoutChange, FlowGuard_issueRefund). This signals to the model that financial actions pass through an intent-assurance gateway. Backend plans, MCP schemas, and the Airwallex adapter expect standard canonical names.',
-          solution: 'The FlowGuard Gateway implements bidirectional mapping: normalizeToolName() strips the FlowGuard_ prefix when processing tool requests (the legacy IntentGate_ prefix from the earlier prototype is still accepted), while toElevenLabsToolName() formats schemas for the agent client.',
+          solution: 'The FlowGuard Gateway implements bidirectional mapping: normalizeToolName() strips the FlowGuard_ prefix when processing tool requests, while toElevenLabsToolName() formats schemas for the agent client.',
           codeSnippet: `function normalizeToolName(toolName) {
   for (const prefix of ['FlowGuard_', 'IntentGate_']) {
     if (toolName.startsWith(prefix)) {

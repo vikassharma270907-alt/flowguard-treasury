@@ -1152,7 +1152,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', margin: 0 }}>
                     Copy these official tool definitions directly into ElevenLabs Conversational AI Agent Studio.
-                    The model invokes these with the <code>FlowGuard_</code> prefix (the gateway also accepts the legacy <code>IntentGate_</code> prefix used by the earlier prototype).
+                    The model invokes these with the <code>FlowGuard_</code> prefix, and the FlowGuard Gateway normalizes and routes them directly to the governed MCP server.
                   </p>
 
                   {dxNotes?.elevenLabsToolSchemas?.map((schema, idx) => (
