@@ -24,12 +24,15 @@ let sdkClient = null;
 
 /** Lazily create the SDK client. Returns null when no key is configured. */
 function getClient() {
-  if (!process.env.ARMORIQ_API_KEY) return null;
+  // Sanitize the same way armorIqService does: some deploy targets store the
+  // key with surrounding quotes/whitespace, which the SDK rejects as invalid.
+  const key = (process.env.ARMORIQ_API_KEY || '').replace(/^["']|["']$/g, '').trim();
+  if (!key) return null;
   if (!sdkClient) {
     try {
       const { ArmorIQClient } = require('@armoriq/sdk');
       sdkClient = new ArmorIQClient({
-        apiKey: process.env.ARMORIQ_API_KEY,
+        apiKey: key,
         userId: USER_ID,
         agentId: AGENT_ID,
       });
