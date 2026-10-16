@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Shield, Activity, RefreshCw, Key, ChevronDown, CheckCircle2,
-  AlertTriangle, Play, Lock, User, LogOut, Sliders, Video, X,
+  AlertTriangle, Play, Lock, User, LogOut, Sliders, X,
   ShieldCheck, Clock, ArrowDownCircle, Sun, Moon, Box
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
@@ -16,8 +16,7 @@ export default function Navbar({
   onRefresh,
   userSession,
   onOpenOAuth,
-  onLogout,
-  onOpenJudgeExplainer
+  onLogout
 }) {
   const [scenarioOpen, setScenarioOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -232,24 +231,6 @@ export default function Navbar({
                 <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>Dark</span>
               </>
             )}
-          </button>
-
-          {/* Judge Video & Presentation Button */}
-          <button
-            onClick={onOpenJudgeExplainer}
-            className="btn btn-secondary btn-sm"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
-              background: 'rgba(255, 255, 255, 0.06)',
-              color: 'var(--foreground)'
-            }}
-            title="Open Judge Video Script, Veo 3 Prompts & Presentation Rubric"
-          >
-            <Video size={13} color="var(--foreground)" />
-            <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>Judge Video & Demo</span>
           </button>
 
           {/* Scenario Selector Dropdown */}
