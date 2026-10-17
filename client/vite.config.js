@@ -52,6 +52,24 @@ export default defineConfig(({ mode }) => {
       '__GUIDE_PDF_SIZE_LABEL__': JSON.stringify(computedSizeLabel),
       '__GUIDE_PDF_EXISTS__': JSON.stringify(pdfExists)
     },
+    build: {
+      chunkSizeWarningLimit: 600,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules/three')) {
+              return 'three-vendor';
+            }
+            if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
+              return 'react-vendor';
+            }
+            if (id.includes('node_modules/lucide-react')) {
+              return 'icons-vendor';
+            }
+          }
+        }
+      }
+    },
     server: {
       host: '0.0.0.0',
       port: 5173,
