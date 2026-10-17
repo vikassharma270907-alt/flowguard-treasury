@@ -79,8 +79,8 @@ export default function Footer({
   const { t, language } = useI18n();
   const { isDark } = useTheme();
   const currentYear = new Date().getFullYear();
-  const [isDesktop, setIsDesktop] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' ? window.innerWidth >= 1024 : true);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 640 : false);
   const [mailtoHref, setMailtoHref] = useState('');
   const bookingTriggerRef = useRef(null);
 

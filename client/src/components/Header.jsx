@@ -93,7 +93,7 @@ export default function Header({
   const { language, setLanguage, t } = useI18n();
   const { theme, isDark, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(true);
+  const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' ? window.innerWidth >= 1024 : true);
 
   const hamburgerButtonRef = useRef(null);
   const drawerRef = useRef(null);
