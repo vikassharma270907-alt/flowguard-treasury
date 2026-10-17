@@ -27,8 +27,30 @@ export default function ExplainerVideoSection({
   const [activeSceneIdx, setActiveSceneIdx] = useState(0);
   const [voiceoverMuted, setVoiceoverMuted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [activePoster, setActivePoster] = useState('');
 
   const videoRef = useRef(null);
+  const containerRef = useRef(null);
+
+  // Lazy load video poster only when within 250px of viewport
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (!('IntersectionObserver' in window)) {
+      setActivePoster(posterSrc);
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some(e => e.isIntersecting)) {
+        setActivePoster(posterSrc);
+        observer.disconnect();
+      }
+    }, { rootMargin: '250px' });
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+    return () => observer.disconnect();
+  }, [posterSrc]);
 
   // Sync scene chapter highlighting with video playback
   useEffect(() => {
@@ -151,7 +173,7 @@ export default function ExplainerVideoSection({
       </div>
 
       {/* Video Player Container */}
-      <div style={{
+      <div ref={containerRef} style={{
         position: 'relative',
         borderRadius: '12px',
         overflow: 'hidden',
@@ -163,8 +185,8 @@ export default function ExplainerVideoSection({
         <video
           ref={videoRef}
           controls
-          preload="metadata"
-          poster={posterSrc}
+          preload="none"
+          poster={activePoster || undefined}
           style={{ width: '100%', maxHeight: '560px', display: 'block', outline: 'none' }}
         >
           <source src={videoSrc} type="video/mp4" />

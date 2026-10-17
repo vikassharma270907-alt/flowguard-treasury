@@ -42,11 +42,9 @@
     }
     </script>
     
-    <!-- Self-hosted fonts (vendored via scripts/vendor-fonts.mjs). Preload the
-         faces used above the fold so first paint already has brand typography. -->
+    <!-- Self-hosted font: preload the primary Latin body font -->
     <link rel="preload" href="/fonts/inter-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/fonts/inter-600-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/fonts/inter-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+
     <script>
       (function() {
         try {
@@ -72,9 +70,246 @@
         }
       })();
     </script>
+
+    <!-- Critical CSS inlined for sub-0.5s FCP and LCP on throttled mobile connections -->
+    <style>
+      :root, [data-theme="dark"], .dark {
+        --background: #09090b;
+        --foreground: #fafafa;
+        --muted: #18181b;
+        --muted-foreground: #a1a1aa;
+        --border: #27272a;
+        --card: #0d0d11;
+        --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6);
+        --primary: #ffffff;
+        --primary-foreground: #09090b;
+        --secondary: #18181b;
+        --secondary-foreground: #fafafa;
+        --success: #10b981;
+      }
+      [data-theme="light"], .light {
+        --background: #f8fafc;
+        --foreground: #0f172a;
+        --muted: #f1f5f9;
+        --muted-foreground: #475569;
+        --border: #e2e8f0;
+        --card: #ffffff;
+        --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06);
+        --primary: #0f172a;
+        --primary-foreground: #ffffff;
+        --secondary: #f1f5f9;
+        --secondary-foreground: #0f172a;
+        --success: #047857;
+      }
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--background);
+        color: var(--foreground);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+      #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .prerender-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        width: 100%;
+        height: 56px;
+        background: var(--background);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+      }
+      .prerender-header-inner {
+        max-width: 1280px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .prerender-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--foreground);
+        font-weight: 700;
+        font-size: 16px;
+      }
+      .prerender-logo {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        background: #18181b;
+        border: 1px solid #3f3f46;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .prerender-main {
+        max-width: 1440px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 24px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+      .prerender-sandbox {
+        background: rgba(56, 189, 248, 0.08);
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        border-radius: 10px;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .prerender-hero {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: clamp(24px, 5vw, 40px) clamp(16px, 4vw, 32px);
+        box-shadow: var(--card-shadow);
+      }
+      .prerender-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 12px;
+        border-radius: 9999px;
+        background: rgba(16, 185, 129, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: var(--success);
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 16px;
+      }
+      .prerender-title {
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        font-weight: 800;
+        color: var(--foreground);
+        letter-spacing: -0.03em;
+        line-height: 1.2;
+        margin: 0 0 16px 0;
+      }
+      .prerender-lead {
+        font-size: clamp(1rem, 2vw, 1.15rem);
+        color: var(--foreground);
+        line-height: 1.6;
+        margin: 0 0 8px 0;
+        font-weight: 500;
+      }
+      .prerender-desc {
+        font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+        color: var(--muted-foreground);
+        line-height: 1.6;
+        margin: 0 0 24px 0;
+      }
+      .prerender-btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+      .prerender-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 20px;
+        min-height: 44px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        border-radius: 8px;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+      }
+      .prerender-btn-primary {
+        background: var(--primary);
+        color: var(--primary-foreground);
+      }
+      .prerender-btn-secondary {
+        background: var(--secondary);
+        color: var(--secondary-foreground);
+        border: 1px solid var(--border);
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- Pre-rendered DOM shell enables immediate <0.5s First Contentful Paint and Largest Contentful Paint before client-side hydration -->
+    <div id="root">
+      <header class="prerender-header">
+        <div class="prerender-header-inner">
+          <a href="/" class="prerender-brand">
+            <span class="prerender-logo" aria-hidden="true">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19V5l8 7 8-7v14"></path>
+              </svg>
+            </span>
+            <span>BeyondFlow</span>
+          </a>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <a href="/video" class="prerender-btn prerender-btn-secondary" style="padding: 6px 14px; min-height: 36px; font-size: 0.82rem;">Explainer Video</a>
+            <a href="/judges" class="prerender-btn prerender-btn-primary" style="padding: 6px 14px; min-height: 36px; font-size: 0.82rem;">Judges (/judges)</a>
+          </div>
+        </div>
+      </header>
+
+      <main class="prerender-main">
+        <div class="prerender-sandbox">
+          <div style="display: flex; align-items: center; gap: 8px; color: #38bdf8; font-size: 0.82rem; font-weight: 600;">
+            <span>ℹ️ Sandbox / test environment. No real funds or customer data.</span>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--muted-foreground);">
+            Synthetic Airwallex balances &amp; test orders (ORD-1001, ACC-4471)
+          </div>
+        </div>
+
+        <section class="prerender-hero">
+          <div class="prerender-badge">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+            Official Submission · ArmorIQ Flow State Hackathon
+          </div>
+          <h1 class="prerender-title">
+            Autonomous Treasury &amp; Intent Vault Governed by ArmorIQ
+          </h1>
+          <p class="prerender-lead">
+            BeyondFlow is an autonomous treasury and customer support agent that manages multi-currency disbursements, verifies vendor invoices, and handles live telephony inquiries.
+          </p>
+          <p class="prerender-desc">
+            ArmorIQ cryptographically bounds every tool invocation to declared intent using Ed25519 tokens and blocks unauthorized bank diversions or prompt injections before any network execution.
+          </p>
+          <div class="prerender-btn-group">
+            <a href="#explainer-video" class="prerender-btn prerender-btn-primary">
+              Watch 3-Min Explainer Video
+            </a>
+            <a href="/judges" class="prerender-btn prerender-btn-secondary">
+              Judge Inspection Dashboard (/judges)
+            </a>
+            <a href="/#boundary-test" class="prerender-btn prerender-btn-secondary">
+              Skip to Boundary Test
+            </a>
+          </div>
+        </section>
+      </main>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

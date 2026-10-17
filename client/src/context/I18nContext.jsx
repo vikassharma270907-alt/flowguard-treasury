@@ -78,7 +78,7 @@ export const I18nProvider = ({ children }) => {
   /**
    * Helper to retrieve nested keys like t('nav.home') or t('columns.product')
    */
-  const t = (path) => {
+  const t = (path, params) => {
     if (!path) return '';
     const keys = path.split('.');
     let current = translations[language] || translations.en;
@@ -95,8 +95,14 @@ export const I18nProvider = ({ children }) => {
             return path;
           }
         }
-        return fallback || path;
+        current = fallback || path;
+        break;
       }
+    }
+    if (typeof current === 'string' && params && typeof params === 'object') {
+      return Object.entries(params).reduce((str, [k, v]) => {
+        return str.replace(new RegExp(`\\{${k}\\}`, 'g'), String(v));
+      }, current);
     }
     return current;
   };

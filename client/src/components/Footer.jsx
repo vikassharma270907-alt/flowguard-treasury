@@ -342,7 +342,7 @@ export default function Footer({
                           onFocus={handleBookingHover}
                           target="_blank"
                           rel="noopener noreferrer"
-                          aria-label={t('nav.bookDemoAria')}
+                          aria-label={`${t(link.labelKey)} - ${t('nav.bookDemoAria')}`}
                           style={{
                             fontSize: '14px',
                             color: isDark ? '#d4d4d8' : '#444444',
@@ -374,7 +374,7 @@ export default function Footer({
                     const sizeText = config.guidePdf?.sizeLabel || '32 KB';
                     const pagesCount = config.guidePdf?.pages || 24;
                     const pdfHref = config.guidePdf?.path || link.href;
-                    const ariaLabel = t('links.guidePdfAria', { pages: pagesCount, size: sizeText });
+                    const ariaLabel = `${t(link.labelKey)} - ${t('links.guidePdfAria', { pages: pagesCount, size: sizeText })}`;
 
                     return (
                       <li key={link.labelKey}>

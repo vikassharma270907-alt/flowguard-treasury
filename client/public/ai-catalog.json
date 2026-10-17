@@ -1,0 +1,57 @@
+{
+  "name": "BeyondFlow Treasury & Voice Agent",
+  "version": "1.0.0",
+  "description": "Autonomous voice AI support and treasury agent governed cryptographically by ArmorIQ.",
+  "url": "https://flowguard-treasury.vercel.app",
+  "tools": [
+    {
+      "name": "lookup_order",
+      "description": "Look up synthetic customer order status in sandbox environment.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "order_id"
+        ]
+      }
+    },
+    {
+      "name": "change_payout",
+      "description": "Attempt to change routing details for vendor payout (policy blocked by ArmorIQ).",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "account_number": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "account_number"
+        ]
+      }
+    },
+    {
+      "name": "issue_refund",
+      "description": "Issue customer refund requiring dual supervisor authorization quorum.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "order_id",
+          "amount"
+        ]
+      }
+    }
+  ]
+}

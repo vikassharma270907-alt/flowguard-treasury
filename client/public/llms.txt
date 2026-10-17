@@ -1,0 +1,10 @@
+# BeyondFlow
+
+> BeyondFlow is an autonomous treasury and voice support agent governed by ArmorIQ cryptographic intent authorization and MCP execution firewalls.
+
+## Key Resources
+- [BeyondFlow Platform](https://flowguard-treasury.vercel.app/): Interactive dashboard and real-time governance monitor.
+- [Judges Inspection Dashboard](https://flowguard-treasury.vercel.app/judges): Verification checklists, test credentials, and architecture summary.
+- [Explainer Video Walkthrough](https://flowguard-treasury.vercel.app/video): 3-minute video walkthrough showing full intent lifecycle and PEP enforcement.
+- [How It Works Architecture](https://flowguard-treasury.vercel.app/how-it-works): Comprehensive multi-step intent verification and quorum technical architecture.
+- [Interactive Boundary Testing](https://flowguard-treasury.vercel.app/#boundary-test): Live sandbox boundary verification of ALLOWED, BLOCKED, and HELD tool calls.
