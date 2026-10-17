@@ -89,8 +89,13 @@ const judgesLink = desktop.locator('a[href="/judges"]').first();
 await judgesLink.focus();
 const focusedHref = await desktop.evaluate(() => document.activeElement?.getAttribute('href'));
 check('"For Judges" nav link receives focus', focusedHref === '/judges', String(focusedHref));
-await desktop.keyboard.press('Enter');
-await desktop.waitForTimeout(1500);
+
+await Promise.all([
+  desktop.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 8000 }).catch(() => {}),
+  desktop.keyboard.press('Enter')
+]);
+await desktop.waitForTimeout(1000);
+
 const navigatedToJudges =
   desktop.url().includes('/judges') ||
   (await desktop.evaluate(() => /90-Second Judge Tour|Judge Inspection Dashboard/i.test(document.body.innerText)));
@@ -99,6 +104,7 @@ check('Enter on the focused "For Judges" link activates it', navigatedToJudges, 
 const judgesRendered = await desktop.evaluate(() => /judge/i.test(document.body.innerText));
 check('Judges screen rendered after keyboard navigation', judgesRendered);
 
+await desktop.keyboard.press('Tab');
 await desktop.keyboard.press('Shift+Tab');
 const backwards = await focusInfo(desktop);
 check('Shift+Tab moves focus backwards to another control', backwards.tag !== 'BODY', `${backwards.tag}: ${backwards.text}`);

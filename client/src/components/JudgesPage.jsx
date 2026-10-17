@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   ShieldCheck, CheckCircle2, XCircle, AlertTriangle,
   ExternalLink, ArrowRight, Video, Globe,
-  Terminal, Lock, Layers, Cpu, FileText, Check, Copy
+  Terminal, Lock, Layers, Cpu, FileText, Check, Copy, Sparkles
 } from 'lucide-react';
 import realRunData from '../data/realArmoriqRun.json';
 import ExplainerVideoSection from './ExplainerVideoSection';

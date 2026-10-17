@@ -296,7 +296,7 @@ const result = await client.invoke(MCP_ID, tool, token, args);</pre>
     </div>
     <div class="footer-bar">
       <div>Platform Objects: Agent flowguard-agent · MCP flowguard-treasury-mcp · Policy flowguard-treasury-allowlist</div>
-      <div>Strict Zero-Bypass Flow</div>
+      <div>Cryptographic Policy Verification Flow</div>
     </div>
   </body></html>`,
 
