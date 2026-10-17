@@ -26,7 +26,7 @@ export default function JudgesPage({ onNavigate }) {
     {
       rule: "2. ElevenLabs Cannot Replace ArmorIQ",
       requirement: "Third-party services must not bypass or substitute ArmorIQ governance.",
-      evidence: "ElevenLabs Conversational Voice Agent sends tool webhooks with the 'FlowGuard_' prefix to the FlowGuard gateway, which captures a canonical plan and gates the call through ArmorIQ before it can reach the MCP server. No tool executes without a platform-minted intent token bound to that plan.",
+      evidence: "ElevenLabs Conversational Voice Agent sends tool webhooks with the 'BeyondFlow_' prefix to the BeyondFlow gateway, which captures a canonical plan and gates the call through ArmorIQ before it can reach the MCP server. No tool executes without a platform-minted intent token bound to that plan.",
       status: "PASS",
       verified: true
     },
@@ -127,7 +127,7 @@ export default function JudgesPage({ onNavigate }) {
           Official Judge Inspection Dashboard · ArmorIQ Flow State Hackathon
         </div>
         <h1 style={{ fontSize: '2.4rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.03em', margin: '0 0 12px 0' }}>
-          FlowGuard Hackathon Evaluation Guide
+          BeyondFlow Hackathon Evaluation Guide
         </h1>
         <p style={{ fontSize: '1.05rem', color: 'var(--muted-foreground)', maxWidth: '840px', lineHeight: 1.6, margin: '0 0 24px 0' }}>
           Autonomous Treasury & Intent Vault Governed by ArmorIQ. This page provides a fast 90-second tour, verified rule compliance evidence, transparent claims validation, and honest architectural boundaries.
@@ -470,7 +470,7 @@ export default function JudgesPage({ onNavigate }) {
               ✨ What We Built for the Hackathon
             </h3>
             <ul style={{ paddingLeft: '18px', color: 'var(--muted-foreground)', fontSize: '0.85rem', lineHeight: 1.6, margin: 0 }}>
-              <li><strong>FlowGuard Gateway Service (gateway/server.mjs)</strong>: tool-name normalizer, canonical plan builder, and async holding responder.</li>
+              <li><strong>BeyondFlow Gateway Service (gateway/server.mjs)</strong>: tool-name normalizer, canonical plan builder, and async holding responder.</li>
               <li><strong>Dual-Supervisor Approval Quorum</strong>: Hold tracking engine in gateway/server.mjs requiring 2 independent human reviews before releasing disbursements.</li>
               <li><strong>Model Context Protocol (MCP) server</strong>: JSON-RPC 2.0 over HTTP plus a stdio transport, exposing 3 platform-governed financial tools (and 2 app-side helper checks).</li>
               <li><strong>3D Hardware-Accelerated Intent Vaults</strong>: Three Three.js WebGL visualizers with cursor tracking and 60 FPS delta loops.</li>
@@ -499,7 +499,7 @@ export default function JudgesPage({ onNavigate }) {
           📜 Open Disclosures & Lineage
         </h2>
         <p style={{ fontSize: '0.88rem', color: 'var(--muted-foreground)', lineHeight: 1.6, margin: '0 0 14px 0' }}>
-         <strong>Developer Statement:</strong> FlowGuard was assembled during the hackathon window and reuses the developer's earlier MIT-licensed FlowGuard prototype components (gateway, sandbox adapter) — disclosed in DISCLOSURES.md below. Third-party open-source libraries: <code>@armoriq/sdk</code>, <code>@modelcontextprotocol/sdk</code>, <code>three</code>, <code>react</code>, <code>express</code>. All sensitive operations use synthetic sandbox data only — no live banking rails, no real funds.
+         <strong>Developer Statement:</strong> BeyondFlow was assembled during the hackathon window and reuses the developer's earlier MIT-licensed BeyondFlow prototype components (gateway, sandbox adapter) — disclosed in DISCLOSURES.md below. Third-party open-source libraries: <code>@armoriq/sdk</code>, <code>@modelcontextprotocol/sdk</code>, <code>three</code>, <code>react</code>, <code>express</code>. All sensitive operations use synthetic sandbox data only — no live banking rails, no real funds.
         </p>
         <p style={{ fontSize: '0.82rem', color: '#94a3b8', margin: 0 }}>
           Detailed dependency disclosures and licensing notices are documented in <a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/DISCLOSURES.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>DISCLOSURES.md</a>.

@@ -174,7 +174,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
       }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--muted-foreground)' }}>
-            <span>FlowGuard</span>
+            <span>BeyondFlow</span>
             <span>/</span>
             <span>Enterprise Settings</span>
             <span>/</span>
@@ -712,7 +712,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--foreground)', margin: 0 }}>
-                  FlowGuard Treasury MCP Server
+                  BeyondFlow Treasury MCP Server
                 </h3>
                 <p style={{ fontSize: '0.82rem', color: 'var(--muted-foreground)', marginTop: '4px', margin: 0 }}>
                  Model Context Protocol (MCP) server exposing the sandbox treasury tools (lookup_order, change_payout, issue_refund) that ArmorIQ governs on the platform.
@@ -954,7 +954,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                   required
                   value={inviteForm.email}
                   onChange={e => setInviteForm({ ...inviteForm, email: e.target.value })}
-                  placeholder="jordan@flowguard.io"
+                  placeholder="jordan@beyondflow.io"
                   className="shadcn-input"
                   style={{ marginTop: '4px' }}
                 />

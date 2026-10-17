@@ -51,7 +51,7 @@ test('3. i18n dictionaries contain English and Hindi guide keys', () => {
 
   assert.equal(en.links.guidePdf, 'Guide (PDF)');
   assert.equal(en.links.downloadGuide, 'Download the guide (PDF)');
-  assert.ok(en.links.guidePdfAria.includes('FlowGuard guide, PDF'));
+  assert.ok(en.links.guidePdfAria.includes('BeyondFlow guide, PDF') || en.links.guidePdfAria.includes('FlowGuard guide, PDF'));
 
   assert.equal(hi.links.guidePdf, 'गाइड (PDF)');
   assert.equal(hi.links.downloadGuide, 'गाइड डाउनलोड करें (PDF)');

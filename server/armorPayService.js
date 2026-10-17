@@ -1,5 +1,5 @@
 /**
- * FlowGuard - ArmorPay Intent Settlement Service
+ * BeyondFlow - ArmorPay Intent Settlement Service
  *
  * Provides cryptographic intent-gated settlement for accounts payable invoices:
  * 1. Pre-flight duplicate inspection (Levenshtein + triple-vector proximity)

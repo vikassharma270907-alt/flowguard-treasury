@@ -24,7 +24,7 @@ export default function VoiceGatewayScreen({ userSession }) {
   const guidedTimerRef = useRef(null);
 
   // Manual sandbox trigger inputs
-  const [selectedToolToTrigger, setSelectedToolToTrigger] = useState('FlowGuard_orderLookup');
+  const [selectedToolToTrigger, setSelectedToolToTrigger] = useState('BeyondFlow_orderLookup');
   const [manualAccount, setManualAccount] = useState('ACC-4471');
   const [manualDestination, setManualDestination] = useState('GB29 NWBK 6016 1331 9268 19');
   const [manualRefundAmount, setManualRefundAmount] = useState('89');
@@ -214,8 +214,8 @@ export default function VoiceGatewayScreen({ userSession }) {
       }
       if (currentSec === 8) {
         setGuidedStep(2);
-        // Tool: FlowGuard_orderLookup
-        await handleTriggerTool('FlowGuard_orderLookup', { order_id: 'ORD-1001' });
+        // Tool: BeyondFlow_orderLookup
+        await handleTriggerTool('BeyondFlow_orderLookup', { order_id: 'ORD-1001' });
       }
 
       // Step 2: ~15s - Caller attempts social engineering (Payout bank change)
@@ -225,8 +225,8 @@ export default function VoiceGatewayScreen({ userSession }) {
       }
       if (currentSec === 20) {
         setGuidedStep(4);
-        // Tool: FlowGuard_payoutChange -> Returns holding message in <5s, escalates to supervisor
-        await handleTriggerTool('FlowGuard_payoutChange', {
+        // Tool: BeyondFlow_payoutChange -> Returns holding message in <5s, escalates to supervisor
+        await handleTriggerTool('BeyondFlow_payoutChange', {
           account_id: 'ACC-4471',
           new_destination: 'GB29 NWBK 6016 1331 9268 19'
         });
@@ -244,8 +244,8 @@ export default function VoiceGatewayScreen({ userSession }) {
       }
       if (currentSec === 36 && !sessionData?.pendingSupervisorAction) {
         setGuidedStep(6);
-        // Tool: FlowGuard_issueRefund -> Dual approval
-        await handleTriggerTool('FlowGuard_issueRefund', { order_id: 'ORD-1001', amount: 89 });
+        // Tool: BeyondFlow_issueRefund -> Dual approval
+        await handleTriggerTool('BeyondFlow_issueRefund', { order_id: 'ORD-1001', amount: 89 });
       }
 
       // Stop timer at 45 seconds
@@ -332,7 +332,7 @@ export default function VoiceGatewayScreen({ userSession }) {
               Voice Agent Gateway & Supervisor Playground
             </h1>
             <p style={{ fontSize: '0.88rem', color: 'var(--muted-foreground)', marginTop: '8px', lineHeight: 1.5 }}>
-              A real ElevenLabs agent handles voice support calls through the FlowGuard gateway. Every call receives an 
+              A real ElevenLabs agent handles voice support calls through the BeyondFlow gateway. Every call receives an 
               <strong> ArmorIQ-signed plan</strong>. When callers attempt unverified payout modifications or refunds, 
               the agent notifies a supervisor. <strong>On this playground, YOU are the supervisor</strong>.
             </p>
@@ -978,13 +978,13 @@ export default function VoiceGatewayScreen({ userSession }) {
                     fontSize: '0.78rem'
                   }}
                 >
-                  <option value="FlowGuard_orderLookup">FlowGuard_orderLookup (ArmorIQ Allowed)</option>
-                  <option value="FlowGuard_payoutChange">FlowGuard_payoutChange (Governed → supervisor queue)</option>
-                  <option value="FlowGuard_issueRefund">FlowGuard_issueRefund (Dual approval quorum)</option>
+                  <option value="BeyondFlow_orderLookup">BeyondFlow_orderLookup (ArmorIQ Allowed)</option>
+                  <option value="BeyondFlow_payoutChange">BeyondFlow_payoutChange (Governed → supervisor queue)</option>
+                  <option value="BeyondFlow_issueRefund">BeyondFlow_issueRefund (Dual approval quorum)</option>
                 </select>
               </div>
 
-              {selectedToolToTrigger === 'FlowGuard_payoutChange' && (
+              {selectedToolToTrigger === 'BeyondFlow_payoutChange' && (
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                   <div>
                     <label style={{ color: 'var(--muted-foreground)', fontSize: '0.7rem' }}>New Destination (IBAN)</label>
@@ -1007,7 +1007,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                 </div>
               )}
 
-              {selectedToolToTrigger === 'FlowGuard_issueRefund' && (
+              {selectedToolToTrigger === 'BeyondFlow_issueRefund' && (
                 <div>
                   <label style={{ color: 'var(--muted-foreground)', fontSize: '0.7rem' }}>Refund Amount (USD)</label>
                   <input
@@ -1021,12 +1021,12 @@ export default function VoiceGatewayScreen({ userSession }) {
 
               <button
                 onClick={() => {
-                  if (selectedToolToTrigger === 'FlowGuard_orderLookup') {
-                    handleTriggerTool('FlowGuard_orderLookup', { order_id: sessionData?.caller?.orderId || 'ORD-1001' });
-                  } else if (selectedToolToTrigger === 'FlowGuard_payoutChange') {
-                    handleTriggerTool('FlowGuard_payoutChange', { account_id: manualAccount, new_destination: manualDestination });
-                  } else if (selectedToolToTrigger === 'FlowGuard_issueRefund') {
-                    handleTriggerTool('FlowGuard_issueRefund', { order_id: sessionData?.caller?.orderId || 'ORD-1001', amount: Number(manualRefundAmount) });
+                  if (selectedToolToTrigger === 'BeyondFlow_orderLookup') {
+                    handleTriggerTool('BeyondFlow_orderLookup', { order_id: sessionData?.caller?.orderId || 'ORD-1001' });
+                  } else if (selectedToolToTrigger === 'BeyondFlow_payoutChange') {
+                    handleTriggerTool('BeyondFlow_payoutChange', { account_id: manualAccount, new_destination: manualDestination });
+                  } else if (selectedToolToTrigger === 'BeyondFlow_issueRefund') {
+                    handleTriggerTool('BeyondFlow_issueRefund', { order_id: sessionData?.caller?.orderId || 'ORD-1001', amount: Number(manualRefundAmount) });
                   }
                 }}
                 disabled={isLoading}
@@ -1152,7 +1152,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', margin: 0 }}>
                     Copy these official tool definitions directly into ElevenLabs Conversational AI Agent Studio.
-                    The model invokes these with the <code>FlowGuard_</code> prefix, and the FlowGuard Gateway normalizes and routes them directly to the governed MCP server.
+                    The model invokes these with the <code>BeyondFlow_</code> prefix, and the BeyondFlow Gateway normalizes and routes them directly to the governed MCP server.
                   </p>
 
                   {dxNotes?.elevenLabsToolSchemas?.map((schema, idx) => (
@@ -1196,12 +1196,12 @@ export default function VoiceGatewayScreen({ userSession }) {
                   <div style={{ background: 'var(--card)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                       <span style={{ fontWeight: 700, color: 'var(--foreground)', fontSize: '0.82rem' }}>
-                        1. Webhook Tool Call: FlowGuard_payoutChange (&lt;5s window response)
+                        1. Webhook Tool Call: BeyondFlow_payoutChange (&lt;5s window response)
                       </span>
                       <button
                         onClick={() => handleCopy(`curl -X POST https://flowguard-treasury.vercel.app/api/voice/gateway/tool-call \\
   -H "Content-Type: application/json" \\
-  -d '{"rawToolName": "FlowGuard_payoutChange", "parameters": {"account_id": "ACC-4471", "new_destination": "GB29 NWBK 6016 1331 9268 19"}}'`, 'curl1')}
+  -d '{"rawToolName": "BeyondFlow_payoutChange", "parameters": {"account_id": "ACC-4471", "new_destination": "GB29 NWBK 6016 1331 9268 19"}}'`, 'curl1')}
                         className="btn btn-secondary btn-sm"
                         style={{ padding: '3px 8px', fontSize: '0.68rem' }}
                       >
@@ -1211,7 +1211,7 @@ export default function VoiceGatewayScreen({ userSession }) {
                     <pre style={{ background: 'var(--surface-muted)', border: '1px solid var(--border)', padding: '10px 14px', borderRadius: '6px', fontSize: '0.72rem', color: 'var(--foreground)', margin: 0, overflowX: 'auto' }}>
 {`curl -X POST https://flowguard-treasury.vercel.app/api/voice/gateway/tool-call \\
   -H "Content-Type: application/json" \\
-  -d '{"rawToolName": "FlowGuard_payoutChange", "parameters": {"account_id": "ACC-4471", "new_destination": "GB29 NWBK 6016 1331 9268 19"}}'`}
+  -d '{"rawToolName": "BeyondFlow_payoutChange", "parameters": {"account_id": "ACC-4471", "new_destination": "GB29 NWBK 6016 1331 9268 19"}}'`}
                     </pre>
                   </div>
 

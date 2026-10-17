@@ -56,7 +56,7 @@ All enforcement calls matched `flowguard-treasury-allowlist`
 
 ## HELD is a real platform object
 
-`issue_refund` is FlowGuard's designed hold path for refunds: instead of
+`issue_refund` is BeyondFlow's designed hold path for refunds: instead of
 executing, the script creates a delegation through the platform API
 (`POST /delegation/request`). The platform's own response — “Delegation request
 created. Awaiting approval from senior officer.” with a real delegation id — is
@@ -79,7 +79,7 @@ and the matching `ARMORIQ_MCP_FLOWGUARD_TREASURY_MCP_*` credential.
 - **2026-10-15 (UTC)** — first accepted run, via a Cloudflare tunnel to the
   local server (platform record then named `intentgate-support-mcp`). Written up
   in `EVIDENCE.md` sections 1–4. That record was later migrated to the
-  production URL and the consolidated FlowGuard naming — see the migration note
+  production URL and the consolidated BeyondFlow naming — see the migration note
   in `EVIDENCE.md` and `DISCLOSURES.md`.
 - **2026-10-16 19:06 UTC** — re-verified on `https://flowguard-treasury.vercel.app/mcp`
   (this folder). These captures supersede earlier partial Oct-16 captures.

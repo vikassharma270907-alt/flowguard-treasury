@@ -1,5 +1,5 @@
 /**
- * FlowGuard - Realistic Synthetic Seed Data for Sandbox Demo
+ * BeyondFlow - Realistic Synthetic Seed Data for Sandbox Demo
  * Reflects small business cross-border operations (E-commerce / Hardware Importer)
  * Uses standard major units as required by Airwallex APIs (e.g. 100 = $100.00).
  */

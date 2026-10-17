@@ -24,7 +24,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
   const [successMessage, setSuccessMessage] = useState('');
 
   // Sign In state
-  const [email, setEmail] = useState('beyond_nothing@flowguard.io');
+  const [email, setEmail] = useState('beyond_nothing@beyondflow.io');
   const [password, setPassword] = useState('ArmorIQ#2026');
   const [showPassword, setShowPassword] = useState(false);
 
@@ -43,7 +43,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
 
   // Device Approval state
   const [deviceUserCode, setDeviceUserCode] = useState('AQ-9482-T');
-  const [selectedApiKey, setSelectedApiKey] = useState('FlowGuard Production Key');
+  const [selectedApiKey, setSelectedApiKey] = useState('BeyondFlow Production Key');
   const [deviceApproved, setDeviceApproved] = useState(false);
   const [deviceCountdown, setDeviceCountdown] = useState(3);
 
@@ -417,7 +417,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="admin@flowguard.io"
+                  placeholder="admin@beyondflow.io"
                   className="input"
                   style={{ width: '100%', padding: '9px 12px', fontSize: '0.85rem' }}
                   required
@@ -494,9 +494,9 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
                 <button
                   type="button"
                   onClick={() => {
-                    setEmail('beyond_nothing@flowguard.io');
+                    setEmail('beyond_nothing@beyondflow.io');
                     setPassword('ArmorIQ#2026');
-                    handleOAuthSignIn('ArmorIQ Platform SSO', 'beyond_nothing@flowguard.io', 'beyond_nothing');
+                    handleOAuthSignIn('ArmorIQ Platform SSO', 'beyond_nothing@beyondflow.io', 'beyond_nothing');
                   }}
                   className="btn btn-secondary btn-sm"
                   style={{ fontSize: '0.74rem', padding: '6px 8px', justifyContent: 'flex-start' }}
@@ -507,9 +507,9 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
                 <button
                   type="button"
                   onClick={() => {
-                    setEmail('sarah.chen@flowguard.io');
+                    setEmail('sarah.chen@beyondflow.io');
                     setPassword('Treasury#2026');
-                    handleOAuthSignIn('ArmorIQ Platform SSO', 'sarah.chen@flowguard.io', 'Sarah Chen');
+                    handleOAuthSignIn('ArmorIQ Platform SSO', 'sarah.chen@beyondflow.io', 'Sarah Chen');
                   }}
                   className="btn btn-secondary btn-sm"
                   style={{ fontSize: '0.74rem', padding: '6px 8px', justifyContent: 'flex-start' }}
@@ -534,7 +534,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
               {/* Google OAuth (Workspace) */}
               <button
                 type="button"
-                onClick={() => handleOAuthSignIn('Google Identity Services (OAuth 2.0 PKCE)', 'beyond_nothing@flowguard.io', 'beyond_nothing')}
+                onClick={() => handleOAuthSignIn('Google Identity Services (OAuth 2.0 PKCE)', 'beyond_nothing@beyondflow.io', 'beyond_nothing')}
                 disabled={loading}
                 style={{
                   background: '#ffffff',
@@ -567,7 +567,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
               {/* GitHub OAuth */}
               <button
                 type="button"
-                onClick={() => handleOAuthSignIn('GitHub OAuth', 'developer@flowguard.io', 'Fintech Dev Lead')}
+                onClick={() => handleOAuthSignIn('GitHub OAuth', 'developer@beyondflow.io', 'Fintech Dev Lead')}
                 disabled={loading}
                 className="btn btn-secondary"
                 style={{ padding: '9px 14px', justifyContent: 'flex-start', fontSize: '0.84rem' }}
@@ -874,7 +874,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
                     className="input"
                     style={{ width: '100%', padding: '9px 12px', fontSize: '0.82rem' }}
                   >
-                    <option value="FlowGuard Production Key">
+                    <option value="BeyondFlow Production Key">
                       Production Workspace Key (Active Policy)
                     </option>
                     <option value="Sandbox Testing Key">
@@ -951,7 +951,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
                     type="email"
                     value={forgotEmail}
                     onChange={e => setForgotEmail(e.target.value)}
-                    placeholder="officer@flowguard.io"
+                    placeholder="officer@beyondflow.io"
                     className="input"
                     style={{ width: '100%', padding: '9px 12px', fontSize: '0.85rem' }}
                     required

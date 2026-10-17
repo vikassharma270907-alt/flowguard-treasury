@@ -1,4 +1,4 @@
-# FlowGuard — MCP Servers & ArmorIQ Governance Architecture
+# BeyondFlow — MCP Servers & ArmorIQ Governance Architecture
 
 > **Official Technical Specification & Architecture Blueprint**  
 > Covers: Model Context Protocol (MCP) server implementations, tool schemas, and end-to-end cryptographic intent governance with ArmorIQ.
@@ -134,7 +134,7 @@ sequenceDiagram
     autonumber
     actor Caller as Customer Voice / User
     participant Agent as ElevenLabs Agent
-    participant Gateway as FlowGuard Gateway (:8790)
+    participant Gateway as BeyondFlow Gateway (:8790)
     participant SDK as @armoriq/sdk Client
     participant IAP as ArmorIQ IAP (iap.armoriq.ai)
     participant PEP as ArmorIQ Proxy (proxy.armoriq.ai)
@@ -142,11 +142,11 @@ sequenceDiagram
     actor Supervisor as Supervisor Playground
 
     Caller->>Agent: "Where is my order ORD-1001?"
-    Agent->>Gateway: POST /webhook (FlowGuard_lookup_order)
+    Agent->>Gateway: POST /webhook (BeyondFlow_lookup_order)
     
     rect rgb(240, 248, 255)
         note over Gateway,SDK: Phase 1: Canonical Intent Capture
-        Gateway->>Gateway: Strip "FlowGuard_" prefix -> "lookup_order"
+        Gateway->>Gateway: Strip "BeyondFlow_" prefix -> "lookup_order"
         Gateway->>SDK: capturePlan('elevenlabs-voice-agent', prompt, canonicalPlan)
     end
 
@@ -242,7 +242,7 @@ The PEP proxy and SDK verify:
 4. **Stored Organization Policies**: Evaluates policies stored in your ArmorIQ organization:
    * **ALLOWED**: Invocation is forwarded over HTTPS to the registered MCP endpoint.
    * **BLOCKED**: Returns `PolicyBlockedException` with policy metadata (`tool_not_in_allowlist`).
-   * **HELD**: FlowGuard's refund path creates a real platform delegation (`POST /delegation/request`) that only releases after supervisor approval.
+   * **HELD**: BeyondFlow's refund path creates a real platform delegation (`POST /delegation/request`) that only releases after supervisor approval.
 
 ---
 
@@ -264,7 +264,7 @@ ElevenLabs conversational voice agents time out webhooks after approximately 5 s
   * Supervisor 2 approves: Quorum satisfied -> Gateway triggers `releaseHeldCall()` through ArmorIQ with a freshly minted, supervisor-backed token.
 
 ### C. Decision Provenance
-No allow/block verdict is hardcoded in application logic — those verdicts are exceptions raised by ArmorIQ's policy engine on the platform (`PolicyBlockedException` / `tool_not_in_allowlist`). Refunds are held by FlowGuard's designed control: a real ArmorIQ platform delegation that releases only after two supervisor approvals.
+No allow/block verdict is hardcoded in application logic — those verdicts are exceptions raised by ArmorIQ's policy engine on the platform (`PolicyBlockedException` / `tool_not_in_allowlist`). Refunds are held by BeyondFlow's designed control: a real ArmorIQ platform delegation that releases only after two supervisor approvals.
 
 ---
 

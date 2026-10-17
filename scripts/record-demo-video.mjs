@@ -1,9 +1,9 @@
 /**
- * Automated Video Recording Script for FlowGuard
+ * Automated Video Recording Script for BeyondFlow
  *
  * Drives Chrome via Playwright with video recording enabled to create an
  * end-to-end video demonstrating:
- * 1. How FlowGuard works
+ * 1. How BeyondFlow works
  * 2. How ArmorIQ and ElevenLabs play a crucial role
  * 3. How it differs fundamentally from typical industry standards
  *
@@ -20,7 +20,7 @@ if (!fs.existsSync(VIDEO_OUTPUT_DIR)) {
 }
 
 const targetUrl = process.argv[2] || 'https://flowguard-treasury.vercel.app';
-console.log(`Starting automated video recording of FlowGuard on ${targetUrl}...`);
+console.log(`Starting automated video recording of BeyondFlow on ${targetUrl}...`);
 
 let browser;
 try {

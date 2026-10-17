@@ -1,5 +1,5 @@
 /**
- * FlowGuard - Enterprise Security & Zero-Trust Engine
+ * BeyondFlow - Enterprise Security & Zero-Trust Engine
  * 
  * Provides:
  * 1. HMAC-SHA256 Webhook & Request Signature Verification (anti-tamper & anti-replay)

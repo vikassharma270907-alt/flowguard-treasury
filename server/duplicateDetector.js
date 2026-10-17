@@ -1,5 +1,5 @@
 /**
- * FlowGuard - Deterministic Duplicate Invoice & Risk Detection Engine
+ * BeyondFlow - Deterministic Duplicate Invoice & Risk Detection Engine
  * 
  * Implements deterministic accounts payable controls based on IOFM & SAP Concur AP research:
  * 1. Exact Invoice Identifier Match (Case-insensitive)

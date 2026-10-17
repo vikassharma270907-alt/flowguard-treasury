@@ -1,5 +1,5 @@
 /**
- * FlowGuard - ArmorIQ Platform Authentication Service
+ * BeyondFlow - ArmorIQ Platform Authentication Service
  * 
  * Implements authentication adhering to official ArmorIQ platform documentation:
  * https://docs.armoriq.ai/platform/authentication
@@ -55,12 +55,12 @@ function base64UrlDecode(str) {
 const USERS = [
   {
     id: 'usr_beyond_nothing',
-    email: 'beyond_nothing@flowguard.io',
+    email: 'beyond_nothing@beyondflow.io',
     name: 'beyond_nothing',
     passwordHash: hashPassword('ArmorIQ#2026'),
     role: 'SUPER_ADMIN',
     department: 'Executive Treasury',
-    organization: 'FlowGuard Global Treasury',
+    organization: 'BeyondFlow Global Treasury',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
     verified: true,
     provider: 'ArmorIQ Platform',
@@ -73,7 +73,7 @@ const USERS = [
     passwordHash: hashPassword('Admin#2026'),
     role: 'SUPER_ADMIN',
     department: 'Fintech Engineering',
-    organization: 'FlowGuard Global Treasury',
+    organization: 'BeyondFlow Global Treasury',
     avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150',
     verified: true,
     provider: 'Google Workspace',
@@ -81,12 +81,12 @@ const USERS = [
   },
   {
     id: 'usr_sarah',
-    email: 'sarah.chen@flowguard.io',
+    email: 'sarah.chen@beyondflow.io',
     name: 'Sarah Chen',
     passwordHash: hashPassword('Treasury#2026'),
     role: 'FINANCE_DIRECTOR',
     department: 'Accounts Payable',
-    organization: 'FlowGuard Global Treasury',
+    organization: 'BeyondFlow Global Treasury',
     avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150',
     verified: true,
     provider: 'ArmorIQ Platform',
@@ -119,7 +119,7 @@ function createAccessToken(user) {
     email: user.email,
     name: user.name,
     role: user.role,
-    organization: user.organization || 'FlowGuard Treasury',
+    organization: user.organization || 'BeyondFlow Treasury',
     avatar: user.avatar,
     iat: now,
     exp: now + ACCESS_TOKEN_TTL_SEC
@@ -200,7 +200,12 @@ function sanitizeUser(user) {
 
 function authenticateWithPassword(email, password) {
   const normalizedEmail = (email || '').trim().toLowerCase();
-  const user = USERS.find(u => u.email.toLowerCase() === normalizedEmail);
+  const user = USERS.find(u => {
+    const ue = u.email.toLowerCase();
+    return ue === normalizedEmail ||
+      (normalizedEmail === 'beyond_nothing@flowguard.io' && ue === 'beyond_nothing@beyondflow.io') ||
+      (normalizedEmail === 'beyond_nothing@beyondflow.io' && ue === 'beyond_nothing@flowguard.io');
+  });
 
   if (!user) {
     return { success: false, error: 'Invalid email or password' };
@@ -237,7 +242,7 @@ function authenticateWithOAuth(provider, email, name, avatar) {
       name: name || normalizedEmail.split('@')[0],
       role: 'SUPER_ADMIN',
       department: 'Platform Operations',
-      organization: 'FlowGuard Global Treasury',
+      organization: 'BeyondFlow Global Treasury',
       avatar: avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name || normalizedEmail)}`,
       verified: true,
       provider: provider || 'OAuth Provider',
@@ -284,7 +289,7 @@ function initiateSignUp(email, name, password, organization) {
       passwordHash: hashPassword(password || 'ArmorIQ#2026'),
       role: 'FINANCE_OPERATOR',
       department: 'Treasury Operations',
-      organization: organization || 'FlowGuard Treasury',
+      organization: organization || 'BeyondFlow Treasury',
       avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name || normalizedEmail)}`,
       verified: false,
       provider: 'ArmorIQ Local Account',

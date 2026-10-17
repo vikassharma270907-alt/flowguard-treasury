@@ -1,5 +1,5 @@
 /**
- * FlowGuard - Append-Only Immutable Financial Audit Ledger
+ * BeyondFlow - Append-Only Immutable Financial Audit Ledger
  * Records every policy decision, risk check, API interaction, and status transition.
  */
 
@@ -15,7 +15,7 @@ class AuditLedger {
     this.record({
       eventType: 'SYSTEM_BOOT',
       action: 'Treasury Controller Initialized',
-      actor: 'FlowGuard Core Engine',
+      actor: 'BeyondFlow Core Engine',
       summary: 'Deterministic rules engine loaded with default $15,000.00 cash reserve floor.',
       payload: { reserveFloor: 15000, activeCorridors: ['US_LOCAL', 'GB_LOCAL', 'DE_SWIFT'] }
     });

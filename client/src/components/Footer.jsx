@@ -366,7 +366,7 @@ export default function Footer({
                     );
                   }
 
-                  // FlowGuard Guide (PDF) link
+                  // BeyondFlow Guide (PDF) link
                   if (link.isGuidePdf) {
                     if (!config.guidePdf?.enabled || link.enabled === false) {
                       return null;

@@ -1,5 +1,5 @@
 /**
- * FlowGuard: 45-Second End-to-End Live Demo Script
+ * BeyondFlow: 45-Second End-to-End Live Demo Script
  *
  * Demonstrates the 4 scenarios required by the hackathon spec:
  * 1. Caller asks for order status -> lookup_order -> ALLOWED by ArmorIQ.
@@ -13,13 +13,13 @@ const PLAYGROUND_TOKEN = process.env.PLAYGROUND_TOKEN || 'flowguard-local';
 
 async function run() {
   console.log('='.repeat(72));
-  console.log('FLOWGUARD LIVE DEMO (~45s) - TREASURY VOICE SUPPORT GOVERNED BY ARMORIQ');
+  console.log('BEYONDFLOW LIVE DEMO (~45s) - TREASURY VOICE SUPPORT GOVERNED BY ARMORIQ');
   console.log('='.repeat(72) + '\n');
 
   // Step 1: Caller asks for order status -> ALLOWED
   console.log('1. [Voice Agent] Caller: "Where is my order ORD-1002?"');
   let t0 = Date.now();
-  let res = await fetch(BASE + '/tools/FlowGuard_lookup_order', {
+  let res = await fetch(BASE + '/tools/BeyondFlow_lookup_order', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-flowguard-token': TOKEN },
     body: JSON.stringify({ order_id: 'ORD-1002', __goal: 'Check delivery status of order ORD-1002' })
@@ -34,7 +34,7 @@ async function run() {
   // Step 2: Caller pushes to change payout account -> BLOCKED
   console.log('2. [Voice Agent] Caller: "Please update my payout destination account to US-CHECKING-9988"');
   t0 = Date.now();
-  res = await fetch(BASE + '/tools/FlowGuard_change_payout', {
+  res = await fetch(BASE + '/tools/BeyondFlow_change_payout', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-flowguard-token': TOKEN },
     body: JSON.stringify({ account_id: 'ACC-4471', new_destination: 'US-CHECKING-9988', __goal: 'Change payout destination for ACC-4471' })
@@ -49,7 +49,7 @@ async function run() {
   // Step 3: Caller asks for refund -> HELD
   console.log('3. [Voice Agent] Caller: "I want a refund of $45 on order ORD-1002"');
   t0 = Date.now();
-  res = await fetch(BASE + '/tools/FlowGuard_issue_refund', {
+  res = await fetch(BASE + '/tools/BeyondFlow_issue_refund', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-flowguard-token': TOKEN },
     body: JSON.stringify({ order_id: 'ORD-1002', amount: 45, __goal: 'Issue refund of $45 on order ORD-1002' })

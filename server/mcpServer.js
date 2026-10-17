@@ -1,5 +1,5 @@
 /**
- * FlowGuard - Model Context Protocol (MCP) Server
+ * BeyondFlow - Model Context Protocol (MCP) Server
  *
  * Exposes the SAME three sandbox tools that are registered on the ArmorIQ
  * platform under `flowguard-treasury-mcp` (see mcp-server/tools.cjs — single
@@ -193,7 +193,7 @@ class FlowGuardMcpServer {
   async startStdio() {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    console.error('[FlowGuard MCP Server] Running on stdio transport');
+    console.error('[BeyondFlow MCP Server] Running on stdio transport');
   }
 }
 

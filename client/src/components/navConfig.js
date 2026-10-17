@@ -1,5 +1,5 @@
 /**
- * FlowGuard Navigation & Footer Configuration
+ * BeyondFlow Navigation & Footer Configuration
  * Centralized configuration driving Header and Footer links and metadata.
  */
 
@@ -30,7 +30,7 @@ export const headerConfig = {
 
 export const footerConfig = {
   brand: {
-    name: 'FlowGuard',
+    name: 'BeyondFlow',
     tagline: 'Intent enforcement for any MCP client and ElevenLabs voice agent, powered by ArmorIQ.',
     badge: 'F',
     socials: [

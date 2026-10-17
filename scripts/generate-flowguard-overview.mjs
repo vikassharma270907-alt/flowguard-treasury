@@ -1,6 +1,6 @@
 /**
- * FlowGuard Overview PDF Generator
- * Compiles docs/FlowGuard_Overview.pdf with professional typography, diagrams,
+ * BeyondFlow Overview PDF Generator
+ * Compiles docs/BeyondFlow_Overview.pdf with professional typography, diagrams,
  * comparative tables, and print-ready light styling.
  * 
  * Usage: node scripts/generate-flowguard-overview.mjs
@@ -15,7 +15,7 @@ if (!fs.existsSync(OUT_DIR)) {
   fs.mkdirSync(OUT_DIR, { recursive: true });
 }
 
-const PDF_PATH = path.join(OUT_DIR, 'FlowGuard_Overview.pdf');
+const PDF_PATH = path.join(OUT_DIR, 'BeyondFlow_Overview.pdf');
 const doc = new PDFDocument({
   size: 'A4',
   margins: { top: 52, bottom: 52, left: 52, right: 52 },
@@ -116,7 +116,7 @@ doc.y = 115;
 doc.fillColor(SECONDARY).font('Helvetica-Bold').fontSize(11).text('TECHNICAL ARCHITECTURE SPECIFICATION', { align: 'center', characterSpacing: 2 });
 doc.moveDown(0.8);
 
-doc.fillColor(PRIMARY).font('Helvetica-Bold').fontSize(34).text('FLOWGUARD', { align: 'center', letterSpacing: -0.5 });
+doc.fillColor(PRIMARY).font('Helvetica-Bold').fontSize(34).text('BEYONDFLOW', { align: 'center', letterSpacing: -0.5 });
 doc.fillColor(ACCENT_EMERALD).font('Helvetica-Bold').fontSize(16).text('Verifiable Voice AI Governed by ArmorIQ', { align: 'center' });
 doc.moveDown(0.5);
 
@@ -146,7 +146,7 @@ doc.fillColor(PRIMARY).font('Helvetica-Bold').fontSize(10).text('SYSTEM & INTEGR
 doc.moveDown(0.5);
 
 const metaRows = [
-  ['Project Name', 'FlowGuard'],
+  ['Project Name', 'BeyondFlow'],
   ['Repository', 'https://github.com/vikassharma270907-alt/flowguard-treasury'],
   ['Production URL', 'https://flowguard-treasury.vercel.app'],
   ['Voice Engine', 'ElevenLabs Conversational AI & Text-to-Speech API'],
@@ -190,7 +190,7 @@ const tocSections = [
     '3.3 Handling Voice Jailbreaks, Tool Hijacking & Mishearing'
   ]},
   { num: '4', title: 'How This Differs From Typical Industry Standards', page: '7', items: [
-    '4.1 Typical Voice-Bot Architecture vs. FlowGuard Zero-Trust Pipeline',
+    '4.1 Typical Voice-Bot Architecture vs. BeyondFlow Zero-Trust Pipeline',
     '4.2 Detailed Comparative Analysis Table',
     '4.3 Official Citations & Documentation References'
   ]},
@@ -223,13 +223,13 @@ tocSections.forEach(sec => {
 sectionHeading('1', 'How It Works (End-to-End Execution Flow)');
 
 subHeading('1.1 The 6-Stage Lifecycle');
-p('FlowGuard bridges natural human speech with deterministic platform governance. Every governed interaction follows the same sequence:');
+p('BeyondFlow bridges natural human speech with deterministic platform governance. Every governed interaction follows the same sequence:');
 
 p('1. User Speaks:\n' +
   '   The caller speaks to the ElevenLabs Conversational Voice Agent via phone, WebRTC, or browser audio stream (e.g. "Can you look up order ORD-1002, and issue a refund of $45?").');
 
 p('2. Agent Formulates Plan:\n' +
-  '   The voice agent extracts caller intent and dispatches tool webhook calls to the FlowGuard Gateway. Tools are presented with security namespaces (e.g. `FlowGuard_lookup_order`). The gateway strips this namespace and captures a formal plan `{ goal, steps: [{ action, mcp, params }] }`.');
+  '   The voice agent extracts caller intent and dispatches tool webhook calls to the BeyondFlow Gateway. Tools are presented with security namespaces (e.g. `BeyondFlow_lookup_order`). The gateway strips this namespace and captures a formal plan `{ goal, steps: [{ action, mcp, params }] }`.');
 
 p('3. ArmorIQ Verifies Intent:\n' +
   '   The plan is submitted to ArmorIQ (`client.capturePlan` -> `client.getIntentToken`). Stored platform policies evaluate the plan against Open Policy Agent (OPA) rules. If compliant, an Ed25519-signed Intent Token containing a Merkle proof of the plan hash is minted with a 60-second expiration.');
@@ -252,11 +252,11 @@ codeBlock(`                      [ Caller Voice Stream ]
           |  (Speech-to-Text + LLM + Voice Synthesis)    |
           +----------------------------------------------+
                                  |
-                 Webhook: FlowGuard_<tool>
+                 Webhook: BeyondFlow_<tool>
                                  v
           +----------------------------------------------+
-          |         FlowGuard Gateway Service (:8790)     |
-          |  - Strips FlowGuard_ namespace               |
+          |         BeyondFlow Gateway Service (:8790)     |
+          |  - Strips BeyondFlow_ namespace               |
           |  - Sub-5s timeout holding response           |
           |  - 2-Supervisor Quorum Governance Tracker    |
           +----------------------------------------------+
@@ -284,7 +284,7 @@ codeBlock(`                      [ Caller Voice Stream ]
    ========================================================================== */
 doc.addPage();
 subHeading('1.3 Setup & Local Execution Walkthrough');
-p('FlowGuard is architected to run seamlessly in local development and production environments. Follow these commands to initialize all services:');
+p('BeyondFlow is architected to run seamlessly in local development and production environments. Follow these commands to initialize all services:');
 
 p('Step 1: Install Dependencies & Setup Environment:');
 codeBlock(`git clone https://github.com/vikassharma270907-alt/flowguard-treasury.git
@@ -328,7 +328,7 @@ callout('Server-Side Key Isolation Standard',
 sectionHeading('2', 'The Major Role of ElevenLabs');
 
 subHeading('2.1 Conversational Voice Agents & Low-Latency Synthesis');
-p('ElevenLabs provides the voice foundation for FlowGuard. Voice interfaces demand an entirely different standard of technical execution than text chat:');
+p('ElevenLabs provides the voice foundation for BeyondFlow. Voice interfaces demand an entirely different standard of technical execution than text chat:');
 p('• Ultra-Low Latency Speech: ElevenLabs streaming voices generate speech fast enough to keep conversations natural and avoid awkward pauses.\n' +
   '• Conversational Context & Tone: ElevenLabs voices reflect appropriate emotional cadence, empathy, and clarity, transforming robotic prompts into trustworthy enterprise dialogue.\n' +
   '• Conversational Agent Framework: Enables full-duplex speech recognition, endpointing (detecting when the user finishes speaking), and dynamic tool calling.');
@@ -338,7 +338,7 @@ p('In corporate treasury and sensitive customer operations, caller anxiety is el
 p('If an AI agent sounds monotone, hesitates unnaturally, or glitches during execution, caller trust collapses immediately. ElevenLabs bridges this psychological barrier by delivering natural speech synthesis, providing confidence that the caller is being assisted by an enterprise-grade system.');
 
 subHeading('2.3 Server-Side Speech Output Proxy Implementation');
-p('FlowGuard implements an enterprise audio proxy (`POST /api/voice/synthesize`) in `server/server.js`. This guarantees that:');
+p('BeyondFlow implements an enterprise audio proxy (`POST /api/voice/synthesize`) in `server/server.js`. This guarantees that:');
 p('1. The ElevenLabs API key remains hidden in environment variables on the server.\n' +
   '2. Audio responses are cached with HTTP `Cache-Control` headers to reduce redundant API calls and optimize bandwidth.\n' +
   '3. If the server key is unconfigured in development, the proxy returns a graceful simulation payload that prompts the client to use browser Web Speech synthesis, preventing audio crashes.');
@@ -372,8 +372,8 @@ p('• Even if an attacker tricks the voice LLM into requesting an unauthorized 
    ========================================================================== */
 sectionHeading('4', 'How This Differs From Typical Industry Standards');
 
-subHeading('4.1 Legacy Voice-Bot Stacks vs. FlowGuard');
-p('Typical industry voice bots rely on "prompt guardrails" (asking the LLM politely not to do bad things) and give the agent broad static API keys. FlowGuard introduces zero-trust cryptographic verification:');
+subHeading('4.1 Legacy Voice-Bot Stacks vs. BeyondFlow');
+p('Typical industry voice bots rely on "prompt guardrails" (asking the LLM politely not to do bad things) and give the agent broad static API keys. BeyondFlow introduces zero-trust cryptographic verification:');
 
 subHeading('4.2 Formal Comparative Analysis Table');
 
@@ -386,7 +386,7 @@ doc.save().fillColor('#0f172a').rect(52, tableTop, 491, 24).fill().restore();
 doc.fillColor('#ffffff').font('Helvetica-Bold').fontSize(8.5);
 doc.text('SECURITY DIMENSION', 58, tableTop + 7, { width: 105 });
 doc.text('TYPICAL VOICE-BOT STACKS', 174, tableTop + 7, { width: 175 });
-doc.text('FLOWGUARD (ELEVENLABS + ARMORIQ)', 364, tableTop + 7, { width: 175 });
+doc.text('BEYONDFLOW (ELEVENLABS + ARMORIQ)', 364, tableTop + 7, { width: 175 });
 
 const compData = [
   ['Authorization Model', 'Broad API keys valid for all endpoints indefinitely.', 'Single-use cryptographic intent token valid for ~60s.'],
@@ -411,7 +411,7 @@ compData.forEach((row, idx) => {
 doc.y = tableY + 12;
 
 subHeading('4.3 Official Citations & Documentation References');
-p('The security guarantees and architectural models in FlowGuard adhere to published documentation:\n' +
+p('The security guarantees and architectural models in BeyondFlow adhere to published documentation:\n' +
   '• ElevenLabs Conversational Voice API: https://elevenlabs.io/docs/conversational-ai\n' +
   '• ArmorIQ Platform & Policy Architecture: https://docs.armoriq.ai/platform/policies\n' +
   '• ArmorIQ Core Methods & Merkle CSRG: https://docs.armoriq.ai/sdk/core-methods\n' +
@@ -423,7 +423,7 @@ p('The security guarantees and architectural models in FlowGuard adhere to publi
 sectionHeading('5', 'Importance and Use Cases');
 
 subHeading('5.1 High-Assurance Enterprise Use Cases');
-p('FlowGuard is designed for environments where automated errors carry real cost:');
+p('BeyondFlow is designed for environments where automated errors carry real cost:');
 p('• Corporate Treasury & Disbursements: Governs voice agents handling payment inquiries, wire status checks, and supplier invoice adjustments. Payout account changes are blocked; high-value refunds require dual sign-off.\n' +
   '• Healthcare Patient Portals: Authenticates patient identity, releases appointments, and blocks unauthorized medication alterations or prescription transfers without physician sign-off.\n' +
   '• High-Value E-Commerce Support: Automates order lookups safely while holding chargeback inquiries and store credit requests for human supervisor approval.');
@@ -446,14 +446,14 @@ p('• AI Engineers: Focus on conversational flows and voice prompts without hav
 sectionHeading('6', 'Roadmap and Next Steps');
 
 subHeading('6.1 Production Hardening Roadmap');
-p('The FlowGuard project establishes the core architecture for verifiable voice AI. Future iterations will introduce:');
+p('The BeyondFlow project establishes the core architecture for verifiable voice AI. Future iterations will introduce:');
 p('• Telephony Trunking (SIP/PSTN): Direct integration with Twilio Voice and standard phone networks, enabling callers to dial corporate support numbers directly into the ArmorIQ-governed gateway.\n' +
   '• Hardware Security Module (HSM) Integration: Storing ArmorIQ root signing keys in AWS CloudHSM or Google Cloud KMS for defense-in-depth.\n' +
   '• Real-Time Voice Biometrics: Layering ElevenLabs caller voice verification with ArmorIQ identity tokens for multi-factor caller authentication.');
 
 subHeading('6.2 Project Verification & Compliance Status');
 p('All requirements specified by the ArmorIQ Developer Hackathon and technical guidelines are verified:');
-codeBlock(`[X] Unique Project Name & Identity : FlowGuard (Verifiable Voice AI)
+codeBlock(`[X] Unique Project Name & Identity : BeyondFlow (Verifiable Voice AI)
 [X] Real ArmorIQ Integration       : Verified on platform (Org dd9e9695-e58d)
 [X] Real Model Context Protocol    : 3 tools (lookup_order, change_payout, issue_refund)
 [X] Dual-Supervisor Quorum         : 2 approvals required before refund execution
@@ -465,7 +465,7 @@ codeBlock(`[X] Unique Project Name & Identity : FlowGuard (Verifiable Voice AI)
 
 doc.moveDown(0.8);
 hr();
-doc.fillColor(MUTED).font('Helvetica-Bold').fontSize(9).text('FlowGuard · Verifiable Voice AI Governed by ArmorIQ & Powered by ElevenLabs', { align: 'center' });
+doc.fillColor(MUTED).font('Helvetica-Bold').fontSize(9).text('BeyondFlow · Verifiable Voice AI Governed by ArmorIQ & Powered by ElevenLabs', { align: 'center' });
 
 /* ==========================================================================
    PAGE NUMBERING (FOOTER)
@@ -475,7 +475,7 @@ for (let i = 0; i < totalPages.count; i++) {
   doc.switchToPage(i);
   doc.fillColor('#94a3b8').font('Helvetica').fontSize(7.5);
   doc.text(
-    `FlowGuard Technical Overview | ElevenLabs + ArmorIQ Integration | Page ${i + 1} of ${totalPages.count}`,
+    `BeyondFlow Technical Overview | ElevenLabs + ArmorIQ Integration | Page ${i + 1} of ${totalPages.count}`,
     52,
     796,
     { align: 'center', width: 491 }
@@ -486,5 +486,5 @@ doc.end();
 
 writeStream.on('finish', () => {
   const stats = fs.statSync(PDF_PATH);
-  console.log(`✅ FlowGuard_Overview.pdf generated at ${PDF_PATH} (${(stats.size / 1024).toFixed(1)} KB, ${totalPages.count} pages)`);
+  console.log(`✅ BeyondFlow_Overview.pdf generated at ${PDF_PATH} (${(stats.size / 1024).toFixed(1)} KB, ${totalPages.count} pages)`);
 });

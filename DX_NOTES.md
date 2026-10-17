@@ -15,13 +15,13 @@ This document records the developer experience findings, architectural decisions
   - The pending case is stored in the gateway's supervisor queue with its `case_id`, canonical plan hash, and ArmorIQ token ID.
   - The agent is equipped with a follow-up tool (`check_supervisor_decision`), allowing it to check back and relay the supervisor's decision to the caller once rendered.
 
-### Gotcha 2: Tool Name Prefix Normalization (`FlowGuard_<tool>`)
-- **The Challenge**: To prevent namespace collisions across multiple tool providers in ElevenLabs, tool definitions are presented to LLMs with namespaces or prefixes such as `FlowGuard_<tool>` (e.g. `FlowGuard_orderLookup`, `FlowGuard_payoutChange`, `FlowGuard_issueRefund`).
+### Gotcha 2: Tool Name Prefix Normalization (`BeyondFlow_<tool>`)
+- **The Challenge**: To prevent namespace collisions across multiple tool providers in ElevenLabs, tool definitions are presented to LLMs with namespaces or prefixes such as `BeyondFlow_<tool>` (e.g. `BeyondFlow_orderLookup`, `BeyondFlow_payoutChange`, `BeyondFlow_issueRefund`).
 - **Our Solution**:
   - The ArmorIQ plan must match the exact onboarded MCP tool names (`lookup_order`, `change_payout`, `issue_refund`). If the plan is captured with the raw prefixed name, Merkle tree verification against the onboarded MCP schema will fail.
   - The gateway applies transparent prefix normalization via `canonicalToolName(raw)`:
     ```javascript
-    export const TOOL_PREFIXES = ['FlowGuard_', 'IntentGate_'];
+    export const TOOL_PREFIXES = ['BeyondFlow_', 'IntentGate_'];
     export function canonicalToolName(raw) {
       for (const prefix of TOOL_PREFIXES) {
         if (raw.startsWith(prefix)) return raw.slice(prefix.length);

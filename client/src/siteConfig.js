@@ -11,7 +11,7 @@
  */
 
 // SINGLE SOURCE OF TRUTH FOR PRODUCT NAME
-export const PRODUCT_NAME = "FlowGuard";
+export const PRODUCT_NAME = "BeyondFlow";
 
 // Support email across the entire project
 export const SUPPORT_EMAIL = "beyondnothing01@gmail.com";
@@ -38,7 +38,7 @@ export const siteConfig = {
     url: CALENDLY_URL
   },
 
-  // FlowGuard Guide (PDF) Configuration - Single Source of Truth
+  // BeyondFlow Guide (PDF) Configuration - Single Source of Truth
   guidePdf: {
     enabled: true,
     path: "/docs/flowguard-guide.pdf",

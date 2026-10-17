@@ -1,14 +1,14 @@
-# Disclosures & Attribution — FlowGuard
+# Disclosures & Attribution — BeyondFlow
 
-This document discloses all libraries, frameworks, tools, and developer lineage used in FlowGuard for the ArmorIQ Flow State Hackathon, in accordance with the official hackathon rules.
+This document discloses all libraries, frameworks, tools, and developer lineage used in BeyondFlow for the ArmorIQ Flow State Hackathon, in accordance with the official hackathon rules.
 
 ## 1. Development Window & Git History
 - **Official Window**: Development was carried out within the official hackathon window (October 10–17, 2026).
 - **Git History**: Commit history reflects iterative authoring of the ArmorIQ policy integration, the Model Context Protocol (MCP) server, the voice gateway holding pattern, and the cryptographic boundary test.
 
 ## 2. Lineage & Development Statement
-- **Developer Statement**: FlowGuard was assembled during the hackathon window and reuses the developer's earlier MIT-licensed FlowGuard prototype components (disclosed below), alongside third-party open-source libraries (`@armoriq/sdk`, `@modelcontextprotocol/sdk`, Three.js, React, Express).
-- Earlier architectural prototypes (such as the FlowGuard gateway concept for sub-5-second voice holding patterns and the Airwallex sandbox adapter) were adapted and unified into FlowGuard under the MIT License.
+- **Developer Statement**: BeyondFlow was assembled during the hackathon window and reuses the developer's earlier MIT-licensed BeyondFlow prototype components (disclosed below), alongside third-party open-source libraries (`@armoriq/sdk`, `@modelcontextprotocol/sdk`, Three.js, React, Express).
+- Earlier architectural prototypes (such as the BeyondFlow gateway concept for sub-5-second voice holding patterns and the Airwallex sandbox adapter) were adapted and unified into BeyondFlow under the MIT License.
 
 ## 3. Third-Party Libraries & Frameworks
 The following open-source packages and frameworks were utilized:

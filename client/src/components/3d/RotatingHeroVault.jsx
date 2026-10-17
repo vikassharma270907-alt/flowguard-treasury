@@ -1,7 +1,7 @@
 /**
  * 3D Element 1: Rotating Hero Vault
  * 
- * Interactive 3D cryptographic treasury vault representing FlowGuard & ArmorIQ.
+ * Interactive 3D cryptographic treasury vault representing BeyondFlow & ArmorIQ.
  * Built with Three.js; features an inner glowing core, outer holographic protective cage,
  * and orbital intent verification ring.
  * 
@@ -222,7 +222,7 @@ export default function RotatingHeroVault({ height = 340, interactive = true }) 
   }, [isDark, height, interactive]);
 
   if (!hasWebGL) {
-    return <WebGLFallback title="FlowGuard Cryptographic Vault" description="Interactive 3D model fallback. All intent verification rules remain strictly active." />;
+    return <WebGLFallback title="BeyondFlow Cryptographic Vault" description="Interactive 3D model fallback. All intent verification rules remain strictly active." />;
   }
 
   return (
@@ -238,7 +238,7 @@ export default function RotatingHeroVault({ height = 340, interactive = true }) 
         cursor: interactive ? 'grab' : 'default',
         touchAction: 'none'
       }}
-      title="Interactive 3D FlowGuard Vault: Drag or hover to inspect cryptographic boundaries"
+      title="Interactive 3D BeyondFlow Vault: Drag or hover to inspect cryptographic boundaries"
     >
       {/* Floating HUD Badge */}
       <div style={{

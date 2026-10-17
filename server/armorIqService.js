@@ -1,5 +1,5 @@
 /**
- * FlowGuard - ArmorIQ Intent Governance & Policy Verification Service
+ * BeyondFlow - ArmorIQ Intent Governance & Policy Verification Service
  * 
  * Sits between financial planning and Airwallex payout execution to enforce:
  * 1. Cryptographic Intent Capture: canonicalizes payment plan steps before execution.
@@ -52,7 +52,7 @@ class ArmorIQService {
         this.client = new ArmorIQClient({ apiKey: key });
         this.apiKey = key;
         this.mode = 'ARMORIQ_LIVE';
-        console.log(`[FlowGuard] ArmorIQ Live Client initialized with key ${key.substring(0, 10)}...`);
+        console.log(`[BeyondFlow] ArmorIQ Live Client initialized with key ${key.substring(0, 10)}...`);
       } catch (err) {
         console.warn('ArmorIQ init fallback:', err.message);
         this.client = null;
@@ -113,7 +113,7 @@ class ArmorIQService {
    * Uses client.forUser(email).startSession().startPlan(...) per docs.armoriq.ai/sdk
    */
   async mintPlanToken({
-    userEmail = 'operator@flowguard.io',
+    userEmail = 'operator@beyondflow.io',
     goal = 'Treasury execution',
     tools = [],
     agentId = 'flowguard-treasury-agent-v1'
@@ -285,7 +285,7 @@ class ArmorIQService {
       auditLedger.record({
         eventType: 'POLICY_EVALUATION',
         action: 'App-side pre-check: execution blocked',
-        actor: 'FlowGuard app-side rules',
+        actor: 'BeyondFlow app-side rules',
         requestId,
         latencyMs: decision.latencyMs,
         summary: `App-side pre-check blocked the transfer for ${invoice.invoice_number}: ${violations[0].detail}`,
@@ -302,7 +302,7 @@ class ArmorIQService {
     }
 
     // 3. Issue Intent Token via ArmorIQ (Live CSRG-IAP or Intent Assurance)
-    const userEmail = invoice.vendor_id ? `${invoice.vendor_id}@flowguard.treasury` : 'treasury.operator@flowguard.io';
+    const userEmail = invoice.vendor_id ? `${invoice.vendor_id}@flowguard.treasury` : 'treasury.operator@beyondflow.io';
     const mintResult = await this.mintPlanToken({
       userEmail,
       goal: `Authorize payout of ${invoice.currency} ${invoice.amount} to ${invoice.vendor_name}`,
@@ -324,7 +324,7 @@ class ArmorIQService {
       auditLedger.record({
         eventType: 'POLICY_EVALUATION',
         action: 'Execution halted: ArmorIQ token not issued',
-        actor: 'FlowGuard app-side rules',
+        actor: 'BeyondFlow app-side rules',
         requestId,
         latencyMs: blockedDecision.latencyMs,
         summary: `No ArmorIQ token was issued (${blockedDecision.reason}). The payout was not authorized — no simulated decision was substituted.`,

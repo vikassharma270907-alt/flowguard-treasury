@@ -1,5 +1,5 @@
 /**
- * FlowGuard - Backend API Server
+ * BeyondFlow - Backend API Server
  * 
  * Provides clean REST endpoints for:
  * - Airwallex Sandbox connection status & auth verification
@@ -51,7 +51,7 @@ let activeScenario = 'SCENARIO_A';
 let currentUserSession = {
   id: 'usr_admin_01',
   name: 'beyond_nothing',
-  email: 'beyond_nothing@flowguard.io',
+  email: 'beyond_nothing@beyondflow.io',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
   role: 'SUPER_ADMIN',
   provider: 'Google Workspace OAuth',
@@ -78,9 +78,9 @@ let adminGovernanceSettings = {
 };
 
 let adminOrgMembers = [
-  { id: 'usr_01', name: 'beyond_nothing', email: 'beyond_nothing@flowguard.io', role: 'SUPER_ADMIN', department: 'Treasury & Risk', status: 'ACTIVE', lastLogin: 'Just now' },
-  { id: 'usr_02', name: 'Sarah Chen', email: 'sarah.chen@flowguard.io', role: 'FINANCE_DIRECTOR', department: 'Accounts Payable', status: 'ACTIVE', lastLogin: '2 hours ago' },
-  { id: 'usr_03', name: 'Marcus Sterling', email: 'm.sterling@flowguard.io', role: 'COMPLIANCE_AUDITOR', department: 'Internal Audit', status: 'ACTIVE', lastLogin: '1 day ago' },
+  { id: 'usr_01', name: 'beyond_nothing', email: 'beyond_nothing@beyondflow.io', role: 'SUPER_ADMIN', department: 'Treasury & Risk', status: 'ACTIVE', lastLogin: 'Just now' },
+  { id: 'usr_02', name: 'Sarah Chen', email: 'sarah.chen@beyondflow.io', role: 'FINANCE_DIRECTOR', department: 'Accounts Payable', status: 'ACTIVE', lastLogin: '2 hours ago' },
+  { id: 'usr_03', name: 'Marcus Sterling', email: 'm.sterling@beyondflow.io', role: 'COMPLIANCE_AUDITOR', department: 'Internal Audit', status: 'ACTIVE', lastLogin: '1 day ago' },
   { id: 'usr_04', name: 'Airwallex Agent Bot', email: 'agent@flowguard.bot', role: 'AUTONOMOUS_AGENT', department: 'Automated Operations', status: 'MANAGED_BY_ARMORIQ', lastLogin: 'Continuous' }
 ];
 
@@ -205,7 +205,7 @@ app.post('/api/auth/refresh', (req, res) => {
 
 // 6. OAuth Sign In (Google / GitHub / ArmorIQ SSO)
 app.post('/api/auth/oauth/login', (req, res) => {
-  const { provider = 'Google Workspace OAuth', email = 'beyond_nothing@flowguard.io', name = 'beyond_nothing', avatar } = req.body || {};
+  const { provider = 'Google Workspace OAuth', email = 'beyond_nothing@beyondflow.io', name = 'beyond_nothing', avatar } = req.body || {};
 
   const result = authService.authenticateWithOAuth(provider, email, name, avatar);
   currentUserSession = result.user;
@@ -223,7 +223,7 @@ app.post('/api/auth/oauth/login', (req, res) => {
 
 // 7. Google Identity Services (PKCE)
 app.post('/api/auth/google', (req, res) => {
-  const { email = 'beyond_nothing@flowguard.io', name, avatar } = req.body || {};
+  const { email = 'beyond_nothing@beyondflow.io', name, avatar } = req.body || {};
   const result = authService.authenticateWithOAuth('Google Identity Services (OAuth 2.0 PKCE)', email, name, avatar);
   currentUserSession = result.user;
 
@@ -301,7 +301,7 @@ app.post('/api/admin/users', (req, res) => {
   const newMember = {
     id: 'usr_' + uuidv4().substring(0, 6),
     name: name || 'New Operator',
-    email: email || 'operator@flowguard.io',
+    email: email || 'operator@beyondflow.io',
     role: role || 'FINANCE_OPERATOR',
     department: department || 'Treasury',
     status: 'ACTIVE',
@@ -448,7 +448,7 @@ app.post('/api/voice/synthesize', async (req, res) => {
   }
 });
 
-// --- FlowGuard Model Context Protocol (MCP) Server Endpoints ---
+// --- BeyondFlow Model Context Protocol (MCP) Server Endpoints ---
 app.get('/api/mcp/status', (req, res) => {
   const connected = !!armorIqEnforcement.getClient();
   res.json({
@@ -623,7 +623,7 @@ app.get('/api/status', async (req, res) => {
   }
 
   res.json({
-    appName: 'FlowGuard - Airwallex Sandbox Decision Assistant',
+    appName: 'BeyondFlow - Airwallex Sandbox Decision Assistant',
     isLiveSandbox: authStatus.success,
     mode: authStatus.success ? 'AIRWALLEX_LIVE_SANDBOX' : 'SANDBOX_MOCK_ADAPTER',
     armorIq: {
@@ -1061,7 +1061,7 @@ app.get('/api/audit-logs', (req, res) => {
   res.json({ events });
 });
 
-// --- FlowGuard Guide PDF Endpoint with Strict Header Compliance ---
+// --- BeyondFlow Guide PDF Endpoint with Strict Header Compliance ---
 const fs = require('fs');
 const path = require('path');
 const distPath = path.join(__dirname, '../client/dist');
@@ -1099,8 +1099,8 @@ app.use((req, res, next) => {
 // (skip when imported as a module — e.g. the Vercel handler or the test suite)
 if (!process.env.VERCEL && require.main === module) {
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[FlowGuard Server] Running on http://localhost:${PORT} and http://127.0.0.1:${PORT}`);
-    console.log(`[FlowGuard Server] Airwallex Sandbox Mode: ${airwallexService.isConfigured() ? 'LIVE_SANDBOX' : 'MOCK_ADAPTER'}`);
+    console.log(`[BeyondFlow Server] Running on http://localhost:${PORT} and http://127.0.0.1:${PORT}`);
+    console.log(`[BeyondFlow Server] Airwallex Sandbox Mode: ${airwallexService.isConfigured() ? 'LIVE_SANDBOX' : 'MOCK_ADAPTER'}`);
   });
 }
 

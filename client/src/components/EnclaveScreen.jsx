@@ -1,8 +1,8 @@
 /**
- * How FlowGuard Works & 3D Cryptographic Enclave Screen
+ * How BeyondFlow Works & 3D Cryptographic Enclave Screen
  * 
  * Comprehensive walkthrough complying with Hackathon Checkpoints 5 & 7:
- * - Theme-aware inline SVG architecture flow (Agent -> FlowGuard Gateway -> ArmorIQ Cloud -> Governed MCP Server)
+ * - Theme-aware inline SVG architecture flow (Agent -> BeyondFlow Gateway -> ArmorIQ Cloud -> Governed MCP Server)
  * - Exact production ArmorIQ SDK method calls
  * - 4-stage cryptographic intent execution pipeline
  * - Three.js WebGL interactive spatial visualizers (Rotating Vault, Intent Gyroscope, Particle Constellation)
@@ -61,7 +61,7 @@ export default function EnclaveScreen({ onNavigate }) {
       badgeColor: "#38bdf8",
       title: "1. Intent Plan Capture & SHA-256 Merkle Hashing",
       headline: "The agent formally declares its goal and tool parameters before execution begins.",
-      explanation: "When an operator or voice caller triggers an operation (e.g. checking order status, changing payout destination, or issuing a refund), FlowGuard intercepts the intent. The client invokes client.capturePlan(agentId, goal, plan). The plan binds every step, target MCP server, and parameter. FlowGuard computes a SHA-256 Merkle hash that binds every step of the plan.",
+      explanation: "When an operator or voice caller triggers an operation (e.g. checking order status, changing payout destination, or issuing a refund), BeyondFlow intercepts the intent. The client invokes client.capturePlan(agentId, goal, plan). The plan binds every step, target MCP server, and parameter. BeyondFlow computes a SHA-256 Merkle hash that binds every step of the plan.",
       keyPoints: [
         "Prevents prompt injection, tool poisoning, and agent drift at the source",
         "Deterministic Plan Hash: b3e6889fe267adb6c3a64790176...",
@@ -75,7 +75,7 @@ export default function EnclaveScreen({ onNavigate }) {
       badgeColor: "#818cf8",
       title: "2. Ed25519 Intent Token Minting at iap.armoriq.ai",
       headline: "ArmorIQ verifies policy permissions and issues a single-use authorization token.",
-      explanation: "FlowGuard submits the captured plan to ArmorIQ's Identity & Policy Assertion (IAP) service at https://iap.armoriq.ai. ArmorIQ evaluates the registered agent identity (flowguard-agent), user permissions, and the active workspace policy (flowguard-treasury-allowlist). If approved, ArmorIQ mints an Ed25519 cryptographically signed Intent Token containing the plan hash and step Merkle root.",
+      explanation: "BeyondFlow submits the captured plan to ArmorIQ's Identity & Policy Assertion (IAP) service at https://iap.armoriq.ai. ArmorIQ evaluates the registered agent identity (flowguard-agent), user permissions, and the active workspace policy (flowguard-treasury-allowlist). If approved, ArmorIQ mints an Ed25519 cryptographically signed Intent Token containing the plan hash and step Merkle root.",
       keyPoints: [
         "Real platform token ID: 951f7625efe24fb18039b62fadfed910",
         "Asymmetrically signed by ArmorIQ private key; verifiable by public key",
@@ -171,10 +171,10 @@ export default function EnclaveScreen({ onNavigate }) {
               </span>
             </div>
             <h1 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.4rem)', fontWeight: 800, margin: '0 0 10px 0', letterSpacing: '-0.025em', color: 'var(--foreground)' }}>
-              How FlowGuard Works: Architecture & Cryptographic Enclave
+              How BeyondFlow Works: Architecture & Cryptographic Enclave
             </h1>
             <p style={{ fontSize: 'clamp(0.9rem, 1.8vw, 1.05rem)', color: 'var(--muted-foreground)', margin: '0 0 20px 0', lineHeight: 1.6 }}>
-              FlowGuard enforces cryptographic intent boundaries on autonomous AI agents. Every tool invocation passes through ArmorIQ's Policy Enforcement Point (PEP) proxy to prove compliance with declared user intent via signed Ed25519 tokens, Merkle plan hashes, and dual-supervisor quorum.
+              BeyondFlow enforces cryptographic intent boundaries on autonomous AI agents. Every tool invocation passes through ArmorIQ's Policy Enforcement Point (PEP) proxy to prove compliance with declared user intent via signed Ed25519 tokens, Merkle plan hashes, and dual-supervisor quorum.
             </p>
 
             {/* Quick Action Navigation Buttons */}
