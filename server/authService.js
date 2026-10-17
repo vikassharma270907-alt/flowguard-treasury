@@ -44,11 +44,11 @@ function base64UrlEncode(str) {
 }
 
 function base64UrlDecode(str) {
-  let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
-  while (base64.length % 4) {
-    base64 += '=';
+  try {
+    return Buffer.from(str, 'base64url').toString('utf8');
+  } catch (err) {
+    return '';
   }
-  return Buffer.from(base64, 'base64').toString('utf8');
 }
 
 // In-Memory user repository seeded with verified sandbox officers
