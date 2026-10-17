@@ -35,6 +35,30 @@ export function prefersReducedMotion() {
 }
 
 /**
+ * Evaluates whether 3D WebGL scenes should be loaded based on hardware capabilities,
+ * user preferences, data saver settings, and viewport constraints.
+ * @returns {boolean} false if prefers-reduced-motion, saveData, WebGL missing, or narrow mobile viewport (<640px).
+ */
+export function shouldLoad3D() {
+  if (typeof window === 'undefined') return false;
+  if (!isWebGLAvailable()) return false;
+  if (prefersReducedMotion()) return false;
+  if (navigator?.connection?.saveData === true) return false;
+  if (window.innerWidth < 640) return false;
+  return true;
+}
+
+/**
+ * Returns devicePixelRatio capped at max (default 1.5) to prevent fillrate bottlenecks on high-DPI displays.
+ * @param {number} max
+ * @returns {number}
+ */
+export function getCappedDpr(max = 1.5) {
+  if (typeof window === 'undefined') return 1;
+  return Math.min(window.devicePixelRatio || 1, max);
+}
+
+/**
  * Standard fallback card shown when WebGL is unavailable on older devices or software renderers.
  */
 import React from 'react';

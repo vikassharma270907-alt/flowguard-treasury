@@ -16,7 +16,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
-import { isWebGLAvailable, prefersReducedMotion, WebGLFallback } from './webglUtils';
+import { shouldLoad3D, prefersReducedMotion, getCappedDpr, WebGLFallback } from './webglUtils';
 import { useTheme } from '../../context/ThemeContext';
 
 export default function InteractiveIntentGyroscope({ height = 380, interactive = true }) {
@@ -26,8 +26,8 @@ export default function InteractiveIntentGyroscope({ height = 380, interactive =
   const [activeLayer, setActiveLayer] = useState('ALL LAYERS ACTIVE');
 
   useEffect(() => {
-    // 1. WebGL Support Verification
-    if (!isWebGLAvailable()) {
+    // 1. WebGL & Performance/Accessibility Support Verification
+    if (!shouldLoad3D()) {
       setHasWebGL(false);
       return;
     }
@@ -51,7 +51,7 @@ export default function InteractiveIntentGyroscope({ height = 380, interactive =
       powerPreference: 'high-performance'
     });
     renderer.setSize(width, h);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(getCappedDpr(1.5));
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
@@ -154,11 +154,16 @@ export default function InteractiveIntentGyroscope({ height = 380, interactive =
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
 
-    // 7. Animation Loop (60 FPS)
-    let animationFrameId;
+    // 7. Animation Loop with Pause-on-Offscreen & Tab Visibility
+    let animationFrameId = null;
+    let isVisible = true;
     let clock = new THREE.Clock();
 
     const animate = () => {
+      if (!isVisible || document.hidden) {
+        animationFrameId = null;
+        return;
+      }
       animationFrameId = requestAnimationFrame(animate);
       const delta = clock.getDelta();
       const speed = reducedMotion ? 0.08 : 0.75;
@@ -194,11 +199,44 @@ export default function InteractiveIntentGyroscope({ height = 380, interactive =
       renderer.render(scene, camera);
     };
 
-    animate();
+    const startAnimation = () => {
+      if (!animationFrameId && isVisible && !document.hidden) {
+        clock.getDelta();
+        animate();
+      }
+    };
+
+    const visibilityObserver = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      isVisible = Boolean(entry && entry.isIntersecting);
+      if (isVisible) {
+        startAnimation();
+      } else if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    }, { threshold: 0.05 });
+    visibilityObserver.observe(container);
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+      } else if (isVisible) {
+        startAnimation();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    startAnimation();
 
     // 8. Strict Cleanup
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      visibilityObserver.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       container.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('scroll', handleScroll);
       resizeObserver.disconnect();

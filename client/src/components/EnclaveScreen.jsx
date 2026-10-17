@@ -20,6 +20,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useI18n } from '../context/I18nContext';
 import { siteConfig } from '../siteConfig';
 import HowWeUseArmorIQSection from './HowWeUseArmorIQSection';
+import Lazy3DContainer from './3d/Lazy3DContainer';
 
 // Lazy-load all 3D elements for optimal bundle loading & performance
 const RotatingHeroVault = lazy(() => import('./3d/RotatingHeroVault'));
@@ -435,9 +436,11 @@ export default function EnclaveScreen({ onNavigate }) {
                 overflow: 'hidden',
                 marginBottom: '14px'
               }}>
-                <Suspense fallback={<Loading3DFallback label="Intent Vault" />}>
-                  <RotatingHeroVault height={290} interactive={true} />
-                </Suspense>
+                <Lazy3DContainer height={290} fallbackTitle="BeyondFlow Intent Vault" fallbackDescription="3D Cryptographic Enclave fallback. Full security logic remains operational.">
+                  <Suspense fallback={<Loading3DFallback label="Intent Vault" />}>
+                    <RotatingHeroVault height={290} interactive={true} />
+                  </Suspense>
+                </Lazy3DContainer>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.72rem', color: 'var(--muted-foreground)', borderTop: '1px solid var(--border)', paddingTop: '10px' }}>
                 <span>OrbitControls · Drag to rotate</span>
@@ -471,9 +474,11 @@ export default function EnclaveScreen({ onNavigate }) {
                 overflow: 'hidden',
                 marginBottom: '14px'
               }}>
-                <Suspense fallback={<Loading3DFallback label="Intent Gyroscope" />}>
-                  <InteractiveIntentGyroscope height={290} interactive={true} />
-                </Suspense>
+                <Lazy3DContainer height={290} fallbackTitle="Intent Gyroscope" fallbackDescription="Interactive 3D gyroscopic model fallback.">
+                  <Suspense fallback={<Loading3DFallback label="Intent Gyroscope" />}>
+                    <InteractiveIntentGyroscope height={290} interactive={true} />
+                  </Suspense>
+                </Lazy3DContainer>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.72rem', color: 'var(--muted-foreground)', borderTop: '1px solid var(--border)', paddingTop: '10px' }}>
                 <span>Outer: Policy · Mid: Merkle · Inner: Token</span>
@@ -507,9 +512,11 @@ export default function EnclaveScreen({ onNavigate }) {
                 overflow: 'hidden',
                 marginBottom: '14px'
               }}>
-                <Suspense fallback={<Loading3DFallback label="Particle Field" />}>
-                  <ParticleBackgroundField height={290} particleCount={particleDensity} interactive={true} />
-                </Suspense>
+                <Lazy3DContainer height={290} fallbackTitle="Intent Constellation" fallbackDescription="Ambient particle constellation mesh fallback.">
+                  <Suspense fallback={<Loading3DFallback label="Particle Field" />}>
+                    <ParticleBackgroundField height={290} particleCount={particleDensity} interactive={true} />
+                  </Suspense>
+                </Lazy3DContainer>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.72rem', color: 'var(--muted-foreground)', borderTop: '1px solid var(--border)', paddingTop: '10px' }}>
                 <span>BufferGeometry · 1,200 Vertices</span>

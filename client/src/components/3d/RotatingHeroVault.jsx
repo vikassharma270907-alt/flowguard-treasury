@@ -16,7 +16,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
-import { isWebGLAvailable, prefersReducedMotion, WebGLFallback } from './webglUtils';
+import { shouldLoad3D, prefersReducedMotion, getCappedDpr, WebGLFallback } from './webglUtils';
 import { useTheme } from '../../context/ThemeContext';
 
 export default function RotatingHeroVault({ height = 340, interactive = true }) {
@@ -26,8 +26,8 @@ export default function RotatingHeroVault({ height = 340, interactive = true }) 
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    // 1. WebGL Availability Pre-check
-    if (!isWebGLAvailable()) {
+    // 1. WebGL & Performance/Accessibility Pre-check
+    if (!shouldLoad3D()) {
       setHasWebGL(false);
       return;
     }
@@ -51,7 +51,7 @@ export default function RotatingHeroVault({ height = 340, interactive = true }) 
       powerPreference: 'high-performance'
     });
     renderer.setSize(width, h);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(getCappedDpr(1.5));
     renderer.setClearColor(0x000000, 0); // Transparent canvas background
     container.appendChild(renderer.domElement);
 
@@ -162,11 +162,16 @@ export default function RotatingHeroVault({ height = 340, interactive = true }) 
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
 
-    // 7. Animation Loop (60 FPS with Damping & Reduced Motion Support)
-    let animationFrameId;
+    // 7. Animation Loop with Pause-on-Offscreen & Visibility Listener
+    let animationFrameId = null;
+    let isVisible = true;
     let clock = new THREE.Clock();
 
     const animate = () => {
+      if (!isVisible || document.hidden) {
+        animationFrameId = null;
+        return;
+      }
       animationFrameId = requestAnimationFrame(animate);
       const delta = clock.getDelta();
       const rotSpeed = reducedMotion ? 0.05 : 0.85;
@@ -192,11 +197,46 @@ export default function RotatingHeroVault({ height = 340, interactive = true }) 
       renderer.render(scene, camera);
     };
 
-    animate();
+    const startAnimation = () => {
+      if (!animationFrameId && isVisible && !document.hidden) {
+        clock.getDelta(); // reset delta so no sudden jump
+        animate();
+      }
+    };
+
+    // Pause render loop when canvas is off-screen
+    const visibilityObserver = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      isVisible = Boolean(entry && entry.isIntersecting);
+      if (isVisible) {
+        startAnimation();
+      } else if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    }, { threshold: 0.05 });
+    visibilityObserver.observe(container);
+
+    // Pause render loop when browser tab is hidden
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+      } else if (isVisible) {
+        startAnimation();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    startAnimation();
 
     // 8. Strict GPU Resource Cleanup on Unmount
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      visibilityObserver.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       container.removeEventListener('pointermove', handlePointerMove);
       container.removeEventListener('pointerleave', handlePointerLeave);
       resizeObserver.disconnect();

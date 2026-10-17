@@ -14,7 +14,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
-import { isWebGLAvailable, prefersReducedMotion, WebGLFallback } from './webglUtils';
+import { shouldLoad3D, prefersReducedMotion, getCappedDpr, WebGLFallback } from './webglUtils';
 import { useTheme } from '../../context/ThemeContext';
 
 export default function ParticleBackgroundField({ particleCount = 1200, height = 300, interactive = true }) {
@@ -22,9 +22,14 @@ export default function ParticleBackgroundField({ particleCount = 1200, height =
   const { isDark } = useTheme();
   const [hasWebGL, setHasWebGL] = useState(true);
 
+  // On mobile viewports, reduce particle count from 1,200 to ~300 to preserve GPU/battery
+  const effectiveCount = typeof window !== 'undefined' && window.innerWidth < 768
+    ? Math.min(particleCount, 300)
+    : particleCount;
+
   useEffect(() => {
-    // 1. WebGL Verification
-    if (!isWebGLAvailable()) {
+    // 1. WebGL & Performance/Accessibility Verification
+    if (!shouldLoad3D()) {
       setHasWebGL(false);
       return;
     }
@@ -48,17 +53,17 @@ export default function ParticleBackgroundField({ particleCount = 1200, height =
       powerPreference: 'low-power'
     });
     renderer.setSize(width, h);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(getCappedDpr(1.5));
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
     // 3. Particle Geometry & Buffer Attributes
     const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const originalPositions = new Float32Array(particleCount * 3);
-    const velocities = new Float32Array(particleCount * 3);
+    const positions = new Float32Array(effectiveCount * 3);
+    const originalPositions = new Float32Array(effectiveCount * 3);
+    const velocities = new Float32Array(effectiveCount * 3);
 
-    for (let i = 0; i < particleCount * 3; i += 3) {
+    for (let i = 0; i < effectiveCount * 3; i += 3) {
       const x = (Math.random() - 0.5) * 800;
       const y = (Math.random() - 0.5) * 450;
       const z = (Math.random() - 0.5) * 600;
@@ -137,11 +142,16 @@ export default function ParticleBackgroundField({ particleCount = 1200, height =
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
 
-    // 7. Animation Loop (60 FPS)
-    let animationFrameId;
+    // 7. Animation Loop with Pause-on-Offscreen & Visibility Handling
+    let animationFrameId = null;
+    let isVisible = true;
     let clock = new THREE.Clock();
 
     const animate = () => {
+      if (!isVisible || document.hidden) {
+        animationFrameId = null;
+        return;
+      }
       animationFrameId = requestAnimationFrame(animate);
       const delta = clock.getDelta();
       const speedFactor = reducedMotion ? 0.1 : 1.0;
@@ -152,7 +162,7 @@ export default function ParticleBackgroundField({ particleCount = 1200, height =
 
       const pos = geometry.attributes.position.array;
 
-      for (let i = 0; i < particleCount * 3; i += 3) {
+      for (let i = 0; i < effectiveCount * 3; i += 3) {
         pos[i] += velocities[i] * speedFactor;
         pos[i + 1] += velocities[i + 1] * speedFactor;
         pos[i + 2] += velocities[i + 2] * speedFactor;
@@ -175,11 +185,44 @@ export default function ParticleBackgroundField({ particleCount = 1200, height =
       renderer.render(scene, camera);
     };
 
-    animate();
+    const startAnimation = () => {
+      if (!animationFrameId && isVisible && !document.hidden) {
+        clock.getDelta();
+        animate();
+      }
+    };
+
+    const visibilityObserver = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      isVisible = Boolean(entry && entry.isIntersecting);
+      if (isVisible) {
+        startAnimation();
+      } else if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    }, { threshold: 0.05 });
+    visibilityObserver.observe(container);
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+      } else if (isVisible) {
+        startAnimation();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    startAnimation();
 
     // 8. Strict Cleanup
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      visibilityObserver.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       container.removeEventListener('pointermove', handlePointerMove);
       resizeObserver.disconnect();
 

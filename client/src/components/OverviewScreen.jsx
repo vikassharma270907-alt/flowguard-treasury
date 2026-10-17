@@ -11,6 +11,7 @@ const BoundaryTestSection = lazy(() => import('./BoundaryTestSection'));
 const HowWeUseArmorIQSection = lazy(() => import('./HowWeUseArmorIQSection'));
 const ExplainerVideoSection = lazy(() => import('./ExplainerVideoSection'));
 const RotatingHeroVault = lazy(() => import('./3d/RotatingHeroVault'));
+import Lazy3DContainer from './3d/Lazy3DContainer';
 
 export default function OverviewScreen({
   planData,
@@ -741,13 +742,15 @@ export default function OverviewScreen({
           justifyContent: 'center'
         }}>
           {show3dHero ? (
-            <Suspense fallback={
-              <div style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)' }}>
-                Loading 3D Hero Vault...
-              </div>
-            }>
-              <RotatingHeroVault height={235} interactive={true} />
-            </Suspense>
+            <Lazy3DContainer height={235} fallbackTitle="BeyondFlow Intent Vault" fallbackDescription="3D Cryptographic Enclave fallback. Full security logic remains operational.">
+              <Suspense fallback={
+                <div style={{ fontSize: '0.78rem', color: 'var(--muted-foreground)' }}>
+                  Loading 3D Hero Vault...
+                </div>
+              }>
+                <RotatingHeroVault height={235} interactive={true} />
+              </Suspense>
+            </Lazy3DContainer>
           ) : (
             <button
               type="button"
