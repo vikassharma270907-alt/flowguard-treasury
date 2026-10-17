@@ -750,8 +750,10 @@ app.post('/api/invoices', (req, res) => {
 // --- Treasury Planning Engine ---
 app.get('/api/planner', async (req, res) => {
   try {
-    const balanceResult = await airwallexService.getBalances();
-    const fxResult = await airwallexService.getFxRates();
+    const [balanceResult, fxResult] = await Promise.all([
+      airwallexService.getBalances(),
+      airwallexService.getFxRates()
+    ]);
     const inspections = scanAllInvoices(stateInvoices, stateVendors);
 
     const plan = planPayments({
@@ -786,8 +788,10 @@ app.post('/api/planner/recalculate', async (req, res) => {
     payload: { reserveFloor: currentReserveFloor }
   });
 
-  const balanceResult = await airwallexService.getBalances();
-  const fxResult = await airwallexService.getFxRates();
+  const [balanceResult, fxResult] = await Promise.all([
+    airwallexService.getBalances(),
+    airwallexService.getFxRates()
+  ]);
   const inspections = scanAllInvoices(stateInvoices, stateVendors);
 
   const plan = planPayments({
@@ -837,8 +841,10 @@ app.post('/api/payments/approve-and-pay', async (req, res) => {
   }
 
   // Pre-flight check: reserve floor protection
-  const balanceResult = await airwallexService.getBalances();
-  const fxResult = await airwallexService.getFxRates();
+  const [balanceResult, fxResult] = await Promise.all([
+    airwallexService.getBalances(),
+    airwallexService.getFxRates()
+  ]);
   const currentPlan = planPayments({
     balances: balanceResult.balances,
     invoices: stateInvoices,
