@@ -120,7 +120,7 @@ doc.y = 120;
 doc.fillColor(SECONDARY).font('Helvetica-Bold').fontSize(12).text('OFFICIAL HACKATHON PROJECT DOCUMENTATION', { align: 'center', characterSpacing: 2 });
 doc.moveDown(0.8);
 
-doc.fillColor(PRIMARY).font('Helvetica-Bold').fontSize(32).text('FLOWGUARD TREASURY', { align: 'center', letterSpacing: -0.5 });
+doc.fillColor(PRIMARY).font('Helvetica-Bold').fontSize(32).text('BEYONDFLOW', { align: 'center', letterSpacing: -0.5 });
 doc.fillColor(ACCENT_EMERALD).font('Helvetica-Bold').fontSize(22).text('GOVERNED BY ARMORIQ', { align: 'center' });
 doc.moveDown(0.5);
 
@@ -149,7 +149,7 @@ doc.fillColor(PRIMARY).font('Helvetica-Bold').fontSize(10).text('METADATA & ENVI
 doc.moveDown(0.5);
 
 const metadata = [
-  ['Project Name', 'FlowGuard Treasury & Voice Gateway'],
+  ['Project Name', 'BeyondFlow: Autonomous Treasury & Voice Support Agent'],
   ['Repository', 'https://github.com/vikassharma270907-alt/flowguard-treasury'],
   ['ArmorIQ Organization', "Vikas Sharma's Workspace (dd9e9695-e58d-4e56-8cff-ef9617ba4c54)"],
   ['Agent ID', 'flowguard-agent (c8bcbe51-dea4-4459-9fd8-38f88ebc714e)'],
@@ -254,7 +254,7 @@ npm run gateway
 
 # Terminal 3: Launch React 19 + Three.js Frontend
 cd client && npm run dev`);
-p('Navigate to http://localhost:5173 for the FlowGuard Treasury Dashboard or http://localhost:8790/playground for the standalone Supervisor Playground.');
+p('Navigate to http://localhost:5173 for the BeyondFlow Dashboard or http://localhost:8790/playground for the standalone Supervisor Playground.');
 
 subHeading('1.4 Building for Production');
 p('To bundle the client with Vite and code-split the 3D Three.js chunks:');
@@ -266,7 +266,7 @@ codeBlock(`cd client && npm run build
    ========================================================================== */
 doc.addPage();
 subHeading('1.5 Using & Customizing 3D Elements');
-p('FlowGuard Treasury features three interactive, hardware-accelerated 3D elements in `client/src/components/3d/`:');
+p('BeyondFlow features three interactive, hardware-accelerated 3D elements in `client/src/components/3d/`:');
 
 p('1. RotatingHeroVault.jsx (Hero Object):\n' +
   '   • Renders an inner crystalline icosahedron with an outer holographic cage and orbital intent ring.\n' +
@@ -288,7 +288,7 @@ callout('Resource Cleanup & Accessibility',
 );
 
 subHeading('1.6 Switching Light/Dark Mode & Customizing Tokens');
-p('FlowGuard implements a theme system using CSS variables with persistent localStorage storage and zero-flash inline script execution in `index.html`.');
+p('BeyondFlow implements a theme system using CSS variables with persistent localStorage storage and zero-flash inline script execution in `index.html`.');
 p('• Toggle Theme: Click the Sun/Moon button in the top navigation bar, or call `useTheme().toggleTheme()` in React.\n' +
   '• Customizing Tokens: Edit `client/src/index.css`. Both `:root, [data-theme="dark"]` and `[data-theme="light"]` define design tokens (e.g. `--background`, `--card`, `--border`, `--3d-vault-core`).\n' +
   '• 3D Theme Synchronization: When theme flips, Three.js lighting, specular materials, and particle colors instantly update.');
@@ -483,7 +483,7 @@ p('1. Production Webhook Integration: Connect the Voice Gateway holding endpoint
 // Final signoff
 doc.moveDown(1);
 hr();
-doc.fillColor(MUTED).font('Helvetica-Bold').fontSize(9).text('FlowGuard Treasury · ArmorIQ Flow State Hackathon Project Submission', { align: 'center' });
+doc.fillColor(MUTED).font('Helvetica-Bold').fontSize(9).text('BeyondFlow · ArmorIQ Flow State Hackathon Project Submission', { align: 'center' });
 
 /* ==========================================================================
    PAGE NUMBERING (FOOTER ON ALL PAGES)
@@ -495,7 +495,7 @@ for (let i = 0; i < range.count; i++) {
   // Footer text
   doc.fillColor('#94a3b8').font('Helvetica').fontSize(7.5);
   doc.text(
-    `FlowGuard Treasury | ArmorIQ Governed Voice Agent | Page ${i + 1} of ${range.count}`,
+    `BeyondFlow | ArmorIQ Governed Voice Agent | Page ${i + 1} of ${range.count}`,
     54,
     795,
     { align: 'center', width: 487 }

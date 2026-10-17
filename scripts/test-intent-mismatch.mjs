@@ -62,7 +62,7 @@ const case1 = await report('Case 1 — lookup_order token used to invoke issue_r
 // --- Case 2: same tool, escalated amount ------------------------------------
 const smallRefund = await mint('issue_refund', { order_id: 'ORD-1001', amount: 89 }, 'Caller asks for an 89 USD refund on ORD-1001');
 console.log(`minted issue_refund token  planHash=${smallRefund.planHash}  (plan amount: 89)`);
-const case2 = await report('Case 2 — issue_refund(89) token used to invoke issue_refund(5000)', async () => {
+const case2 = await report('Case 2 — issue_refund(89) token used to invoke issue_refund(5000) [KNOWN LIMITATION]', async () => {
   const r = await client.invoke(MCP, 'issue_refund', smallRefund, { order_id: 'ORD-1001', amount: 5000 });
   return r.result;
 });
@@ -80,7 +80,7 @@ const case3 = await report('Case 3 — using a token after it expired', async ()
 
 console.log(`\n${'='.repeat(72)}`);
 console.log(`Case 1 — wrong action   : ${case1}`);
-console.log(`Case 2 — swapped amount : ${case2}`);
+console.log(`Case 2 — swapped amount : ${case2} [KNOWN LIMITATION]`);
 console.log(`Case 3 — expired token  : ${case3}`);
 console.log('='.repeat(72));
 

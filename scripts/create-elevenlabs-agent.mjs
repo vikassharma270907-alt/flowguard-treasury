@@ -1,5 +1,5 @@
 /**
- * Provision the ElevenLabs side of FlowGuard:
+ * Provision the ElevenLabs side of BeyondFlow:
  *
  *   1. four webhook tools (three MCP tools + one supervisor-status check),
  *      each pointing at the gateway with the shared-secret header
@@ -171,7 +171,7 @@ const systemPrompt = [
 ].join('\n');
 
 const agentPayload = {
-  name: 'FlowGuard Support (ArmorIQ-governed)',
+  name: 'BeyondFlow Support (ArmorIQ-governed)',
   conversation_config: {
     agent: {
       first_message: 'Hi, thanks for calling Northwind Traders support. This is Riley. What can I help you with today?',

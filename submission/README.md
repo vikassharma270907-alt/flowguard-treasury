@@ -43,7 +43,7 @@ The MCP server contains no allow/deny logic. The gateway contains no allow/deny 
 | Two-approval approach documented | ArmorIQ creates the hold; the gateway counts two approvals. See [DX_NOTES.md](DX_NOTES.md) and [Known limitations](#known-limitations). | Done (quorum counted in gateway) |
 | MCP reachable through the ArmorIQ proxy | `POST /mcp` (JSON-RPC 2.0, SSE responses), invoked through `https://proxy.armoriq.ai/invoke`. | Done |
 | One ALLOWED and one BLOCKED in audit logs | `lookup_order` and `change_payout` entries in the `proxy.armoriq.ai` audit ledger. | Done |
-| Intent binding demonstrated | `scripts/test-intent-mismatch.mjs`: wrong action refused; expired token refused; **swapped amount not refused by the token** (binding is action-level). | Done for action binding and expiry |
+| Intent mismatch demonstrated | `scripts/test-intent-mismatch.mjs`: wrong action refused (`IntentMismatchException`), expired token refused (`TokenExpiredException`), swapped amount not refused by token alone (binding is action-level; parameter values not bound into Merkle leaf). | Verified: wrong action refused, expired token refused, swapped amount not refused |
 | Decisions come from ArmorIQ | See "Who decides what". | Done for the three voice tools |
 | Held calls answer within ElevenLabs' ~5 s window | The gateway replies to held calls immediately with a holding message; the final decision is relayed through `check_supervisor_decision`. See [Latency](#latency). | Done (thin margin) |
 | Prefix mapping and synthetic data | The gateway strips the `BeyondFlow_` prefix. All data is mock (`ORD-1001`, `ORD-1002`, `ACC-4471`). | Done |

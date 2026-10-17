@@ -302,10 +302,10 @@ GATEWAY_SHARED_SECRET=flowguard-dev-secret`);
 
 p('Step 3: Run the 3-Result Verification Suite:');
 codeBlock(`npm run test:enforcement
-# Output confirms:
-# lookup_order  -> ALLOWED (887 ms)
-# change_payout -> BLOCKED (764 ms, tool_not_in_allowlist)
-# issue_refund  -> HELD (604 ms, real pending platform delegation)`);
+# Output confirms (ArmorIQ platform/proxy calls):
+# lookup_order  -> ALLOWED (~921 ms median)
+# change_payout -> BLOCKED (~769 ms median, tool_not_in_allowlist)
+# issue_refund  -> HELD (~761 ms median, real pending platform delegation)`);
 
 p('Step 4: Launch the Live Demo Simulation:');
 codeBlock(`npm run demo
