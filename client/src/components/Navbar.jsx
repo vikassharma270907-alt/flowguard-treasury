@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Shield, Activity, RefreshCw, Key, ChevronDown, CheckCircle2,
   AlertTriangle, Play, Lock, User, LogOut, Sliders, X,
@@ -20,7 +20,24 @@ export default function Navbar({
 }) {
   const [scenarioOpen, setScenarioOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const scenarioMenuRef = useRef(null);
+  const userMenuRef = useRef(null);
   const { theme, isDark, toggleTheme } = useTheme();
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (scenarioMenuRef.current && !scenarioMenuRef.current.contains(event.target)) {
+        setScenarioOpen(false);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setUserMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const scenarios = [
     {
@@ -270,7 +287,7 @@ export default function Navbar({
           </button>
 
           {/* Scenario Selector Dropdown */}
-          <div style={{ position: 'relative' }}>
+          <div ref={scenarioMenuRef} style={{ position: 'relative' }}>
             <button
               onClick={() => setScenarioOpen(!scenarioOpen)}
               className="btn btn-secondary btn-sm"
@@ -289,14 +306,6 @@ export default function Navbar({
               </div>
               <ChevronDown size={13} />
             </button>
-
-            {/* Click-away backdrop to fix popup dismissal */}
-            {scenarioOpen && (
-              <div
-                style={{ position: 'fixed', inset: 0, zIndex: 140 }}
-                onClick={() => setScenarioOpen(false)}
-              />
-            )}
 
             {scenarioOpen && (
               <div style={{
@@ -409,7 +418,7 @@ export default function Navbar({
 
           {/* OAuth User Profile / Login Button */}
           {userSession?.authenticated ? (
-            <div style={{ position: 'relative' }}>
+            <div ref={userMenuRef} style={{ position: 'relative' }}>
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
                 className="btn btn-secondary btn-sm"
@@ -439,14 +448,6 @@ export default function Navbar({
                 <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>{userSession.user?.name || 'beyond_nothing'}</span>
                 <ChevronDown size={12} color="#a1a1aa" />
               </button>
-
-              {/* Click-away backdrop for user menu */}
-              {userMenuOpen && (
-                <div
-                  style={{ position: 'fixed', inset: 0, zIndex: 140 }}
-                  onClick={() => setUserMenuOpen(false)}
-                />
-              )}
 
               {userMenuOpen && (
                 <div style={{
