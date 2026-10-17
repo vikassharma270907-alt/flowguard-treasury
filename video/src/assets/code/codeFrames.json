@@ -1,0 +1,435 @@
+[
+  {
+    "id": "code_frame_1_webhook",
+    "title": "ElevenLabs Webhook Dispatcher & Sub-5s Holding Pattern",
+    "caption": "server/voiceGatewayService.js:239-253 & lines 890-898",
+    "sections": [
+      {
+        "relPath": "server/voiceGatewayService.js",
+        "startLine": 239,
+        "endLine": 253,
+        "code": [
+          {
+            "lineNumber": 239,
+            "content": "  async handleToolCall({ rawToolName, parameters = {}, callerContext = {}, clientKey = 'global' }) {\r"
+          },
+          {
+            "lineNumber": 240,
+            "content": "    const startTime = Date.now();\r"
+          },
+          {
+            "lineNumber": 241,
+            "content": "    const canonicalTool = this.normalizeToolName(rawToolName);\r"
+          },
+          {
+            "lineNumber": 242,
+            "content": "    const elevenLabsTool = this.toElevenLabsToolName(canonicalTool);\r"
+          },
+          {
+            "lineNumber": 243,
+            "content": "    const toolCallId = 'tcall_' + uuidv4().substring(0, 8);\r"
+          },
+          {
+            "lineNumber": 244,
+            "content": "\r"
+          },
+          {
+            "lineNumber": 245,
+            "content": "    if (!this.activeSession) {\r"
+          },
+          {
+            "lineNumber": 246,
+            "content": "      this.initDefaultSession();\r"
+          },
+          {
+            "lineNumber": 247,
+            "content": "    }\r"
+          },
+          {
+            "lineNumber": 248,
+            "content": "\r"
+          },
+          {
+            "lineNumber": 249,
+            "content": "    const session = this.activeSession;\r"
+          },
+          {
+            "lineNumber": 250,
+            "content": "\r"
+          },
+          {
+            "lineNumber": 251,
+            "content": "    // 1. Tool: orderLookup -> governed lookup_order through ArmorIQ\r"
+          },
+          {
+            "lineNumber": 252,
+            "content": "    if (canonicalTool === 'orderLookup') {\r"
+          },
+          {
+            "lineNumber": 253,
+            "content": "      const orderId = parameters.order_id || parameters.orderId || session.caller.orderId;\r"
+          }
+        ]
+      },
+      {
+        "relPath": "server/voiceGatewayService.js",
+        "startLine": 890,
+        "endLine": 898,
+        "code": [
+          {
+            "lineNumber": 890,
+            "content": "  const holdingSpeech = \"A supervisor has been notified. Please hold for supervisor review...\";\r"
+          },
+          {
+            "lineNumber": 891,
+            "content": "  queueForSupervisor({ callId, toolCallId, payload });\r"
+          },
+          {
+            "lineNumber": 892,
+            "content": "\r"
+          },
+          {
+            "lineNumber": 893,
+            "content": "  // Return the immediate holding response to ElevenLabs before the ~5s timeout\r"
+          },
+          {
+            "lineNumber": 894,
+            "content": "  return res.json({\r"
+          },
+          {
+            "lineNumber": 895,
+            "content": "    status: \"HELD\",\r"
+          },
+          {
+            "lineNumber": 896,
+            "content": "    speechResponse: holdingSpeech,\r"
+          },
+          {
+            "lineNumber": 897,
+            "content": "    timeoutWindowSeconds: 5\r"
+          },
+          {
+            "lineNumber": 898,
+            "content": "  });\r"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "code_frame_2_armoriq_sdk",
+    "title": "ArmorIQ 3-Step SDK Flow: capturePlan -> getIntentToken -> invoke",
+    "caption": "server/armorIqEnforcement.js:118-129 & line 179",
+    "sections": [
+      {
+        "relPath": "server/armorIqEnforcement.js",
+        "startLine": 118,
+        "endLine": 129,
+        "code": [
+          {
+            "lineNumber": 118,
+            "content": "    const tCapture = Date.now();\r"
+          },
+          {
+            "lineNumber": 119,
+            "content": "    const capture = client.capturePlan('elevenlabs-voice-agent', prompt || goal || tool, {\r"
+          },
+          {
+            "lineNumber": 120,
+            "content": "      goal: goal || `Handle caller request for ${tool}`,\r"
+          },
+          {
+            "lineNumber": 121,
+            "content": "      steps: [{ action: tool, tool, mcp: MCP_ID, inputs: args }],\r"
+          },
+          {
+            "lineNumber": 122,
+            "content": "    });\r"
+          },
+          {
+            "lineNumber": 123,
+            "content": "    timings.capture = Date.now() - tCapture;\r"
+          },
+          {
+            "lineNumber": 124,
+            "content": "\r"
+          },
+          {
+            "lineNumber": 125,
+            "content": "    let token;\r"
+          },
+          {
+            "lineNumber": 126,
+            "content": "    try {\r"
+          },
+          {
+            "lineNumber": 127,
+            "content": "      const tMint = Date.now();\r"
+          },
+          {
+            "lineNumber": 128,
+            "content": "      token = await client.getIntentToken(capture);\r"
+          },
+          {
+            "lineNumber": 129,
+            "content": "      timings.mint = Date.now() - tMint;\r"
+          }
+        ]
+      },
+      {
+        "relPath": "server/armorIqEnforcement.js",
+        "startLine": 178,
+        "endLine": 182,
+        "code": [
+          {
+            "lineNumber": 178,
+            "content": "      const tInvoke = Date.now();\r"
+          },
+          {
+            "lineNumber": 179,
+            "content": "      const result = await client.invoke(MCP_ID, tool, token, args);\r"
+          },
+          {
+            "lineNumber": 180,
+            "content": "      timings.invoke = Date.now() - tInvoke;\r"
+          },
+          {
+            "lineNumber": 181,
+            "content": "      timings.total = Date.now() - t0;\r"
+          },
+          {
+            "lineNumber": 182,
+            "content": "      const out = {\r"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "code_frame_3_hold_quorum",
+    "title": "Platform Delegation Request & Dual Supervisor Release Quorum",
+    "caption": "server/armorIqEnforcement.js:147-160 & server/voiceGatewayService.js:752-770",
+    "sections": [
+      {
+        "relPath": "server/armorIqEnforcement.js",
+        "startLine": 147,
+        "endLine": 160,
+        "code": [
+          {
+            "lineNumber": 147,
+            "content": "      try {\r"
+          },
+          {
+            "lineNumber": 148,
+            "content": "        const del = await client.createDelegationRequest({\r"
+          },
+          {
+            "lineNumber": 149,
+            "content": "          tool: 'issue_refund',\r"
+          },
+          {
+            "lineNumber": 150,
+            "content": "          action: 'issue_refund',\r"
+          },
+          {
+            "lineNumber": 151,
+            "content": "          arguments: args,\r"
+          },
+          {
+            "lineNumber": 152,
+            "content": "          amount: Number(args.amount || 0),\r"
+          },
+          {
+            "lineNumber": 153,
+            "content": "          requesterEmail: `${USER_ID}@armoriq.ai`,\r"
+          },
+          {
+            "lineNumber": 154,
+            "content": "          requesterRole: 'support_agent',\r"
+          },
+          {
+            "lineNumber": 155,
+            "content": "          requesterLimit: 0,\r"
+          },
+          {
+            "lineNumber": 156,
+            "content": "          domain: MCP_ID,\r"
+          },
+          {
+            "lineNumber": 157,
+            "content": "          planId: token.planId,\r"
+          },
+          {
+            "lineNumber": 158,
+            "content": "          intentReference: token.tokenId,\r"
+          },
+          {
+            "lineNumber": 159,
+            "content": "          reason: 'Refund requires dual supervisor approval before disbursement',\r"
+          },
+          {
+            "lineNumber": 160,
+            "content": "        });\r"
+          }
+        ]
+      },
+      {
+        "relPath": "server/voiceGatewayService.js",
+        "startLine": 752,
+        "endLine": 770,
+        "code": [
+          {
+            "lineNumber": 752,
+            "content": "      if (pending.approvalsCount < 2) {\r"
+          },
+          {
+            "lineNumber": 753,
+            "content": "        pending.status = 'WAITING_FOR_SECOND_APPROVAL';\r"
+          },
+          {
+            "lineNumber": 754,
+            "content": "        const progressMessage = `Approval 1/2 recorded (${supervisorName}). Second supervisor approval required.`;\r"
+          },
+          {
+            "lineNumber": 755,
+            "content": "\r"
+          },
+          {
+            "lineNumber": 756,
+            "content": "        session.transcript.push({\r"
+          },
+          {
+            "lineNumber": 757,
+            "content": "          speaker: 'supervisor',\r"
+          },
+          {
+            "lineNumber": 758,
+            "content": "          text: `[SUPERVISOR 1 APPROVED]: ${supervisorName} (${role}) recorded app-side approval 1/2. Waiting for the second approver.`,\r"
+          },
+          {
+            "lineNumber": 759,
+            "content": "          timestamp: decisionTime,\r"
+          },
+          {
+            "lineNumber": 760,
+            "content": "          badge: '1/2 APPROVALS'\r"
+          },
+          {
+            "lineNumber": 761,
+            "content": "        });\r"
+          },
+          {
+            "lineNumber": 762,
+            "content": "\r"
+          },
+          {
+            "lineNumber": 763,
+            "content": "        auditLedger.record({\r"
+          },
+          {
+            "lineNumber": 764,
+            "content": "          eventType: 'VOICE_GATEWAY_EVENT',\r"
+          },
+          {
+            "lineNumber": 765,
+            "content": "          action: 'Refund approval 1/2 recorded (app-side)',\r"
+          },
+          {
+            "lineNumber": 766,
+            "content": "          actor: supervisorName,\r"
+          },
+          {
+            "lineNumber": 767,
+            "content": "          summary: `Supervisor 1 (${supervisorName}) recorded app-side approval 1/2 for the refund.`,\r"
+          },
+          {
+            "lineNumber": 768,
+            "content": "          payload: { toolCallId: pending.toolCallId, approvalsCount: 1 },\r"
+          },
+          {
+            "lineNumber": 769,
+            "content": "          mode: 'APP_SIDE_SUPERVISOR'\r"
+          },
+          {
+            "lineNumber": 770,
+            "content": "        });\r"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "code_frame_4_intent_mismatch",
+    "title": "Action-Level Intent Binding: Refusal of Swapped Tool Token",
+    "caption": "scripts/test-intent-mismatch.mjs:54-68 (IntentMismatchException)",
+    "sections": [
+      {
+        "relPath": "scripts/test-intent-mismatch.mjs",
+        "startLine": 54,
+        "endLine": 68,
+        "code": [
+          {
+            "lineNumber": 54,
+            "content": "// --- Case 1: token for one tool, used for another ---------------------------\r"
+          },
+          {
+            "lineNumber": 55,
+            "content": "const lookupToken = await mint('lookup_order', { order_id: 'ORD-1001' }, 'Caller asks where ORD-1001 is');\r"
+          },
+          {
+            "lineNumber": 56,
+            "content": "console.log(`minted lookup_order token  planHash=${lookupToken.planHash}`);\r"
+          },
+          {
+            "lineNumber": 57,
+            "content": "const case1 = await report('Case 1 — lookup_order token used to invoke issue_refund', async () => {\r"
+          },
+          {
+            "lineNumber": 58,
+            "content": "  const r = await client.invoke(MCP, 'issue_refund', lookupToken, { order_id: 'ORD-1001', amount: 89 });\r"
+          },
+          {
+            "lineNumber": 59,
+            "content": "  return r.result;\r"
+          },
+          {
+            "lineNumber": 60,
+            "content": "});\r"
+          },
+          {
+            "lineNumber": 61,
+            "content": "\r"
+          },
+          {
+            "lineNumber": 62,
+            "content": "// --- Case 2: same tool, escalated amount ------------------------------------\r"
+          },
+          {
+            "lineNumber": 63,
+            "content": "const smallRefund = await mint('issue_refund', { order_id: 'ORD-1001', amount: 89 }, 'Caller asks for an 89 USD refund on ORD-1001');\r"
+          },
+          {
+            "lineNumber": 64,
+            "content": "console.log(`minted issue_refund token  planHash=${smallRefund.planHash}  (plan amount: 89)`);\r"
+          },
+          {
+            "lineNumber": 65,
+            "content": "const case2 = await report('Case 2 — issue_refund(89) token used to invoke issue_refund(5000)', async () => {\r"
+          },
+          {
+            "lineNumber": 66,
+            "content": "  const r = await client.invoke(MCP, 'issue_refund', smallRefund, { order_id: 'ORD-1001', amount: 5000 });\r"
+          },
+          {
+            "lineNumber": 67,
+            "content": "  return r.result;\r"
+          },
+          {
+            "lineNumber": 68,
+            "content": "});\r"
+          }
+        ]
+      }
+    ]
+  }
+]

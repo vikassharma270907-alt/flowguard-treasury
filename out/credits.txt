@@ -1,0 +1,32 @@
+BeyondFlow — 3-Minute Hackathon Explainer Video Credits & Attribution
+========================================================================
+
+1. AI Voice & Narration:
+   - "Narration: AI voice generated with ElevenLabs"
+   - Voice Model: Eleven Multilingual v2 / Sarah (calm, clear, professional voice)
+   - Provider: ElevenLabs Inc. (https://elevenlabs.io)
+   - Usage: Licensed under developer subscription terms.
+
+2. Cryptographic Intent Governance:
+   - ArmorIQ Platform, CSRG-IAP & PEP Proxy
+   - SDK: @armoriq/sdk (v0.6.10) (MIT License)
+   - Verified Runs: proxy.armoriq.ai, iap.armoriq.ai, api.armoriq.ai
+   - Trace Ref: armoriq:5081adc84221:1a1472a954f (Recorded from live run on 2026-10-17)
+
+3. Tool Model Context Protocol:
+   - Model Context Protocol (MCP) by Anthropic
+   - SDK: @modelcontextprotocol/sdk (v1.32.1) (MIT License)
+
+4. Typography & Icons:
+   - Inter (SIL Open Font License 1.1)
+   - JetBrains Mono (Apache License 2.0)
+   - Lucide Icons (ISC License)
+
+5. Audio & Music:
+   - No background music used (pure high-contrast vocal delivery at ~ -16 LUFS to guarantee speech intelligibility and zero copyright ambiguity).
+
+6. Environment & Data Attestation:
+   - "Sandbox / test environment. No real funds or customer data."
+   - Synthetic mock ledger records: ORD-1001, ACC-4471.
+   - Project Repository: https://github.com/vikassharma270907-alt/flowguard-treasury
+   - Live Application: https://flowguard-treasury.vercel.app

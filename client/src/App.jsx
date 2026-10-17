@@ -34,6 +34,7 @@ function getInitialTabFromUrl() {
   }
   if (path === 'how-it-works' || path === 'enclave') return 'enclave';
   if (path === 'boundary-test' || path === 'boundary') return 'overview';
+  if (path === 'video' || path === 'explainer' || path === 'explainer-video') return 'overview';
   if (path === 'pricing') return 'pricing';
 
   if (window.location.hash) {
@@ -43,6 +44,7 @@ function getInitialTabFromUrl() {
     if (hash === 'pricing') return 'pricing';
     if (hash === 'how-it-works' || hash === 'enclave') return 'enclave';
     if (hash === 'boundary-test' || hash === 'boundary') return 'overview';
+    if (hash === 'video' || hash === 'explainer' || hash === 'explainer-video') return 'overview';
     if (hash === 'quickstart') return 'overview';
   }
   return 'overview';
@@ -134,6 +136,20 @@ export default function App() {
             setTimeout(() => {
               el.style.boxShadow = 'var(--card-shadow)';
               el.style.borderColor = 'var(--border)';
+            }, 3000);
+          }
+        }, 120);
+      } else if (hash === '#explainer-video' || hash === '#video' || path === 'video' || path === 'explainer' || path === 'explainer-video') {
+        setTimeout(() => {
+          const el = document.getElementById('explainer-video');
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            el.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+            el.style.borderColor = '#818cf8';
+            el.style.boxShadow = '0 0 0 2px #818cf8, 0 12px 35px rgba(99, 102, 241, 0.35)';
+            setTimeout(() => {
+              el.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.6)';
+              el.style.borderColor = 'rgba(99, 102, 241, 0.25)';
             }, 3000);
           }
         }, 120);

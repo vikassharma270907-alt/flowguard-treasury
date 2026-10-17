@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Shield, Activity, RefreshCw, Key, ChevronDown, CheckCircle2,
   AlertTriangle, Play, Lock, User, LogOut, Sliders, X,
-  ShieldCheck, Clock, ArrowDownCircle, Sun, Moon, Box, ArrowRight
+  ShieldCheck, Clock, ArrowDownCircle, Sun, Moon, Box, ArrowRight, Video
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
@@ -146,6 +146,7 @@ export default function Navbar({
         }}>
           {[
             { id: 'overview', label: 'Overview' },
+            { id: 'video', label: '3-Min Video', isVideo: true },
             { id: 'scenarios', label: 'Demo Scenarios', isScenario: true },
             { id: 'enclave', label: 'How It Works', is3D: true },
             { id: 'planner', label: 'Payment Planner' },
@@ -156,7 +157,19 @@ export default function Navbar({
           ].map(tab => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => {
+                if (tab.id === 'video') {
+                  if (activeTab !== 'overview') {
+                    setActiveTab('overview');
+                  }
+                  setTimeout(() => {
+                    const el = document.getElementById('explainer-video');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }, 80);
+                } else {
+                  setActiveTab(tab.id);
+                }
+              }}
               style={{
                 background: activeTab === tab.id ? 'var(--secondary)' : 'transparent',
                 color: activeTab === tab.id ? 'var(--foreground)' : 'var(--muted-foreground)',
@@ -175,10 +188,24 @@ export default function Navbar({
                 minHeight: '38px'
               }}
             >
+              {tab.isVideo && <Video size={13} color="#818cf8" />}
               {tab.isScenario && <Play size={12} color={activeTab === tab.id ? '#10b981' : 'var(--muted-foreground)'} />}
               {tab.is3D && <Box size={13} color={activeTab === tab.id ? '#6366f1' : 'var(--muted-foreground)'} />}
               {tab.isSpecial && <Lock size={12} color={activeTab === tab.id ? 'var(--foreground)' : '#71717a'} />}
               {tab.label}
+              {tab.isVideo && (
+                <span style={{
+                  fontSize: '0.6rem',
+                  padding: '1px 5px',
+                  borderRadius: '9999px',
+                  background: 'rgba(99, 102, 241, 0.15)',
+                  color: '#a5b4fc',
+                  border: '1px solid rgba(99, 102, 241, 0.3)',
+                  fontWeight: 700
+                }}>
+                  Watch
+                </span>
+              )}
               {tab.isVoice && (
                 <span style={{
                   fontSize: '0.6rem',

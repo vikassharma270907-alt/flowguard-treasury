@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import BoundaryTestSection from './BoundaryTestSection';
 import HowWeUseArmorIQSection from './HowWeUseArmorIQSection';
+import ExplainerVideoSection from './ExplainerVideoSection';
 
 const RotatingHeroVault = lazy(() => import('./3d/RotatingHeroVault'));
 
@@ -152,13 +153,23 @@ export default function OverviewScreen({
 
         {/* CTA Buttons */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
-          <button
-            onClick={() => setShowDemoVideo(!showDemoVideo)}
+          <a
+            href="#explainer-video"
+            onClick={(e) => { e.preventDefault(); const el = document.getElementById('explainer-video'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}
             className="btn btn-primary mobile-tap-target"
             style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 20px', minHeight: '44px', fontSize: '0.9rem', fontWeight: 700 }}
           >
+            <Video size={16} />
+            <span>Watch 3-Min Explainer Video</span>
+          </a>
+
+          <button
+            onClick={() => setShowDemoVideo(!showDemoVideo)}
+            className="btn btn-secondary mobile-tap-target"
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 18px', minHeight: '44px', fontSize: '0.9rem' }}
+          >
             <Play size={16} fill="currentColor" />
-            <span>{showDemoVideo ? 'Hide 60-Second Explainer' : 'Watch the 60-Second Explainer'}</span>
+            <span>{showDemoVideo ? 'Hide Walkthrough Steps' : 'Interactive 4-Phase Tour'}</span>
           </button>
 
           <a
@@ -349,6 +360,11 @@ export default function OverviewScreen({
             </div>
           </div>
         )}
+      </div>
+
+      {/* Official 3-Minute Architectural Explainer Video */}
+      <div className="cv-auto">
+        <ExplainerVideoSection />
       </div>
 
       {/* TIER 1 ITEM 5: Centerpiece Boundary Test Section */}

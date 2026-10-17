@@ -5,6 +5,7 @@ import {
   Terminal, Lock, Layers, Cpu, FileText, Check, Copy
 } from 'lucide-react';
 import realRunData from '../data/realArmoriqRun.json';
+import ExplainerVideoSection from './ExplainerVideoSection';
 
 export default function JudgesPage({ onNavigate }) {
   const [copiedLink, setCopiedLink] = useState(false);
@@ -182,6 +183,9 @@ export default function JudgesPage({ onNavigate }) {
           </button>
         </div>
       </div>
+
+      {/* 3-Minute Architectural Explainer Video */}
+      <ExplainerVideoSection />
 
       {/* 90-Second Guided Tour */}
       <section style={{ marginBottom: '40px' }}>
