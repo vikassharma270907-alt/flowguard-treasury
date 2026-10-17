@@ -30,7 +30,7 @@
 
 const crypto = require('crypto');
 
-const JWT_SECRET = process.env.JWT_SECRET || process.env.ARMORIQ_API_KEY || 'armoriq-flowguard-jwt-auth-secret-2026';
+const JWT_SECRET = process.env.JWT_SECRET || process.env.ARMORIQ_API_KEY || (() => { throw new Error('JWT_SECRET environment variable is required'); })();
 const ACCESS_TOKEN_TTL_SEC = 15 * 60; // 15 minutes per ArmorIQ docs
 const REFRESH_TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
