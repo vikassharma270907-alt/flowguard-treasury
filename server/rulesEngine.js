@@ -113,6 +113,32 @@ function planPayments({
   scoredInvoices.sort((a, b) => b.priorityScore - a.priorityScore);
 
   // 4. Deterministic Cash Allocation against Reserve Floor
+  const allocation = allocateCash(scoredInvoices, totalLiquidUsd, reserveFloor);
+
+  // 5. Compute Receivables Impact (Simulation)
+  const forecastRunway = computeForecast(
+    totalLiquidUsd,
+    reserveFloor,
+    allocation.approvedOutflowUsd,
+    allocation.deferredOutflowUsd,
+    allocation.runningUsdAvailable,
+    expectedReceivables,
+    fxRates
+  );
+
+  return {
+    balanceBreakdown,
+    totalLiquidUsd,
+    reserveFloor,
+    decisions: allocation.plannedDecisions,
+    forecastRunway
+  };
+}
+
+/**
+ * Allocates cash against the reserve floor for prioritized invoices
+ */
+function allocateCash(scoredInvoices, totalLiquidUsd, reserveFloor) {
   let runningUsdAvailable = totalLiquidUsd;
   let approvedOutflowUsd = 0;
   let deferredOutflowUsd = 0;
@@ -163,12 +189,23 @@ function planPayments({
     }
   });
 
-  // 5. Compute Receivables Impact (Simulation)
+  return {
+    plannedDecisions,
+    runningUsdAvailable,
+    approvedOutflowUsd,
+    deferredOutflowUsd
+  };
+}
+
+/**
+ * Computes the forecasted runway based on planned payments and expected receivables
+ */
+function computeForecast(totalLiquidUsd, reserveFloor, approvedOutflowUsd, deferredOutflowUsd, runningUsdAvailable, expectedReceivables, fxRates) {
   const incomingReceivablesUsd = expectedReceivables
     .filter(r => r.status === 'ON_TRACK')
     .reduce((sum, r) => sum + convertToUsdBase(r.expected_amount, r.currency, fxRates), 0);
 
-  const forecastRunway = {
+  return {
     currentLiquidityUsd: totalLiquidUsd,
     reserveFloorUsd: reserveFloor,
     approvedOutflowsUsd: approvedOutflowUsd,
@@ -177,18 +214,12 @@ function planPayments({
     incomingReceivablesUsd,
     postReceivableLiquidityUsd: runningUsdAvailable + incomingReceivablesUsd
   };
-
-  return {
-    balanceBreakdown,
-    totalLiquidUsd,
-    reserveFloor,
-    decisions: plannedDecisions,
-    forecastRunway
-  };
 }
 
 module.exports = {
   convertToUsdBase,
   getCorridorFee,
+  allocateCash,
+  computeForecast,
   planPayments
 };
