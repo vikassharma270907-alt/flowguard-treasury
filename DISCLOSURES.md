@@ -8,7 +8,11 @@ This document discloses all libraries, frameworks, tools, and developer lineage 
 
 ## 2. Lineage & Development Statement
 - **Developer Statement**: &ldquo;Yes, BeyondFlow reuses and adapts my earlier MIT-licensed IntentGate prototype components (such as the voice gateway holding pattern and Airwallex sandbox adapter) alongside official ArmorIQ SDK and MCP libraries. All code is disclosed under the MIT License.&rdquo;
-- Earlier architectural prototypes (such as the IntentGate gateway concept for sub-5-second voice holding patterns and the Airwallex sandbox adapter) were adapted and unified into BeyondFlow under the MIT License.
+- **Pre-existing Code (Rule 6 Compliance)**: The following components were built prior to the official hackathon window and are reused in this project:
+  1. The IntentGate prototype components (voice gateway holding pattern and MCP tool structure).
+  2. The India-focused header and footer system.
+  3. The 3D and light/dark theme components.
+- The ArmorIQ integration, policy enforcement, ElevenLabs agent wiring, and audit ledger work were developed specifically for this hackathon within the official window.
 
 ## 3. Third-Party Libraries & Frameworks
 The following open-source packages and frameworks were utilized:
