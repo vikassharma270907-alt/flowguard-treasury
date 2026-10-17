@@ -1,10 +1,9 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Header from './components/Header';
-import Footer from './components/Footer';
+import LazySection from './components/LazySection';
+const Footer = lazy(() => import('./components/Footer'));
 import OverviewScreen from './components/OverviewScreen';
-
-// Route-level code splitting: only the overview screen ships in the initial
-// bundle; every other screen (and the modals) loads on first navigation.
+// Route-level code splitting: other screens and modals load on demand
 const PlannerScreen = lazy(() => import('./components/PlannerScreen'));
 const InvoiceGuardScreen = lazy(() => import('./components/InvoiceGuardScreen'));
 const AuditLedgerScreen = lazy(() => import('./components/AuditLedgerScreen'));
@@ -21,7 +20,6 @@ const JudgesPage = lazy(() => import('./components/JudgesPage'));
 const ScenariosScreen = lazy(() => import('./components/ScenariosScreen'));
 const ArmorPayModal = lazy(() => import('./components/ArmorPayModal'));
 const VideoPage = lazy(() => import('./components/VideoPage'));
-import { Lock, Shield, ArrowRight } from 'lucide-react';
 
 const LEGAL_ROUTES = ['privacy', 'terms', 'refund-policy', 'grievance-officer', 'dpdp-compliance', 'dpdp-act'];
 
@@ -570,7 +568,11 @@ export default function App() {
       </Suspense>
 
       {/* Global Responsive Footer */}
-      <Footer onNavigate={handleNavigate} />
+      <LazySection minHeight="200px">
+        <Suspense fallback={null}>
+          <Footer onNavigate={handleNavigate} />
+        </Suspense>
+      </LazySection>
     </div>
   );
 }

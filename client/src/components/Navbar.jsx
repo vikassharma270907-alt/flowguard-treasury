@@ -114,7 +114,7 @@ export default function Navbar({
             border: '1px solid var(--border)',
             boxShadow: '0 0 15px rgba(16, 185, 129, 0.2)'
           }}>
-            <img src="/logo.svg" alt="BeyondFlow Logo" style={{ width: '24px', height: '24px' }} />
+            <img src="/logo.svg" alt="BeyondFlow Logo" width="24" height="24" style={{ width: '24px', height: '24px' }} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>

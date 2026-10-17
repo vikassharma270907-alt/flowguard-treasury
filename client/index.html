@@ -74,29 +74,70 @@
   <body>
     <div id="root">
       <div style="min-height: 100vh; display: flex; flex-direction: column;">
-        <header style="height: 57px; border-bottom: 1px solid var(--border, #27272a); display: flex; align-items: center; padding: 0 20px; justify-content: space-between; background: var(--card, #0d0d11);">
+        <header style="height: 58px; border-bottom: 1px solid var(--border, #27272a); display: flex; align-items: center; padding: 0 16px; justify-content: space-between; background: var(--card, #0d0d11); max-width: 1440px; margin: 0 auto; width: 100%;">
           <div style="display: flex; align-items: center; gap: 10px;">
             <span style="font-weight: 800; font-size: 18px; letter-spacing: -0.02em; color: var(--foreground, #fafafa);">BeyondFlow</span>
             <span style="font-size: 11px; padding: 2px 8px; border-radius: 9999px; background: rgba(16, 185, 129, 0.12); color: #10b981; font-weight: 700;">Governed by ArmorIQ PEP</span>
           </div>
         </header>
         <main style="max-width: 1440px; width: 100%; margin: 0 auto; padding: 24px; flex: 1;">
-          <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 10px; padding: 10px 16px; margin-bottom: 24px; font-size: 0.82rem; font-weight: 600; color: var(--brand-accent-text, #38bdf8);">
-            Sandbox / test environment. No real funds or customer data.
-          </div>
-          <div style="background: var(--card, #0d0d11); border: 1px solid var(--border, #27272a); border-radius: 16px; padding: clamp(24px, 5vw, 40px) clamp(16px, 4vw, 32px);">
-            <div style="display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 9999px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--success, #10b981); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">
-              Official Submission · ArmorIQ Flow State Hackathon
+          <div style="display: flex; flex-direction: column; gap: 24px;">
+            <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 10px; padding: 10px 16px; font-size: 0.82rem; font-weight: 600; color: var(--brand-accent-text, #38bdf8); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+              <span>Sandbox / test environment. No real funds or customer data.</span>
+              <span style="font-size: 0.75rem; color: var(--muted-foreground, #a1a1aa);">Synthetic Airwallex balances & test orders (ORD-1001, ACC-4471)</span>
             </div>
-            <h1 style="font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; margin: 0 0 16px 0; color: var(--foreground, #fafafa);">
-              Enterprise Voice AI Governed by ArmorIQ PEP
-            </h1>
-            <p style="font-size: clamp(1rem, 2vw, 1.15rem); color: var(--foreground, #fafafa); line-height: 1.6; margin: 0 0 8px 0; font-weight: 500;">
-              BeyondFlow is a voice AI support agent governed by ArmorIQ that handles live telephony inquiries, manages order verification, and secures high-value disbursements.
-            </p>
-            <p style="font-size: clamp(0.9rem, 1.8vw, 1.05rem); color: var(--muted-foreground, #a1a1aa); line-height: 1.6; margin: 0 0 24px 0;">
-              ArmorIQ cryptographically bounds every tool invocation to declared intent using Ed25519 tokens and blocks unauthorized bank diversions or prompt injections before any network execution.
-            </p>
+            <div style="background: var(--card, #0d0d11); border: 1px solid var(--border, #27272a); border-radius: 14px; padding: 16px 20px; box-shadow: var(--card-shadow);">
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--border, #27272a); margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></div>
+                  <span style="font-size: 0.85rem; font-weight: 800; color: var(--foreground, #fafafa); letter-spacing: -0.01em;">Live PEP Enforcement Strip</span>
+                  <span style="font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 9999px; background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);">Recorded run, 16 Oct 2026</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--muted-foreground, #a1a1aa);">
+                  <span>Policy: <code style="color: var(--foreground, #fafafa);">flowguard-treasury-allowlist</code></span>
+                  <span>·</span>
+                  <span>PEP: <code style="color: var(--foreground, #fafafa);">proxy.armoriq.ai</code></span>
+                </div>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 10px 14px; border-radius: 8px; background: var(--secondary, #18181b); border: 1px solid var(--border-subtle, #27272a); font-size: 0.82rem;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <code style="font-weight: 700; color: var(--foreground, #fafafa);">lookup_order</code>
+                    <span style="display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 9999px; font-size: 0.72rem; font-weight: 800; color: var(--verdict-allowed-text, #34d399); background: var(--verdict-allowed-bg, rgba(16, 185, 129, 0.15)); border: 1px solid var(--verdict-allowed-border, rgba(16, 185, 129, 0.4));">ALLOWED</span>
+                  </div>
+                  <span style="color: var(--muted-foreground, #a1a1aa); font-size: 0.75rem;">887 ms · Decided by ArmorIQ PEP</span>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 10px 14px; border-radius: 8px; background: var(--secondary, #18181b); border: 1px solid var(--border-subtle, #27272a); font-size: 0.82rem;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <code style="font-weight: 700; color: var(--foreground, #fafafa);">change_payout</code>
+                    <span style="display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 9999px; font-size: 0.72rem; font-weight: 800; color: var(--verdict-blocked-text, #f87171); background: var(--verdict-blocked-bg, rgba(239, 68, 68, 0.15)); border: 1px solid var(--verdict-blocked-border, rgba(239, 68, 68, 0.4));">BLOCKED</span>
+                  </div>
+                  <span style="color: var(--muted-foreground, #a1a1aa); font-size: 0.75rem;">764 ms · Decided by ArmorIQ PEP</span>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 10px 14px; border-radius: 8px; background: var(--secondary, #18181b); border: 1px solid var(--border-subtle, #27272a); font-size: 0.82rem;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <code style="font-weight: 700; color: var(--foreground, #fafafa);">issue_refund</code>
+                    <span style="display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 9999px; font-size: 0.72rem; font-weight: 800; color: var(--verdict-held-text, #fbbf24); background: var(--verdict-held-bg, rgba(245, 158, 11, 0.15)); border: 1px solid var(--verdict-held-border, rgba(245, 158, 11, 0.4));">HELD</span>
+                  </div>
+                  <span style="color: var(--muted-foreground, #a1a1aa); font-size: 0.75rem;">604 ms · Decided by ArmorIQ PEP</span>
+                </div>
+              </div>
+            </div>
+            <div style="background: var(--card, #0d0d11); border: 1px solid var(--border, #27272a); border-radius: 16px; padding: clamp(24px, 5vw, 40px) clamp(16px, 4vw, 32px); box-shadow: var(--card-shadow);">
+              <div style="display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 9999px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--success, #10b981); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+                Official Submission · ArmorIQ Flow State Hackathon
+              </div>
+              <h1 style="font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; margin: 0 0 16px 0; color: var(--foreground, #fafafa);">
+                Voice AI support agent governed by ArmorIQ
+              </h1>
+              <p style="font-size: clamp(1rem, 2vw, 1.15rem); color: var(--foreground, #fafafa); line-height: 1.6; margin: 0 0 8px 0; font-weight: 500;">
+                BeyondFlow is a voice AI support agent governed by ArmorIQ that handles live telephony inquiries, manages order verification, and secures high-value disbursements.
+              </p>
+              <p style="font-size: clamp(0.9rem, 1.8vw, 1.05rem); color: var(--muted-foreground, #a1a1aa); line-height: 1.6; margin: 0 0 24px 0;">
+                ArmorIQ cryptographically bounds every tool invocation to declared intent using Ed25519 tokens and blocks unauthorized bank diversions or prompt injections before any network execution.
+              </p>
+            </div>
           </div>
         </main>
       </div>

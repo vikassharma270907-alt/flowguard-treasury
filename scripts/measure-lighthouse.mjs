@@ -20,6 +20,14 @@ function startServer(port = 0) {
   return new Promise((resolve) => {
     const server = http.createServer((req, res) => {
       let reqPath = req.url.split('?')[0];
+      if (reqPath.startsWith('/api/')) {
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store'
+        });
+        res.end(JSON.stringify({ status: 'ok', plan: {}, invoices: [], activeScenario: 'SCENARIO_A' }));
+        return;
+      }
       let p = path.join(ROOT, reqPath === '/' ? 'index.html' : reqPath);
       if (!fs.existsSync(p)) p = path.join(ROOT, 'index.html');
       const ext = path.extname(p);
@@ -74,7 +82,16 @@ function runLighthouseCli(url, preset = 'mobile') {
 
         const perf = report.categories.performance;
         const audits = report.audits;
-        const lcpElement = audits['largest-contentful-paint-element']?.details?.items?.[0]?.node?.snippet || 'unknown';
+        const fcpVal = audits['first-contentful-paint']?.numericValue;
+        const netReqs = audits['network-requests']?.details?.items?.map(r => ({
+          url: r.url.split('/').pop(),
+          time: Math.round(r.networkEndTime - r.networkRequestTime),
+          size: Math.round(r.transferSize / 1024) + 'KB'
+        }));
+        console.log(`[Diagnostic] FCP: ${Math.round(fcpVal)}ms | LCP: ${Math.round(audits['largest-contentful-paint']?.numericValue)}ms`);
+        console.log('[Diagnostic] Network items:', JSON.stringify(netReqs));
+        const lcpSnippet = audits['largest-contentful-paint-element']?.details?.items?.[0]?.node?.snippet || audits['largest-contentful-paint-element']?.details?.items?.[0]?.node?.nodeLabel || audits['largest-contentful-paint']?.displayValue || 'unknown';
+        console.log(`[Diagnostic] LCP Node: ${lcpSnippet}`);
         const opps = Object.entries(audits)
           .filter(([_, a]) => a.details && a.details.type === 'opportunity' && a.numericValue > 50)
           .map(([k, a]) => `${k} (${Math.round(a.numericValue)}ms)`);
@@ -83,7 +100,7 @@ function runLighthouseCli(url, preset = 'mobile') {
           score: Math.round(perf.score * 100),
           lcp: audits['largest-contentful-paint']?.numericValue || 0,
           lcpDisplay: audits['largest-contentful-paint']?.displayValue || 'N/A',
-          lcpElement,
+          lcpElement: lcpSnippet,
           tbt: audits['total-blocking-time']?.numericValue || 0,
           tbtDisplay: audits['total-blocking-time']?.displayValue || 'N/A',
           cls: audits['cumulative-layout-shift']?.numericValue || 0,

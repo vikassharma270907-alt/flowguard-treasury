@@ -199,6 +199,9 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
             <img
               src={userSession?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}
               alt="Admin Avatar"
+              width="24"
+              height="24"
+              loading="lazy"
               style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }}
             />
             <div style={{ fontSize: '0.8rem' }}>

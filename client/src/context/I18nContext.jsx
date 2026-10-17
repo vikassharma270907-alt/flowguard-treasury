@@ -72,6 +72,16 @@ export const I18nProvider = ({ children }) => {
   useEffect(() => {
     if (typeof document !== 'undefined') {
       document.documentElement.lang = language;
+      if (language === 'hi') {
+        let link = document.getElementById('devanagari-font-css');
+        if (!link) {
+          link = document.createElement('link');
+          link.id = 'devanagari-font-css';
+          link.rel = 'stylesheet';
+          link.href = '/fonts-devanagari.css';
+          document.head.appendChild(link);
+        }
+      }
     }
   }, [language]);
 

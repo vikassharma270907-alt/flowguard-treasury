@@ -180,7 +180,7 @@ export default function ExplainerVideoSection({
         </div>
       </div>
 
-      {/* Video Player Container */}
+      {/* Video Player Container with reserved 16:9 aspect ratio */}
       <div ref={containerRef} style={{
         position: 'relative',
         borderRadius: '12px',
@@ -188,14 +188,20 @@ export default function ExplainerVideoSection({
         border: '1px solid rgba(255, 255, 255, 0.12)',
         background: '#000',
         marginBottom: '16px',
-        boxShadow: '0 12px 36px rgba(0, 0, 0, 0.85)'
+        boxShadow: '0 12px 36px rgba(0, 0, 0, 0.85)',
+        aspectRatio: '16 / 9',
+        width: '100%',
+        maxHeight: '560px'
       }}>
         <video
           ref={videoRef}
           controls
           preload="none"
+          playsInline
+          width="1280"
+          height="720"
           poster={activePoster || undefined}
-          style={{ width: '100%', maxHeight: '560px', display: 'block', outline: 'none' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', outline: 'none' }}
         >
           <source src={videoSrc} type="video/mp4" />
           <source src={videoSrc.replace('.mp4', '.webm')} type="video/webm" />
