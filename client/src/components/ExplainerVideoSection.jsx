@@ -204,7 +204,6 @@ export default function ExplainerVideoSection({
             src="/captions.vtt"
             srcLang="en"
             label="English Subtitles (Word-Aligned)"
-            default
           />
           Your browser does not support HTML5 video.
         </video>

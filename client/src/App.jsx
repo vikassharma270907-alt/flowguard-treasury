@@ -107,8 +107,20 @@ export default function App() {
   };
 
   useEffect(() => {
-    loadData();
-    checkAuthSession();
+    // Schedule background API calls to browser idle time so they don't block FCP, LCP, or main-thread hydration
+    let idleHandle = null;
+    let timerHandle = null;
+
+    const runBackgroundInit = () => {
+      loadData();
+      checkAuthSession();
+    };
+
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      idleHandle = window.requestIdleCallback(runBackgroundInit, { timeout: 1500 });
+    } else {
+      timerHandle = setTimeout(runBackgroundInit, 300);
+    }
 
     const handleLocationChange = () => {
       setActiveTab(getInitialTabFromUrl());
@@ -116,6 +128,12 @@ export default function App() {
     window.addEventListener('popstate', handleLocationChange);
     window.addEventListener('hashchange', handleLocationChange);
     return () => {
+      if (idleHandle && typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleHandle);
+      }
+      if (timerHandle) {
+        clearTimeout(timerHandle);
+      }
       window.removeEventListener('popstate', handleLocationChange);
       window.removeEventListener('hashchange', handleLocationChange);
     };

@@ -42,10 +42,8 @@
     }
     </script>
     
-    <!-- Self-hosted fonts: preloading 400, 600, 700 eliminates layout shift on font swap -->
+    <!-- Preload primary Latin body font for zero-layout-shift instant paint -->
     <link rel="preload" href="/fonts/inter-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/fonts/inter-600-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/fonts/inter-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 
     <script>
       (function() {
@@ -74,7 +72,35 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div style="min-height: 100vh; display: flex; flex-direction: column;">
+        <header style="height: 57px; border-bottom: 1px solid var(--border, #27272a); display: flex; align-items: center; padding: 0 20px; justify-content: space-between; background: var(--card, #0d0d11);">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-weight: 800; font-size: 18px; letter-spacing: -0.02em; color: var(--foreground, #fafafa);">BeyondFlow</span>
+            <span style="font-size: 11px; padding: 2px 8px; border-radius: 9999px; background: rgba(16, 185, 129, 0.12); color: #10b981; font-weight: 700;">Governed by ArmorIQ PEP</span>
+          </div>
+        </header>
+        <main style="max-width: 1440px; width: 100%; margin: 0 auto; padding: 24px; flex: 1;">
+          <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 10px; padding: 10px 16px; margin-bottom: 24px; font-size: 0.82rem; font-weight: 600; color: var(--brand-accent-text, #38bdf8);">
+            Sandbox / test environment. No real funds or customer data.
+          </div>
+          <div style="background: var(--card, #0d0d11); border: 1px solid var(--border, #27272a); border-radius: 16px; padding: clamp(24px, 5vw, 40px) clamp(16px, 4vw, 32px);">
+            <div style="display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 9999px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--success, #10b981); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">
+              Official Submission · ArmorIQ Flow State Hackathon
+            </div>
+            <h1 style="font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; margin: 0 0 16px 0; color: var(--foreground, #fafafa);">
+              Enterprise Voice AI Governed by ArmorIQ PEP
+            </h1>
+            <p style="font-size: clamp(1rem, 2vw, 1.15rem); color: var(--foreground, #fafafa); line-height: 1.6; margin: 0 0 8px 0; font-weight: 500;">
+              BeyondFlow is a voice AI support agent governed by ArmorIQ that handles live telephony inquiries, manages order verification, and secures high-value disbursements.
+            </p>
+            <p style="font-size: clamp(0.9rem, 1.8vw, 1.05rem); color: var(--muted-foreground, #a1a1aa); line-height: 1.6; margin: 0 0 24px 0;">
+              ArmorIQ cryptographically bounds every tool invocation to declared intent using Ed25519 tokens and blocks unauthorized bank diversions or prompt injections before any network execution.
+            </p>
+          </div>
+        </main>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
