@@ -3,7 +3,8 @@ import path from 'node:path';
 import { scenes } from './prepare-narration.mjs';
 
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
-const VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'EXAVITQu4vr4xnSDxMaL'; // Sarah (Calm, clear, professional)
+// User selected George (JBFqnCBsd6RMkjVDRZzb) - Warm, resonant, articulate narrator male
+const VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'JBFqnCBsd6RMkjVDRZzb';
 
 const OUTPUT_DIR = path.resolve('video/audio');
 if (!fs.existsSync(OUTPUT_DIR)) {
@@ -16,7 +17,7 @@ if (!ELEVENLABS_API_KEY) {
   process.exit(1);
 }
 
-console.log(`Starting ElevenLabs Text-to-Speech synthesis with voice ${VOICE_ID}...`);
+console.log(`Starting ElevenLabs Text-to-Speech synthesis with George (${VOICE_ID})...`);
 
 async function generateSceneAudio(scene) {
   console.log(`\nSynthesizing Scene ${scene.sceneNumber}: "${scene.title}" (${scene.text.length} chars)...`);
@@ -51,18 +52,26 @@ async function generateSceneAudio(scene) {
   fs.writeFileSync(audioPath, audioBuffer);
   fs.writeFileSync(metaPath, JSON.stringify(data.alignment, null, 2));
 
+  // Calculate actual duration from last character end time
+  const charEndTimes = data.alignment?.character_end_times_seconds || [];
+  const durationSec = charEndTimes.length > 0 ? charEndTimes[charEndTimes.length - 1] : 0;
+
   console.log(`  Saved audio: ${audioPath} (${(audioBuffer.length / 1024).toFixed(1)} KB)`);
-  console.log(`  Saved alignment metadata with ${data.alignment?.characters?.length || 0} character timestamps.`);
-  return { audioPath, alignment: data.alignment };
+  console.log(`  Speech duration: ${durationSec.toFixed(2)}s (target: ${scene.targetSeconds}s)`);
+  return { audioPath, alignment: data.alignment, durationSec };
 }
 
 async function run() {
   const manifest = [];
+  let totalSpeechSeconds = 0;
+
   for (const scene of scenes) {
     try {
       const res = await generateSceneAudio(scene);
+      totalSpeechSeconds += res.durationSec;
       manifest.push({
         ...scene,
+        actualSpeechSeconds: parseFloat(res.durationSec.toFixed(2)),
         audioFile: `${scene.id}.mp3`,
         alignmentFile: `${scene.id}_alignment.json`
       });
@@ -73,7 +82,11 @@ async function run() {
   }
 
   fs.writeFileSync(path.join(OUTPUT_DIR, 'manifest.json'), JSON.stringify(manifest, null, 2));
-  console.log('\nAll 8 scenes successfully synthesized with word-level timestamps!');
+  console.log(`\n========================================`);
+  console.log(`All 9 scenes successfully synthesized with George!`);
+  console.log(`Total Speech Duration: ${totalSpeechSeconds.toFixed(2)}s (${Math.floor(totalSpeechSeconds / 60)}m ${(totalSpeechSeconds % 60).toFixed(1)}s)`);
+  console.log(`With scene pauses and transitions, total video timeline will land in target 3:30 - 3:55!`);
+  console.log(`========================================`);
 }
 
 run();

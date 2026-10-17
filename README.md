@@ -231,7 +231,7 @@ A responsive, production-ready Header and Footer architecture tailored for India
 All branding, navigation links, business compliance data, and feature flags originate from a single source of truth:
 ```javascript
 // Single source of truth for brand name
-export const PRODUCT_NAME = "YourBrand";
+export const PRODUCT_NAME = "BeyondFlow";
 
 export const siteConfig = {
   name: PRODUCT_NAME,

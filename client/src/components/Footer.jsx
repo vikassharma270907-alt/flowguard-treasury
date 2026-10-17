@@ -1,6 +1,6 @@
 /**
  * Responsive Footer Component
- * Indian Developer-Tools / SaaS Product ("YourBrand")
+ * BeyondFlow Responsive Footer Component
  * 
  * Complies with strict Phase 2 & Booking requirements:
  * - Background #f7f7f5, 1px top border (#e5e5e5), 64px vertical padding
