@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Phone, PhoneCall, PhoneOff, Mic, Volume2, VolumeX, Shield,
-  ShieldCheck, AlertTriangle, CheckCircle2, XCircle, Clock,
-  ArrowRight, Lock, RefreshCw, Play, Pause, RotateCcw, FileText,
-  Terminal, Copy, Sparkles, UserCheck, Users, HelpCircle,
-  ExternalLink, Check, Info, AlertOctagon, ChevronRight, Zap
+  Phone, PhoneCall,  Volume2, VolumeX, Shield,
+  ShieldCheck,  CheckCircle2, XCircle, Clock,
+  Play, RotateCcw, FileText,
+  Terminal,  UserCheck, Users,
+  ExternalLink, Check,  AlertOctagon,  Zap
 } from 'lucide-react';
 
 export default function VoiceGatewayScreen({ userSession }) {
@@ -18,8 +18,7 @@ export default function VoiceGatewayScreen({ userSession }) {
 
   // Guided 45-second call state
   const [isGuidedRunning, setIsGuidedRunning] = useState(false);
-  const [guidedStep, setGuidedStep] = useState(0); // 0 to 6
-  const [timerSeconds, setTimerSeconds] = useState(0);
+    const [timerSeconds, setTimerSeconds] = useState(0);
   const [activeSpeaker, setActiveSpeaker] = useState(null); // 'caller' | 'agent' | 'supervisor' | null
   const guidedTimerRef = useRef(null);
 
@@ -30,7 +29,7 @@ export default function VoiceGatewayScreen({ userSession }) {
   const [manualRefundAmount, setManualRefundAmount] = useState('89');
 
   // Load session & DX notes from backend
-  const fetchSession = async () => {
+  const fetchSession = React.useCallback(async () => {
     try {
       const res = await fetch('/api/voice/session');
       const data = await res.json();
@@ -38,9 +37,9 @@ export default function VoiceGatewayScreen({ userSession }) {
     } catch (err) {
       console.warn('Error fetching voice session:', err);
     }
-  };
+  }, []);
 
-  const fetchDxNotes = async () => {
+  const fetchDxNotes = React.useCallback(async () => {
     try {
       const res = await fetch('/api/voice/dx-notes');
       const data = await res.json();
@@ -48,12 +47,15 @@ export default function VoiceGatewayScreen({ userSession }) {
     } catch (err) {
       console.warn('Error fetching DX notes:', err);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchSession();
-    fetchDxNotes();
-  }, []);
+    const init = () => {
+      fetchSession();
+      fetchDxNotes();
+    };
+    init();
+  }, [fetchSession, fetchDxNotes]);
 
   const fallbackBrowserSpeech = (text, speaker) => {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -272,7 +274,6 @@ export default function VoiceGatewayScreen({ userSession }) {
   };
 
   const pendingAction = sessionData?.pendingSupervisorAction;
-  const dualApproval = sessionData?.dualApprovalState;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>

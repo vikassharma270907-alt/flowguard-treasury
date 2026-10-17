@@ -17,7 +17,7 @@ export function isWebGLAvailable() {
       window.WebGLRenderingContext &&
       (canvas.getContext('webgl') || canvas.getContext('experimental-webgl') || canvas.getContext('webgl2'))
     );
-  } catch (err) {
+  } catch (_err) {
     return false;
   }
 }
@@ -38,7 +38,7 @@ export function prefersReducedMotion() {
  * Standard fallback card shown when WebGL is unavailable on older devices or software renderers.
  */
 import React from 'react';
-import { Shield, Box, AlertCircle } from 'lucide-react';
+import { Box, AlertCircle } from 'lucide-react';
 
 export function WebGLFallback({ title = '3D Cryptographic Enclave', description = 'Hardware-accelerated 3D rendering unavailable in this browser.' }) {
   return (

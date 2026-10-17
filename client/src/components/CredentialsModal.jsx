@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Key, ShieldCheck, CheckCircle2, AlertTriangle, ExternalLink, Shield } from 'lucide-react';
+import { X, Key, CheckCircle2, AlertTriangle, Shield } from 'lucide-react';
 
 export default function CredentialsModal({ onClose, onSaveCredentials, onSaveArmorIq, currentStatus }) {
   const [activeSubTab, setActiveSubTab] = useState('airwallex'); // 'airwallex' | 'armoriq'

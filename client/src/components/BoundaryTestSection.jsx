@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import {
-  ShieldCheck, AlertOctagon, Clock, CheckCircle2,
-  XCircle, AlertTriangle, ArrowRight, ExternalLink,
-  Code2, Copy, Check, Lock, Terminal, Cpu, FileText
-} from 'lucide-react';
+     CheckCircle2,
+  XCircle, AlertTriangle,  ExternalLink,
+  Code2, Copy, Check } from 'lucide-react';
 import realRunData from '../data/realArmoriqRun.json';
 
 export default function BoundaryTestSection() {

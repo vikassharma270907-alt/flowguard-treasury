@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {
-  ShieldCheck, Shield, CheckCircle2, XCircle, AlertTriangle,
-  Play, ExternalLink, ArrowRight, Terminal, Lock, Copy, Check,
-  Cpu, Layers, Sparkles, Video, Eye, Clock, FileText, ArrowDownRight,
-  Info, ChevronRight, Server, PhoneCall, Users, Box
+  ShieldCheck, CheckCircle2, XCircle, AlertTriangle,
+  Terminal, Lock, Copy, Check,
+  Cpu, Sparkles, FileText,
+  Info, ChevronRight, PhoneCall,
 } from 'lucide-react';
 import ExplainerVideoSection from './ExplainerVideoSection';
 import { useTheme } from '../context/ThemeContext';
@@ -100,7 +100,7 @@ export default function HowItWorksPage({ onNavigate }) {
       <section style={{ marginBottom: '48px', marginTop: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
           <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(56, 189, 248, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Clock size={18} color="#38bdf8" />
+
           </div>
           <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.02em', margin: 0 }}>
             The Idea in 30 Seconds

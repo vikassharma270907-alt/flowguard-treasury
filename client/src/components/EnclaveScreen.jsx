@@ -11,13 +11,8 @@
 
 import React, { useState, Suspense, lazy } from 'react';
 import {
-  Box, Shield, ShieldCheck, Sparkles, Sliders, RefreshCw,
-  Layers, Eye, Activity, CheckCircle2, FileText, BookOpen,
-  ExternalLink, ArrowRight, Terminal, Zap, Server, Lock,
-  FileCode, AlertTriangle, ChevronRight, ChevronLeft, Check
+  Box, ShieldCheck, Sparkles, RefreshCw, Layers, Activity, FileText, ExternalLink, ArrowRight, Terminal, Zap, Lock, ChevronRight, ChevronLeft, Check
 } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
-import { useI18n } from '../context/I18nContext';
 import { siteConfig } from '../siteConfig';
 import HowWeUseArmorIQSection from './HowWeUseArmorIQSection';
 
@@ -48,11 +43,7 @@ function Loading3DFallback({ label }) {
 }
 
 export default function EnclaveScreen({ onNavigate }) {
-  const { theme, isDark, toggleTheme } = useTheme();
-  const { t } = useI18n();
-  const [activeVisualizer, setActiveVisualizer] = useState('all'); // 'all' | 'vault' | 'gyro' | 'particles'
-  const [particleDensity, setParticleDensity] = useState(1200);
-  const [walkthroughStep, setWalkthroughStep] = useState(0);
+    const [activeVisualizer, setActiveVisualizer] = useState('all');  const [walkthroughStep, setWalkthroughStep] = useState(0);
 
   const pipelineStages = [
     {

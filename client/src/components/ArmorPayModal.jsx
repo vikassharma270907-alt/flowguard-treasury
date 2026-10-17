@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-  X, CheckCircle2, ShieldCheck, DollarSign, Clock, AlertTriangle,
-  Zap, Copy, Check, ExternalLink, ArrowRight, ShieldAlert, FileText, Lock
+  X, CheckCircle2, ShieldCheck,  AlertTriangle,
+  Zap, Copy, Check,
 } from 'lucide-react';
 
 export default function ArmorPayModal({
@@ -12,8 +12,7 @@ export default function ArmorPayModal({
 }) {
   const [approverName, setApproverName] = useState('Sarah Chen (Finance Director)');
   const [paymentMethod, setPaymentMethod] = useState(invoice?.payment_method || 'LOCAL');
-  const [isExpedited, setIsExpedited] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
   const [executionStep, setExecutionStep] = useState(0); // 0: Idle, 1: Hashing, 2: Minting, 3: Verifying, 4: Settling, 5: Complete
   const [settlementResult, setSettlementResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);

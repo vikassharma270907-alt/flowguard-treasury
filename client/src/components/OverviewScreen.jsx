@@ -1,10 +1,10 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import {
-  Wallet, ShieldCheck, ArrowUpRight, ArrowDownLeft, Clock,
+  Wallet, ShieldCheck, ArrowDownLeft,
   AlertTriangle, CheckCircle2, TrendingUp, DollarSign, PhoneCall,
-  ArrowRight, Shield, Server, ExternalLink, Activity, Box,
+  ArrowRight, Shield, Box,
   Sparkles, Video, Play, X, Info, ChevronRight, ChevronLeft,
-  Check, Terminal, Lock, Cpu
+
 } from 'lucide-react';
 import BoundaryTestSection from './BoundaryTestSection';
 import HowWeUseArmorIQSection from './HowWeUseArmorIQSection';
@@ -14,7 +14,7 @@ const RotatingHeroVault = lazy(() => import('./3d/RotatingHeroVault'));
 
 export default function OverviewScreen({
   planData,
-  balances,
+
   systemStatus,
   onNavigate,
   onSimulateDeposit
@@ -133,7 +133,6 @@ export default function OverviewScreen({
   const approvedOutflow = plan?.forecastRunway?.approvedOutflowsUsd || 0;
   const deferredOutflow = plan?.forecastRunway?.deferredOutflowsUsd || 0;
   const freeBuffer = Math.max(0, totalLiquid - reserveFloor);
-  const bufferPercent = Math.min(100, Math.round((reserveFloor / (totalLiquid || 1)) * 100));
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
@@ -366,7 +365,7 @@ export default function OverviewScreen({
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>
-                    <Terminal size={14} color="#38bdf8" />
+
                     <span>ArmorIQ SDK Execution Trace</span>
                   </div>
                   <span style={{ fontSize: '0.65rem', color: '#34d399', fontWeight: 600 }}>Recorded Platform Call</span>

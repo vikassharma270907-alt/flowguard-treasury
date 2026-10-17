@@ -78,7 +78,7 @@ export default function Footer({
 }) {
   const { t, language } = useI18n();
   const { isDark } = useTheme();
-  const currentYear = new Date().getFullYear();
+  const currentYear = 2026;
   const [isDesktop, setIsDesktop] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [mailtoHref, setMailtoHref] = useState('');

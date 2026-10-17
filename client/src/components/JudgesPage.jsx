@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import {
-  ShieldCheck, CheckCircle2, XCircle, AlertTriangle,
-  ExternalLink, ArrowRight, Video, Globe,
-  Terminal, Lock, Layers, Cpu, FileText, Check, Copy, Sparkles
+  ShieldCheck, CheckCircle2,
+  ExternalLink, ArrowRight,  Globe,
+      FileText, Check, Copy, Sparkles
 } from 'lucide-react';
-import realRunData from '../data/realArmoriqRun.json';
 import ExplainerVideoSection from './ExplainerVideoSection';
 
 export default function JudgesPage({ onNavigate }) {
@@ -200,7 +199,7 @@ export default function JudgesPage({ onNavigate }) {
         </div>
       </div>
 
-      {/* 3-Minute Architectural Explainer Video */}
+      {/* 3-Minute Architectural Explainer  */}
       <ExplainerVideoSection />
 
       {/* 90-Second Guided Tour */}

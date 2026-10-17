@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Activity, Search, RefreshCw, Eye, X, CheckCircle2, AlertTriangle, Code } from 'lucide-react';
+import { Search, RefreshCw, Eye, X, Code } from 'lucide-react';
 
 export default function AuditLedgerScreen() {
   const [logs, setLogs] = useState([]);
@@ -8,7 +8,7 @@ export default function AuditLedgerScreen() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchLogs = async () => {
+  const fetchLogs = React.useCallback(async () => {
     setIsLoading(true);
     try {
       let url = '/api/audit-logs?limit=100';
@@ -22,11 +22,11 @@ export default function AuditLedgerScreen() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [filterType, searchQuery]);
 
   useEffect(() => {
     fetchLogs();
-  }, [filterType]);
+  }, [filterType, fetchLogs]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();

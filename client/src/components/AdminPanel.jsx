@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Shield, Sliders, Globe, Users, Activity, CheckCircle2,
+  Shield, Globe, Users, Activity, CheckCircle2,
   AlertTriangle, Lock, Save, RefreshCw, UserPlus, Server, Key, ExternalLink,
-  ShieldCheck, Cpu, Flame, Zap, Database, Copy, Check, Terminal
+  ShieldCheck, Cpu, Flame, Zap, Database, Terminal
 } from 'lucide-react';
 import StepUpSecurityModal from './StepUpSecurityModal';
 
@@ -23,15 +23,39 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
 
   // MCP & ArmorIQ Platform state
   const [mcpStatus, setMcpStatus] = useState(null);
-  const [mcpTools, setMcpTools] = useState([]);
-  const [mcpResult, setMcpResult] = useState(null);
+    const [mcpResult, setMcpResult] = useState(null);
   const [isExecutingMcp, setIsExecutingMcp] = useState(false);
   const [copiedMcpConfig, setCopiedMcpConfig] = useState(false);
 
   useEffect(() => {
-    loadAdminData();
-    fetch('/api/mcp/status').then(r => r.json()).then(d => setMcpStatus(d)).catch(() => {});
-    fetch('/api/mcp/tools').then(r => r.json()).then(d => setMcpTools(d.tools || [])).catch(() => {});
+    // Moved fetch logic inside effect without triggering hook warnings
+    let mounted = true;
+    const init = async () => {
+      try {
+        const [settingsRes, usersRes, telemetryRes, securityRes] = await Promise.all([
+          fetch('/api/admin/settings'),
+          fetch('/api/admin/users'),
+          fetch('/api/admin/telemetry'),
+          fetch('/api/security/status')
+        ]);
+        if (!mounted) return;
+        const sData = await settingsRes.json();
+        const uData = await usersRes.json();
+        const tData = await telemetryRes.json();
+        const secData = await securityRes.json();
+
+        setSettings(sData.settings);
+        setTeamMembers(uData.members || []);
+        setTelemetry(tData);
+        setSecurityStatus(secData);
+      } catch (err) {
+        console.warn('Error fetching admin data:', err);
+      }
+    };
+    init();
+    fetch('/api/mcp/status').then(r => r.json()).then(d => mounted && setMcpStatus(d)).catch(() => {});
+    fetch('/api/mcp/tools').then(r => r.json()).then(d => mounted && setMcpTools(d.tools || [])).catch(() => {});
+    return () => { mounted = false; };
   }, []);
 
   const handleExecuteMcpTool = async (toolName, toolArgs = {}) => {
@@ -51,27 +75,6 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
     }
   };
 
-  const loadAdminData = async () => {
-    try {
-      const [settingsRes, usersRes, telemetryRes, securityRes] = await Promise.all([
-        fetch('/api/admin/settings'),
-        fetch('/api/admin/users'),
-        fetch('/api/admin/telemetry'),
-        fetch('/api/security/status')
-      ]);
-      const sData = await settingsRes.json();
-      const uData = await usersRes.json();
-      const tData = await telemetryRes.json();
-      const secData = await securityRes.json();
-
-      setSettings(sData.settings);
-      setTeamMembers(uData.members || []);
-      setTelemetry(tData);
-      setSecurityStatus(secData);
-    } catch (err) {
-      console.warn('Error fetching admin data:', err);
-    }
-  };
 
   const handleToggleCircuitBreaker = async () => {
     setIsTogglingCircuit(true);

@@ -17,7 +17,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { ShieldCheck, AlertTriangle, Shield, Clock, ArrowDownCircle, RefreshCw, User, LogOut, ChevronDown } from 'lucide-react';
+import { ShieldCheck, AlertTriangle, Clock, ArrowDownCircle, RefreshCw, User, LogOut, ChevronDown } from 'lucide-react';
 import { siteConfig as defaultSiteConfig } from '../siteConfig';
 import { useI18n } from '../context/I18nContext';
 import { useTheme } from '../context/ThemeContext';
@@ -138,7 +138,7 @@ export default function Header({
 
   const activeScenarioObj = scenarios.find(s => s.id === (systemStatus?.activeScenario || 'SCENARIO_A')) || scenarios[0];
 
-  const { theme, isDark, toggleTheme } = useTheme();
+  const { isDark, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
 

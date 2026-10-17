@@ -4,11 +4,9 @@
  */
 
 import React from 'react';
-import { useI18n } from '../context/I18nContext';
 import { siteConfig } from '../siteConfig';
 
-export default function PricingSection({ onBackToHome, onBookDemo }) {
-  const { t } = useI18n();
+export default function PricingSection({ onBackToHome,  }) {
 
   const plans = [
     {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ShieldCheck, Key, Lock, ArrowRight, CheckCircle2, AlertTriangle } from 'lucide-react';
+import {  ShieldCheck } from 'lucide-react';
 
 export default function StepUpSecurityModal({ challenge, onClose, onSuccess }) {
   const [code, setCode] = useState(challenge?.code || '');

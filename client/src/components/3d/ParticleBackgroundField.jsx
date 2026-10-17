@@ -151,8 +151,7 @@ export default function ParticleBackgroundField({ particleCount, height = 300, i
         return;
       }
       animationFrameId = requestAnimationFrame(animate);
-      const delta = clock.getDelta();
-      const speedFactor = reducedMotion ? 0.1 : 1.0;
+            const speedFactor = reducedMotion ? 0.1 : 1.0;
 
       // Smooth mouse damping
       mouse.x += (mouse.targetX - mouse.x) * 0.04;
@@ -200,7 +199,7 @@ export default function ParticleBackgroundField({ particleCount, height = 300, i
         renderer.domElement.parentNode.removeChild(renderer.domElement);
       }
     };
-  }, [isDark, particleCount, height, interactive]);
+  }, [isDark, particleCount, height, interactive, actualParticleCount]);
 
   if (!hasWebGL) {
     return <WebGLFallback title="Intent Verification Field" description="Ambient 3D particle field fallback." />;

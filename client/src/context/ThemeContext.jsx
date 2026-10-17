@@ -83,14 +83,14 @@ export function ThemeProvider({ children }) {
   // Ensure DOM attribute is in sync on mount
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+  }, [theme, toggleTheme]);
 
   const value = useMemo(() => ({
     theme,
     isDark: theme === 'dark',
     toggleTheme,
     setTheme,
-  }), [theme]);
+  }), [theme, toggleTheme]);
 
   return (
     <ThemeContext.Provider value={value}>

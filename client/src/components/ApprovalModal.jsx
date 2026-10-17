@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle2, ArrowRight, ShieldCheck, DollarSign, Clock, AlertTriangle, Send } from 'lucide-react';
+import { X, CheckCircle2, ShieldCheck, Clock, Send } from 'lucide-react';
 
 export default function ApprovalModal({
   invoice,
@@ -8,9 +8,7 @@ export default function ApprovalModal({
   onTransitionStatus
 }) {
   const [approverName, setApproverName] = useState('Sarah Chen (Finance Director)');
-  const [loadingQuote, setLoadingQuote] = useState(false);
-  const [fxQuote, setFxQuote] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
   const [transferResult, setTransferResult] = useState(null);
   const [armorIqData, setArmorIqData] = useState(null);
   const [currentStep, setCurrentStep] = useState('REVIEW'); // 'REVIEW' | 'DISPATCHED' | 'SETTLED'
@@ -22,28 +20,6 @@ export default function ApprovalModal({
     }
   }, [invoice]);
 
-  const fetchFxQuote = async () => {
-    setLoadingQuote(true);
-    try {
-      const res = await fetch('/api/fx/quote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          buyCurrency: invoice.currency,
-          sellCurrency: 'USD',
-          buyAmount: invoice.amount
-        })
-      });
-      const data = await res.json();
-      if (data.quote) {
-        setFxQuote(data.quote);
-      }
-    } catch (err) {
-      console.warn('FX quote fetch error:', err);
-    } finally {
-      setLoadingQuote(false);
-    }
-  };
 
   const handleAuthorize = async () => {
     setIsSubmitting(true);

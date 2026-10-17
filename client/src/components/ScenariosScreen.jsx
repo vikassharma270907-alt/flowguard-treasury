@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Play, ShieldCheck, AlertTriangle, Clock, ArrowDownCircle,
   CheckCircle2, ArrowRight, LayoutGrid, Rows, RefreshCw,
-  ExternalLink, Shield, Layers, DollarSign, Activity, FileText
+  Shield,
 } from 'lucide-react';
 
 export default function ScenariosScreen({
@@ -321,8 +321,8 @@ export default function ScenariosScreen({
         gap: '24px',
         marginBottom: '36px'
       }}>
-        {scenariosData.map((s, index) => {
-          const isCurrent = activeScenario === s.id;
+        {scenariosData.map((s) => {
+
           const isSwitching = switchingId === s.id;
           const Icon = s.icon;
 
