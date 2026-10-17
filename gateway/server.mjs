@@ -89,6 +89,7 @@ function openHold(call) {
     status: 'awaiting_approvals',
     tool: call.tool,
     args: call.args,
+    requester: call.args?.__requester || null, // Store requester ID if provided
     goal: call.plan?.goal ?? null,
     planHash: call.planHash,
     tokenId: call.tokenId,
@@ -173,13 +174,28 @@ function summarizeResult(tool, rawResult) {
  */
 async function releaseHold(record) {
   updateHold(record.id, { status: 'releasing', releasedAt: Date.now() });
+
+  // Replay exactly the stored parameters
   const attempt = await governedCall({
     tool: record.tool,
-    args: record.args,
+    args: record.args, // Replay exact params
     goal: record.goal ?? `Supervisor-approved release of ${record.tool}`,
     prompt: `supervisor-approved retry: ${record.tool}`,
     releaseApproved: true,
   });
+
+  // Verify plan hash matches original hold
+  if (attempt.planHash && record.planHash && attempt.planHash !== record.planHash) {
+    const errorMsg = 'Plan hash mismatch on release (BeyondFlow gateway rule)';
+    updateHold(record.id, {
+      status: 'release_failed',
+      outcome: { decision: 'BLOCKED', reason: errorMsg },
+      closedAt: Date.now(),
+    });
+    console.log(JSON.stringify({ t: new Date().toISOString(), svc: 'gateway', event: 'hold.release_failed', id: record.id, reason: errorMsg }));
+    return { decision: 'BLOCKED', reason: errorMsg };
+  }
+
   recordCall({ ...attempt, source: 'release-after-approval', caseId: record.id });
 
   const outcome = {
@@ -311,11 +327,34 @@ const server = http.createServer(async (req, res) => {
       const body = await readBody(req);
       const decision = body.decision === 'approve' ? 'approve' : body.decision === 'deny' ? 'deny' : null;
       const supervisor = String(body.supervisor || '').trim() || 'anonymous-supervisor';
+      const requester = String(body.requester || '').trim();
       if (!decision) return json(res, 400, { error: 'decision must be "approve" or "deny"' });
 
       const record = pending.get(id);
       if (!record) return json(res, 404, { error: 'unknown case id' });
+
+      // Idempotent double release check
+      if (record.status === 'released' || record.status === 'release_failed') {
+          return json(res, 200, { case: pending.get(id), release: record.outcome });
+      }
+
       if (record.status !== 'awaiting_approvals') return json(res, 409, { error: `case is ${record.status}` });
+
+      if (Date.now() > record.expiresAt) {
+          updateHold(id, { status: 'expired', outcome: { decision: 'EXPIRED', reason: 'no supervisor responded in time' }, closedAt: Date.now() });
+          return json(res, 409, { error: 'Case has expired' });
+      }
+
+      if (requester && supervisor === requester) {
+          log('hold.approval_rejected', { id, reason: 'self-approval' });
+          return json(res, 403, { error: 'Requester cannot approve their own hold (BeyondFlow gateway rule)' });
+      }
+
+      const existingApprovers = record.approvals.filter(a => a.decision === 'approve').map(a => a.supervisor);
+      if (decision === 'approve' && existingApprovers.includes(supervisor)) {
+          log('hold.approval_rejected', { id, reason: 'duplicate-approval' });
+          return json(res, 409, { error: 'Supervisor already approved this case (BeyondFlow gateway rule)' });
+      }
 
       recordApproval(id, { supervisor, decision, at: Date.now() });
 
@@ -330,6 +369,9 @@ const server = http.createServer(async (req, res) => {
         log('hold.approval_counted', { id, approvals, required: record.requiredApprovals, supervisor });
         return json(res, 200, { case: pending.get(id), waiting_for: record.requiredApprovals - approvals });
       }
+
+      // BeyondFlow Gateway Rule: Check Exact Match of parameters before Releasing
+      // Done inside releaseHold...
 
       // Enough approvals: ask ArmorIQ to run it for real.
       const attempt = await releaseHold(pending.get(id));

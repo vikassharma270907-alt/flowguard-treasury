@@ -1,13 +1,13 @@
 {
   "brand": {
     "name": "BeyondFlow",
-    "tagline": "Autonomous Treasury & Intent Vault Governed by ArmorIQ.",
+    "tagline": "Voice AI support agent governed by ArmorIQ.",
     "registeredText": "Incorporated under the Companies Act, 2013"
   },
   "nav": {
     "home": "Home",
     "judges": "For Judges",
-    "video": "3-Min Video",
+    "video": "Demo video",
     "howItWorks": "How it works",
     "boundaryTest": "Boundary Test",
     "pricing": "Pricing (₹)",
@@ -15,7 +15,7 @@
     "github": "GitHub",
     "contactSales": "Contact Sales",
     "playground": "PLAYGROUND",
-    "bookDemo": "Book a Demo",
+    "bookDemo": "Judge quick start",
     "bookDemoAria": "Book a demo (opens scheduling window)",
     "toggleMenu": "Toggle navigation menu",
     "closeMenu": "Close navigation menu",

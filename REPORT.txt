@@ -1,0 +1,48 @@
+1. Secrets Audit:
+- No real API keys, bearer tokens, or secrets were found in the codebase. All matches for `ak_live_`, `elevenlabs_live_`, and bearer tokens were mock/placeholder strings in tests, documentation, or the `.env.example` file.
+- `.env` is correctly added to `.gitignore`.
+- `.env.example` contains only placeholder values.
+- Found personal email address `beyondnothing01@gmail.com` in `client/src/siteConfig.js`. Redacted it to "contact via GitHub issues".
+
+2. Date Evidence:
+git log --reverse --format='%h %ad %s' --date=short | head -5
+2954108 2026-10-17 docs(disclosure): record user verbatim lineage statement in DISCLOSURES.md and JudgesPage
+
+git log --until=2026-10-09 --oneline | wc -l
+0
+
+git log --since=2026-10-10 --oneline | wc -l
+1
+
+3. Documentation:
+- Task 3 requested replacing README.md with submission/README.md and DISCLOSURES.md with submission/DISCLOSURES_UPDATE.md.
+- I searched the entire repository and the `submission/` directory does not exist.
+- The `<FILL: ...>` markers could not be updated as I do not have the files.
+- I checked the document links in the current `README.md`.
+- `docs/BeyondFlow_Overview.pdf` is missing but linked in README.md.
+- The commands `node --env-file=.env scripts/test-enforcement.mjs` and `node --env-file=.env scripts/test-intent-mismatch.mjs` in README.md match the real scripts in the repo.
+
+4. MCP Auth:
+- Verified `mcp-server/server.mjs` enforces `MCP_AUTH_TOKEN`. If present, it requires a Bearer token in the `Authorization` header, otherwise returns 401. Tested locally and confirmed working (401 without token, 202 with token).
+- To enable this on Vercel and the gateway, set the following environment variables:
+  - Vercel (MCP Server): `MCP_AUTH_TOKEN` = `<your-secure-token>`
+  - Gateway (`.env`): `ARMORIQ_MCP_FLOWGUARD_TREASURY_MCP_AUTH_TYPE` = `bearer`
+  - Gateway (`.env`): `ARMORIQ_MCP_FLOWGUARD_TREASURY_MCP_TOKEN` = `<your-secure-token>`
+- Added `GET /mcp` returning a simple JSON status to `mcp-server/server.mjs`.
+
+5. Build and Test Results:
+Build (npm run build) completed successfully in ~0.8s. All React assets packaged correctly.
+Tests (npm test) passed (9 passing, 0 failing).
+
+Leftover Files:
+- next.config.js: Not used in this project as it uses Vite/React.
+- NEXT_PUBLIC_CALENDLY_URL in .env.example: Related to Calendly logic (also referenced in `client/src/components/Header.jsx` code). It is used conditionally by the build/client.
+- India header/footer references (`scripts/audit-brand-terms.mjs`, `locales/hi.json`, `Header.jsx` Hindi toggles): these remain but serve localization functionality if requested.
+
+6. Manual Steps Remaining Checklist:
+- [ ] Rotate API keys if any real ones were accidentally exposed previously (none found in current repo trace).
+- [ ] Ensure `MCP_AUTH_TOKEN` is set as an environment variable in your Vercel deployment.
+- [ ] Add `ARMORIQ_MCP_FLOWGUARD_TREASURY_MCP_AUTH_TYPE=bearer` and `ARMORIQ_MCP_FLOWGUARD_TREASURY_MCP_TOKEN=<your_token>` to your `.env` for the gateway instance.
+- [ ] Re-cut your 3-min video if necessary and update the `<VIDEO_URL>` placeholder in `README.md`.
+- [ ] Redeploy the Vercel (MCP Server) and your gateway.
+- [ ] Commit these changes, tag your release, and submit to the hackathon!

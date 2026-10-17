@@ -99,6 +99,12 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (url.pathname === '/mcp' && req.method === 'GET') {
+    res.writeHead(200, { 'content-type': 'application/json' });
+    res.end(JSON.stringify({ name: SERVER_NAME, version: '1.0.0', transport: 'POST JSON-RPC 2.0 over HTTP, SSE responses', status: 'ok' }));
+    return;
+  }
+
   if (url.pathname !== '/mcp') {
     res.writeHead(404, { 'content-type': 'application/json' });
     res.end(JSON.stringify({ error: 'not found', hint: 'POST /mcp' }));

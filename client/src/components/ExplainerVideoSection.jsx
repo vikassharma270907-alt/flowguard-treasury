@@ -102,7 +102,7 @@ export default function ExplainerVideoSection({
       </div>
 
       <h2 style={{ fontSize: '1.65rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.02em', margin: '0 0 10px 0' }}>
-        How BeyondFlow Governs Autonomous Treasury with ArmorIQ & ElevenLabs
+        How BeyondFlow Governs Voice AI support agents with ArmorIQ & ElevenLabs
       </h2>
       <p style={{ fontSize: '0.92rem', color: 'var(--muted-foreground)', maxWidth: '900px', lineHeight: 1.6, margin: '0 0 20px 0' }}>
         A complete 3-minute architectural walkthrough explaining (1) how BeyondFlow works, (2) how ElevenLabs conversational voice is utilized with sub-5s webhook replies, (3) how ArmorIQ enforces policy and cryptographic plan binding, and (4) how intent-first governance fundamentally differs from traditional API safeguards.

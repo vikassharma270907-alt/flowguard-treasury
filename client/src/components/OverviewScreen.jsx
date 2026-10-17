@@ -140,8 +140,58 @@ export default function OverviewScreen({
         </div>
 
         <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.03em', lineHeight: 1.2, margin: '0 0 16px 0' }}>
-          Autonomous Treasury & Intent Vault Governed by ArmorIQ
+          Voice AI support agent governed by ArmorIQ
         </h1>
+
+        {/* TASK 1: Live Enforcement Strip */}
+        <div style={{
+          display: 'flex', flexDirection: 'column', gap: '8px',
+          background: 'rgba(0,0,0,0.02)', padding: '16px',
+          borderRadius: '8px', border: '1px solid var(--border)', marginBottom: '24px'
+        }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--muted-foreground)', marginBottom: '4px', textTransform: 'uppercase' }}>
+            Recorded run, 2026-10-16
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: 'var(--card)', borderRadius: '6px', border: '1px solid rgba(16, 185, 129, 0.2)', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#10b981' }}>ALLOWED</span>
+              <code style={{ fontSize: '0.75rem', color: 'var(--foreground)' }}>lookup_order</code>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>
+              <span>887ms</span>
+              <span style={{ opacity: 0.5 }}>|</span>
+              <span title="tokenId" style={{ cursor: 'help' }}>id: 951f7625...</span>
+              <span style={{ padding: '2px 6px', background: 'var(--secondary)', borderRadius: '4px', border: '1px solid var(--border-subtle)' }}>Decided by ArmorIQ PEP</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: 'var(--card)', borderRadius: '6px', border: '1px solid rgba(239, 68, 68, 0.2)', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#ef4444' }}>BLOCKED</span>
+              <code style={{ fontSize: '0.75rem', color: 'var(--foreground)' }}>change_payout</code>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>
+              <span>764ms</span>
+              <span style={{ opacity: 0.5 }}>|</span>
+              <span title="tokenId" style={{ cursor: 'help' }}>id: 3a280ab1...</span>
+              <span style={{ padding: '2px 6px', background: 'var(--secondary)', borderRadius: '4px', border: '1px solid var(--border-subtle)' }}>Decided by ArmorIQ PEP</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: 'var(--card)', borderRadius: '6px', border: '1px solid rgba(245, 158, 11, 0.2)', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#f59e0b' }}>HELD</span>
+              <code style={{ fontSize: '0.75rem', color: 'var(--foreground)' }}>issue_refund</code>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>
+              <span>604ms</span>
+              <span style={{ opacity: 0.5 }}>|</span>
+              <span title="delegationId" style={{ cursor: 'help' }}>del: eb63aac7...</span>
+              <span style={{ padding: '2px 6px', background: 'var(--secondary)', borderRadius: '4px', border: '1px solid var(--border-subtle)' }}>Decided by ArmorIQ PEP</span>
+            </div>
+          </div>
+        </div>
 
         {/* The 2 Mandated Sentences */}
         <p style={{ fontSize: 'clamp(1rem, 2vw, 1.15rem)', color: 'var(--foreground)', lineHeight: 1.6, margin: '0 0 8px 0', fontWeight: 500 }}>

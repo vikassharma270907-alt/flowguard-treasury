@@ -734,3 +734,34 @@ pre, code, .code-panel, .transcript-scroll {
   content-visibility: auto;
   contain-intrinsic-size: auto 720px;
 }
+
+/* Accessibility Contrast Fixes */
+.badge-neutral {
+  color: var(--foreground) !important;
+  background: var(--border-subtle) !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] {
+  --text-muted: #52525b; /* 4.5:1 against white */
+  --text-dim: #52525b;
+  --muted-foreground: #52525b;
+}
+
+[data-theme="dark"] {
+  --text-muted: #a1a1aa; /* 4.5:1 against black */
+  --text-dim: #a1a1aa;
+  --muted-foreground: #a1a1aa;
+}
+
+/* Lighter hero paragraph fix */
+p[style*="color: 'var(--muted-foreground)'"] {
+  color: var(--foreground) !important;
+  opacity: 0.85 !important;
+}
+
+/* Watch pill and video label fix */
+.watch-pill, .video-label {
+  color: var(--foreground) !important;
+  font-weight: 600 !important;
+}

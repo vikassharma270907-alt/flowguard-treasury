@@ -131,7 +131,7 @@ export default function JudgesPage({ onNavigate }) {
           BeyondFlow Hackathon Evaluation Guide
         </h1>
         <p style={{ fontSize: '1.05rem', color: 'var(--muted-foreground)', maxWidth: '840px', lineHeight: 1.6, margin: '0 0 24px 0' }}>
-          Autonomous Treasury & Intent Vault Governed by ArmorIQ. This page provides a fast 90-second tour, verified rule compliance evidence, transparent claims validation, and honest architectural boundaries.
+          Voice AI support agent governed by ArmorIQ. This page provides a fast 90-second tour, verified rule compliance evidence, transparent claims validation, and honest architectural boundaries.
         </p>
 
         {/* Action Links Bar */}

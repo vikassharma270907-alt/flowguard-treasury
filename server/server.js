@@ -1104,4 +1104,10 @@ if (!process.env.VERCEL && require.main === module) {
   });
 }
 
+
+// Health route for Vercel Cron
+app.get('/api/health', (req, res) => {
+  res.json({ ok: true, message: 'Kept warm' });
+});
+
 module.exports = app;

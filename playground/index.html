@@ -114,9 +114,14 @@ function renderPending(pending) {
       </div>
       <div class="mono-dim" style="margin-top:8px">
         ArmorIQ reason: <code>${esc(c.armoriqReason || c.matchedPolicy?.reason || 'held by policy')}</code><br/>
-        Arguments: <code>${esc(JSON.stringify(c.args))}</code><br/>
+        Arguments (held exactly as captured): <code>${esc(JSON.stringify(c.args))}</code><br/>
         Plan hash: <code>${esc(c.planHash || '—')}</code>
-        ${c.matchedPolicy ? `<br/>Matched policy: <code>${esc(c.matchedPolicy.policyName || JSON.stringify(c.matchedPolicy))}</code>` : ''}
+        ${c.matchedPolicy ? `<br/>Matched policy: <code>${esc(c.matchedPolicy.policyName || JSON.stringify(c.matchedPolicy))}</code>` : ''}<br/>
+        Time remaining: ${Math.max(0, Math.floor((c.expiresAt - Date.now())/1000))}s<br/>
+        <div style="margin-top: 6px; padding: 4px; background: rgba(0,0,0,0.3); border-radius: 4px;">
+            <strong>Approvers:</strong> ${c.approvals.map(a => esc(a.supervisor)).join(', ') || 'none'}
+            <span class="badge" style="background: var(--line); color: var(--dim); margin-left: 8px;">BeyondFlow gateway rule</span>
+        </div>
       </div>
       ${c.approvals.length ? `<div class="mono-dim" style="margin-top:8px">Approvals: ${c.approvals.map((a) => `${esc(a.decision)} by ${esc(a.supervisor)}`).join(' · ')}</div>` : ''}
     </div>`;
