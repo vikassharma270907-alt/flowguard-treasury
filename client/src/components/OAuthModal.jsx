@@ -847,7 +847,7 @@ export default function OAuthModal({ onClose, onLoginSuccess }) {
                     type="text"
                     value={deviceUserCode}
                     onChange={e => setDeviceUserCode(e.target.value.toUpperCase())}
-                    placeholder="AQ-XXXX-X"
+                    placeholder="AQ-7492-B"
                     className="input"
                     style={{
                       width: '100%',
