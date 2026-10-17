@@ -61,6 +61,41 @@ function rateLimited(key = 'global') {
 const CACHE_TTL_MS = 60_000;
 const allowedCache = new Map();
 
+function checkClientConfig(client, meta) {
+  if (!client) {
+    return {
+      ...meta,
+      decision: 'NOT_EXECUTED',
+      errorName: 'NotConfigured',
+      reason:
+        'ARMORIQ_API_KEY is not configured on this deployment, so no ArmorIQ decision can be made. No call was sent.',
+    };
+  }
+  return null;
+}
+
+function checkRateLimitStatus(clientKey, meta, maxPerWindow) {
+  if (rateLimited(clientKey)) {
+    return {
+      ...meta,
+      decision: 'NOT_EXECUTED',
+      errorName: 'RateLimited',
+      reason: `Live enforcement rate limit reached (${maxPerWindow}/min). Try again shortly.`,
+    };
+  }
+  return null;
+}
+
+function checkAllowedCache(tool, cacheKey, allowedCacheMap, cacheTtlMs) {
+  if (tool === 'lookup_order') {
+    const hit = allowedCacheMap.get(cacheKey);
+    if (hit && Date.now() - hit.atMs < cacheTtlMs) {
+      return { ...hit.data, cached: true, cacheAgeMs: Date.now() - hit.atMs };
+    }
+  }
+  return null;
+}
+
 /**
  * Run one governed tool call through ArmorIQ.
  *
@@ -84,32 +119,15 @@ async function governedToolCall({ tool, args = {}, prompt, goal, skipDelegation 
   };
 
   const client = getClient();
-  if (!client) {
-    return {
-      ...meta,
-      decision: 'NOT_EXECUTED',
-      errorName: 'NotConfigured',
-      reason:
-        'ARMORIQ_API_KEY is not configured on this deployment, so no ArmorIQ decision can be made. No call was sent.',
-    };
-  }
+  const configError = checkClientConfig(client, meta);
+  if (configError) return configError;
 
-  if (rateLimited(clientKey)) {
-    return {
-      ...meta,
-      decision: 'NOT_EXECUTED',
-      errorName: 'RateLimited',
-      reason: `Live enforcement rate limit reached (${MAX_PER_WINDOW}/min). Try again shortly.`,
-    };
-  }
+  const rateLimitError = checkRateLimitStatus(clientKey, meta, MAX_PER_WINDOW);
+  if (rateLimitError) return rateLimitError;
 
   const cacheKey = `${tool}:${JSON.stringify(args)}`;
-  if (tool === 'lookup_order') {
-    const hit = allowedCache.get(cacheKey);
-    if (hit && Date.now() - hit.atMs < CACHE_TTL_MS) {
-      return { ...hit.data, cached: true, cacheAgeMs: Date.now() - hit.atMs };
-    }
-  }
+  const cacheHit = checkAllowedCache(tool, cacheKey, allowedCache, CACHE_TTL_MS);
+  if (cacheHit) return cacheHit;
 
   const t0 = Date.now();
   const timings = { capture: 0, mint: 0, invoke: 0, total: 0 };
