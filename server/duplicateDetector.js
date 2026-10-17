@@ -10,28 +10,37 @@
  */
 
 function calculateLevenshtein(a, b) {
-  const an = a ? a.length : 0;
-  const bn = b ? b.length : 0;
+  let an = a ? a.length : 0;
+  let bn = b ? b.length : 0;
   if (an === 0) return bn;
   if (bn === 0) return an;
-  const matrix = Array.from({ length: bn + 1 }, () => Array(an + 1).fill(0));
-  for (let i = 0; i <= an; i++) matrix[0][i] = i;
-  for (let j = 0; j <= bn; j++) matrix[j][0] = j;
+
+  if (an > bn) {
+    let tmp = a; a = b; b = tmp;
+    let tmpN = an; an = bn; bn = tmpN;
+  }
+
+  let row = new Uint32Array(an + 1);
+  for (let i = 0; i <= an; i++) row[i] = i;
 
   for (let j = 1; j <= bn; j++) {
+    let prevDiag = row[0];
+    row[0] = j;
     for (let i = 1; i <= an; i++) {
+      let prevDiagTemp = row[i];
       if (b[j - 1] === a[i - 1]) {
-        matrix[j][i] = matrix[j - 1][i - 1];
+        row[i] = prevDiag;
       } else {
-        matrix[j][i] = Math.min(
-          matrix[j - 1][i] + 1,
-          matrix[j][i - 1] + 1,
-          matrix[j - 1][i - 1] + 1
+        row[i] = Math.min(
+          row[i] + 1,
+          row[i - 1] + 1,
+          prevDiag + 1
         );
       }
+      prevDiag = prevDiagTemp;
     }
   }
-  return matrix[bn][an];
+  return row[an];
 }
 
 function normalizeInvoiceNumber(invNum) {
