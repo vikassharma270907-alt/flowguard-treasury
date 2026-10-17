@@ -87,29 +87,33 @@ Autonomous conversational voice agents are entering enterprise finance, but dire
 
 ## 3. What Your Project Must Have (Live Verdict Proof)
 
-BeyondFlow satisfies every mandatory deliverable with verifiable proof:
+BeyondFlow satisfies every mandatory deliverable with verifiable proof across recorded production runs (16 Oct 2026 19:06 UTC baseline in `docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json` and 17 Oct live verification run in `scripts/test-enforcement.mjs`):
+
+> **⚠️ Critical Architectural Note on Enforcement Boundary**:  
+> In compliance with **Hackathon Rule 8** (*no simulated or hardcoded results*), the upstream MCP server contains zero local policy logic. All allow, block, and hold decisions are cryptographically evaluated and enforced strictly at the **ArmorIQ Policy Enforcement Point (PEP) Reverse Proxy (`proxy.armoriq.ai`)** and via the **BeyondFlow Voice Gateway (`gateway/server.mjs`)**. Direct HTTP calls to the public `/mcp` sandbox bypass the PEP proxy by design; policy enforcement occurs when requests pass through the ArmorIQ proxy layer.
 
 ### ✅ 1. One Action Being ALLOWED
 * **Tool**: `lookup_order` (Inquires order status and line items)
 * **Execution Route**: ElevenLabs -> Gateway -> ArmorIQ PEP Proxy (`proxy.armoriq.ai`) -> MCP Server
-* **ArmorIQ Verdict**: **ALLOWED** in **1.18s** (Round-trip: 1179 ms)
+* **ArmorIQ Verdict**: **ALLOWED** in **887 ms** (16 Oct prod run) / **1,179 ms** (17 Oct live run)
+* **End-to-End Voice Round-Trip**: ~3.7s–4.3s (Voice recognition + 2.4s CSRG-IAP token mint + 0.9s PEP proxy invocation, safely within ElevenLabs' ~5s window)
 * **Cryptographic Plan Hash**: `b3e6889fe267adb661881333d488307f0263e0c2baf3efb3866bf136a62ac1ec`
 * **Response Payload**: `{"found":true,"order":{"order_id":"ORD-1001","status":"delivered","total":89,"currency":"USD"}}`
 
 ### ⛔ 2. One Action Being BLOCKED
 * **Tool**: `change_payout` (Alters bank routing number or destination account)
 * **Execution Route**: ElevenLabs -> Gateway -> ArmorIQ PEP Proxy (`proxy.armoriq.ai`)
-* **ArmorIQ Verdict**: **BLOCKED** in **626ms**
+* **ArmorIQ Verdict**: **BLOCKED** in **764 ms** (16 Oct prod run) / **626 ms** (17 Oct live run)
 * **Exception**: `PolicyBlockedException` (HTTP 403 Forbidden)
-* **Reason**: `tool_not_in_allowlist` (Matched Policy: `flowguard-treasury-allowlist`)
-* **Upstream Protection**: Tool execution halted at the reverse proxy; $0.00 diverted.
+* **Reason**: `tool_not_in_allowlist` (Matched Policy: `flowguard-treasury-allowlist` on `proxy.armoriq.ai`)
+* **Upstream Protection**: Tool execution halted at the reverse proxy before ever touching backend tools; $0.00 diverted.
 
 ### ⏳ 3. One Action Being HELD (Bonus: Quorum Governance)
 * **Tool**: `issue_refund` (Disburses capital back to buyer)
 * **Execution Route**: ElevenLabs -> Gateway -> ArmorIQ Delegation API (`POST /delegation/request`)
-* **ArmorIQ Verdict**: **HELD** in **667ms**
-* **Delegation ID**: `7f9e8c96-4bee-4fce-bdee-532bcb6d534e` (Status: `pending`)
-* **Mechanism**: Suspended until dual-supervisor cryptographic quorum is granted in the console.
+* **ArmorIQ Verdict**: **HELD** in **604 ms** (16 Oct prod run) / **667 ms** (17 Oct live run)
+* **Delegation ID**: `eb63aac7-349a-4cf0-a156-a2f3c469f427` (16 Oct prod run) / `7f9e8c96-4bee-4fce-bdee-532bcb6d534e` (17 Oct live run) (Status: `pending`)
+* **Mechanism**: Suspended on the ArmorIQ platform until dual-supervisor cryptographic quorum is granted in the console.
 
 ---
 
@@ -142,7 +146,7 @@ The project is registered and active on `platform.armoriq.ai`:
                                     │ POST /tools/BeyondFlow_orderLookup
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐
-│                   BEYONDFLOW VOICE GATEWAY (PORT 3002)                 │
+│                   BEYONDFLOW VOICE GATEWAY (PORT 8790)                 │
 │                                                                        │
 │  1. Strips tool namespace prefix ('BeyondFlow_' -> 'lookup_order')     │
 │  2. Asynchronously responds to ElevenLabs within 1.2s to hold call     │
@@ -264,6 +268,8 @@ SUMMARY
 ```
 
 ### 4. Query the Live Deployed MCP Server
+> **Note on Direct Querying**: The commands below query the public MCP sandbox directly to inspect schemas and read sandbox entities. Because direct curl calls bypass the ArmorIQ PEP proxy (`proxy.armoriq.ai`), they demonstrate raw tool capabilities. To test policy blocking (`change_payout` rejection), run step 3 above through the ArmorIQ Policy Enforcement Point.
+
 ```bash
 # Query tool list via SSE / JSON-RPC 2.0
 curl -X POST https://flowguard-treasury.vercel.app/mcp \

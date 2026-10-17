@@ -7,8 +7,16 @@ This document discloses all libraries, frameworks, tools, and developer lineage 
 - **Git History**: Commit history reflects iterative authoring of the ArmorIQ policy integration, the Model Context Protocol (MCP) server, the voice gateway holding pattern, and the cryptographic boundary test.
 
 ## 2. Lineage & Development Statement
-- **Developer Statement**: &ldquo;Yes, BeyondFlow reuses and adapts my earlier MIT-licensed IntentGate prototype components (such as the voice gateway holding pattern and Airwallex sandbox adapter) alongside official ArmorIQ SDK and MCP libraries. All code is disclosed under the MIT License.&rdquo;
-- Earlier architectural prototypes (such as the IntentGate gateway concept for sub-5-second voice holding patterns and the Airwallex sandbox adapter) were adapted and unified into BeyondFlow under the MIT License.
+- **Developer Statement**: &ldquo;Yes, BeyondFlow reuses and adapts my earlier MIT-licensed IntentGate prototype components alongside official ArmorIQ SDK and MCP libraries. All code is disclosed under the MIT License.&rdquo;
+- **Pre-Existing Code Disclosed (Built Prior to Hackathon Window)**:
+  1. *IntentGate Prototype*: Basic voice gateway concept for webhook routing and Airwallex sandbox adapter.
+  2. *Design & UI Subsystems*: India-first responsive Header and Footer navigation components, i18n English/Hindi dictionary skeleton, and Three.js 3D visual components (gyroscopic enclave, orbital particle background field).
+- **Built Fresh During Hackathon Window (October 10–17, 2026)**:
+  1. *ArmorIQ Cryptographic Core*: Full integration with `@armoriq/sdk` for `capturePlan`, CSRG-IAP intent token issuance, Merkle proof generation, and PEP reverse proxy execution (`proxy.armoriq.ai`).
+  2. *Live Policy Governance*: Onboarding and configuration of `flowguard-agent`, `flowguard-treasury-mcp`, and policy `flowguard-treasury-allowlist` on `platform.armoriq.ai`.
+  3. *Voice Telephony Holding Pattern*: Sub-5-second ElevenLabs holding pattern with asynchronous conversational hold messages and background supervisor resolution.
+  4. *Dual-Supervisor Quorum*: Platform delegation creation (`POST /delegation/request`) and multi-officer quorum verification.
+  5. *Explainer Video & Conformance Pipeline*: 9-scene master video rendering pipeline with ElevenLabs George AI voiceover, WCAG 2.1 AA keyboard accessibility suite, and automated viewport audits.
 
 ## 3. Third-Party Libraries & Frameworks
 The following open-source packages and frameworks were utilized:
