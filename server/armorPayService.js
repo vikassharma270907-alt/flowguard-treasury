@@ -27,8 +27,10 @@ class ArmorPayService {
    * Retrieves overall ArmorPay treasury metrics and status
    */
   async getStatus(invoices, vendors, reserveFloor, receivables) {
-    const balanceResult = await airwallexService.getBalances();
-    const fxResult = await airwallexService.getFxRates();
+    const [balanceResult, fxResult] = await Promise.all([
+      airwallexService.getBalances(),
+      airwallexService.getFxRates()
+    ]);
     const inspections = scanAllInvoices(invoices, vendors);
 
     const plan = planPayments({
@@ -116,8 +118,10 @@ class ArmorPayService {
     }
 
     // Step 2: Pre-flight Reserve Floor Evaluation
-    const balanceResult = await airwallexService.getBalances();
-    const fxResult = await airwallexService.getFxRates();
+    const [balanceResult, fxResult] = await Promise.all([
+      airwallexService.getBalances(),
+      airwallexService.getFxRates()
+    ]);
     const inspections = scanAllInvoices(invoices, vendors);
 
     const plan = planPayments({
