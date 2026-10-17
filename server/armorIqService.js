@@ -52,7 +52,7 @@ class ArmorIQService {
         this.client = new ArmorIQClient({ apiKey: key });
         this.apiKey = key;
         this.mode = 'ARMORIQ_LIVE';
-        console.log(`[BeyondFlow] ArmorIQ Live Client initialized with key ${key.substring(0, 10)}...`);
+        console.log('[BeyondFlow] ArmorIQ Live Client initialized.');
       } catch (err) {
         console.warn('ArmorIQ init fallback:', err.message);
         this.client = null;
