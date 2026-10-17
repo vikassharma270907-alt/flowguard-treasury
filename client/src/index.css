@@ -204,6 +204,10 @@ h1, h2, h3, h4, h5, h6, .font-display {
 
 /* Fix any inline white, off-white, or pale gray text in light mode */
 [data-theme="light"] [style*="color: #ffffff"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
+[data-theme="light"] [style*="color: #FFFFFF"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
+[data-theme="light"] [style*="color: #fff"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
+[data-theme="light"] [style*="color: #FFF"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
+[data-theme="light"] [style*="color: white"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
 [data-theme="light"] [style*="color: rgb(255, 255, 255)"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
 [data-theme="light"] [style*="color: #fafafa"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
 [data-theme="light"] [style*="color: #f4f4f5"]:not(.btn-primary):not(.btn-primary *):not(.btn-danger):not(.btn-danger *),
