@@ -17,16 +17,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { governedCall, warmup, client } from './armoriq-gateway.mjs';
-import { audit, recordCall, recordHold, recordApproval, updateHold, listPending, listRecentCalls, pending } from './audit-store.mjs';
+import { audit, recordCall, recordHold, recordApproval, recordRejection, updateHold, listPending, listRecentCalls, pending } from './audit-store.mjs';
 
-const PORT = Number(process.env.GATEWAY_PORT || 8790);
+const PORT = Number(process.env.PORT || process.env.GATEWAY_PORT || 8790);
 const SHARED_SECRET = process.env.GATEWAY_SHARED_SECRET || '';
 const PLAYGROUND_TOKEN = process.env.PLAYGROUND_TOKEN || '';
 /**
  * ElevenLabs exposes tools with a namespace prefix. FlowGuard_ is the canonical prefix.
  */
 const TOOL_PREFIXES = ['FlowGuard_', 'IntentGate_'];
-const HOLD_TTL_MS = Number(process.env.HOLD_TTL_MS || 15 * 60 * 1000);
+const HOLD_TTL_MS = Number(process.env.HOLD_TTL_MS || 15 * 60 * 1000); // 15 minutes
 const REQUIRED_APPROVALS = {
   issue_refund: Number(process.env.REQUIRED_APPROVALS_ISSUE_REFUND || 2),
   default: 1,
@@ -73,33 +73,45 @@ export function canonicalToolName(raw) {
 }
 
 /* --------------------------------------------------------------------------
- * Hold lifecycle
+ * Hold lifecycle (BeyondFlow gateway rule: dual-supervisor hardening)
  * ------------------------------------------------------------------------ */
 
 /**
- * Turn a HELD ArmorIQ decision into a pending case. The reply to ElevenLabs
- * happens immediately (well under 5 s) — the real outcome is recorded here and
- * relayed later through the check_supervisor_decision tool.
+ * Turn a HELD ArmorIQ decision into a pending case.
+ * Stores: plan hash, tool name, exact parameters (order_id, amount), requester/session ID,
+ * created-at, and expiry (15 minutes).
  */
-function openHold(call) {
+export function openHold(call, options = {}) {
   const required = REQUIRED_APPROVALS[call.tool] ?? REQUIRED_APPROVALS.default;
+  const createdAt = options.createdAt || Date.now();
+  const ttl = options.ttlMs || HOLD_TTL_MS;
+  const requesterId = options.requesterId || call.requesterId || call.args?.__requesterId || call.args?.__sessionId || 'elevenlabs-voice-session';
+
+  // Extract and store exact parameters only (e.g. order_id, amount)
+  const exactArgs = { ...call.args };
+  delete exactArgs.__goal;
+  delete exactArgs.__prompt;
+  delete exactArgs.__requesterId;
+  delete exactArgs.__sessionId;
+
   const record = {
-    id: `case-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
-    createdAt: Date.now(),
+    id: options.id || `case-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
+    createdAt,
     status: 'awaiting_approvals',
     tool: call.tool,
-    args: call.args,
-    goal: call.plan?.goal ?? null,
-    planHash: call.planHash,
-    tokenId: call.tokenId,
+    args: exactArgs,
+    goal: call.plan?.goal ?? call.goal ?? `Release of ${call.tool}`,
+    planHash: call.planHash || options.planHash || null,
+    tokenId: call.tokenId || null,
+    requesterId,
     armoriqDecision: 'HELD',
-    armoriqReason: call.reason,
+    armoriqReason: call.reason || 'Held by ArmorIQ policy',
     matchedPolicy: call.matchedPolicy,
     delegation: call.delegation,
     requiredApprovals: required,
     approvals: [],
     outcome: null,
-    expiresAt: Date.now() + HOLD_TTL_MS,
+    expiresAt: createdAt + ttl,
   };
   return recordHold(record);
 }
@@ -167,15 +179,79 @@ function summarizeResult(tool, rawResult) {
 }
 
 /**
- * Called when supervisors have approved a held call. The gateway does not
- * execute the tool itself — it asks ArmorIQ again with a fresh plan and token.
- * ArmorIQ remains the decider; this function only counts approvals.
+ * Release must replay ONLY the stored parameters and verify the plan hash matches.
+ * Idempotent: second release for same hold returns existing result without re-executing.
+ * Labeled explicitly as a BeyondFlow gateway rule.
  */
-async function releaseHold(record) {
+export async function releaseHold(record, options = {}) {
+  const who = options.who || 'supervisor-quorum';
+
+  // 1. Idempotency: a second release attempt must not fire a second refund and returns existing result
+  if (record.status === 'released') {
+    log('hold.release_idempotent', { id: record.id });
+    audit('hold.idempotent_release', {
+      id: record.id,
+      who,
+      when: new Date().toISOString(),
+      hash: record.planHash,
+      outcome: 'IDEMPOTENT_RELEASE_RETURNED',
+      rule: 'BeyondFlow gateway rule'
+    });
+    return record.outcome?.attempt || record.outcome || {
+      decision: 'ALLOWED',
+      planHash: record.planHash,
+      result: record.outcome?.result
+    };
+  }
+
+  // 2. Verify plan hash matches if provided by caller / options
+  if (options.replayPlanHash && record.planHash && options.replayPlanHash !== record.planHash) {
+    recordRejection(record.id, {
+      supervisor: who,
+      reason: `Plan hash mismatch: expected ${record.planHash}, got ${options.replayPlanHash}`,
+      outcome: 'REJECTED_PLAN_HASH_MISMATCH'
+    });
+    const err = new Error('BeyondFlow gateway rule: Plan hash mismatch at release');
+    err.code = 'PLAN_HASH_MISMATCH';
+    err.rule = 'BeyondFlow gateway rule';
+    throw err;
+  }
+
+  // 3. Verify exact parameters (reject if changed amount, order_id, etc.)
+  if (options.replayArgs) {
+    const storedKeys = Object.keys(record.args).sort();
+    const replayKeys = Object.keys(options.replayArgs).sort();
+    let mismatch = false;
+    if (storedKeys.length !== replayKeys.length) {
+      mismatch = true;
+    } else {
+      for (const k of storedKeys) {
+        if (String(record.args[k]) !== String(options.replayArgs[k])) {
+          mismatch = true;
+          break;
+        }
+      }
+    }
+    if (mismatch) {
+      recordRejection(record.id, {
+        supervisor: who,
+        reason: 'Parameters at release do not match stored held parameters',
+        outcome: 'REJECTED_PARAMETER_MISMATCH'
+      });
+      const err = new Error('BeyondFlow gateway rule: Parameters do not match stored held parameters');
+      err.code = 'PARAMETER_MISMATCH';
+      err.rule = 'BeyondFlow gateway rule';
+      throw err;
+    }
+  }
+
+  // Stored parameters only — never external tampered args
   updateHold(record.id, { status: 'releasing', releasedAt: Date.now() });
-  const attempt = await governedCall({
+
+  const callFn = options.governedCallFn || governedCall;
+  const attempt = await callFn({
     tool: record.tool,
-    args: record.args,
+    args: record.args, // Replays ONLY the stored parameters
     goal: record.goal ?? `Supervisor-approved release of ${record.tool}`,
     prompt: `supervisor-approved retry: ${record.tool}`,
     releaseApproved: true,
@@ -184,18 +260,175 @@ async function releaseHold(record) {
 
   const outcome = {
     decision: attempt.decision,
-    planHash: attempt.planHash ?? null,
+    planHash: attempt.planHash ?? record.planHash ?? null,
     reason: attempt.reason ?? null,
     result: attempt.result ?? null,
     timings: attempt.timings,
+    attempt,
   };
   updateHold(record.id, {
     status: attempt.decision === 'ALLOWED' ? 'released' : 'release_failed',
     outcome,
     closedAt: Date.now(),
   });
-  audit('hold.closed', { id: record.id, decision: attempt.decision, planHash: attempt.planHash });
+  audit('hold.released', {
+    id: record.id,
+    who,
+    when: new Date().toISOString(),
+    hash: record.planHash,
+    outcome: attempt.decision === 'ALLOWED' ? 'RELEASED_AND_EXECUTED' : `RELEASE_${attempt.decision}`,
+    rule: 'BeyondFlow gateway rule'
+  });
   return attempt;
+}
+
+/**
+ * Handle a supervisor approval or denial with BeyondFlow gateway hardening rules.
+ */
+export async function decideHold(id, { decision, supervisor, replayArgs, replayPlanHash, governedCallFn } = {}) {
+  const normDecision = decision === 'approve' ? 'approve' : decision === 'deny' ? 'deny' : null;
+  if (!normDecision) {
+    return { ok: false, status: 400, error: 'decision must be "approve" or "deny"', rule: 'BeyondFlow gateway rule' };
+  }
+
+  const supName = String(supervisor || '').trim();
+  if (!supName) {
+    return { ok: false, status: 400, error: 'supervisor identity required', rule: 'BeyondFlow gateway rule' };
+  }
+
+  const record = pending.get(id);
+  if (!record) {
+    return { ok: false, status: 404, error: 'unknown case id' };
+  }
+
+  const now = Date.now();
+
+  // BeyondFlow gateway rule: Reject approvals on expired holds
+  if (record.status === 'expired' || now > record.expiresAt) {
+    updateHold(id, {
+      status: 'expired',
+      outcome: record.outcome || { decision: 'EXPIRED', reason: 'hold expired after 15 minutes' },
+      closedAt: record.closedAt || now,
+    });
+    recordRejection(id, {
+      supervisor: supName,
+      reason: 'Hold has expired (15-minute TTL exceeded)',
+      outcome: 'REJECTED_EXPIRED'
+    });
+    return {
+      ok: false,
+      status: 410,
+      error: 'BeyondFlow gateway rule: Hold has expired (15-minute TTL exceeded)',
+      rule: 'BeyondFlow gateway rule'
+    };
+  }
+
+  // BeyondFlow gateway rule: Reject approvals on already-released holds
+  if (record.status === 'released') {
+    recordRejection(id, {
+      supervisor: supName,
+      reason: 'Hold has already been released',
+      outcome: 'REJECTED_ALREADY_RELEASED'
+    });
+    return {
+      ok: false,
+      status: 409,
+      error: 'BeyondFlow gateway rule: Hold has already been released',
+      rule: 'BeyondFlow gateway rule',
+      outcome: record.outcome
+    };
+  }
+
+  if (record.status === 'denied') {
+    return {
+      ok: false,
+      status: 409,
+      error: 'BeyondFlow gateway rule: Hold has already been denied',
+      rule: 'BeyondFlow gateway rule'
+    };
+  }
+
+  // BeyondFlow gateway rule: Reject self-approval from the requester or session that created the hold
+  if (record.requesterId && (supName.toLowerCase() === record.requesterId.toLowerCase() || (record.requesterId.toLowerCase().includes(supName.toLowerCase()) && supName.length >= 4))) {
+    recordRejection(id, {
+      supervisor: supName,
+      reason: 'Self-approval rejected: requester cannot approve their own hold',
+      outcome: 'REJECTED_SELF_APPROVAL'
+    });
+    return {
+      ok: false,
+      status: 403,
+      error: 'BeyondFlow gateway rule: Self-approval rejected — requester cannot approve their own hold',
+      rule: 'BeyondFlow gateway rule'
+    };
+  }
+
+  if (normDecision === 'deny') {
+    recordApproval(id, { supervisor: supName, decision: 'deny', at: now });
+    updateHold(id, {
+      status: 'denied',
+      outcome: { decision: 'DENIED_BY_SUPERVISOR', by: supName },
+      closedAt: now,
+    });
+    log('hold.denied', { id, supervisor: supName });
+    return { ok: true, case: pending.get(id), rule: 'BeyondFlow gateway rule' };
+  }
+
+  // BeyondFlow gateway rule: Require distinct supervisor identities. Reject second approval from the same approver.
+  const alreadyApproved = record.approvals.some(
+    (a) => a.decision === 'approve' && a.supervisor.toLowerCase() === supName.toLowerCase()
+  );
+  if (alreadyApproved) {
+    recordRejection(id, {
+      supervisor: supName,
+      reason: 'Duplicate approval rejected: approver has already approved this hold',
+      outcome: 'REJECTED_DUPLICATE_APPROVER'
+    });
+    return {
+      ok: false,
+      status: 409,
+      error: 'BeyondFlow gateway rule: Duplicate approval rejected — approver has already approved this hold',
+      rule: 'BeyondFlow gateway rule'
+    };
+  }
+
+  // Record valid approval
+  recordApproval(id, { supervisor: supName, decision: 'approve', at: now });
+  const updatedRecord = pending.get(id);
+  const approvalsCount = updatedRecord.approvals.filter((a) => a.decision === 'approve').length;
+
+  if (approvalsCount < updatedRecord.requiredApprovals) {
+    log('hold.approval_counted', { id, approvals: approvalsCount, required: updatedRecord.requiredApprovals, supervisor: supName });
+    return {
+      ok: true,
+      case: updatedRecord,
+      waiting_for: updatedRecord.requiredApprovals - approvalsCount,
+      rule: 'BeyondFlow gateway rule'
+    };
+  }
+
+  // Quorum reached (2/2): Execute release!
+  try {
+    const attempt = await releaseHold(updatedRecord, { replayArgs, replayPlanHash, who: supName, governedCallFn });
+    return {
+      ok: true,
+      case: pending.get(id),
+      release: {
+        decision: attempt.decision,
+        planHash: attempt.planHash ?? null,
+        reason: attempt.reason ?? null,
+        result: attempt.result ?? null
+      },
+      rule: 'BeyondFlow gateway rule'
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      status: 400,
+      error: err.message,
+      rule: 'BeyondFlow gateway rule'
+    };
+  }
 }
 
 function expireStaleHolds() {
@@ -231,8 +464,11 @@ const server = http.createServer(async (req, res) => {
       const args = await readBody(req);
       const goal = typeof args.__goal === 'string' ? args.__goal : undefined;
       const prompt = typeof args.__prompt === 'string' ? args.__prompt : undefined;
+      const requesterId = args.__requesterId || args.requesterId || args.__sessionId || args.sessionId || req.headers['x-requester-id'] || req.headers['x-session-id'] || 'elevenlabs-voice-session';
       delete args.__goal;
       delete args.__prompt;
+      delete args.__requesterId;
+      delete args.__sessionId;
 
       // Follow-up tool: report the recorded outcome of a held call. This does
       // not execute anything; it only relays ArmorIQ's recorded decision.
@@ -273,7 +509,7 @@ const server = http.createServer(async (req, res) => {
       });
 
       let holdCase = null;
-      if (call.decision === 'HELD') holdCase = openHold(call);
+      if (call.decision === 'HELD') holdCase = openHold(call, { requesterId });
 
       const withinBudget = Date.now() - started;
       return json(res, 200, {
@@ -304,36 +540,45 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (req.method === 'POST' && url.pathname.startsWith('/api/pending/')) {
-      const parts = url.pathname.split('/').filter(Boolean); // api, pending, :id, decide
+      const parts = url.pathname.split('/').filter(Boolean); // api, pending, :id, decide/release
       const id = parts[2];
       const action = parts[3];
-      if (!id || action !== 'decide') return json(res, 404, { error: 'not found' });
-      const body = await readBody(req);
-      const decision = body.decision === 'approve' ? 'approve' : body.decision === 'deny' ? 'deny' : null;
-      const supervisor = String(body.supervisor || '').trim() || 'anonymous-supervisor';
-      if (!decision) return json(res, 400, { error: 'decision must be "approve" or "deny"' });
+      if (!id) return json(res, 404, { error: 'not found' });
 
-      const record = pending.get(id);
-      if (!record) return json(res, 404, { error: 'unknown case id' });
-      if (record.status !== 'awaiting_approvals') return json(res, 409, { error: `case is ${record.status}` });
-
-      recordApproval(id, { supervisor, decision, at: Date.now() });
-
-      if (decision === 'deny') {
-        updateHold(id, { status: 'denied', outcome: { decision: 'DENIED_BY_SUPERVISOR', by: supervisor }, closedAt: Date.now() });
-        log('hold.denied', { id, supervisor });
-        return json(res, 200, { case: pending.get(id) });
+      if (action === 'decide') {
+        const body = await readBody(req);
+        const resDecide = await decideHold(id, {
+          decision: body.decision,
+          supervisor: body.supervisor,
+          replayArgs: body.replayArgs,
+          replayPlanHash: body.replayPlanHash,
+        });
+        if (!resDecide.ok) {
+          return json(res, resDecide.status, {
+            error: resDecide.error,
+            rule: resDecide.rule || 'BeyondFlow gateway rule'
+          });
+        }
+        return json(res, 200, resDecide);
       }
 
-      const approvals = pending.get(id).approvals.filter((a) => a.decision === 'approve').length;
-      if (approvals < record.requiredApprovals) {
-        log('hold.approval_counted', { id, approvals, required: record.requiredApprovals, supervisor });
-        return json(res, 200, { case: pending.get(id), waiting_for: record.requiredApprovals - approvals });
+      if (action === 'release') {
+        const record = pending.get(id);
+        if (!record) return json(res, 404, { error: 'unknown case id' });
+        const body = await readBody(req);
+        try {
+          const attempt = await releaseHold(record, {
+            replayArgs: body.replayArgs || body.args,
+            replayPlanHash: body.replayPlanHash || body.planHash,
+            who: body.supervisor || 'supervisor'
+          });
+          return json(res, 200, { ok: true, case: pending.get(id), release: attempt, rule: 'BeyondFlow gateway rule' });
+        } catch (err) {
+          return json(res, 400, { error: err.message, rule: 'BeyondFlow gateway rule' });
+        }
       }
 
-      // Enough approvals: ask ArmorIQ to run it for real.
-      const attempt = await releaseHold(pending.get(id));
-      return json(res, 200, { case: pending.get(id), release: { decision: attempt.decision, planHash: attempt.planHash ?? null, reason: attempt.reason ?? null, result: attempt.result ?? null } });
+      return json(res, 404, { error: 'not found' });
     }
 
     if (route === 'GET /playground' || route === 'GET /') {
@@ -344,6 +589,16 @@ const server = http.createServer(async (req, res) => {
 
     if (route === 'GET /health') {
       return json(res, 200, { ok: true, mcp: process.env.ARMORIQ_MCP_ID, agent: process.env.ARMORIQ_AGENT_ID || 'flowguard-agent' });
+    }
+
+    /* ---- TASK 4: Small JSON /mcp GET without exposing tool internals ---- */
+    if (route === 'GET /mcp') {
+      return json(res, 200, {
+        name: 'flowguard-treasury-mcp',
+        version: '1.0.0',
+        transport: 'POST JSON-RPC 2.0 over HTTP, SSE responses',
+        status: 'ok',
+      });
     }
 
     return json(res, 404, { error: 'not found' });
@@ -372,18 +627,28 @@ function latencyStats() {
   };
 }
 
-server.listen(PORT, async () => {
-  log('listening', { port: PORT, mcp: process.env.ARMORIQ_MCP_ID || '(unset)', playground: `http://localhost:${PORT}/playground` });
-  const warm = await warmup();
-  recordCall({ ...warm, source: 'warmup' });
-  log('warmup', { decision: warm.decision, reason: warm.reason ?? null, ms: warm.timings?.total ?? null });
-});
+export { server };
 
-async function shutdown() {
-  log('shutdown');
-  client.close();
-  server.close(() => process.exit(0));
-  setTimeout(() => process.exit(0), 1500).unref();
+const isMainModule = process.argv[1] && (
+  fileURLToPath(import.meta.url) === process.argv[1] ||
+  process.argv[1].endsWith('gateway/server.mjs')
+);
+
+if (isMainModule) {
+  server.listen(PORT, async () => {
+    log('listening', { port: PORT, mcp: process.env.ARMORIQ_MCP_ID || '(unset)', playground: `http://localhost:${PORT}/playground` });
+    const warm = await warmup();
+    recordCall({ ...warm, source: 'warmup' });
+    log('warmup', { decision: warm.decision, reason: warm.reason ?? null, ms: warm.timings?.total ?? null });
+  });
+
+  async function shutdown() {
+    log('shutdown');
+    client.close();
+    server.close(() => process.exit(0));
+    setTimeout(() => process.exit(0), 1500).unref();
+  }
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
 }
-process.on('SIGINT', shutdown);
-process.on('SIGTERM', shutdown);
+

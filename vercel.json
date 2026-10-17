@@ -26,5 +26,11 @@
       "source": "/((?!api|mcp|docs).*)",
       "destination": "/index.html"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/health",
+      "schedule": "*/5 * * * *"
+    }
   ]
 }

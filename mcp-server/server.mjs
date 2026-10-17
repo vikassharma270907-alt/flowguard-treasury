@@ -105,8 +105,20 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  /* ---- TASK 4: Small JSON /mcp GET without exposing tool internals ---- */
+  if (req.method === 'GET') {
+    res.writeHead(200, { 'content-type': 'application/json' });
+    res.end(JSON.stringify({
+      name: 'flowguard-treasury-mcp',
+      version: '1.0.0',
+      transport: 'POST JSON-RPC 2.0 over HTTP, SSE responses',
+      status: 'ok',
+    }));
+    return;
+  }
+
   if (req.method !== 'POST') {
-    res.writeHead(405, { 'content-type': 'application/json', allow: 'POST' });
+    res.writeHead(405, { 'content-type': 'application/json', allow: 'GET, POST' });
     res.end(JSON.stringify({ error: 'method not allowed' }));
     return;
   }

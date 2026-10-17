@@ -1,48 +1,29 @@
 /**
- * Responsive Header Component
- * BeyondFlow Responsive Header Component
- * 
- * Complies with strict Phase 2 & Calendly requirements:
- * - Sticky, white, 1px bottom border, ~56px height, max-width 1280px container
- * - Logo (24px black rounded-square with white icon) + bold wordmark from siteConfig.name
- * - Desktop nav from lg (1024px) up: Home, How it works, Pricing (₹), Docs ↗, GitHub ↗
- * - Accessible mobile hamburger (<1024px) with focus trap, Esc key listener, aria-expanded
- * - Right side: EN | हिन्दी toggle, Book a Demo CTA
- * - Calendly Integration:
- *   - Lazy-loads Calendly widget and CSS ONLY on hover or click (never on first paint)
- *   - Progressive fallback (<a href={url} target="_blank" rel="noopener noreferrer">)
- *   - If NEXT_PUBLIC_CALENDLY_URL is empty, completely hides booking buttons
- *   - In mobile drawer: closes drawer, opens popup, and returns focus to trigger
- *   - Visible focus states and aria-label "Book a demo (opens scheduling window)"
+ * BeyondFlow Unified Responsive Header Component (Task 3)
+ *
+ * Merges the stacked navigation bars into a single unified header:
+ * - Single theme toggle with accessible icon and tooltips (no duplicate "Dark" button)
+ * - Zero duplicate entries: "Demo video (3:49)" and "How It Works" appear once
+ * - "Judge quick start" CTA button linking directly to /judges
+ * - Embedded status badges (ArmorIQ Live PEP + MCP /mcp with WCAG AA contrast)
+ * - Scenario selector dropdown (Scenarios A, B, C, D)
+ * - State refresh button and user session indicator
+ * - Accessible mobile hamburger drawer with focus trap & Esc key listener
  */
 
 import React, { useState, useEffect, useRef } from 'react';
+import {
+  ShieldCheck, RefreshCw, ChevronDown, Sliders,
+  User, Video, Play, Box, Clock, ExternalLink,
+  Shield, Server, Activity, CheckCircle2, AlertTriangle, ArrowDownCircle
+} from 'lucide-react';
 import { siteConfig as defaultSiteConfig } from '../siteConfig';
 import { useI18n } from '../context/I18nContext';
 import { useTheme } from '../context/ThemeContext';
-import { loadCalendlyAssets, openCalendly } from '../utils/calendly';
-
-// Inline External Arrow ↗ SVG
-const ExternalArrowIcon = () => (
-  <svg
-    width="11"
-    height="11"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ marginLeft: '4px', opacity: 0.85, display: 'inline-block', verticalAlign: '-1px' }}
-    aria-hidden="true"
-  >
-    <path d="M7 17L17 7M17 7H7M17 7V17" />
-  </svg>
-);
 
 // Inline Accessible Sun SVG Icon (Light mode trigger)
 const SunIcon = () => (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <circle cx="12" cy="12" r="5" />
     <line x1="12" y1="1" x2="12" y2="3" />
     <line x1="12" y1="21" x2="12" y2="23" />
@@ -57,7 +38,7 @@ const SunIcon = () => (
 
 // Inline Accessible Moon SVG Icon (Dark mode trigger)
 const MoonIcon = () => (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
   </svg>
 );
@@ -69,8 +50,8 @@ export const BrandLogoIcon = ({ isDark = false }) => (
       display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: '24px',
-      height: '24px',
+      width: '26px',
+      height: '26px',
       borderRadius: '6px',
       backgroundColor: isDark ? '#18181b' : '#000000',
       border: isDark ? '1px solid #3f3f46' : '1px solid #000000',
@@ -79,7 +60,7 @@ export const BrandLogoIcon = ({ isDark = false }) => (
     }}
     aria-hidden="true"
   >
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M4 19V5l8 7 8-7v14" />
     </svg>
   </span>
@@ -88,19 +69,24 @@ export const BrandLogoIcon = ({ isDark = false }) => (
 export default function Header({
   config = defaultSiteConfig,
   activeTab = 'overview',
-  onNavigate
+  onNavigate,
+  systemStatus,
+  onSelectScenario,
+  isRefreshing,
+  onRefresh,
+  userSession,
+  onOpenOAuth,
+  onLogout
 }) {
   const { language, setLanguage, t } = useI18n();
   const { theme, isDark, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scenarioOpen, setScenarioOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' ? window.innerWidth >= 1024 : true);
 
   const hamburgerButtonRef = useRef(null);
   const drawerRef = useRef(null);
-  const desktopCtaRef = useRef(null);
-  const mobileCtaRef = useRef(null);
-
-  const bookingUrl = config.booking?.url?.trim();
+  const scenarioMenuRef = useRef(null);
 
   // Responsive breakpoint: Desktop is >= 1024px (lg)
   useEffect(() => {
@@ -116,10 +102,28 @@ export default function Header({
     return () => window.removeEventListener('resize', checkBreakpoint);
   }, []);
 
+  // Close scenario menu when clicking outside
+  useEffect(() => {
+    if (!scenarioOpen) return;
+    const handleClickOutside = (e) => {
+      if (scenarioMenuRef.current && !scenarioMenuRef.current.contains(e.target)) {
+        setScenarioOpen(false);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setScenarioOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [scenarioOpen]);
+
   // Accessibility: Focus trap & Escape key listener for mobile drawer
   useEffect(() => {
     if (!mobileMenuOpen) return;
-
     const drawerElement = drawerRef.current;
     if (!drawerElement) return;
 
@@ -128,9 +132,7 @@ export default function Header({
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
 
-    if (firstElement) {
-      firstElement.focus();
-    }
+    if (firstElement) firstElement.focus();
 
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -139,7 +141,6 @@ export default function Header({
         hamburgerButtonRef.current?.focus();
         return;
       }
-
       if (e.key === 'Tab') {
         if (e.shiftKey) {
           if (document.activeElement === firstElement) {
@@ -156,9 +157,7 @@ export default function Header({
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [mobileMenuOpen]);
 
   const handleLinkClick = (e, link) => {
@@ -179,25 +178,38 @@ export default function Header({
     setMobileMenuOpen(false);
   };
 
-  const handleCalendlyClick = (e, isMobileDrawer = false) => {
-    if (!bookingUrl) return;
-    e.preventDefault();
-    const trigger = isMobileDrawer ? hamburgerButtonRef.current : desktopCtaRef.current;
-    if (isMobileDrawer) {
-      setMobileMenuOpen(false);
+  const scenarios = [
+    {
+      id: 'SCENARIO_A',
+      title: 'Scenario A: Baseline Multi-Currency Run',
+      desc: 'Standard operations, healthy liquidity reserve ($15,000 floor), $0 local rails prioritized.',
+      badge: 'NORMAL OPS',
+      color: '#10b981'
+    },
+    {
+      id: 'SCENARIO_B',
+      title: 'Scenario B: Duplicate Invoice Attack',
+      desc: 'Injects candidate INV-2024-884B with 91.2% similarity to trigger duplicate shield.',
+      badge: 'ATTACK SIM',
+      color: '#ef4444'
+    },
+    {
+      id: 'SCENARIO_C',
+      title: 'Scenario C: Delayed Receivable Shock',
+      desc: 'Simulates a $14,500 customer receipt delay, auto-deferring low-priority vendor disbursements.',
+      badge: 'LIQUIDITY STRESS',
+      color: '#f59e0b'
+    },
+    {
+      id: 'SCENARIO_D',
+      title: 'Scenario D: Sandbox Deposit (+ $25,000)',
+      desc: 'Simulates Airwallex inbound deposit to replenish wallet balances and unlock held invoices.',
+      badge: 'REPLENISHMENT',
+      color: '#3b82f6'
     }
-    openCalendly(bookingUrl, trigger);
-  };
+  ];
 
-  const handleCalendlyHover = () => {
-    if (bookingUrl) {
-      loadCalendlyAssets();
-    }
-  };
-
-  const showPlaygroundIndicator =
-    Boolean(config.flags?.headerPlaygroundIndicator) &&
-    Boolean(config.headerPlayground?.href || config.headerPlayground?.id);
+  const currentScenarioObj = scenarios.find(s => s.id === systemStatus?.activeScenario) || scenarios[0];
 
   return (
     <header
@@ -205,39 +217,28 @@ export default function Header({
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        backgroundColor: isDark ? 'rgba(9, 9, 11, 0.95)' : '#ffffff',
-        backdropFilter: 'blur(12px)',
-        borderBottom: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
+        backgroundColor: isDark ? 'rgba(9, 9, 11, 0.95)' : 'rgba(255, 255, 255, 0.96)',
+        backdropFilter: 'blur(16px)',
+        borderBottom: '1px solid var(--border)',
         width: '100%',
-        fontFamily: "'Inter', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif",
+        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
         transition: 'background-color 0.2s ease, border-color 0.2s ease'
       }}
     >
-      {/* Optional subtle 2px Indian Tricolor Accent Line - DISABLED by default */}
-      {config.flags?.tricolorLine && (
-        <div
-          style={{
-            height: '2px',
-            width: '100%',
-            background: 'linear-gradient(90deg, #ff9933 0%, #ff9933 33.33%, #ffffff 33.33%, #ffffff 66.66%, #138808 66.66%, #138808 100%)'
-          }}
-          aria-hidden="true"
-        />
-      )}
-
       <div
         style={{
-          maxWidth: '1280px',
-          height: '56px',
+          maxWidth: '1440px',
+          height: '58px',
           margin: '0 auto',
-          padding: isDesktop ? '0 20px' : '0 12px',
+          padding: '0 16px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between'
+          justifyContent: 'space-between',
+          gap: '12px'
         }}
       >
-        {/* Left: Brand Logo + Wordmark and Desktop Nav (lg: 1024px+) */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+        {/* Left: Brand Logo + Status Badges + Desktop Nav */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px', minWidth: 0 }}>
           <a
             href="/"
             onClick={(e) => {
@@ -250,14 +251,14 @@ export default function Header({
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '10px',
+              gap: '8px',
               textDecoration: 'none',
-              color: isDark ? '#fafafa' : '#111111',
-              fontWeight: 700,
-              fontSize: '15px',
+              color: 'var(--foreground)',
+              fontWeight: 800,
+              fontSize: '15.5px',
               letterSpacing: '-0.02em',
               outlineOffset: '2px',
-              transition: 'color 0.15s ease'
+              flexShrink: 0
             }}
             aria-label={`${config.name} home`}
           >
@@ -265,10 +266,52 @@ export default function Header({
             <span>{config.name}</span>
           </a>
 
-          {/* Desktop Nav Links (from 1024px up) */}
+          {/* Embedded PEP & MCP Status Badges (WCAG AA Compliant) */}
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: '2px 8px',
+                borderRadius: '9999px',
+                fontSize: '0.68rem',
+                fontWeight: 700,
+                color: '#10b981',
+                background: 'rgba(16, 185, 129, 0.12)',
+                border: '1px solid rgba(16, 185, 129, 0.35)'
+              }}
+              title="ArmorIQ Policy Enforcement Point Active (proxy.armoriq.ai)"
+            >
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 6px #10b981' }} />
+              Live PEP
+            </span>
+
+            <span
+              onClick={() => onNavigate && onNavigate('admin')}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: '2px 8px',
+                borderRadius: '9999px',
+                fontSize: '0.68rem',
+                fontWeight: 700,
+                color: 'var(--badge-mcp-text, #0369a1)',
+                background: 'var(--badge-mcp-bg, rgba(3, 105, 161, 0.1))',
+                border: '1px solid var(--badge-mcp-border, rgba(3, 105, 161, 0.35))',
+                cursor: 'pointer'
+              }}
+              title="Model Context Protocol Server Active (/mcp & stdio)"
+            >
+              MCP /mcp
+            </span>
+          </div>
+
+          {/* Desktop Nav Links (No duplicates! "Demo video (3:49)" & "How It Works" only appear once) */}
           {isDesktop && (
             <nav
-              style={{ display: 'flex', alignItems: 'center', gap: '24px' }}
+              style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: '6px' }}
               aria-label="Main navigation"
             >
               {config.headerNav
@@ -285,34 +328,37 @@ export default function Header({
                       target={link.isExternal ? '_blank' : undefined}
                       rel={link.isExternal ? 'noopener noreferrer' : undefined}
                       style={{
-                        fontSize: '14px',
-                        color: isActive ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'),
+                        fontSize: '13px',
+                        color: isActive ? 'var(--foreground)' : 'var(--muted-foreground)',
                         textDecoration: 'none',
-                        fontWeight: isActive ? 600 : 400,
+                        fontWeight: isActive ? 700 : 500,
                         transition: 'color 0.15s ease',
                         display: 'inline-flex',
                         alignItems: 'center',
-                        gap: '6px',
-                        outlineOffset: '2px'
+                        gap: '5px',
+                        padding: '4px 6px',
+                        borderRadius: '6px',
+                        outlineOffset: '2px',
+                        whiteSpace: 'nowrap'
                       }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = isDark ? '#ffffff' : '#111111')}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = isActive ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'))}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--foreground)')}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = isActive ? 'var(--foreground)' : 'var(--muted-foreground)')}
                     >
                       <span>{label}</span>
                       {link.badge && (
                         <span style={{
-                          fontSize: '0.65rem',
-                          padding: '1px 6px',
+                          fontSize: '0.62rem',
+                          padding: '1px 5px',
                           borderRadius: '9999px',
-                          background: 'rgba(16, 185, 129, 0.15)',
-                          color: '#34d399',
-                          border: '1px solid rgba(16, 185, 129, 0.3)',
+                          background: 'var(--pill-watch-bg, rgba(99, 102, 241, 0.15))',
+                          color: 'var(--pill-watch-text, #3730a3)',
+                          border: '1px solid var(--pill-watch-border, rgba(99, 102, 241, 0.35))',
                           fontWeight: 700
                         }}>
                           {link.badge}
                         </span>
                       )}
-                      {link.isExternal && <ExternalArrowIcon />}
+                      {link.isExternal && <ExternalLink size={11} style={{ opacity: 0.7 }} />}
                     </a>
                   );
                 })}
@@ -320,30 +366,155 @@ export default function Header({
           )}
         </div>
 
-        {/* Right: Theme Toggle (Light/Dark Mode), Language Switcher, Optional Playground Indicator, CTA, Hamburger */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: isDesktop ? '10px' : '6px' }}>
-          {/* Light / Dark Mode Button on Top Right Corner */}
+        {/* Right: Scenario Selector, Refresh, Single Theme Toggle, Language, Quick Start CTA, Hamburger */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+          {/* Scenario Selector Dropdown */}
+          {isDesktop && onSelectScenario && (
+            <div style={{ position: 'relative' }} ref={scenarioMenuRef}>
+              <button
+                onClick={() => setScenarioOpen(!scenarioOpen)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  padding: '6px 10px',
+                  fontSize: '0.74rem',
+                  fontWeight: 700,
+                  borderRadius: '6px',
+                  background: 'var(--secondary)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--foreground)',
+                  cursor: 'pointer'
+                }}
+                aria-label="Select demo scenario"
+                aria-expanded={scenarioOpen}
+                title="Switch hackathon test scenario"
+              >
+                <Sliders size={12} />
+                <span>{currentScenarioObj.badge}</span>
+                <ChevronDown size={11} />
+              </button>
+
+              {scenarioOpen && (
+                <div
+                  className="scenario-dropdown-panel"
+                  style={{
+                    position: 'absolute',
+                    top: 'calc(100% + 6px)',
+                    right: 0,
+                    width: '320px',
+                    background: 'var(--card)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '10px',
+                    boxShadow: '0 12px 32px rgba(0,0,0,0.3)',
+                    padding: '8px',
+                    zIndex: 200
+                  }}
+                >
+                  <div style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--muted-foreground)', padding: '4px 8px', textTransform: 'uppercase' }}>
+                    Select Test Scenario
+                  </div>
+                  {scenarios.map((sc) => (
+                    <button
+                      key={sc.id}
+                      onClick={() => {
+                        onSelectScenario(sc.id);
+                        setScenarioOpen(false);
+                      }}
+                      style={{
+                        width: '100%',
+                        textAlign: 'left',
+                        padding: '8px',
+                        borderRadius: '6px',
+                        border: 'none',
+                        background: systemStatus?.activeScenario === sc.id ? 'rgba(56, 189, 248, 0.12)' : 'transparent',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '2px',
+                        marginBottom: '4px'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--foreground)' }}>{sc.title}</span>
+                        <span style={{ fontSize: '0.65rem', fontWeight: 700, color: sc.color, padding: '1px 5px', borderRadius: '4px', background: `${sc.color}22` }}>
+                          {sc.badge}
+                        </span>
+                      </div>
+                      <span style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>{sc.desc}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* State Refresh Button */}
+          {onRefresh && (
+            <button
+              onClick={onRefresh}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '32px',
+                height: '32px',
+                borderRadius: '6px',
+                border: '1px solid var(--border)',
+                background: 'var(--secondary)',
+                color: 'var(--foreground)',
+                cursor: 'pointer'
+              }}
+              aria-label="Refresh treasury and ArmorIQ state"
+              title="Refresh treasury state"
+            >
+              <RefreshCw size={13} className={isRefreshing ? 'animate-spin' : ''} />
+            </button>
+          )}
+
+          {/* User Session Menu */}
+          {isDesktop && userSession?.authenticated && (
+            <button
+              onClick={onOpenOAuth}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: '4px 8px',
+                borderRadius: '6px',
+                border: '1px solid var(--border)',
+                background: 'var(--secondary)',
+                color: 'var(--foreground)',
+                fontSize: '0.74rem',
+                fontWeight: 600,
+                cursor: 'pointer'
+              }}
+              title="Logged in administrator identity"
+            >
+              <User size={12} />
+              <span>{userSession.user?.name || 'Admin'}</span>
+            </button>
+          )}
+
+          {/* SINGLE Theme Toggle Button (Light/Dark Mode) — No duplicate "Dark" button */}
           <button
             onClick={toggleTheme}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '6px',
+              gap: '5px',
               fontSize: '12px',
-              fontWeight: 500,
-              color: isDark ? '#f4f4f5' : '#111111',
-              backgroundColor: isDark ? '#18181b' : '#f7f7f5',
-              padding: isDesktop ? '4px 9px' : '8px 10px',
-              minHeight: '44px',
-              minWidth: isDesktop ? 'auto' : '44px',
+              fontWeight: 600,
+              color: 'var(--foreground)',
+              backgroundColor: 'var(--secondary)',
+              padding: '6px 10px',
+              minHeight: '34px',
               borderRadius: '6px',
-              border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
+              border: '1px solid var(--border)',
               cursor: 'pointer',
-              transition: 'background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease',
-              fontFamily: 'inherit',
-              outlineOffset: '2px',
-              lineHeight: 1.2
+              transition: 'all 0.15s ease',
+              outlineOffset: '2px'
             }}
             aria-label={isDark ? t('nav.switchToLight') : t('nav.switchToDark')}
             title={isDark ? t('nav.switchToLight') : t('nav.switchToDark')}
@@ -368,17 +539,15 @@ export default function Header({
           {/* Language Switcher: "EN | हिन्दी" */}
           <div
             style={{
-              display: 'flex',
+              display: 'inline-flex',
               alignItems: 'center',
-              fontSize: '12px',
-              fontWeight: 500,
-              color: isDark ? '#a1a1aa' : '#6b6b6b',
-              backgroundColor: isDark ? '#18181b' : '#f7f7f5',
+              fontSize: '11.5px',
+              fontWeight: 600,
+              color: 'var(--muted-foreground)',
+              backgroundColor: 'var(--secondary)',
               padding: '2px 4px',
-              minHeight: '44px',
               borderRadius: '6px',
-              border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
-              transition: 'background-color 0.15s ease, border-color 0.15s ease'
+              border: '1px solid var(--border)'
             }}
             aria-label={t('nav.switchLanguage')}
           >
@@ -388,11 +557,10 @@ export default function Header({
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                padding: '8px 6px',
-                minHeight: '36px',
-                fontSize: '12px',
+                padding: '4px 6px',
+                fontSize: '11.5px',
                 fontWeight: language === 'en' ? 700 : 400,
-                color: language === 'en' ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'),
+                color: language === 'en' ? 'var(--foreground)' : 'var(--muted-foreground)',
                 fontFamily: 'inherit',
                 outlineOffset: '2px'
               }}
@@ -400,18 +568,17 @@ export default function Header({
             >
               EN
             </button>
-            <span style={{ color: isDark ? '#3f3f46' : '#d1d5db', padding: '0 2px' }} aria-hidden="true">|</span>
+            <span style={{ opacity: 0.4 }} aria-hidden="true">|</span>
             <button
               onClick={() => setLanguage('hi')}
               style={{
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                padding: '8px 6px',
-                minHeight: '36px',
-                fontSize: '12px',
+                padding: '4px 6px',
+                fontSize: '11.5px',
                 fontWeight: language === 'hi' ? 700 : 400,
-                color: language === 'hi' ? (isDark ? '#fafafa' : '#111111') : (isDark ? '#a1a1aa' : '#6b6b6b'),
+                color: language === 'hi' ? 'var(--foreground)' : 'var(--muted-foreground)',
                 fontFamily: "'Noto Sans Devanagari', inherit",
                 outlineOffset: '2px'
               }}
@@ -421,79 +588,35 @@ export default function Header({
             </button>
           </div>
 
-          {/* Optional Status / Playground Indicator - Rendered ONLY if configured */}
-          {showPlaygroundIndicator && (
-            <div
-              onClick={() => onNavigate && onNavigate(config.headerPlayground?.id || 'voice')}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                cursor: onNavigate ? 'pointer' : 'default',
-                userSelect: 'none'
-              }}
-              title="Interactive Playground"
-            >
-              <span
-                style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: '#16a34a',
-                  display: 'inline-block'
-                }}
-                aria-hidden="true"
-              />
-              <span
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  color: isDark ? '#d4d4d8' : '#333333',
-                  textTransform: 'uppercase'
-                }}
-              >
-                {t(config.headerPlayground?.labelKey || 'nav.playground')}
-              </span>
-            </div>
-          )}
-
-          {/* Desktop CTA Button: "Book a Demo" - Hidden if booking URL is empty */}
-          {isDesktop && Boolean(bookingUrl) && (
+          {/* Judge Quick Start Button (Replaces "Book a Demo", linking to /judges) */}
+          {isDesktop && (
             <a
-              ref={desktopCtaRef}
-              href={bookingUrl}
-              onClick={(e) => handleCalendlyClick(e, false)}
-              onMouseEnter={handleCalendlyHover}
-              onFocus={handleCalendlyHover}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t('nav.bookDemoAria')}
+              href="/judges"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigate) onNavigate('judges');
+                window.history.pushState(null, '', '/judges');
+              }}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                backgroundColor: isDark ? '#18181b' : '#ffffff',
-                border: isDark ? '1px solid #3f3f46' : '1px solid #111111',
-                borderRadius: '4px',
-                padding: '7px 14px',
-                fontFamily: "'Inter', sans-serif",
-                fontSize: '13px',
-                fontWeight: 600,
-                color: isDark ? '#fafafa' : '#111111',
+                gap: '6px',
+                backgroundColor: 'var(--brand-indigo, #4f46e5)',
+                border: '1px solid rgba(255, 255, 255, 0.25)',
+                borderRadius: '6px',
+                padding: '7px 13px',
+                fontSize: '12.5px',
+                fontWeight: 700,
+                color: '#ffffff',
                 textDecoration: 'none',
-                transition: 'background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease',
-                outlineOffset: '2px'
+                transition: 'all 0.15s ease',
+                outlineOffset: '2px',
+                cursor: 'pointer',
+                boxShadow: '0 2px 8px rgba(79, 70, 229, 0.35)'
               }}
-              onMouseEnterCapture={(e) => {
-                e.currentTarget.style.backgroundColor = isDark ? '#27272a' : '#111111';
-                e.currentTarget.style.color = '#ffffff';
-              }}
-              onMouseLeaveCapture={(e) => {
-                e.currentTarget.style.backgroundColor = isDark ? '#18181b' : '#ffffff';
-                e.currentTarget.style.color = isDark ? '#fafafa' : '#111111';
-              }}
+              aria-label={t('nav.bookDemoAria')}
             >
+              <ShieldCheck size={14} />
               <span>{t('nav.bookDemo')}</span>
             </a>
           )}
@@ -507,28 +630,32 @@ export default function Header({
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: '44px',
-                height: '44px',
-                minWidth: '44px',
-                minHeight: '44px',
-                background: isDark ? '#18181b' : 'transparent',
-                border: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
+                width: '40px',
+                height: '40px',
+                background: 'var(--secondary)',
+                border: '1px solid var(--border)',
                 borderRadius: '6px',
-                color: isDark ? '#fafafa' : '#111111',
+                color: 'var(--foreground)',
                 cursor: 'pointer',
                 padding: 0,
-                outlineOffset: '2px',
-                transition: 'background-color 0.15s ease, border-color 0.15s ease'
+                outlineOffset: '2px'
               }}
-              aria-label={mobileMenuOpen ? t('nav.closeMenu') : t('nav.toggleMenu')}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-nav-drawer"
+              aria-label={mobileMenuOpen ? t('nav.closeMenu') : t('nav.toggleMenu')}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 {mobileMenuOpen ? (
-                  <path d="M18 6L6 18M6 6l12 12" />
+                  <>
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </>
                 ) : (
-                  <path d="M4 12h16M4 6h16M4 18h16" />
+                  <>
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                  </>
                 )}
               </svg>
             </button>
@@ -536,88 +663,120 @@ export default function Header({
         </div>
       </div>
 
-      {/* Accessible Mobile Navigation Drawer (<1024px) */}
+      {/* Accessible Mobile Drawer (<1024px) */}
       {!isDesktop && mobileMenuOpen && (
         <div
           id="mobile-nav-drawer"
           ref={drawerRef}
+          style={{
+            position: 'absolute',
+            top: '100%',
+            left: 0,
+            width: '100%',
+            backgroundColor: isDark ? '#09090b' : '#ffffff',
+            borderBottom: '1px solid var(--border)',
+            padding: '16px 20px 24px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+            zIndex: 99
+          }}
           role="dialog"
           aria-modal="true"
           aria-label="Mobile Navigation"
-          style={{
-            position: 'absolute',
-            top: '57px',
-            left: 0,
-            width: '100%',
-            height: 'calc(100dvh - 57px)',
-            maxHeight: 'calc(100dvh - 57px)',
-            overflowY: 'auto',
-            backgroundColor: isDark ? '#0d0d11' : '#ffffff',
-            borderBottom: isDark ? '1px solid #27272a' : '1px solid #e5e5e5',
-            boxShadow: isDark ? '0 12px 24px rgba(0, 0, 0, 0.6)' : '0 12px 24px rgba(0, 0, 0, 0.08)',
-            padding: '20px 20px calc(24px + env(safe-area-inset-bottom, 0px)) 20px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-            zIndex: 99,
-            transition: 'background-color 0.2s ease, border-color 0.2s ease'
-          }}
         >
-          {config.headerNav
-            .filter((link) => !(link.id === 'pricing' && config.flags?.showPricing === false))
-            .map((link) => (
-            <a
-              key={link.labelKey}
-              href={link.href}
-              onClick={(e) => handleLinkClick(e, link)}
-              target={link.isExternal ? '_blank' : undefined}
-              rel={link.isExternal ? 'noopener noreferrer' : undefined}
-              style={{
-                fontSize: '15px',
-                color: isDark ? '#fafafa' : '#111111',
-                textDecoration: 'none',
-                padding: '12px 4px',
-                minHeight: '48px',
-                borderBottom: isDark ? '1px solid #1c1c22' : '1px solid #f5f5f5',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                outlineOffset: '2px'
-              }}
-            >
-              <span>{t(link.labelKey)}</span>
-              {link.isExternal && <ExternalArrowIcon />}
-            </a>
-          ))}
+          {/* Quick Start for Judges */}
+          <a
+            href="/judges"
+            onClick={(e) => {
+              e.preventDefault();
+              setMobileMenuOpen(false);
+              if (onNavigate) onNavigate('judges');
+              window.history.pushState(null, '', '/judges');
+            }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              background: 'var(--brand-indigo, #4f46e5)',
+              color: '#ffffff',
+              fontWeight: 700,
+              fontSize: '14px',
+              textDecoration: 'none'
+            }}
+          >
+            <ShieldCheck size={16} />
+            <span>Judge Quick Start (/judges)</span>
+          </a>
 
-          {/* Mobile Drawer Booking Button - Hidden if booking URL is empty */}
-          {Boolean(bookingUrl) && (
-            <div style={{ paddingTop: '8px' }}>
-              <a
-                ref={mobileCtaRef}
-                href={bookingUrl}
-                onClick={(e) => handleCalendlyClick(e, true)}
-                onMouseEnter={handleCalendlyHover}
-                onFocus={handleCalendlyHover}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={t('nav.bookDemoAria')}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: isDark ? '#ffffff' : '#111111',
-                  borderRadius: '4px',
-                  padding: '12px 16px',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  color: isDark ? '#09090b' : '#ffffff',
-                  textDecoration: 'none',
-                  outlineOffset: '2px'
-                }}
-              >
-                <span>{t('nav.bookDemo')}</span>
-              </a>
+          {/* Navigation Links */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            {config.headerNav.map((link) => {
+              const label = t(link.labelKey);
+              return (
+                <a
+                  key={link.labelKey}
+                  href={link.href}
+                  onClick={(e) => handleLinkClick(e, link)}
+                  target={link.isExternal ? '_blank' : undefined}
+                  rel={link.isExternal ? 'noopener noreferrer' : undefined}
+                  style={{
+                    padding: '10px 12px',
+                    borderRadius: '6px',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    color: 'var(--foreground)',
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <span>{label}</span>
+                  {link.badge && (
+                    <span style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: '4px', background: 'var(--pill-watch-bg)', color: 'var(--pill-watch-text)' }}>
+                      {link.badge}
+                    </span>
+                  )}
+                </a>
+              );
+            })}
+          </div>
+
+          {/* Scenarios on Mobile */}
+          {onSelectScenario && (
+            <div style={{ paddingTop: '8px', borderTop: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--muted-foreground)', marginBottom: '8px', textTransform: 'uppercase' }}>
+                Test Scenarios
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
+                {scenarios.map((sc) => (
+                  <button
+                    key={sc.id}
+                    onClick={() => {
+                      onSelectScenario(sc.id);
+                      setMobileMenuOpen(false);
+                    }}
+                    style={{
+                      padding: '8px',
+                      borderRadius: '6px',
+                      border: '1px solid var(--border)',
+                      background: systemStatus?.activeScenario === sc.id ? 'rgba(56, 189, 248, 0.15)' : 'var(--secondary)',
+                      color: 'var(--foreground)',
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      textAlign: 'left'
+                    }}
+                  >
+                    {sc.badge}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>

@@ -84,6 +84,26 @@ let adminOrgMembers = [
   { id: 'usr_04', name: 'Airwallex Agent Bot', email: 'agent@flowguard.bot', role: 'AUTONOMOUS_AGENT', department: 'Automated Operations', status: 'MANAGED_BY_ARMORIQ', lastLogin: 'Continuous' }
 ];
 
+// Lightweight health routes for cold-judge keep-warm ping & readiness
+app.get(['/api/health', '/health'], (req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    service: 'beyondflow-gateway',
+    env: process.env.NODE_ENV || 'development'
+  });
+});
+
+// TASK 4: GET /mcp small JSON without exposing tool internals
+app.get('/mcp', (req, res) => {
+  res.json({
+    name: 'flowguard-treasury-mcp',
+    version: '1.0.0',
+    transport: 'POST JSON-RPC 2.0 over HTTP, SSE responses',
+    status: 'ok'
+  });
+});
+
 // --- ArmorIQ Platform Authentication Endpoints (docs.armoriq.ai/platform/authentication) ---
 
 // 1. Get current session (supports Bearer JWT token in Authorization header)
@@ -606,6 +626,7 @@ const handleMcpRequest = (transport) => async (req, res) => {
 
 app.post('/mcp', handleMcpRequest('sse'));
 app.post('/api/mcp', handleMcpRequest('json'));
+
 
 // --- ArmorIQ Platform Bootstrap & Diagnostics (docs.armoriq.ai Step 9) ---
 app.get('/api/armoriq/bootstrap', async (req, res) => {

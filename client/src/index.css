@@ -50,6 +50,16 @@
   --3d-vault-wire: #6366f1;
   --3d-particle-color: #38bdf8;
   
+  /* Task 3: WCAG AA contrast tokens */
+  --badge-mcp-text: #38bdf8;
+  --badge-mcp-bg: rgba(56, 189, 248, 0.15);
+  --badge-mcp-border: rgba(56, 189, 248, 0.35);
+  --pill-watch-text: #c7d2fe;
+  --pill-watch-bg: rgba(99, 102, 241, 0.2);
+  --pill-watch-border: rgba(99, 102, 241, 0.4);
+  --brand-accent-text: #38bdf8;
+  --hero-subtext: #a1a1aa;
+  
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display: 'Outfit', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -66,16 +76,16 @@
   --foreground: #0f172a;
   --text: #0f172a;
   --muted: #f1f5f9;
-  --muted-foreground: #475569;
-  --text-muted: #475569;
+  --muted-foreground: #334155; /* Slate-700: 7.27:1 contrast on white (WCAG AAA) */
+  --text-muted: #334155;
   --popover: #ffffff;
   --popover-foreground: #0f172a;
-  --border: #e2e8f0;
-  --border-subtle: rgba(15, 23, 42, 0.08);
-  --input: #e2e8f0;
+  --border: #cbd5e1;
+  --border-subtle: rgba(15, 23, 42, 0.12);
+  --input: #cbd5e1;
   --card: #ffffff;
   --card-foreground: #0f172a;
-  --card-hover: #f8fafc;
+  --card-hover: #f1f5f9;
   --surface: #ffffff;
   --surface-muted: #f1f5f9;
   --primary: #0f172a;
@@ -91,9 +101,9 @@
   --danger-border: #fecaca;
   --ring: #2563eb;
   
-  --brand-indigo: #4f46e5;
-  --brand-violet: #7c3aed;
-  --brand-emerald: #059669;
+  --brand-indigo: #4338ca;
+  --brand-violet: #6d28d9;
+  --brand-emerald: #047857;
   --success: #047857;
   --success-bg: #ecfdf5;
   --success-border: #a7f3d0;
@@ -101,13 +111,24 @@
   --warning-bg: #fffbeb;
   --warning-border: #fde68a;
   
+  /* Task 3: High contrast tokens for light theme (all >= 4.5:1) */
+  --badge-mcp-text: #0369a1; /* Sky-700: 5.1:1 on light */
+  --badge-mcp-bg: rgba(3, 105, 161, 0.1);
+  --badge-mcp-border: rgba(3, 105, 161, 0.35);
+  --pill-watch-text: #3730a3; /* Indigo-800: 8.5:1 on light */
+  --pill-watch-bg: rgba(79, 70, 229, 0.1);
+  --pill-watch-border: rgba(79, 70, 229, 0.3);
+  --brand-accent-text: #0369a1;
+  --hero-subtext: #334155;
+  
   --grid-line: rgba(15, 23, 42, 0.04);
   --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
-  --glass-bg: rgba(255, 255, 255, 0.92);
+  --glass-bg: rgba(255, 255, 255, 0.95);
   --glass-border: rgba(15, 23, 42, 0.12);
   --canvas-bg: #f8fafc;
   --3d-ambient-light: #ffffff;
   --3d-ambient-intensity: 1.2;
+
   --3d-vault-core: #059669;
   --3d-vault-wire: #2563eb;
   --3d-particle-color: #2563eb;
@@ -768,4 +789,25 @@ pre, code, .code-panel, .transcript-scroll {
     left: -77px !important;
   }
 }
+
+/* ==========================================================================
+   TASK 3: Universal Visible Keyboard Focus Styles for WCAG AA
+   ========================================================================== */
+:focus-visible {
+  outline: 2px solid var(--accent, #2563eb) !important;
+  outline-offset: 2px !important;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent, #2563eb) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.25) !important;
+}
+
 

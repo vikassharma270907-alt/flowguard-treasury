@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Header from './components/Header';
-import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import OverviewScreen from './components/OverviewScreen';
 
@@ -369,21 +368,18 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Header activeTab={activeTab} onNavigate={handleNavigate} />
-      {!isLegalOrPricingOrJudges && (
-        <Navbar
-          systemStatus={systemStatus}
-          activeTab={activeTab}
-          setActiveTab={handleNavigate}
-          onOpenCredentials={() => setShowCredentialsModal(true)}
-          onSelectScenario={handleSelectScenario}
-          isRefreshing={isRefreshing}
-          onRefresh={loadData}
-          userSession={userSession}
-          onOpenOAuth={() => setShowOAuthModal(true)}
-          onLogout={handleLogout}
-        />
-      )}
+      <Header
+        activeTab={activeTab}
+        onNavigate={handleNavigate}
+        systemStatus={systemStatus}
+        onSelectScenario={handleSelectScenario}
+        isRefreshing={isRefreshing}
+        onRefresh={loadData}
+        userSession={userSession}
+        onOpenOAuth={() => setShowOAuthModal(true)}
+        onLogout={handleLogout}
+        onOpenCredentials={() => setShowCredentialsModal(true)}
+      />
 
       <main style={{ maxWidth: '1440px', width: '100%', margin: '0 auto', padding: '24px', flex: 1 }}>
         <Suspense fallback={

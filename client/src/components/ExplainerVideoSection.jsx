@@ -112,22 +112,22 @@ export default function ExplainerVideoSection({
     >
       {/* Header Badges */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '9999px', background: 'rgba(99, 102, 241, 0.15)', border: '1px solid rgba(99, 102, 241, 0.35)', color: '#a5b4fc', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '9999px', background: 'var(--pill-watch-bg, rgba(99, 102, 241, 0.2))', border: '1px solid var(--pill-watch-border, rgba(99, 102, 241, 0.4))', color: 'var(--pill-watch-text, #c7d2fe)', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           <Video size={15} />
-          <span>Official 3-Minute Architectural Explainer Video</span>
+          <span>Official Demo Video (3:49) — Architectural Explainer</span>
         </div>
 
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', color: '#f59e0b', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.25)', padding: '4px 10px', borderRadius: '6px' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', color: 'var(--warning, #fbbf24)', background: 'rgba(245, 158, 11, 0.12)', border: '1px solid rgba(245, 158, 11, 0.3)', padding: '4px 10px', borderRadius: '6px', fontWeight: 600 }}>
           <Info size={13} />
           <span>Sandbox / test environment. No real funds or customer data.</span>
         </div>
       </div>
 
       <h2 style={{ fontSize: '1.65rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.02em', margin: '0 0 10px 0' }}>
-        How BeyondFlow Governs Autonomous Treasury with ArmorIQ & ElevenLabs
+        How BeyondFlow Governs Autonomous Actions with ArmorIQ & ElevenLabs
       </h2>
       <p style={{ fontSize: '0.92rem', color: 'var(--muted-foreground)', maxWidth: '900px', lineHeight: 1.6, margin: '0 0 20px 0' }}>
-        A complete 3-minute architectural walkthrough explaining (1) how BeyondFlow works, (2) how ElevenLabs conversational voice is utilized with sub-5s webhook replies, (3) how ArmorIQ enforces policy and cryptographic plan binding, and (4) how intent-first governance fundamentally differs from traditional API safeguards.
+        A complete architectural walkthrough explaining (1) how BeyondFlow works, (2) how ElevenLabs conversational voice is utilized with sub-5s webhook replies, (3) how ArmorIQ enforces policy and cryptographic plan binding, and (4) how intent-first governance fundamentally differs from traditional API safeguards.
       </p>
 
       {/* Chapter Navigation Bar */}
@@ -157,7 +157,7 @@ export default function ExplainerVideoSection({
               title={scene.desc}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px' }}>
-                <span style={{ fontSize: '0.66rem', fontFamily: 'monospace', color: activeSceneIdx === idx ? '#a5b4fc' : '#64748b' }}>
+                <span style={{ fontSize: '0.66rem', fontFamily: 'monospace', fontWeight: 600, color: activeSceneIdx === idx ? '#c7d2fe' : 'var(--muted-foreground)' }}>
                   {scene.time}
                 </span>
                 <span style={{ fontSize: '0.6rem', fontWeight: 700, padding: '1px 5px', borderRadius: '4px', background: activeSceneIdx === idx ? '#4f46e5' : 'rgba(255,255,255,0.06)' }}>

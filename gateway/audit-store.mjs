@@ -36,7 +36,20 @@ export function recordCall(entry) {
 
 export function recordHold(record) {
   pending.set(record.id, record);
-  audit('hold.created', { id: record.id, tool: record.tool, args: record.args, planHash: record.planHash });
+  audit('hold.created', {
+    id: record.id,
+    tool: record.tool,
+    args: record.args,
+    planHash: record.planHash,
+    requesterId: record.requesterId,
+    createdAt: record.createdAt,
+    expiresAt: record.expiresAt,
+    who: record.requesterId || 'requester',
+    when: new Date(record.createdAt).toISOString(),
+    hash: record.planHash,
+    outcome: 'HELD_AWAITING_SUPERVISORS',
+    rule: 'BeyondFlow gateway rule'
+  });
   return record;
 }
 
@@ -44,15 +57,45 @@ export function recordApproval(id, approval) {
   const record = pending.get(id);
   if (!record) return null;
   record.approvals.push(approval);
-  audit('hold.approval', { id, ...approval, count: record.approvals.length, required: record.requiredApprovals });
+  audit('hold.approval', {
+    id,
+    ...approval,
+    count: record.approvals.length,
+    required: record.requiredApprovals,
+    who: approval.supervisor,
+    when: new Date(approval.at || Date.now()).toISOString(),
+    hash: record.planHash,
+    outcome: approval.decision === 'approve' ? 'APPROVED' : 'DENIED',
+    rule: 'BeyondFlow gateway rule'
+  });
   return record;
+}
+
+export function recordRejection(id, { supervisor, reason, outcome }) {
+  const record = pending.get(id);
+  const hash = record?.planHash || null;
+  audit('hold.rejection', {
+    id,
+    who: supervisor || 'supervisor',
+    when: new Date().toISOString(),
+    hash,
+    outcome: outcome || 'REJECTED',
+    reason,
+    rule: 'BeyondFlow gateway rule'
+  });
 }
 
 export function updateHold(id, patch) {
   const record = pending.get(id);
   if (!record) return null;
   Object.assign(record, patch);
-  audit('hold.updated', { id, ...patch });
+  audit('hold.updated', {
+    id,
+    ...patch,
+    hash: record.planHash,
+    when: new Date().toISOString(),
+    rule: 'BeyondFlow gateway rule'
+  });
   return record;
 }
 
@@ -63,3 +106,4 @@ export function listPending() {
 export function listRecentCalls(limit = 50) {
   return calls.slice(0, limit);
 }
+

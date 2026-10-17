@@ -6,6 +6,7 @@ import {
   Sparkles, Video, Play, X, Info, ChevronRight, ChevronLeft,
   Check, Terminal, Lock, Cpu
 } from 'lucide-react';
+import LiveEnforcementStrip from './LiveEnforcementStrip';
 const BoundaryTestSection = lazy(() => import('./BoundaryTestSection'));
 const HowWeUseArmorIQSection = lazy(() => import('./HowWeUseArmorIQSection'));
 const ExplainerVideoSection = lazy(() => import('./ExplainerVideoSection'));
@@ -103,7 +104,7 @@ export default function OverviewScreen({
   const bufferPercent = Math.min(100, Math.round((reserveFloor / (totalLiquid || 1)) * 100));
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Sandbox Notice Banner - Mandatory Rule 5 */}
       <div style={{
         background: 'rgba(56, 189, 248, 0.08)',
@@ -116,7 +117,7 @@ export default function OverviewScreen({
         flexWrap: 'wrap',
         gap: '10px'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#38bdf8', fontSize: '0.82rem', fontWeight: 600 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--brand-accent-text, #0284c7)', fontSize: '0.82rem', fontWeight: 600 }}>
           <Info size={16} />
           <span>Sandbox / test environment. No real funds or customer data.</span>
         </div>
@@ -125,7 +126,10 @@ export default function OverviewScreen({
         </div>
       </div>
 
-      {/* TIER 1 ITEM 6: First Screen Hero (2 Sentences + 60s Demo Button) */}
+      {/* TASK 1: Live Enforcement Strip on First Screen */}
+      <LiveEnforcementStrip />
+
+      {/* Hero Section: Positioned as Voice AI support agent governed by ArmorIQ */}
       <div style={{
         background: 'var(--card)',
         border: '1px solid var(--border)',
@@ -139,12 +143,12 @@ export default function OverviewScreen({
         </div>
 
         <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.03em', lineHeight: 1.2, margin: '0 0 16px 0' }}>
-          Autonomous Treasury & Intent Vault Governed by ArmorIQ
+          Voice AI support agent governed by ArmorIQ
         </h1>
 
-        {/* The 2 Mandated Sentences */}
+        {/* The 2 Mandated Sentences — Zero "Autonomous Treasury" wording in hero */}
         <p style={{ fontSize: 'clamp(1rem, 2vw, 1.15rem)', color: 'var(--foreground)', lineHeight: 1.6, margin: '0 0 8px 0', fontWeight: 500 }}>
-          BeyondFlow is an autonomous treasury and customer support agent that manages multi-currency disbursements, verifies vendor invoices, and handles live telephony inquiries.
+          BeyondFlow is a voice AI support agent governed by ArmorIQ that handles live telephony inquiries, manages order verification, and secures high-value disbursements.
         </p>
         <p style={{ fontSize: 'clamp(0.9rem, 1.8vw, 1.05rem)', color: 'var(--muted-foreground)', lineHeight: 1.6, margin: '0 0 24px 0' }}>
           ArmorIQ cryptographically bounds every tool invocation to declared intent using Ed25519 tokens and blocks unauthorized bank diversions or prompt injections before any network execution.
@@ -159,8 +163,9 @@ export default function OverviewScreen({
             style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 20px', minHeight: '44px', fontSize: '0.9rem', fontWeight: 700 }}
           >
             <Video size={16} />
-            <span>Watch 3-Min Explainer Video</span>
+            <span>Watch Demo Video (3:49)</span>
           </a>
+
 
           <button
             onClick={() => setShowDemoVideo(!showDemoVideo)}

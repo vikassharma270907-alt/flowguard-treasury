@@ -117,10 +117,12 @@ export const siteConfig = {
   // Desktop nav visible from lg (1024px) up; collapsible hamburger drawer below 1024px.
   headerNav: [
     { labelKey: "nav.home", href: "/", id: "overview", isExternal: false },
-    { labelKey: "nav.video", href: "/video", id: "video", isExternal: false, badge: "3:49" },
     { labelKey: "nav.judges", href: "/judges", id: "judges", isExternal: false, badge: "Tour" },
-    { labelKey: "nav.howItWorks", href: "/how-it-works", id: "enclave", isExternal: false },
     { labelKey: "nav.boundaryTest", href: "/#boundary-test", id: "boundary", isExternal: false },
+    { labelKey: "nav.howItWorks", href: "/how-it-works", id: "enclave", isExternal: false },
+    { labelKey: "nav.video", href: "/video", id: "video", isExternal: false, badge: "3:49" },
+    { labelKey: "nav.voice", href: "/voice", id: "voice", isExternal: false },
+    { labelKey: "nav.audit", href: "/audit", id: "audit", isExternal: false },
     { labelKey: "nav.docs", href: DOCS_URL, isExternal: true },
     { labelKey: "nav.github", href: GITHUB_REPO_URL, isExternal: true }
   ],
