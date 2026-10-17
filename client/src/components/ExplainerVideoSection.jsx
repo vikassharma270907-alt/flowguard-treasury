@@ -18,7 +18,7 @@ const SCENES = [
 ];
 
 export default function ExplainerVideoSection({
-  videoSrc = "/videos/beyondflow-explainer.webm",
+  videoSrc = "/videos/beyondflow-explainer.mp4",
   posterSrc = "/poster.png",
   audioSrc = "/audio/beyondflow-narration-master.mp3"
 }) {
@@ -29,34 +29,18 @@ export default function ExplainerVideoSection({
   const [isPlaying, setIsPlaying] = useState(false);
 
   const videoRef = useRef(null);
-  const audioRef = useRef(null);
 
-  // Sync audio with video playback
+  // Sync scene chapter highlighting with video playback
   useEffect(() => {
     const video = videoRef.current;
-    const audio = audioRef.current;
-    if (!video || !audio) return;
+    if (!video) return;
 
-    const handlePlay = () => {
-      setIsPlaying(true);
-      if (!voiceoverMuted) {
-        audio.currentTime = video.currentTime;
-        audio.play().catch(() => {});
-      }
-    };
-
-    const handlePause = () => {
-      setIsPlaying(false);
-      audio.pause();
-    };
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
 
     const handleTimeUpdate = () => {
       const cur = video.currentTime;
-      // Drift compensation if desynced by more than 0.25s
-      if (!voiceoverMuted && Math.abs(audio.currentTime - cur) > 0.25) {
-        audio.currentTime = cur;
-      }
-      // Determine active scene
+      // Determine active scene based on current playback time
       for (let i = SCENES.length - 1; i >= 0; i--) {
         if (cur >= SCENES[i].startSec) {
           setActiveSceneIdx(i);
@@ -65,42 +49,28 @@ export default function ExplainerVideoSection({
       }
     };
 
-    const handleSeeking = () => {
-      audio.currentTime = video.currentTime;
-    };
-
     video.addEventListener('play', handlePlay);
     video.addEventListener('pause', handlePause);
     video.addEventListener('timeupdate', handleTimeUpdate);
-    video.addEventListener('seeking', handleSeeking);
 
     return () => {
       video.removeEventListener('play', handlePlay);
       video.removeEventListener('pause', handlePause);
       video.removeEventListener('timeupdate', handleTimeUpdate);
-      video.removeEventListener('seeking', handleSeeking);
     };
-  }, [voiceoverMuted]);
+  }, []);
 
   const toggleVoiceover = () => {
     const nextMuted = !voiceoverMuted;
     setVoiceoverMuted(nextMuted);
-    if (audioRef.current) {
-      if (nextMuted) {
-        audioRef.current.pause();
-      } else if (videoRef.current && !videoRef.current.paused) {
-        audioRef.current.currentTime = videoRef.current.currentTime;
-        audioRef.current.play().catch(() => {});
-      }
+    if (videoRef.current) {
+      videoRef.current.muted = nextMuted;
     }
   };
 
   const jumpToScene = (startSec, idx) => {
     if (videoRef.current) {
       videoRef.current.currentTime = startSec;
-      if (audioRef.current) {
-        audioRef.current.currentTime = startSec;
-      }
       videoRef.current.play().catch(() => {});
     }
     setActiveSceneIdx(idx);
@@ -197,8 +167,8 @@ export default function ExplainerVideoSection({
           poster={posterSrc}
           style={{ width: '100%', maxHeight: '560px', display: 'block', outline: 'none' }}
         >
-          <source src={videoSrc} type="video/webm" />
-          <source src={videoSrc.replace('.webm', '.mp4')} type="video/mp4" />
+          <source src={videoSrc} type="video/mp4" />
+          <source src={videoSrc.replace('.mp4', '.webm')} type="video/webm" />
           <track
             kind="captions"
             src="/captions.vtt"
@@ -208,9 +178,6 @@ export default function ExplainerVideoSection({
           />
           Your browser does not support HTML5 video.
         </video>
-
-        {/* Hidden Synchronized Audio Track */}
-        <audio ref={audioRef} preload="auto" src={audioSrc} />
       </div>
 
       {/* Player Utility Bar */}
