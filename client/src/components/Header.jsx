@@ -217,452 +217,502 @@ export default function Header({
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        backgroundColor: isDark ? 'rgba(9, 9, 11, 0.95)' : 'rgba(255, 255, 255, 0.96)',
-        backdropFilter: 'blur(16px)',
-        borderBottom: '1px solid var(--border)',
         width: '100%',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-        transition: 'background-color 0.2s ease, border-color 0.2s ease'
+        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif"
       }}
     >
+      {/* TIER 1: Main Brand, Navigation Links, Theme Toggle, Language, and Judge CTA (56px) */}
       <div
         style={{
-          maxWidth: '1440px',
-          height: '58px',
-          margin: '0 auto',
-          padding: '0 16px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '12px'
+          backgroundColor: isDark ? 'rgba(9, 9, 11, 0.95)' : 'rgba(255, 255, 255, 0.96)',
+          backdropFilter: 'blur(16px)',
+          borderBottom: '1px solid var(--border)',
+          transition: 'background-color 0.2s ease, border-color 0.2s ease'
         }}
       >
-        {/* Left: Brand Logo + Status Badges + Desktop Nav */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px', minWidth: 0 }}>
-          <a
-            href="/"
-            onClick={(e) => {
-              if (onNavigate) {
-                e.preventDefault();
-                onNavigate('overview');
-                window.history.pushState(null, '', '/');
-              }
-            }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              textDecoration: 'none',
-              color: 'var(--foreground)',
-              fontWeight: 800,
-              fontSize: '15.5px',
-              letterSpacing: '-0.02em',
-              outlineOffset: '2px',
-              flexShrink: 0
-            }}
-            aria-label={`${config.name} home`}
-          >
-            <BrandLogoIcon isDark={isDark} />
-            <span>{config.name}</span>
-          </a>
-
-          {/* Embedded PEP & MCP Status Badges (WCAG AA Compliant) */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                padding: '2px 8px',
-                borderRadius: '9999px',
-                fontSize: '0.68rem',
-                fontWeight: 700,
-                color: '#10b981',
-                background: 'rgba(16, 185, 129, 0.12)',
-                border: '1px solid rgba(16, 185, 129, 0.35)'
+        <div
+          style={{
+            maxWidth: '1440px',
+            height: '56px',
+            margin: '0 auto',
+            padding: '0 16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '16px'
+          }}
+        >
+          {/* Left: Brand Logo + Desktop Nav */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', minWidth: 0 }}>
+            <a
+              href="/"
+              onClick={(e) => {
+                if (onNavigate) {
+                  e.preventDefault();
+                  onNavigate('overview');
+                  window.history.pushState(null, '', '/');
+                }
               }}
-              title="ArmorIQ Policy Enforcement Point Active (proxy.armoriq.ai)"
-            >
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 6px #10b981' }} />
-              Live PEP
-            </span>
-
-            <span
-              onClick={() => onNavigate && onNavigate('admin')}
               style={{
-                display: 'inline-flex',
+                display: 'flex',
                 alignItems: 'center',
-                gap: '4px',
-                padding: '2px 8px',
-                borderRadius: '9999px',
-                fontSize: '0.68rem',
-                fontWeight: 700,
-                color: 'var(--badge-mcp-text, #0369a1)',
-                background: 'var(--badge-mcp-bg, rgba(3, 105, 161, 0.1))',
-                border: '1px solid var(--badge-mcp-border, rgba(3, 105, 161, 0.35))',
-                cursor: 'pointer'
+                gap: '8px',
+                textDecoration: 'none',
+                color: 'var(--foreground)',
+                fontWeight: 800,
+                fontSize: '15.5px',
+                letterSpacing: '-0.02em',
+                outlineOffset: '2px',
+                flexShrink: 0
               }}
-              title="Model Context Protocol Server Active (/mcp & stdio)"
+              aria-label={`${config.name} home`}
             >
-              MCP /mcp
-            </span>
+              <BrandLogoIcon isDark={isDark} />
+              <span>{config.name}</span>
+            </a>
+
+            {/* Desktop Nav Links */}
+            {isDesktop && (
+              <nav
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 'clamp(6px, 1.2vw, 16px)',
+                  flexWrap: 'nowrap'
+                }}
+                aria-label="Main navigation"
+              >
+                {config.headerNav
+                  .filter((link) => !(link.id === 'pricing' && config.flags?.showPricing === false))
+                  .map((link) => {
+                    const isActive = !link.isExternal && (activeTab === link.id || (activeTab === 'overview' && link.href === '/'));
+                    const label = t(link.labelKey);
+
+                    return (
+                      <a
+                        key={link.labelKey}
+                        href={link.href}
+                        onClick={(e) => handleLinkClick(e, link)}
+                        target={link.isExternal ? '_blank' : undefined}
+                        rel={link.isExternal ? 'noopener noreferrer' : undefined}
+                        style={{
+                          fontSize: '13px',
+                          color: isActive ? 'var(--foreground)' : 'var(--muted-foreground)',
+                          textDecoration: 'none',
+                          fontWeight: isActive ? 700 : 500,
+                          transition: 'color 0.15s ease',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '5px',
+                          padding: '4px 6px',
+                          borderRadius: '6px',
+                          outlineOffset: '2px',
+                          whiteSpace: 'nowrap',
+                          flexShrink: 0
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--foreground)')}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = isActive ? 'var(--foreground)' : 'var(--muted-foreground)')}
+                      >
+                        <span>{label}</span>
+                        {link.badge && (
+                          <span style={{
+                            fontSize: '0.62rem',
+                            padding: '1px 5px',
+                            borderRadius: '9999px',
+                            background: 'var(--badge-nav-bg)',
+                            color: 'var(--badge-nav-text)',
+                            border: '1px solid var(--badge-nav-border)',
+                            fontWeight: 700
+                          }}>
+                            {link.badge}
+                          </span>
+                        )}
+                        {link.isExternal && <ExternalLink size={11} style={{ opacity: 0.7 }} />}
+                      </a>
+                    );
+                  })}
+              </nav>
+            )}
           </div>
 
-          {/* Desktop Nav Links (No duplicates! "Demo video (3:49)" & "How It Works" only appear once) */}
-          {isDesktop && (
-            <nav
-              style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: '6px' }}
-              aria-label="Main navigation"
+          {/* Right: Theme Toggle, Language, Judge quick start CTA, Mobile Hamburger */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+            {/* Single Theme Toggle Button (Light/Dark Mode) */}
+            <button
+              onClick={toggleTheme}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '5px',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: 'var(--foreground)',
+                backgroundColor: 'var(--secondary)',
+                padding: '6px 10px',
+                minHeight: '34px',
+                borderRadius: '6px',
+                border: '1px solid var(--border)',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+                outlineOffset: '2px'
+              }}
+              aria-label={isDark ? t('nav.switchToLight') : t('nav.switchToDark')}
+              title={isDark ? t('nav.switchToLight') : t('nav.switchToDark')}
             >
-              {config.headerNav
-                .filter((link) => !(link.id === 'pricing' && config.flags?.showPricing === false))
-                .map((link) => {
-                  const isActive = !link.isExternal && (activeTab === link.id || (activeTab === 'overview' && link.href === '/'));
-                  const label = t(link.labelKey);
+              {isDark ? (
+                <>
+                  <span style={{ color: '#fbbf24', display: 'inline-flex', alignItems: 'center' }} aria-hidden="true">
+                    <SunIcon />
+                  </span>
+                  <span>{t('nav.themeLight')}</span>
+                </>
+              ) : (
+                <>
+                  <span style={{ color: '#4f46e5', display: 'inline-flex', alignItems: 'center' }} aria-hidden="true">
+                    <MoonIcon />
+                  </span>
+                  <span>{t('nav.themeDark')}</span>
+                </>
+              )}
+            </button>
 
-                  return (
-                    <a
-                      key={link.labelKey}
-                      href={link.href}
-                      onClick={(e) => handleLinkClick(e, link)}
-                      target={link.isExternal ? '_blank' : undefined}
-                      rel={link.isExternal ? 'noopener noreferrer' : undefined}
-                      style={{
-                        fontSize: '13px',
-                        color: isActive ? 'var(--foreground)' : 'var(--muted-foreground)',
-                        textDecoration: 'none',
-                        fontWeight: isActive ? 700 : 500,
-                        transition: 'color 0.15s ease',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '5px',
-                        padding: '4px 6px',
-                        borderRadius: '6px',
-                        outlineOffset: '2px',
-                        whiteSpace: 'nowrap'
-                      }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--foreground)')}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = isActive ? 'var(--foreground)' : 'var(--muted-foreground)')}
-                    >
-                      <span>{label}</span>
-                      {link.badge && (
-                        <span style={{
-                          fontSize: '0.62rem',
-                          padding: '1px 5px',
-                          borderRadius: '9999px',
-                          background: 'var(--badge-nav-bg)',
-                          color: 'var(--badge-nav-text)',
-                          border: '1px solid var(--badge-nav-border)',
-                          fontWeight: 700
-                        }}>
-                          {link.badge}
-                        </span>
-                      )}
-                      {link.isExternal && <ExternalLink size={11} style={{ opacity: 0.7 }} />}
-                    </a>
-                  );
-                })}
-            </nav>
-          )}
-        </div>
-
-        {/* Right: Scenario Selector, Refresh, Single Theme Toggle, Language, Quick Start CTA, Hamburger */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-          {/* Scenario Selector Dropdown */}
-          {isDesktop && onSelectScenario && (
-            <div style={{ position: 'relative' }} ref={scenarioMenuRef}>
+            {/* Language Switcher: "EN | हिन्दी" */}
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                fontSize: '11.5px',
+                fontWeight: 600,
+                color: 'var(--muted-foreground)',
+                backgroundColor: 'var(--secondary)',
+                padding: '2px 4px',
+                borderRadius: '6px',
+                border: '1px solid var(--border)'
+              }}
+              aria-label={t('nav.switchLanguage')}
+            >
               <button
-                onClick={() => setScenarioOpen(!scenarioOpen)}
+                onClick={() => setLanguage('en')}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '4px 6px',
+                  fontSize: '11.5px',
+                  fontWeight: language === 'en' ? 700 : 400,
+                  color: language === 'en' ? 'var(--foreground)' : 'var(--muted-foreground)',
+                  fontFamily: 'inherit',
+                  outlineOffset: '2px'
+                }}
+                aria-pressed={language === 'en'}
+              >
+                EN
+              </button>
+              <span style={{ opacity: 0.4 }} aria-hidden="true">|</span>
+              <button
+                onClick={() => setLanguage('hi')}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '4px 6px',
+                  fontSize: '11.5px',
+                  fontWeight: language === 'hi' ? 700 : 400,
+                  color: language === 'hi' ? 'var(--foreground)' : 'var(--muted-foreground)',
+                  fontFamily: "'Noto Sans Devanagari', inherit",
+                  outlineOffset: '2px'
+                }}
+                aria-pressed={language === 'hi'}
+              >
+                हिन्दी
+              </button>
+            </div>
+
+            {/* Judge Quick Start Button (Replaces "Book a Demo", linking to /judges) */}
+            {isDesktop && (
+              <a
+                href="/judges"
+                className="btn btn-primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (onNavigate) onNavigate('judges');
+                  window.history.pushState(null, '', '/judges');
+                }}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '5px',
-                  padding: '6px 10px',
-                  fontSize: '0.74rem',
-                  fontWeight: 700,
+                  gap: '6px',
+                  backgroundColor: 'var(--brand-indigo, #4f46e5)',
+                  border: '1px solid rgba(255, 255, 255, 0.25)',
                   borderRadius: '6px',
+                  padding: '7px 13px',
+                  fontSize: '12.5px',
+                  fontWeight: 700,
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  transition: 'all 0.15s ease',
+                  outlineOffset: '2px',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 8px rgba(79, 70, 229, 0.35)',
+                  whiteSpace: 'nowrap'
+                }}
+                aria-label={t('nav.bookDemoAria')}
+              >
+                <ShieldCheck size={14} color="#ffffff" />
+                <span style={{ color: '#ffffff' }}>{t('nav.bookDemo')}</span>
+              </a>
+            )}
+
+            {/* Mobile Hamburger Toggle (<1024px) */}
+            {!isDesktop && (
+              <button
+                ref={hamburgerButtonRef}
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '40px',
+                  height: '40px',
                   background: 'var(--secondary)',
                   border: '1px solid var(--border)',
+                  borderRadius: '6px',
                   color: 'var(--foreground)',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  padding: 0,
+                  outlineOffset: '2px'
                 }}
-                aria-label="Select demo scenario"
-                aria-expanded={scenarioOpen}
-                title="Switch hackathon test scenario"
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-nav-drawer"
+                aria-label={mobileMenuOpen ? t('nav.closeMenu') : t('nav.toggleMenu')}
               >
-                <Sliders size={12} />
-                <span>{currentScenarioObj.badge}</span>
-                <ChevronDown size={11} />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  {mobileMenuOpen ? (
+                    <>
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </>
+                  ) : (
+                    <>
+                      <line x1="3" y1="12" x2="21" y2="12" />
+                      <line x1="3" y1="6" x2="21" y2="6" />
+                      <line x1="3" y1="18" x2="21" y2="18" />
+                    </>
+                  )}
+                </svg>
               </button>
-
-              {scenarioOpen && (
-                <div
-                  className="scenario-dropdown-panel"
-                  style={{
-                    position: 'absolute',
-                    top: 'calc(100% + 6px)',
-                    right: 0,
-                    width: '320px',
-                    background: 'var(--card)',
-                    border: '1px solid var(--border)',
-                    borderRadius: '10px',
-                    boxShadow: '0 12px 32px rgba(0,0,0,0.3)',
-                    padding: '8px',
-                    zIndex: 200
-                  }}
-                >
-                  <div style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--muted-foreground)', padding: '4px 8px', textTransform: 'uppercase' }}>
-                    Select Test Scenario
-                  </div>
-                  {scenarios.map((sc) => (
-                    <button
-                      key={sc.id}
-                      onClick={() => {
-                        onSelectScenario(sc.id);
-                        setScenarioOpen(false);
-                      }}
-                      style={{
-                        width: '100%',
-                        textAlign: 'left',
-                        padding: '8px',
-                        borderRadius: '6px',
-                        border: 'none',
-                        background: systemStatus?.activeScenario === sc.id ? 'rgba(56, 189, 248, 0.12)' : 'transparent',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '2px',
-                        marginBottom: '4px'
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--foreground)' }}>{sc.title}</span>
-                        <span style={{ fontSize: '0.65rem', fontWeight: 700, color: sc.color, padding: '1px 5px', borderRadius: '4px', background: `${sc.color}22` }}>
-                          {sc.badge}
-                        </span>
-                      </div>
-                      <span style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>{sc.desc}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* State Refresh Button */}
-          {onRefresh && (
-            <button
-              onClick={onRefresh}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '32px',
-                height: '32px',
-                borderRadius: '6px',
-                border: '1px solid var(--border)',
-                background: 'var(--secondary)',
-                color: 'var(--foreground)',
-                cursor: 'pointer'
-              }}
-              aria-label="Refresh treasury and ArmorIQ state"
-              title="Refresh treasury state"
-            >
-              <RefreshCw size={13} className={isRefreshing ? 'animate-spin' : ''} />
-            </button>
-          )}
-
-          {/* User Session Menu */}
-          {isDesktop && userSession?.authenticated && (
-            <button
-              onClick={onOpenOAuth}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                padding: '4px 8px',
-                borderRadius: '6px',
-                border: '1px solid var(--border)',
-                background: 'var(--secondary)',
-                color: 'var(--foreground)',
-                fontSize: '0.74rem',
-                fontWeight: 600,
-                cursor: 'pointer'
-              }}
-              title="Logged in administrator identity"
-            >
-              <User size={12} />
-              <span>{userSession.user?.name || 'Admin'}</span>
-            </button>
-          )}
-
-          {/* SINGLE Theme Toggle Button (Light/Dark Mode) — No duplicate "Dark" button */}
-          <button
-            onClick={toggleTheme}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '5px',
-              fontSize: '12px',
-              fontWeight: 600,
-              color: 'var(--foreground)',
-              backgroundColor: 'var(--secondary)',
-              padding: '6px 10px',
-              minHeight: '34px',
-              borderRadius: '6px',
-              border: '1px solid var(--border)',
-              cursor: 'pointer',
-              transition: 'all 0.15s ease',
-              outlineOffset: '2px'
-            }}
-            aria-label={isDark ? t('nav.switchToLight') : t('nav.switchToDark')}
-            title={isDark ? t('nav.switchToLight') : t('nav.switchToDark')}
-          >
-            {isDark ? (
-              <>
-                <span style={{ color: '#fbbf24', display: 'inline-flex', alignItems: 'center' }} aria-hidden="true">
-                  <SunIcon />
-                </span>
-                <span>{t('nav.themeLight')}</span>
-              </>
-            ) : (
-              <>
-                <span style={{ color: '#4f46e5', display: 'inline-flex', alignItems: 'center' }} aria-hidden="true">
-                  <MoonIcon />
-                </span>
-                <span>{t('nav.themeDark')}</span>
-              </>
             )}
-          </button>
-
-          {/* Language Switcher: "EN | हिन्दी" */}
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              fontSize: '11.5px',
-              fontWeight: 600,
-              color: 'var(--muted-foreground)',
-              backgroundColor: 'var(--secondary)',
-              padding: '2px 4px',
-              borderRadius: '6px',
-              border: '1px solid var(--border)'
-            }}
-            aria-label={t('nav.switchLanguage')}
-          >
-            <button
-              onClick={() => setLanguage('en')}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '4px 6px',
-                fontSize: '11.5px',
-                fontWeight: language === 'en' ? 700 : 400,
-                color: language === 'en' ? 'var(--foreground)' : 'var(--muted-foreground)',
-                fontFamily: 'inherit',
-                outlineOffset: '2px'
-              }}
-              aria-pressed={language === 'en'}
-            >
-              EN
-            </button>
-            <span style={{ opacity: 0.4 }} aria-hidden="true">|</span>
-            <button
-              onClick={() => setLanguage('hi')}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '4px 6px',
-                fontSize: '11.5px',
-                fontWeight: language === 'hi' ? 700 : 400,
-                color: language === 'hi' ? 'var(--foreground)' : 'var(--muted-foreground)',
-                fontFamily: "'Noto Sans Devanagari', inherit",
-                outlineOffset: '2px'
-              }}
-              aria-pressed={language === 'hi'}
-            >
-              हिन्दी
-            </button>
           </div>
-
-          {/* Judge Quick Start Button (Replaces "Book a Demo", linking to /judges) */}
-          {isDesktop && (
-            <a
-              href="/judges"
-              className="btn btn-primary"
-              onClick={(e) => {
-                e.preventDefault();
-                if (onNavigate) onNavigate('judges');
-                window.history.pushState(null, '', '/judges');
-              }}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                backgroundColor: 'var(--brand-indigo, #4f46e5)',
-                border: '1px solid rgba(255, 255, 255, 0.25)',
-                borderRadius: '6px',
-                padding: '7px 13px',
-                fontSize: '12.5px',
-                fontWeight: 700,
-                color: '#ffffff',
-                textDecoration: 'none',
-                transition: 'all 0.15s ease',
-                outlineOffset: '2px',
-                cursor: 'pointer',
-                boxShadow: '0 2px 8px rgba(79, 70, 229, 0.35)'
-              }}
-              aria-label={t('nav.bookDemoAria')}
-            >
-              <ShieldCheck size={14} color="#ffffff" />
-              <span style={{ color: '#ffffff' }}>{t('nav.bookDemo')}</span>
-            </a>
-          )}
-
-          {/* Mobile Hamburger Toggle (<1024px) */}
-          {!isDesktop && (
-            <button
-              ref={hamburgerButtonRef}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '40px',
-                height: '40px',
-                background: 'var(--secondary)',
-                border: '1px solid var(--border)',
-                borderRadius: '6px',
-                color: 'var(--foreground)',
-                cursor: 'pointer',
-                padding: 0,
-                outlineOffset: '2px'
-              }}
-              aria-expanded={mobileMenuOpen}
-              aria-controls="mobile-nav-drawer"
-              aria-label={mobileMenuOpen ? t('nav.closeMenu') : t('nav.toggleMenu')}
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                {mobileMenuOpen ? (
-                  <>
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </>
-                ) : (
-                  <>
-                    <line x1="3" y1="12" x2="21" y2="12" />
-                    <line x1="3" y1="6" x2="21" y2="6" />
-                    <line x1="3" y1="18" x2="21" y2="18" />
-                  </>
-                )}
-              </svg>
-            </button>
-          )}
         </div>
       </div>
+
+      {/* TIER 2: Secondary Control Bar (Desktop >= 1024px) */}
+      {isDesktop && (
+        <div
+          style={{
+            backgroundColor: isDark ? 'rgba(13, 13, 17, 0.94)' : 'rgba(248, 250, 252, 0.96)',
+            backdropFilter: 'blur(12px)',
+            borderBottom: '1px solid var(--border)',
+            transition: 'background-color 0.2s ease, border-color 0.2s ease'
+          }}
+        >
+          <div
+            style={{
+              maxWidth: '1440px',
+              height: '42px',
+              margin: '0 auto',
+              padding: '0 16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '12px'
+            }}
+          >
+            {/* Tier 2 Left: Live PEP + MCP Status + Environment notice */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '2px 8px',
+                  borderRadius: '9999px',
+                  fontSize: '0.68rem',
+                  fontWeight: 700,
+                  color: '#10b981',
+                  background: 'rgba(16, 185, 129, 0.12)',
+                  border: '1px solid rgba(16, 185, 129, 0.35)',
+                  whiteSpace: 'nowrap'
+                }}
+                title="ArmorIQ Policy Enforcement Point Active (proxy.armoriq.ai)"
+              >
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 6px #10b981' }} />
+                Live PEP Active
+              </span>
+
+              <span
+                onClick={() => onNavigate && onNavigate('admin')}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '2px 8px',
+                  borderRadius: '9999px',
+                  fontSize: '0.68rem',
+                  fontWeight: 700,
+                  color: 'var(--badge-mcp-text, #0369a1)',
+                  background: 'var(--badge-mcp-bg, rgba(3, 105, 161, 0.1))',
+                  border: '1px solid var(--badge-mcp-border, rgba(3, 105, 161, 0.35))',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap'
+                }}
+                title="Model Context Protocol Server Active (/mcp & stdio)"
+              >
+                MCP /mcp Active
+              </span>
+
+              <span style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)', marginLeft: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                Sandbox environment · Synthetic Airwallex balances & test orders
+              </span>
+            </div>
+
+            {/* Tier 2 Right: Scenario Switcher + Refresh + User Session */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+              {/* Scenario Selector Dropdown */}
+              {onSelectScenario && (
+                <div style={{ position: 'relative' }} ref={scenarioMenuRef}>
+                  <button
+                    onClick={() => setScenarioOpen(!scenarioOpen)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      padding: '4px 9px',
+                      fontSize: '0.74rem',
+                      fontWeight: 700,
+                      borderRadius: '6px',
+                      background: 'var(--secondary)',
+                      border: '1px solid var(--border)',
+                      color: 'var(--foreground)',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap'
+                    }}
+                    aria-label="Select demo scenario"
+                    aria-expanded={scenarioOpen}
+                    title="Switch hackathon test scenario"
+                  >
+                    <Sliders size={12} style={{ color: currentScenarioObj.color || 'var(--foreground)' }} />
+                    <span>{currentScenarioObj.badge}</span>
+                    <ChevronDown size={11} />
+                  </button>
+
+                  {scenarioOpen && (
+                    <div
+                      className="scenario-dropdown-panel"
+                      style={{
+                        position: 'absolute',
+                        top: 'calc(100% + 6px)',
+                        right: 0,
+                        width: '320px',
+                        background: 'var(--card)',
+                        border: '1px solid var(--border)',
+                        borderRadius: '10px',
+                        boxShadow: '0 12px 32px rgba(0,0,0,0.3)',
+                        padding: '8px',
+                        zIndex: 200
+                      }}
+                    >
+                      <div style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--muted-foreground)', padding: '4px 8px', textTransform: 'uppercase' }}>
+                        Select Test Scenario
+                      </div>
+                      {scenarios.map((sc) => (
+                        <button
+                          key={sc.id}
+                          onClick={() => {
+                            onSelectScenario(sc.id);
+                            setScenarioOpen(false);
+                          }}
+                          style={{
+                            width: '100%',
+                            textAlign: 'left',
+                            padding: '8px',
+                            borderRadius: '6px',
+                            border: 'none',
+                            background: systemStatus?.activeScenario === sc.id ? 'rgba(56, 189, 248, 0.12)' : 'transparent',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '2px',
+                            marginBottom: '4px'
+                          }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--foreground)' }}>{sc.title}</span>
+                            <span style={{ fontSize: '0.65rem', fontWeight: 700, color: sc.color, padding: '1px 5px', borderRadius: '4px', background: `${sc.color}22` }}>
+                              {sc.badge}
+                            </span>
+                          </div>
+                          <span style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>{sc.desc}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* State Refresh Button */}
+              {onRefresh && (
+                <button
+                  onClick={onRefresh}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '6px',
+                    border: '1px solid var(--border)',
+                    background: 'var(--secondary)',
+                    color: 'var(--foreground)',
+                    cursor: 'pointer'
+                  }}
+                  aria-label="Refresh treasury and ArmorIQ state"
+                  title="Refresh treasury state"
+                >
+                  <RefreshCw size={12} className={isRefreshing ? 'animate-spin' : ''} />
+                </button>
+              )}
+
+              {/* User Session Menu */}
+              {userSession?.authenticated && (
+                <button
+                  onClick={onOpenOAuth}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: '3px 8px',
+                    borderRadius: '6px',
+                    border: '1px solid var(--border)',
+                    background: 'var(--secondary)',
+                    color: 'var(--foreground)',
+                    fontSize: '0.72rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap'
+                  }}
+                  title="Logged in administrator identity"
+                >
+                  <User size={12} />
+                  <span>{userSession.user?.name || 'Admin'}</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
 
       {/* Accessible Mobile Drawer (<1024px) */}
       {!isDesktop && mobileMenuOpen && (
