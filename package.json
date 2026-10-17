@@ -15,7 +15,7 @@
     "test": "node --test test/guide-pdf.test.mjs test/armoriq-auth.test.mjs",
     "test:guide": "node --test test/guide-pdf.test.mjs",
     "test:auth": "node --test test/armoriq-auth.test.mjs",
-  "verify:keyboard": "node scripts/verify-keyboard.mjs",
+    "verify:keyboard": "node scripts/verify-keyboard.mjs",
     "test:enforcement": "node --env-file=.env scripts/test-enforcement.mjs",
     "test:intent": "node --env-file=.env scripts/test-intent-mismatch.mjs",
     "demo": "node --env-file=.env scripts/run-demo.mjs",
