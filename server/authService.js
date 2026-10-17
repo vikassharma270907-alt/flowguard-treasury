@@ -67,9 +67,9 @@ const USERS = [
     createdAt: new Date('2026-10-10T00:00:00Z').toISOString()
   },
   {
-    id: 'usr_vikas',
-    email: 'vikassharma270907@gmail.com',
-    name: 'Vikas Sharma',
+    id: 'usr_admin_01',
+    email: 'admin@beyondflow.io',
+    name: 'Lead Treasury Architect',
     passwordHash: hashPassword('Admin#2026'),
     role: 'SUPER_ADMIN',
     department: 'Fintech Engineering',

@@ -217,78 +217,33 @@ Two comprehensive technical architectural documents are generated and committed 
 
 ---
 
-## 🇮🇳 Indian Developer-Tools / SaaS Header & Footer System
+## ⚖️ Hackathon Compliance & Disclosures
 
-A responsive, production-ready Header and Footer architecture tailored for Indian developer tools, APIs, and B2B SaaS platforms serving engineering teams and Indian enterprises.
+### 1. ArmorIQ Integration & Policy Enforcement
+BeyondFlow integrates with the official ArmorIQ platform:
+- **IAP Plan Capture & Token Minting**: `capturePlan` and `getIntentToken` are invoked on every voice tool request.
+- **PEP Enforcement Boundary**: In compliance with Hackathon Rule 8 (*no simulated or hardcoded verdicts*), the upstream MCP server contains zero local policy logic. Tool decisions are cryptographically evaluated and enforced strictly at the **ArmorIQ Policy Enforcement Point reverse proxy (`proxy.armoriq.ai`)**.
+- **Live Platform Records**:
+  - Agent Platform Record: `flowguard-agent` (`c8bcbe51-dea4-4459-9fd8-38f88ebc714e`)
+  - MCP Server Record: `flowguard-treasury-mcp` (`7540cd0a-7d76-414a-a849-96b337a0c6ed`)
+  - Policy: `flowguard-treasury-allowlist` (`23f8f304-0f6b-44a0-9bba-fa9886ca611b`)
 
-### 🎨 Visual & Aesthetic Standards
-- **Clean Developer-Tool Palette**: Pure white header (`#ffffff`), light warm-gray footer (`#f7f7f5`), 1px subtle borders (`#e5e5e5`), deep neutral text (`#111111`), muted slate (`#6b6b6b`), and vibrant emerald green accent (`#16a34a`).
-- **Typography**: Inter for clean sans-serif UI, JetBrains Mono for monospace tokens/labels, and Noto Sans Devanagari for proper Hindi vernacular rendering. All three families are self-hosted (`scripts/vendor-fonts.mjs` → `client/public/fonts/`) — the app loads no third-party font CDN at runtime.
-- **Header**: Sticky ~56px bar with max-width 1280px container, brand logo + wordmark, desktop navigation from `lg` (1024px) up, and an accessible mobile hamburger drawer below 1024px.
-- **Footer**: 5-column desktop layout (`lg: 1024px+`), transitioning into a balanced 2-column mobile grid.
+### 2. Lineage & Development Window (Rules 5 & 6)
+- **Official Window**: Development was carried out within the hackathon window (October 10–17, 2026). Git log confirms all commits in the repository were authored between Oct 16 and Oct 17.
+- **Pre-Existing Code Disclosures**: As disclosed in [DISCLOSURES.md](DISCLOSURES.md), BeyondFlow adapts concepts from an earlier MIT-licensed IntentGate prototype (basic voice gateway and Airwallex sandbox adapter), alongside pre-existing responsive UI subsystems and 3D visual components.
+- **Built Fresh During Hackathon**: All ArmorIQ cryptographic intent-binding, live PEP proxy policy enforcement, ElevenLabs voice holding pattern, dual-supervisor quorum, and technical explainer video were authored fresh during the hackathon.
 
-### ⚙️ Centralized Configuration (`client/src/siteConfig.js`)
-All branding, navigation links, business compliance data, and feature flags originate from a single source of truth:
-```javascript
-// Single source of truth for brand name
-export const PRODUCT_NAME = "BeyondFlow";
+### 3. Known Limitations & Architecture Decisions
+- **Action-Level Intent Binding**: ArmorIQ cryptographically binds the declared action set and token expiration (`IntentMismatchException` / `TokenExpiredException`). Call arguments are evaluated at the upstream tool boundary (see `test-intent-mismatch.mjs`).
+- **Approval Quorum**: The ArmorIQ platform delegation API (`POST /delegation/request`) creates the pending `HELD` state; the dual-supervisor quorum requirement (2 approvals) is tallied within the BeyondFlow gateway before releasing execution through `proxy.armoriq.ai`.
+- **Open Sandbox Endpoint by Design**: The public production `/mcp` endpoint accepts unauthenticated requests so that the cloud `proxy.armoriq.ai` can reach it without static credentials. Direct calls to `/mcp` hit raw sandbox tools without governance by design; policy enforcement occurs when requests pass through the ArmorIQ Policy Enforcement Point.
+- **100% Synthetic Sandbox Data**: All customer names, order IDs, account routing numbers, and balances are synthetic mock entities. Real money is never moved.
 
-export const siteConfig = {
-  name: PRODUCT_NAME,
-  legalEntityName: `${PRODUCT_NAME} Technologies Pvt. Ltd.`,
-  flags: {
-    // Disabled by default; enable ONLY if legally verified
-    trustBadges: false,
-    // Optional 2px tricolor line; disabled by default
-    tricolorLine: false,
-    // Optional header status/playground indicator
-    headerPlaygroundIndicator: false,
-  },
-  businessDetails: {
-    cin: "",
-    gstin: "",
-    incorporationAct: "Registered under the Companies Act, 2013"
-  },
-  contact: {
-    email: "beyondnothing01@gmail.com",
-    addressShort: "Indore, Madhya Pradesh, India"
-  }
-};
-```
+---
 
-### 🌐 Dual-Locale i18n System (EN | हिन्दी)
-- **Cookie-Backed**: Active language choice stored in cookie `preferred-lang` (1-year TTL, `SameSite=Lax`) to completely eliminate hydration flash.
-- **HTML Attribute Synchronization**: Immediately synchronizes `<html lang="en">` or `<html lang="hi">` in `<head>` script and React context.
-- **Zero Missing Keys**: English (`en.json`) and Hindi (`hi.json`) dictionaries provide full key coverage with automatic English fallback.
-- **Human Review Note**: *Hindi translations in `hi.json` are draft translations and must be reviewed and certified by a native vernacular specialist before final production release.*
-
-### ⚖️ Indian Regulatory & Legal Stubs (Zero 404s)
-Dedicated stub routes with prominent `"Draft – replace with reviewed legal text"` warning banners:
-- `/privacy` — Privacy Policy (DPDP Act, 2023 alignment)
-- `/terms` — Terms of Service (Indian jurisdiction, Indore, Madhya Pradesh courts)
-- `/refund-policy` — Refund & Cancellation Policy (7-day evaluation, INR settlement)
-- `/grievance-officer` — Statutory Grievance Redressal Officer designation (IT Act 2000 & DPDP 2023)
-- `/dpdp-compliance` — Digital Personal Data Protection Act compliance notice
-- **Server Rewrites**: Configured in `vercel.json` and client-side history navigation to ensure direct deep-linking never produces 404 errors.
-
-### ♿ Accessibility & UX Features
-- **Focus Trap & Keyboard Navigation**: Mobile hamburger drawer traps Tab / Shift+Tab cycling within the open menu, listens to `Esc` key to close, and manages `aria-expanded` and `aria-controls`.
-- **WCAG AA Contrast**: Tested against WCAG AA standards (minimum 4.5:1 text contrast ratio).
-- **No External Images / Emoji Flags**: Social links use lightweight inline SVGs with `aria-label` attributes. "Made with ♥ in India" uses text formatting without emoji flags.
-
-### 📄 BeyondFlow Guide (PDF) Configuration & Maintenance
-- **File Location**: The guide PDF is generated at `docs/USER_GUIDE.pdf` and mirrored automatically by the generator to `client/public/docs/flowguard-guide.pdf` and `public/docs/flowguard-guide.pdf`. It is served at route `/docs/flowguard-guide.pdf`.
-- **Single Source of Truth**: Configured in `client/src/siteConfig.js` under `siteConfig.guidePdf` (the size label is re-computed at build time):
-  ```javascript
-  guidePdf: {
-    enabled: true,
-    path: "/docs/flowguard-guide.pdf",
-    pages: 24,
-    sizeLabel: typeof __GUIDE_PDF_SIZE_LABEL__ !== 'undefined' ? __GUIDE_PDF_SIZE_LABEL__ : "32 KB"
-  }
-  ```
-- **Build-Time Validation & Calculation**: During `npm run build`, `client/vite.config.js` inspects the real file size, computes the `sizeLabel` dynamically (e.g., `32 KB`), and injects it. If `guidePdf.enabled` is `true` and the PDF file is missing, the build fails with a clear error message. If `guidePdf.enabled` is `false`, the links do not render anywhere in the application.
-- **Regenerating the Guide**: Run `npm run docs:pdf` — it regenerates the guide from `scripts/generate-user-guide.mjs` and refreshes both public copies in one step. If the page count changes, update `siteConfig.guidePdf.pages` (and the pinned values in `test/guide-pdf.test.mjs`).
-- **Final Guide Status**: The guide is generated from repo sources, contains no draft markers, and its claims are verified against the code, the live platform, and `docs/evidence/` (see `DISCLOSURES.md` for lineage).
+## 📄 License & Attribution
+- **Application Code**: [MIT License](LICENSE) (Copyright © 2026 BeyondFlow Authors).
+- **Typography**: SIL Open Font License (OFL) for self-hosted Inter, JetBrains Mono, and Noto Sans Devanagari.
+- **Contact**: `support@beyondflow.io`
 
 

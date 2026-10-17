@@ -94,7 +94,7 @@ const LEGAL_DOCS = {
       },
       {
         heading: '2. Officer Contact Information',
-        content: 'Name: Designated Grievance Officer\nAddress: Indore, Madhya Pradesh, India\nEmail: beyondnothing01@gmail.com\nResponse Time: Acknowledgement within 24 hours, resolution within statutory timeframe (15 days).'
+        content: 'Name: Designated Grievance Officer\nAddress: Indore, Madhya Pradesh, India\nEmail: grievance@beyondflow.io\nResponse Time: Acknowledgement within 24 hours, resolution within statutory timeframe (15 days).'
       },
       {
         heading: '3. Grievance Escalation Procedure',

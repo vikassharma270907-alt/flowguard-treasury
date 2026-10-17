@@ -14,7 +14,7 @@
 export const PRODUCT_NAME = "BeyondFlow";
 
 // Support email across the entire project
-export const SUPPORT_EMAIL = "beyondnothing01@gmail.com";
+export const SUPPORT_EMAIL = "support@beyondflow.io";
 
 // Real project repository & documentation links
 export const GITHUB_REPO_URL = "https://github.com/vikassharma270907-alt/flowguard-treasury";
@@ -24,7 +24,7 @@ export const DOCS_URL = "https://docs.armoriq.ai";
 const CALENDLY_URL =
   (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_CALENDLY_URL) ||
   (typeof import.meta !== 'undefined' && (import.meta.env?.NEXT_PUBLIC_CALENDLY_URL || import.meta.env?.VITE_NEXT_PUBLIC_CALENDLY_URL)) ||
-  "https://cal.id/vikas-sharma-ykmxxw/partnership-call";
+  "https://cal.com/beyondflow/demo";
 
 export const siteConfig = {
   name: PRODUCT_NAME,
