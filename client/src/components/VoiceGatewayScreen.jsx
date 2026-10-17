@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Phone, PhoneCall, PhoneOff, Mic, Volume2, VolumeX, Shield,
   ShieldCheck, AlertTriangle, CheckCircle2, XCircle, Clock,
-  ArrowRight, Lock, RefreshCw, Play, Pause, RotateCcw, FileText,
-  Terminal, Copy, Sparkles, UserCheck, Users, HelpCircle,
-  ExternalLink, Check, Info, AlertOctagon, ChevronRight, Zap
+  ArrowRight, Play, RotateCcw, FileText,
+  Terminal, UserCheck, Users,
+  ExternalLink, Check, AlertOctagon, Zap
 } from 'lucide-react';
 
 export default function VoiceGatewayScreen({ userSession }) {
@@ -272,7 +272,6 @@ export default function VoiceGatewayScreen({ userSession }) {
   };
 
   const pendingAction = sessionData?.pendingSupervisorAction;
-  const dualApproval = sessionData?.dualApprovalState;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -399,7 +398,7 @@ export default function VoiceGatewayScreen({ userSession }) {
               45-Second End-to-End Voice Scenario Timeline
             </span>
             <span style={{ fontFamily: 'monospace', color: '#10b981', fontWeight: 700 }}>
-              {timerSeconds}s / 45s {isGuidedRunning && '(LIVE)'}
+              {isGuidedRunning && guidedStep > 0 ? `Step ${guidedStep} · ` : ''}{timerSeconds}s / 45s {isGuidedRunning && '(LIVE)'}
             </span>
           </div>
 

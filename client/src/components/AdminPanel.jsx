@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Shield, Sliders, Globe, Users, Activity, CheckCircle2,
+  Shield, Globe, Users, Activity, CheckCircle2,
   AlertTriangle, Lock, Save, RefreshCw, UserPlus, Server, Key, ExternalLink,
-  ShieldCheck, Cpu, Flame, Zap, Database, Copy, Check, Terminal
+  ShieldCheck, Cpu, Flame, Zap, Database, Terminal
 } from 'lucide-react';
 import StepUpSecurityModal from './StepUpSecurityModal';
 
@@ -28,6 +28,28 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
   const [isExecutingMcp, setIsExecutingMcp] = useState(false);
   const [copiedMcpConfig, setCopiedMcpConfig] = useState(false);
 
+  const loadAdminData = async () => {
+    try {
+      const [settingsRes, usersRes, telemetryRes, securityRes] = await Promise.all([
+        fetch('/api/admin/settings'),
+        fetch('/api/admin/users'),
+        fetch('/api/admin/telemetry'),
+        fetch('/api/security/status')
+      ]);
+      const sData = await settingsRes.json();
+      const uData = await usersRes.json();
+      const tData = await telemetryRes.json();
+      const secData = await securityRes.json();
+
+      setSettings(sData.settings);
+      setTeamMembers(uData.members || []);
+      setTelemetry(tData);
+      setSecurityStatus(secData);
+    } catch (err) {
+      console.warn('Error fetching admin data:', err);
+    }
+  };
+
   useEffect(() => {
     loadAdminData();
     fetch('/api/mcp/status').then(r => r.json()).then(d => setMcpStatus(d)).catch(() => {});
@@ -48,28 +70,6 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
       console.error(err);
     } finally {
       setIsExecutingMcp(false);
-    }
-  };
-
-  const loadAdminData = async () => {
-    try {
-      const [settingsRes, usersRes, telemetryRes, securityRes] = await Promise.all([
-        fetch('/api/admin/settings'),
-        fetch('/api/admin/users'),
-        fetch('/api/admin/telemetry'),
-        fetch('/api/security/status')
-      ]);
-      const sData = await settingsRes.json();
-      const uData = await usersRes.json();
-      const tData = await telemetryRes.json();
-      const secData = await securityRes.json();
-
-      setSettings(sData.settings);
-      setTeamMembers(uData.members || []);
-      setTelemetry(tData);
-      setSecurityStatus(secData);
-    } catch (err) {
-      console.warn('Error fetching admin data:', err);
     }
   };
 
@@ -762,7 +762,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
               </div>
               <div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)' }}>Governed Tools</div>
-             <div style={{ fontWeight: 700, color: '#c084fc', fontSize: '0.85rem' }}>3 governed · 2 app-side</div>
+             <div style={{ fontWeight: 700, color: '#c084fc', fontSize: '0.85rem' }}>{mcpTools.length > 0 ? `${mcpTools.length} tools registered` : '3 governed · 2 app-side'}</div>
               </div>
             </div>
           </div>
