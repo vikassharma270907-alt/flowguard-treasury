@@ -350,9 +350,9 @@ export default function Header({
                           fontSize: '0.62rem',
                           padding: '1px 5px',
                           borderRadius: '9999px',
-                          background: 'var(--pill-watch-bg, rgba(99, 102, 241, 0.15))',
-                          color: 'var(--pill-watch-text, #3730a3)',
-                          border: '1px solid var(--pill-watch-border, rgba(99, 102, 241, 0.35))',
+                          background: 'var(--badge-nav-bg)',
+                          color: 'var(--badge-nav-text)',
+                          border: '1px solid var(--badge-nav-border)',
                           fontWeight: 700
                         }}>
                           {link.badge}

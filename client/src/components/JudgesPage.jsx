@@ -210,7 +210,7 @@ export default function JudgesPage({ onNavigate }) {
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '14px' }}>
           <div style={{ background: 'var(--card)', padding: '18px', borderRadius: '12px', border: '1px solid var(--border)' }}>
-            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#38bdf8', marginBottom: '6px' }}>
+            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--step-sky-text)', marginBottom: '6px' }}>
               Step 1 · 15 Seconds
             </div>
             <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--foreground)', marginBottom: '6px' }}>
@@ -222,7 +222,7 @@ export default function JudgesPage({ onNavigate }) {
             <a
               href="/#boundary-test"
               onClick={(e) => { e.preventDefault(); onNavigate('overview'); setTimeout(() => { const el = document.getElementById('boundary-test'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 100); }}
-              style={{ fontSize: '0.8rem', color: '#38bdf8', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              style={{ fontSize: '0.8rem', color: 'var(--step-sky-text)', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
             >
               <span>Jump to Boundary Test</span>
               <ArrowRight size={13} />
@@ -230,7 +230,7 @@ export default function JudgesPage({ onNavigate }) {
           </div>
 
           <div style={{ background: 'var(--card)', padding: '18px', borderRadius: '12px', border: '1px solid var(--border)' }}>
-            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#818cf8', marginBottom: '6px' }}>
+            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--step-indigo-text)', marginBottom: '6px' }}>
               Step 2 · 30 Seconds
             </div>
             <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--foreground)', marginBottom: '6px' }}>
@@ -242,7 +242,7 @@ export default function JudgesPage({ onNavigate }) {
             <a
               href="/#how-we-use-armoriq"
               onClick={(e) => { e.preventDefault(); onNavigate('overview'); setTimeout(() => { const el = document.getElementById('how-we-use-armoriq'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 100); }}
-              style={{ fontSize: '0.8rem', color: '#818cf8', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              style={{ fontSize: '0.8rem', color: 'var(--step-indigo-text)', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
             >
               <span>View Architecture Diagram</span>
               <ArrowRight size={13} />
@@ -250,7 +250,7 @@ export default function JudgesPage({ onNavigate }) {
           </div>
 
           <div style={{ background: 'var(--card)', padding: '18px', borderRadius: '12px', border: '1px solid var(--border)' }}>
-            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#34d399', marginBottom: '6px' }}>
+            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--step-emerald-text)', marginBottom: '6px' }}>
               Step 3 · 25 Seconds
             </div>
             <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--foreground)', marginBottom: '6px' }}>
@@ -262,7 +262,7 @@ export default function JudgesPage({ onNavigate }) {
             <a
               href="/how-it-works"
               onClick={(e) => { e.preventDefault(); onNavigate('how-it-works'); }}
-              style={{ fontSize: '0.8rem', color: '#34d399', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              style={{ fontSize: '0.8rem', color: 'var(--step-emerald-text)', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
             >
               <span>Inspect Step-by-Step Guide (/how-it-works)</span>
               <ArrowRight size={13} />
@@ -270,7 +270,7 @@ export default function JudgesPage({ onNavigate }) {
           </div>
 
           <div style={{ background: 'var(--card)', padding: '18px', borderRadius: '12px', border: '1px solid var(--border)' }}>
-            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#fbbf24', marginBottom: '6px' }}>
+            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--step-amber-text)', marginBottom: '6px' }}>
               Step 4 · 20 Seconds
             </div>
             <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--foreground)', marginBottom: '6px' }}>
@@ -282,7 +282,7 @@ export default function JudgesPage({ onNavigate }) {
             <a
               href="/audit"
               onClick={(e) => { e.preventDefault(); onNavigate('audit'); }}
-              style={{ fontSize: '0.8rem', color: '#fbbf24', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              style={{ fontSize: '0.8rem', color: 'var(--step-amber-text)', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
             >
               <span>Open Audit Trail</span>
               <ArrowRight size={13} />
