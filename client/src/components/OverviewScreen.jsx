@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import {
-  ShieldCheck, ArrowRight, Shield, Sparkles, Video, Play, X, Info, ChevronRight
+  ShieldCheck, ArrowRight, Video, Play, Info
 } from 'lucide-react';
 import LiveEnforcementStrip from './LiveEnforcementStrip';
 import LazySection from './LazySection';
@@ -12,7 +12,6 @@ const InteractiveWalkthroughTour = lazy(() => import('./InteractiveWalkthroughTo
 
 export default function OverviewScreen({
   planData,
-  balances,
   systemStatus,
   onNavigate,
   onSimulateDeposit
@@ -25,7 +24,6 @@ export default function OverviewScreen({
   const approvedOutflow = plan?.forecastRunway?.approvedOutflowsUsd || 0;
   const deferredOutflow = plan?.forecastRunway?.deferredOutflowsUsd || 0;
   const freeBuffer = Math.max(0, totalLiquid - reserveFloor);
-  const bufferPercent = Math.min(100, Math.round((reserveFloor / (totalLiquid || 1)) * 100));
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>

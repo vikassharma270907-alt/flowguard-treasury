@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   ShieldAlert, CheckCircle2, AlertTriangle, FileText, Plus, Eye, X,
-  ArrowRight, CornerDownRight, Zap, Copy, Check, Lock, ShieldCheck
+  Zap, Copy, Check, Lock, ShieldCheck
 } from 'lucide-react';
 
 export default function InvoiceGuardScreen({
@@ -9,13 +9,10 @@ export default function InvoiceGuardScreen({
   inspections,
   onRegisterInvoice,
   onSelectForArmorPay,
-  onBatchSettleArmorPay,
-  onViewReceipt,
-  armorPayStatus
+  onBatchSettleArmorPay
 }) {
   const [selectedInspection, setSelectedInspection] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [activeReceipt, setActiveReceipt] = useState(null);
   const [copiedReceipt, setCopiedReceipt] = useState(false);
   const [isBatchSettling, setIsBatchSettling] = useState(false);
   const [batchResult, setBatchResult] = useState(null);

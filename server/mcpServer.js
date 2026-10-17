@@ -26,8 +26,7 @@ const { StdioServerTransport } = require('@modelcontextprotocol/sdk/server/stdio
 const {
   CallToolRequestSchema,
   ListToolsRequestSchema,
-  ListPromptsRequestSchema,
-  ListResourcesRequestSchema
+  ListPromptsRequestSchema
 } = require('@modelcontextprotocol/sdk/types.js');
 
 const { TOOLS, callTool } = require('../mcp-server/tools.cjs');

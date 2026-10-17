@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {
-  ShieldCheck, Shield, CheckCircle2, XCircle, AlertTriangle,
-  Play, ExternalLink, ArrowRight, Terminal, Lock, Copy, Check,
-  Cpu, Layers, Sparkles, Video, Eye, Clock, FileText, ArrowDownRight,
-  Info, ChevronRight, Server, PhoneCall, Users, Box
+  ShieldCheck, CheckCircle2, XCircle, AlertTriangle,
+  Terminal, Lock, Copy, Check,
+  Cpu, Sparkles, Clock, FileText,
+  Info, ChevronRight, PhoneCall
 } from 'lucide-react';
 import ExplainerVideoSection from './ExplainerVideoSection';
 import { useTheme } from '../context/ThemeContext';

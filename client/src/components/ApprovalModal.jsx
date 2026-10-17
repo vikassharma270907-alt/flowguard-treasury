@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle2, ArrowRight, ShieldCheck, DollarSign, Clock, AlertTriangle, Send } from 'lucide-react';
+import { X, CheckCircle2, ShieldCheck, Clock, Send } from 'lucide-react';
 
 export default function ApprovalModal({
   invoice,
@@ -14,13 +14,6 @@ export default function ApprovalModal({
   const [transferResult, setTransferResult] = useState(null);
   const [armorIqData, setArmorIqData] = useState(null);
   const [currentStep, setCurrentStep] = useState('REVIEW'); // 'REVIEW' | 'DISPATCHED' | 'SETTLED'
-
-  // Fetch or simulate FX quote if payment is non-USD
-  useEffect(() => {
-    if (invoice && invoice.currency !== 'USD') {
-      fetchFxQuote();
-    }
-  }, [invoice]);
 
   const fetchFxQuote = async () => {
     setLoadingQuote(true);
@@ -44,6 +37,13 @@ export default function ApprovalModal({
       setLoadingQuote(false);
     }
   };
+
+  // Fetch or simulate FX quote if payment is non-USD
+  useEffect(() => {
+    if (invoice && invoice.currency !== 'USD') {
+      fetchFxQuote();
+    }
+  }, [invoice]);
 
   const handleAuthorize = async () => {
     setIsSubmitting(true);

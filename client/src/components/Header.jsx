@@ -14,8 +14,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   ShieldCheck, RefreshCw, ChevronDown, Sliders,
-  User, Video, Play, Box, Clock, ExternalLink,
-  Shield, Server, Activity, CheckCircle2, AlertTriangle, ArrowDownCircle
+  User, ExternalLink
 } from 'lucide-react';
 import { siteConfig as defaultSiteConfig } from '../siteConfig';
 import { useI18n } from '../context/I18nContext';
@@ -79,7 +78,7 @@ export default function Header({
   onLogout
 }) {
   const { language, setLanguage, t } = useI18n();
-  const { theme, isDark, toggleTheme } = useTheme();
+  const { isDark, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scenarioOpen, setScenarioOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' ? window.innerWidth >= 1024 : true);

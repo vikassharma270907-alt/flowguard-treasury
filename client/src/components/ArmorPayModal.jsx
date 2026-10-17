@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-  X, CheckCircle2, ShieldCheck, DollarSign, Clock, AlertTriangle,
-  Zap, Copy, Check, ExternalLink, ArrowRight, ShieldAlert, FileText, Lock
+  X, CheckCircle2, ShieldCheck, AlertTriangle,
+  Zap, Copy, Check
 } from 'lucide-react';
 
 export default function ArmorPayModal({
@@ -12,7 +12,6 @@ export default function ArmorPayModal({
 }) {
   const [approverName, setApproverName] = useState('Sarah Chen (Finance Director)');
   const [paymentMethod, setPaymentMethod] = useState(invoice?.payment_method || 'LOCAL');
-  const [isExpedited, setIsExpedited] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [executionStep, setExecutionStep] = useState(0); // 0: Idle, 1: Hashing, 2: Minting, 3: Verifying, 4: Settling, 5: Complete
   const [settlementResult, setSettlementResult] = useState(null);
@@ -92,7 +91,6 @@ export default function ArmorPayModal({
   const isGbp = invoice.currency === 'GBP';
   const usdRate = isEur ? 1.0852 : (isGbp ? 1.2747 : 1.0);
   const totalUsdEstimated = invoice.amount * usdRate;
-  const corridorFee = paymentMethod === 'SWIFT' ? (isEur ? '€12.85' : '$15.00') : '$0.00 (Local Rails)';
 
   return (
     <div className="modal-overlay" onClick={onClose} style={{ zIndex: 1100 }}>

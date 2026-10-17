@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sliders, CheckCircle2, Clock, AlertOctagon, ArrowRight, ShieldCheck, DollarSign } from 'lucide-react';
+import { Sliders, CheckCircle2, Clock, AlertOctagon, ArrowRight } from 'lucide-react';
 
 export default function PlannerScreen({
   planData,

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Phone, PhoneCall, PhoneOff, Mic, Volume2, VolumeX, Shield,
-  ShieldCheck, AlertTriangle, CheckCircle2, XCircle, Clock,
-  ArrowRight, Play, RotateCcw, FileText,
+  Phone, PhoneCall, Volume2, VolumeX, Shield,
+  ShieldCheck, CheckCircle2, XCircle, Clock,
+  Play, RotateCcw, FileText,
   Terminal, UserCheck, Users,
   ExternalLink, Check, AlertOctagon, Zap
 } from 'lucide-react';

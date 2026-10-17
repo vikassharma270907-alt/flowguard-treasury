@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Ban, Clock, ExternalLink } from 'lucide-react';
+import { ShieldCheck, Ban, Clock } from 'lucide-react';
 import realRunData from '../data/realArmoriqRun.json';
 
 export default function LiveEnforcementStrip() {

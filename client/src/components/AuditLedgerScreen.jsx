@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Activity, Search, RefreshCw, Eye, X, CheckCircle2, AlertTriangle, Code } from 'lucide-react';
+import { Search, RefreshCw, Eye, X, Code } from 'lucide-react';
 
 export default function AuditLedgerScreen() {
   const [logs, setLogs] = useState([]);

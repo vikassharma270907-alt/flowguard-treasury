@@ -9,7 +9,6 @@
  * 5. Tamper-evident receipt generation with SHA-256 Merkle root anchoring
  */
 
-const crypto = require('crypto');
 const { randomUUID: uuidv4 } = require('crypto');
 const auditLedger = require('./auditLedger');
 const armorIqService = require('./armorIqService');

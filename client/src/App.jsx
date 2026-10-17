@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
+import { Lock, ArrowRight } from 'lucide-react';
 import Header from './components/Header';
 import LazySection from './components/LazySection';
 const Footer = lazy(() => import('./components/Footer'));
@@ -9,7 +10,6 @@ const InvoiceGuardScreen = lazy(() => import('./components/InvoiceGuardScreen'))
 const AuditLedgerScreen = lazy(() => import('./components/AuditLedgerScreen'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
 const VoiceGatewayScreen = lazy(() => import('./components/VoiceGatewayScreen'));
-const EnclaveScreen = lazy(() => import('./components/EnclaveScreen'));
 const HowItWorksPage = lazy(() => import('./components/HowItWorksPage'));
 const ApprovalModal = lazy(() => import('./components/ApprovalModal'));
 const CredentialsModal = lazy(() => import('./components/CredentialsModal'));
@@ -379,8 +379,6 @@ export default function App() {
     await loadData();
     return data;
   };
-
-  const isLegalOrPricingOrJudges = LEGAL_ROUTES.includes(activeTab) || activeTab === 'pricing' || activeTab === 'judges';
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>

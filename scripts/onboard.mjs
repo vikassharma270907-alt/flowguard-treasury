@@ -26,11 +26,12 @@ if (!KEY || !MCP_URL || !MCP_ID || !MCP_TOKEN) {
 }
 
 async function api(method, path, body) {
-  const res = await fetch(BASE + path, {
+  const options = {
     method,
-    headers: { 'X-API-Key': KEY, 'Content-Type': 'application/json' },
-    body: body ? JSON.stringify(body) : undefined,
-  });
+    headers: { 'X-API-Key': KEY, ...(body ? { 'Content-Type': 'application/json' } : {}) },
+    ...(body ? { body: JSON.stringify(body) } : {})
+  };
+  const res = await fetch(BASE + path, options);
   let parsed;
   const text = await res.text();
   try {

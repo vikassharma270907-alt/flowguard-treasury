@@ -1,8 +1,7 @@
 import React from 'react';
 import {
-  Video, ArrowRight, ShieldCheck, CheckCircle2,
-  Clock, Lock, ExternalLink, ArrowLeft, Terminal,
-  Sparkles, FileText, Cpu, Headphones, Play
+  Video, ArrowRight, ShieldCheck, ArrowLeft,
+  Sparkles, FileText, Cpu, Headphones
 } from 'lucide-react';
 import ExplainerVideoSection from './ExplainerVideoSection';
 import { useTheme } from '../context/ThemeContext';

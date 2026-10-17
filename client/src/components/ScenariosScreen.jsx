@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Play, ShieldCheck, AlertTriangle, Clock, ArrowDownCircle,
   CheckCircle2, ArrowRight, LayoutGrid, Rows, RefreshCw,
-  ExternalLink, Shield, Layers, DollarSign, Activity, FileText
+  Shield
 } from 'lucide-react';
 
 export default function ScenariosScreen({

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Shield, Activity, RefreshCw, Key, ChevronDown, CheckCircle2,
-  AlertTriangle, Play, Lock, User, LogOut, Sliders, X,
+  Shield, RefreshCw, Key, ChevronDown,
+  AlertTriangle, Play, Lock, LogOut, Sliders, X,
   ShieldCheck, Clock, ArrowDownCircle, Sun, Moon, Box, ArrowRight, Video
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';

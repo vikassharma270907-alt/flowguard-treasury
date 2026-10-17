@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-  X, Shield, Lock, ArrowRight, CheckCircle2, User, Key, Globe,
-  Check, Loader2, Sparkles, Mail, AlertCircle, RefreshCw, Smartphone,
+  X, Lock, ArrowRight, CheckCircle2, User, Key,
+  Check, Loader2, Mail, AlertCircle, RefreshCw, Smartphone,
   ExternalLink, Eye, EyeOff, ShieldCheck, Clock
 } from 'lucide-react';
 

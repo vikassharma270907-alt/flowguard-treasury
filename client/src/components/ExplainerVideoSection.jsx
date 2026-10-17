@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-  Video, Play, Pause, FileText, ShieldCheck, Info,
-  ExternalLink, ChevronDown, ChevronUp, Volume2, VolumeX,
-  Layers, Lock, CheckCircle2, Sparkles, Clock
+  Video, FileText, ShieldCheck, Info,
+  ChevronDown, ChevronUp, Volume2, VolumeX,
+  Sparkles
 } from 'lucide-react';
 
 const SCENES = [

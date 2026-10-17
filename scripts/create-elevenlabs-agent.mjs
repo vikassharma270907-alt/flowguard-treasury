@@ -32,11 +32,12 @@ if (!GATEWAY.startsWith('https://')) {
 const API = 'https://api.elevenlabs.io/v1';
 
 async function api(method, path, body) {
-  const res = await fetch(`${API}${path}`, {
+  const options = {
     method,
-    headers: { 'xi-api-key': KEY, 'content-type': 'application/json' },
-    body: body ? JSON.stringify(body) : undefined,
-  });
+    headers: { 'xi-api-key': KEY, ...(body ? { 'content-type': 'application/json' } : {}) },
+    ...(body ? { body: JSON.stringify(body) } : {})
+  };
+  const res = await fetch(`${API}${path}`, options);
   const text = await res.text();
   let parsed = null;
   try {
