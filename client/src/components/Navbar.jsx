@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Shield, Activity, RefreshCw, Key, ChevronDown, CheckCircle2,
   AlertTriangle, Play, Lock, User, LogOut, Sliders, X,
@@ -21,6 +21,29 @@ export default function Navbar({
   const [scenarioOpen, setScenarioOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { theme, isDark, toggleTheme } = useTheme();
+  const scenarioMenuRef = useRef(null);
+
+  useEffect(() => {
+    if (!scenarioOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setScenarioOpen(false);
+      }
+    };
+    const handleClickOutside = (e) => {
+      if (scenarioMenuRef.current && !scenarioMenuRef.current.contains(e.target)) {
+        setScenarioOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [scenarioOpen]);
 
   const scenarios = [
     {
@@ -260,7 +283,7 @@ export default function Navbar({
           </button>
 
           {/* Scenario Selector Dropdown */}
-          <div style={{ position: 'relative' }}>
+          <div ref={scenarioMenuRef} className="relative" style={{ position: 'relative' }}>
             <button
               onClick={() => setScenarioOpen(!scenarioOpen)}
               className="btn btn-secondary btn-sm"
@@ -272,57 +295,89 @@ export default function Navbar({
                 justifyContent: 'space-between',
                 background: scenarioOpen ? 'var(--secondary)' : undefined
               }}
+              aria-expanded={scenarioOpen}
+              aria-haspopup="true"
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Play size={12} color="#ffffff" />
+                <Play size={12} color={isDark ? '#34d399' : '#059669'} />
                 <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>{currentScenarioObj.title.split(':')[0]}</span>
               </div>
               <ChevronDown size={13} />
             </button>
 
-            {/* Click-away backdrop to fix popup dismissal */}
             {scenarioOpen && (
               <div
-                style={{ position: 'fixed', inset: 0, zIndex: 140 }}
-                onClick={() => setScenarioOpen(false)}
-              />
-            )}
-
-            {scenarioOpen && (
-              <div style={{
-                position: 'absolute',
-                right: 0,
-                top: '115%',
-                background: 'var(--card)',
-                border: '1px solid var(--border)',
-                borderRadius: '10px',
-                width: 'min(360px, calc(100vw - 24px))',
-                maxWidth: 'calc(100vw - 24px)',
-                boxShadow: 'var(--card-shadow)',
-                zIndex: 150,
-                padding: '10px'
-              }}>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '6px 8px 10px 8px',
-                  borderBottom: '1px solid var(--border)'
-                }}>
-                  <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--muted-foreground)', fontWeight: 700, letterSpacing: '0.05em' }}>
+                className="scenario-dropdown-panel absolute left-0 top-full mt-2 z-50 w-[min(26rem,calc(100vw-2rem))] max-h-[70vh] overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl"
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: '100%',
+                  marginTop: '0.5rem',
+                  zIndex: 50,
+                  width: 'min(26rem, calc(100vw - 2rem))',
+                  maxWidth: 'calc(100vw - 2rem)',
+                  maxHeight: '70vh',
+                  overflowY: 'auto',
+                  backgroundColor: isDark ? '#0f172a' : '#ffffff',
+                  borderColor: isDark ? '#1e293b' : '#e2e8f0',
+                  borderWidth: '1px',
+                  borderStyle: 'solid',
+                  borderRadius: '0.75rem',
+                  boxShadow: isDark
+                    ? '0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.08)'
+                    : '0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05)',
+                  padding: '12px'
+                }}
+              >
+                <div
+                  className="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 dark:border-slate-800"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    paddingBottom: '8px',
+                    marginBottom: '8px',
+                    borderBottom: isDark ? '1px solid #1e293b' : '1px solid #e2e8f0'
+                  }}
+                >
+                  <div
+                    className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400"
+                    style={{
+                      fontSize: '0.72rem',
+                      textTransform: 'uppercase',
+                      color: isDark ? '#94a3b8' : '#64748b',
+                      fontWeight: 700,
+                      letterSpacing: '0.05em'
+                    }}
+                  >
                     Hackathon Demo Scenarios
                   </div>
                   <button
                     onClick={() => setScenarioOpen(false)}
-                    style={{ background: 'transparent', border: 'none', color: '#a1a1aa', cursor: 'pointer', padding: '2px' }}
+                    className="p-1 rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      color: isDark ? '#94a3b8' : '#64748b',
+                      cursor: 'pointer',
+                      padding: '4px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: '4px'
+                    }}
+                    aria-label="Close scenarios menu"
                   >
-                    <X size={14} />
+                    <X size={15} />
                   </button>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '8px' }}>
+                <div
+                  className="flex flex-col gap-2 mt-2"
+                  style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}
+                >
                   {scenarios.map(s => {
-                    const isSelected = systemStatus?.activeScenario === s.id;
+                    const isSelected = (systemStatus?.activeScenario || 'SCENARIO_A') === s.id;
                     const Icon = s.icon;
                     return (
                       <div
@@ -331,29 +386,79 @@ export default function Navbar({
                           onSelectScenario(s.id);
                           setScenarioOpen(false);
                         }}
+                        className={`p-3 rounded-lg cursor-pointer transition-all border ${
+                          isSelected
+                            ? 'bg-indigo-50/90 dark:bg-indigo-950/40 border-indigo-500 dark:border-indigo-500 shadow-sm'
+                            : 'bg-slate-50/80 dark:bg-slate-800/40 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                        }`}
                         style={{
                           padding: '10px 12px',
                           borderRadius: '8px',
                           cursor: 'pointer',
-                          background: isSelected ? 'var(--secondary)' : 'var(--card)',
-                          border: isSelected ? '1px solid var(--primary)' : '1px solid var(--border)',
+                          backgroundColor: isSelected
+                            ? (isDark ? 'rgba(99, 102, 241, 0.18)' : '#eef2ff')
+                            : (isDark ? 'rgba(30, 41, 59, 0.55)' : '#f8fafc'),
+                          borderWidth: isSelected ? '1.5px' : '1px',
+                          borderStyle: 'solid',
+                          borderColor: isSelected
+                            ? (isDark ? '#6366f1' : '#4f46e5')
+                            : (isDark ? '#334155' : '#e2e8f0'),
                           transition: 'all 0.15s ease'
                         }}
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <Icon size={14} color={s.color} />
-                            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#f8fafc' }}>
+                        <div
+                          className="flex items-start justify-between gap-2"
+                          style={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            justifyContent: 'space-between',
+                            gap: '8px',
+                            marginBottom: '4px'
+                          }}
+                        >
+                          <div
+                            className="flex items-start gap-2"
+                            style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}
+                          >
+                            <div style={{ marginTop: '2px', flexShrink: 0 }}>
+                              <Icon size={14} color={s.color} />
+                            </div>
+                            <span
+                              className="text-xs font-bold text-slate-900 dark:text-slate-100"
+                              style={{
+                                fontSize: '0.82rem',
+                                fontWeight: 700,
+                                color: isDark ? '#f1f5f9' : '#0f172a',
+                                lineHeight: 1.35
+                              }}
+                            >
                               {s.title}
                             </span>
                           </div>
                           {isSelected && (
-                            <span className="badge badge-live" style={{ fontSize: '0.62rem', padding: '1px 5px' }}>
+                            <span
+                              className="badge badge-live shrink-0 whitespace-nowrap"
+                              style={{
+                                fontSize: '0.62rem',
+                                padding: '2px 6px',
+                                flexShrink: 0,
+                                whiteSpace: 'nowrap',
+                                fontWeight: 700
+                              }}
+                            >
                               Active
                             </span>
                           )}
                         </div>
-                        <div style={{ fontSize: '0.74rem', color: 'var(--muted-foreground)', lineHeight: 1.4 }}>
+                        <div
+                          className="text-xs text-slate-600 dark:text-slate-400"
+                          style={{
+                            fontSize: '0.74rem',
+                            color: isDark ? '#94a3b8' : '#475569',
+                            lineHeight: 1.45,
+                            paddingLeft: '22px'
+                          }}
+                        >
                           {s.desc}
                         </div>
                       </div>
@@ -361,14 +466,26 @@ export default function Navbar({
                   })}
                 </div>
 
-                <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid var(--border)' }}>
+                <div
+                  className="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-800"
+                  style={{ marginTop: '10px', paddingTop: '8px', borderTop: isDark ? '1px solid #1e293b' : '1px solid #e2e8f0' }}
+                >
                   <button
                     onClick={() => {
                       setScenarioOpen(false);
                       setActiveTab('scenarios');
                     }}
                     className="btn btn-secondary btn-sm"
-                    style={{ width: '100%', justifyContent: 'center', fontSize: '0.75rem', padding: '7px 10px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                    style={{
+                      width: '100%',
+                      justifyContent: 'center',
+                      fontSize: '0.76rem',
+                      fontWeight: 600,
+                      padding: '8px 12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
                   >
                     <span>Open Full Scenarios Matrix</span>
                     <ArrowRight size={13} />

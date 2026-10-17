@@ -734,3 +734,38 @@ pre, code, .code-panel, .transcript-scroll {
   content-visibility: auto;
   contain-intrinsic-size: auto 720px;
 }
+
+/* Hackathon Demo Scenarios Popup & Responsive Utility Classes */
+.absolute { position: absolute; }
+.relative { position: relative; }
+.left-0 { left: 0; }
+.top-full { top: 100%; }
+.mt-2 { margin-top: 0.5rem; }
+.z-50 { z-index: 50; }
+.w-\[min\(26rem\,calc\(100vw-2rem\)\)\] {
+  width: min(26rem, calc(100vw - 2rem));
+  max-width: calc(100vw - 2rem);
+}
+.max-h-\[70vh\] { max-height: 70vh; }
+.overflow-y-auto { overflow-y: auto; }
+.bg-white { background-color: #ffffff; }
+[data-theme="dark"] .dark\:bg-slate-900,
+.dark .dark\:bg-slate-900 { background-color: #0f172a; }
+.text-slate-900 { color: #0f172a; }
+[data-theme="dark"] .dark\:text-slate-100,
+.dark .dark\:text-slate-100 { color: #f1f5f9; }
+.text-slate-600 { color: #475569; }
+[data-theme="dark"] .dark\:text-slate-400,
+.dark .dark\:text-slate-400 { color: #94a3b8; }
+.shrink-0 { flex-shrink: 0; }
+.whitespace-nowrap { white-space: nowrap; }
+.rounded-xl { border-radius: 0.75rem; }
+.shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05); }
+
+@media (max-width: 640px) {
+  .scenario-dropdown-panel {
+    /* Align panel with viewport padding on mobile so w-[min(26rem,calc(100vw-2rem))] never overflows */
+    left: -77px !important;
+  }
+}
+

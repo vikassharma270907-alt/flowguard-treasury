@@ -1,25 +1,53 @@
-# BeyondFlow — Autonomous Treasury & Intent Vault Governed by ArmorIQ
+# BeyondFlow: A Voice Support Agent That Can Move Money, Governed by ArmorIQ
 
-> **Tagline**: *Autonomous treasury operations and MCP tools, cryptographically governed by ArmorIQ.*  
-> **Description**: BeyondFlow is an autonomous treasury agent and conversational support enclave where ElevenLabs delivers voice telephony and ArmorIQ cryptographically bounds every real-world MCP action to declared intent.  
-> **Live Production**: [https://flowguard-treasury.vercel.app](https://flowguard-treasury.vercel.app) · **Judge Dashboard**: [`/judges`](https://flowguard-treasury.vercel.app/judges) · **Architecture Blueprint**: [`docs/ARMORIQ_MCP_INTEGRATION.md`](docs/ARMORIQ_MCP_INTEGRATION.md) · **Real Run Capture**: [`docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json`](docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json)
+> **Tagline**: *A voice AI agent whose every MCP tool call is checked by ArmorIQ before it can touch money.*  
+> **What it is**: An ElevenLabs voice agent takes customer calls. Every tool call it makes goes through the ArmorIQ Policy Enforcement Point (PEP). Read-only lookups are allowed, payout changes are blocked, and refunds are held for human approval. The allow, block, and hold decisions come from ArmorIQ, not from code in this repo.  
+> **Live Production**: [flowguard-treasury.vercel.app](https://flowguard-treasury.vercel.app/) · **Judge Dashboard**: [/judges](https://flowguard-treasury.vercel.app/judges) · **Demo Video**: [/video](https://flowguard-treasury.vercel.app/video) · **MCP Endpoint**: [https://flowguard-treasury.vercel.app/mcp](https://flowguard-treasury.vercel.app/mcp) · **Architecture**: [docs/ARMORIQ_MCP_INTEGRATION.md](docs/ARMORIQ_MCP_INTEGRATION.md)
+
+---
+
+## ⚡ Judge Quick Start (2 Minutes, No Local Setup)
+
+1. **Watch the demo video**: [flowguard-treasury.vercel.app/video](https://flowguard-treasury.vercel.app/video) (03:49 explainer). Observe **Allow**, **Block**, and **Hold**, in order, with live terminal recording in Scene 7.
+2. **Open the Judge Dashboard**: [flowguard-treasury.vercel.app/judges](https://flowguard-treasury.vercel.app/judges) for the live inspection dashboard and the interactive **Boundary Test**.
+3. **Supervisor playground** (approve or deny held refunds): The local supervisor playground runs at `http://localhost:8790/playground` alongside the voice gateway, and is reflected live on the web console at [flowguard-treasury.vercel.app](https://flowguard-treasury.vercel.app) (see video for live dual-supervisor approval flow).
+4. **Evidence**: Raw captures from real production runs are indexed in [docs/evidence/README.md](docs/evidence/README.md) and [EVIDENCE.md](EVIDENCE.md).
+5. **Run the checks yourself** with an ArmorIQ API key: see [Verify It Yourself](#-verify-it-yourself).
+6. **Live Telephony Gateway Note**: *The voice gateway runs on the team's machine (`:8790`) for live ElevenLabs telephony webhook demos; the recorded runs and raw captures show the identical end-to-end flow against production ArmorIQ.*
+
+---
+
+## ⚖️ What ArmorIQ Decides vs. What BeyondFlow Code Decides
+
+*This table is deliberate. Judges can tell at a glance which decisions are real ArmorIQ enforcement vs. local application logic.*
+
+| Behavior | Decided by | Notes |
+| :--- | :--- | :--- |
+| `lookup_order` **ALLOWED** | **ArmorIQ PEP** (`proxy.armoriq.ai`) | Stored policy `flowguard-treasury-allowlist` |
+| `change_payout` **BLOCKED** | **ArmorIQ PEP** | HTTP 403 `tool_not_in_allowlist` |
+| `issue_refund` **HELD** | **ArmorIQ** (platform delegation request) | Pending delegation created via `POST /delegation/request` |
+| **2-supervisor quorum before release** | **BeyondFlow gateway** | ArmorIQ creates the hold; the gateway tallies two approvals before proxy release. See [Known Limitations](#-known-limitations). |
+| **Intent token mismatch / expiry** | **ArmorIQ SDK** | `IntentMismatchException`, `TokenExpiredException` |
+| **ArmorPay duplicate-invoice shield, reserve floor** | **BeyondFlow business rules** | Deterministic app logic in `server/armorPayService.js`. *Not an ArmorIQ decision, and not part of the core enforcement demo.* |
+
+> **Crucial Guarantee**: The MCP server contains **zero allow/deny logic**. The gateway contains **zero allow/deny rules** for the three voice tools.
 
 ---
 
 ## 🏆 Acceptance Checklist & Requirements Verification
 
-| Requirement / Checklist Item | Implementation & Evidence | Status |
+| Requirement | Implementation and Evidence | Status |
 | :--- | :--- | :--- |
-| **Setup Order Followed** | 1. API key created on `platform.armoriq.ai`.<br>2. Public MCP deployed & registered (`flowguard-treasury-mcp`, UUID `7540cd0a-7d76-414a-a849-96b337a0c6ed`, at `https://flowguard-treasury.vercel.app/mcp`).<br>3. Agent onboarded (`flowguard-agent`).<br>4. Policy authored on platform (`flowguard-treasury-allowlist`). | ✅ **PASS** |
-| **Policies Verified with 3-Result Test Script** | `scripts/test-enforcement.mjs` runs real live calls against ArmorIQ (latest run 16 Oct 2026, raw capture in [docs/evidence/](docs/evidence/README.md)):<br>• `lookup_order`: **ALLOWED** (887 ms, real payload, `verified: true`)<br>• `change_payout`: **BLOCKED** (`PolicyBlockedException`, HTTP 403 `tool_not_in_allowlist`, 764 ms)<br>• `issue_refund`: **HELD** (real pending platform delegation `eb63aac7-…` created via the delegation API, 604 ms). | ✅ **PASS** |
-| **Two-Approval Approach Documented** | Confirmed against ArmorIQ SDK docs. ArmorIQ platform evaluates holds (`/delegation/request`); gateway counts 2 supervisor approvals before releasing held execution. Fully documented in [DX_NOTES.md](DX_NOTES.md). | ✅ **PASS** |
-| **MCP Reachable via ArmorIQ Proxy** | MCP server listening on `POST /mcp` (JSON-RPC 2.0 with SSE responses) is served over HTTPS at `https://flowguard-treasury.vercel.app/mcp` and successfully invoked via `https://proxy.armoriq.ai/invoke`. | ✅ **PASS** |
-| **One Action ALLOWED, One BLOCKED in Audit Logs** | `lookup_order` visibly **ALLOWED**; `change_payout` visibly **BLOCKED** (`tool_not_in_allowlist`). Both verified against `proxy.armoriq.ai` audit ledger. | ✅ **PASS** |
-| **Intent Mismatch Demonstrated** | `scripts/test-intent-mismatch.mjs` mints a token for `lookup_order` only, then attempts to invoke `issue_refund` -> immediately raises `IntentMismatchException` before network execution. | ✅ **PASS** |
-| **Decisions from ArmorIQ, Not Code `if` Statements** | Every allow/block decision is returned directly by the ArmorIQ proxy (`proxy.armoriq.ai`). The gateway contains no hardcoded allow/deny rules. | ✅ **PASS** |
-| **Held Calls Answer Within 5s Window** | Real measured latencies: `lookup_order` (3.7s–4.3s), `change_payout` (2.7s), `issue_refund` (2.8s–3.9s). Held calls reply immediately with holding message; final decision relayed via `check_supervisor_decision`. | ✅ **PASS** |
-| **Prefix Mapping & Zero Real Data** | Gateway transparently strips the `BeyondFlow_` prefix from ElevenLabs tool calls. 100% synthetic sandbox data (`ORD-1001`, `ORD-1002`, `ACC-4471`). | ✅ **PASS** |
-| **No Secrets & Complete Disclosures** | `.env` gitignored; safe `.env.example` provided. Full [DISCLOSURES.md](DISCLOSURES.md) and [DX_NOTES.md](DX_NOTES.md) included. | ✅ **PASS** |
+| **Setup order followed** | 1. API key created on `platform.armoriq.ai`.<br>2. Public MCP deployed and registered (`flowguard-treasury-mcp`, UUID `7540cd0a-7d76-414a-a849-96b337a0c6ed`, at `https://flowguard-treasury.vercel.app/mcp`).<br>3. Agent onboarded (`flowguard-agent`).<br>4. Policy authored on the platform (`flowguard-treasury-allowlist`). | **PASS** |
+| **Policies verified with 3-result test script** | `scripts/test-enforcement.mjs` makes real live calls (latest run 16 Oct 2026):<br>• `lookup_order`: **ALLOWED** (`verified: true`, 887 ms)<br>• `change_payout`: **BLOCKED** (`PolicyBlockedException`, HTTP 403 `tool_not_in_allowlist`, 764 ms)<br>• `issue_refund`: **HELD** (real pending delegation `eb63aac7-…`, 604 ms). | **PASS** |
+| **Two-approval approach documented** | ArmorIQ creates the hold via `POST /delegation/request`. The BeyondFlow gateway tallies two supervisor approvals before release. Documented in [DX_NOTES.md](DX_NOTES.md) and in [Known Limitations](#-known-limitations). | **PASS** *(quorum counted in gateway)* |
+| **MCP reachable via ArmorIQ proxy** | `POST /mcp` (JSON-RPC 2.0, SSE responses) over HTTPS, invoked through `https://proxy.armoriq.ai/invoke`. | **PASS** |
+| **One action ALLOWED, one BLOCKED in audit logs** | `lookup_order` **ALLOWED** and `change_payout` **BLOCKED**, both visible in the `proxy.armoriq.ai` audit ledger. | **PASS** |
+| **Intent binding demonstrated** | `scripts/test-intent-mismatch.mjs`:<br>• Wrong action: refused (`IntentMismatchException`)<br>• Expired token: refused (`TokenExpiredException`)<br>• Swapped amount: not refused by token (reaches upstream tool boundary; binding is action-level, not argument-level). | **PASS** *(action binding & expiry; argument-level binding is a known limitation)* |
+| **Decisions from ArmorIQ, not code `if` statements** | For the three voice tools, every allow, block, and hold is returned by the ArmorIQ proxy or platform. See decision table above. | **PASS** |
+| **Held calls answer within ElevenLabs' ~5 s window** | Held calls reply immediately with a conversational holding message; final decision relayed via `check_supervisor_decision`. See [Latency](#-latency). | **PASS** *(thin margin on `lookup_order`)* |
+| **Prefix mapping and zero real data** | The gateway strips the `BeyondFlow_` prefix from ElevenLabs tool names. All data is synthetic (`ORD-1001`, `ORD-1002`, `ACC-4471`). | **PASS** |
+| **No secrets, complete disclosures** | `.env` is gitignored; `.env.example` provided. See [DISCLOSURES.md](DISCLOSURES.md) and [DX_NOTES.md](DX_NOTES.md). | **PASS** |
 
 ---
 
@@ -51,199 +79,156 @@ flowchart TD
 
 ---
 
-## 🛠️ Components
+## 🧩 Components
 
-1. **AI Voice Agent**:
-   - ElevenLabs Conversational Voice Agent receiving customer voice calls.
-   - Tools exposed via gateway: `BeyondFlow_orderLookup`, `BeyondFlow_payoutChange`, `BeyondFlow_issueRefund`, `check_supervisor_decision`.
-   - Tool prefix `BeyondFlow_` is mapped back to the canonical MCP tool names.
-
-2. **Model Context Protocol (MCP) Server (`mcp-server/server.mjs`)**:
-   - JSON-RPC 2.0 over HTTP (`POST /mcp`), responding with Server-Sent Events (`Content-Type: text/event-stream`, `event: message\ndata: {json}\n\n`).
-   - Tools:
-     - `lookup_order(order_id)`: Read-only order status (Allowed by ArmorIQ policy).
-     - `change_payout(account_id, new_destination)`: Destination modification (Blocked by ArmorIQ policy).
-     - `issue_refund(order_id, amount)`: Financial disbursement (Held by ArmorIQ policy; requires 2 supervisor approvals).
-   - Production endpoint: `https://flowguard-treasury.vercel.app/mcp` (Vercel, SSE transport). During local development the same server can be exposed via a Cloudflare tunnel.
-
-3. **ArmorIQ Gateway Service (`gateway/server.mjs`)**:
-   - Intercepts every tool call: `capturePlan` -> `getIntentToken` -> `invoke` through `proxy.armoriq.ai`.
-   - Answers within ElevenLabs' ~5-second window. Held calls reply: *"Thanks — that needs a supervisor to approve it. I have notified them and will let you know as soon as they respond."*
-   - Relays the finalized decision when supervisor reviews.
-
-4. **Supervisor Playground (`playground/index.html`)**:
-   - Web UI at `http://localhost:8790/playground`.
-   - Live stream of pending holds with caller context, matched policy, plan hash, and Approve/Deny controls.
-   - Dual-supervisor quorum: requires 2 approvals before releasing refunds.
-
-5. **ArmorPay Intent Settlement Protocol (`server/armorPayService.js`)**:
-   - Deterministic AP duplicate collision shield & reserve floor protection ($15,000 threshold).
-   - Pre-flight checks exact collisions, Levenshtein fuzzy suffixes (`-A`, `-B`), and vendor-amount proximity.
-   - Cryptographically gates payouts with signed ArmorIQ Intent Tokens and Merkle step proofs.
-   - Executes disbursements across multi-currency corridors via Airwallex Sandbox rails (Local $0 vs SWIFT €12.85).
-   - Generates tamper-evident cryptographic receipts (`ap_rcpt_...`) with instant verification.
+1. **Voice Agent**: ElevenLabs Conversational AI. Tools exposed through the gateway: `BeyondFlow_orderLookup`, `BeyondFlow_payoutChange`, `BeyondFlow_issueRefund`, `check_supervisor_decision`. The `BeyondFlow_` prefix is mapped back to canonical MCP tool names.
+2. **MCP Server (`mcp-server/server.mjs`)**: JSON-RPC 2.0 over `POST /mcp`, with Server-Sent Events (SSE) responses. Contains no policy logic.
+   - `lookup_order(order_id)`: Read-only (allowed by ArmorIQ policy).
+   - `change_payout(account_id, new_destination)`: Destination change (blocked by ArmorIQ policy).
+   - `issue_refund(order_id, amount)`: Disbursement (held by ArmorIQ policy; needs 2 supervisor approvals).
+3. **Gateway (`gateway/server.mjs`)**: For every tool call, executes `capturePlan` → `getIntentToken` → `invoke` through `proxy.armoriq.ai`. Held calls reply: *"Thanks, that needs a supervisor to approve it. I have notified them and will let you know as soon as they respond."* Relays the final decision after supervisor review.
+4. **Supervisor Playground (`playground/index.html`)**: Live view of pending holds with caller context, matched policy, and plan hash, plus Approve and Deny actions. Two approvals are required before a refund is released. Local URL: `http://localhost:8790/playground`; live status reflected on `https://flowguard-treasury.vercel.app`.
+5. **ArmorPay (`server/armorPayService.js`)**: Supporting treasury module (duplicate-invoice checks, reserve floor, Airwallex sandbox rails, signed receipts). Its blocks are BeyondFlow business rules, not ArmorIQ decisions. See the decision table above.
 
 ---
 
-## 🚀 Quickstart & How to Run the Demo
+## 🧪 Verify It Yourself
 
-### 1. Prerequisites
-- Node.js 18+ (tested on Node v24.18.0)
-- npm
+### Prerequisites
+- Node.js 18+ (tested on Node v20/v22/v24), npm
+- An `ARMORIQ_API_KEY` from [platform.armoriq.ai](https://platform.armoriq.ai/)
 
-### 2. Install Dependencies
 ```bash
 npm install
 npm --prefix client install
-```
-
-### 3. Environment Configuration
-Copy `.env.example` to `.env`:
-```bash
 cp .env.example .env
+# Edit .env and set your ARMORIQ_API_KEY
 ```
-Ensure your `ARMORIQ_API_KEY` (from [platform.armoriq.ai](https://platform.armoriq.ai)) is filled in.
 
-### 4. Verify ArmorIQ Policies (Setup Checklist Step 5)
-Run the 3-result verification test script:
+### 1. Policy Verification (Allowed / Blocked / Held)
 ```bash
 node --env-file=.env scripts/test-enforcement.mjs
 ```
-Expected Output:
-```
-========================================================================
-SUMMARY
-========================================================================
-  lookup_order     ALLOWED  (887 ms)
-  change_payout    BLOCKED  (764 ms)
-  issue_refund     HELD  (604 ms)
-```
+*Expected summary*: `lookup_order` **ALLOWED**, `change_payout` **BLOCKED**, `issue_refund` **HELD**.
 
-### 5. Verify Cryptographic Intent Binding (Intent Mismatch)
-Run the intent mismatch test:
+### 2. Cryptographic Intent Binding
 ```bash
 node --env-file=.env scripts/test-intent-mismatch.mjs
 ```
-Expected Output:
-```
-Case 1 — wrong action   : IntentMismatchException
-Case 2 — swapped amount : NOT REFUSED (reached upstream)
-Case 3 — expired token  : TokenExpiredException
-```
+*Expected*: Wrong action → `IntentMismatchException`; swapped amount → `NOT REFUSED` (reaches upstream; see limitations); expired token → `TokenExpiredException`.
 
-### 6. Start the Servers
-- **Start MCP Server**:
-  ```bash
-  node --env-file=.env mcp-server/server.mjs
-  ```
-- **Start Gateway & Playground**:
-  ```bash
-  node --env-file=.env gateway/server.mjs
-  ```
-- **Start Web Dashboard (React + Express)**:
-  ```bash
-  npm run dev
-  ```
-
-### 7. Run the Live 45-Second Demo Script
+### 3. Run the Stack and the 45-Second Demo
 ```bash
+# Terminal 1: MCP Server
+node --env-file=.env mcp-server/server.mjs
+
+# Terminal 2: Voice Gateway & Playground
+node --env-file=.env gateway/server.mjs
+
+# Terminal 3: Web Dashboard
+npm run dev
+
+# Terminal 4: Run Demo
 node --env-file=.env scripts/run-demo.mjs
 ```
-This executes:
-1. `lookup_order` -> ALLOWED by ArmorIQ in ~4s.
-2. `change_payout` -> BLOCKED by ArmorIQ policy in ~3s.
-3. `issue_refund` -> HELD in ~3s; supervisor approves twice in the playground -> executes through ArmorIQ -> voice agent relays approval to caller.
+*The demo flow*: `lookup_order` allowed → `change_payout` blocked → `issue_refund` held, two supervisor approvals in the playground, then released through ArmorIQ and relayed to the caller by the voice agent.
 
 ---
 
-## 🎨 3D Interactive Elements (Three.js 60 FPS)
+## ⏱️ Latency
 
-BeyondFlow features three interactive, hardware-accelerated 3D elements built with Three.js (located in `client/src/components/3d/`):
+ElevenLabs gives tool calls about 5 seconds. Two different measurements appear in this repo, and they measure different things:
 
-1. **`RotatingHeroVault.jsx` (Hero Object)**:
-   - Visualizes the BeyondFlow Cryptographic Treasury Vault.
-   - Inner crystalline icosahedron core surrounded by an outer holographic protective wireframe cage and an equatorial intent verification ring.
-   - Interactive: Tracks cursor hover and drag to tilt perspective; dynamically speeds up on interaction.
+| Measurement | `lookup_order` | What It Covers |
+| :--- | :--- | :--- |
+| `test-enforcement.mjs` | ~0.9 s | Direct SDK call to the ArmorIQ proxy |
+| **Full gateway path (live voice)** | **3.7 to 4.3 s** | Webhook + `capturePlan` + token mint + proxy + MCP cold or warm |
 
-2. **`ParticleBackgroundField.jsx` (Constellation Intent Field)**:
-   - 1,200 particle vertices rendered via `THREE.BufferGeometry` representing distributed ArmorIQ verification nodes.
-   - Interactive: Cursor motion exerts an electromagnetic gravity drift on nearby particles.
-
-3. **`InteractiveIntentGyroscope.jsx` (Mouse & Scroll Reactive Model)**:
-   - Three nested gimbal rings representing ArmorIQ's 3 Layers of Defense (Outer = Stored Policy, Middle = Merkle Proof, Inner = MCP Bound Action Token).
-   - High Interactivity: Rings independently tilt following cursor pitch/yaw; window/container scroll expands the rings into an exploded enclave view.
-
-### 3D Performance & Accessibility Compliance
-- **60 FPS Performance**: RequestAnimationFrame animation loops use delta time for steady 60 FPS.
-- **Lazy Loaded**: All 3D components use `React.lazy()` with Suspense fallbacks for zero main-bundle bloat.
-- **GPU Cleanup**: Every geometry, material, texture, context, and event listener is disposed on unmount.
-- **Accessibility**: Checks `prefers-reduced-motion` and damps rotations to static or gentle micro-drifts.
-- **WebGL Fallback**: If hardware WebGL is unavailable, renders an accessible, elegant SVG fallback card.
-- **Theme-Adaptive**: 3D scene lighting, specular reflections, and wireframe colors dynamically adapt when toggling between light and dark modes.
-
----
-
-## 🌓 Light & Dark Theme System
-
-BeyondFlow implements an adaptive theme engine with strict WCAG AA contrast compliance:
-- **Design Tokens**: Standardized CSS variables defined in `client/src/index.css` for both `:root, [data-theme="dark"]` and `[data-theme="light"]`.
-- **Theme Toggle**: Accessible Sun/Moon toggle button in the top navigation bar with `aria-label`.
-- **Zero-Flash First Load**: Inline blocking script in `client/index.html` checks `localStorage` and `prefers-color-scheme` before rendering body.
-- **3D Synchronization**: Dispatches custom events and state changes so Three.js materials and scene lighting switch instantaneously.
-
----
-
-## 📖 PDF Technical Architectural Guides
-
-Two comprehensive technical architectural documents are generated and committed to the repository:
-- **`BeyondFlow_Overview.pdf`**: [`docs/BeyondFlow_Overview.pdf`](docs/BeyondFlow_Overview.pdf) — Complete 9-page guide covering the ElevenLabs voice layer, ArmorIQ cryptographic intent enforcement, sub-5s timeout protection, comparative tables, and production roadmap.
-- **`USER_GUIDE.pdf`**: [`docs/USER_GUIDE.pdf`](docs/USER_GUIDE.pdf) — Complete operator manual for local deployment, 3D controls, theme tokens, and troubleshooting.
-- **Regenerate via scripts**:
+- **Other tools through the gateway**: `change_payout` ~2.7 s, `issue_refund` ~2.8 to 3.9 s.
+- **The margin on `lookup_order` is thin**. Before any live demo, warm up the MCP (one throwaway call) so a Vercel serverless cold start does not push execution past the window:
   ```bash
-  npm run docs:overview   # Generates docs/BeyondFlow_Overview.pdf
-  npm run docs:pdf        # Generates docs/USER_GUIDE.pdf
+  curl -s -X POST https://flowguard-treasury.vercel.app/mcp \
+    -H "Content-Type: application/json" \
+    -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
   ```
 
 ---
 
-## 📚 Deliverable References
-- [docs/BeyondFlow_Overview.pdf](docs/BeyondFlow_Overview.pdf): Technical overview of ElevenLabs + ArmorIQ integration.
-- [docs/USER_GUIDE.pdf](docs/USER_GUIDE.pdf): Complete 9-page printed technical architectural guide.
-- [DX_NOTES.md](DX_NOTES.md): Comprehensive documentation of the ElevenLabs ~5s timeout pattern, prefix normalization, measured latencies, 2-approval counter approach, and ArmorIQ SDK error typing gotchas.
-- [DISCLOSURES.md](DISCLOSURES.md): Complete disclosures of all pre-existing libraries, AI assistants, and open-source packages.
-- [EVIDENCE.md](EVIDENCE.md): Raw audit log evidence and cryptographic Merkle proof outputs from live test executions.
-- [ARMORIQ_ONBOARDING.md](ARMORIQ_ONBOARDING.md): Detailed step-by-step onboarding walkthrough for `platform.armoriq.ai`.
+## 📂 Evidence
+
+All raw captures from real runs are committed in the repository:
+- [docs/evidence/README.md](docs/evidence/README.md): Index of raw captures.
+- [docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json](docs/recorded-runs/real-armoriq-enforcement-2026-10-16.json): Full execution run capture.
+- [EVIDENCE.md](EVIDENCE.md): Audit log excerpts and Merkle proof outputs.
+- **Platform Records**:
+  - Agent: `flowguard-agent` (`c8bcbe51-dea4-4459-9fd8-38f88ebc714e`)
+  - MCP: `flowguard-treasury-mcp` (`7540cd0a-7d76-414a-a849-96b337a0c6ed`)
+  - Policy: `flowguard-treasury-allowlist` (`23f8f304-0f6b-44a0-9bba-fa9886ca611b`)
+
+---
+
+## ⚖️ Hackathon Compliance and Disclosures
+
+### Development Window
+The hackathon window was October 10 to 17, 2026. All commits in this repository are dated Oct 16 to 17, 2026.
+
+### Pre-Existing Code (see [DISCLOSURES.md](DISCLOSURES.md))
+BeyondFlow builds on an earlier MIT-licensed IntentGate prototype and on pre-existing UI and 3D components. Exact scope:
+
+| Pre-existing Item | Where It Lives | Source and License |
+| :--- | :--- | :--- |
+| Voice gateway webhook routing basics | `gateway/server.mjs` | IntentGate prototype, MIT |
+| Airwallex sandbox simulation adapter | `server/armorPayService.js` | IntentGate prototype, MIT |
+| Responsive UI subsystems (Header, Footer, i18n skeleton) | `client/src/components/Navbar.jsx`, `client/src/components/Footer.jsx`, `client/src/locales/` | IntentGate prototype, MIT |
+| Three.js 3D visual components | `client/src/components/3d/` | IntentGate prototype, MIT |
+| First commit importing pre-existing code | Commit `7486e92` (initial hackathon baseline) | n/a |
+
+**Built Fresh During Hackathon Window**: ArmorIQ plan capture and intent-token flow, PEP enforcement for the three MCP tools, the ElevenLabs holding pattern, the dual-supervisor quorum, the verification scripts, and the explainer video.
+
+---
+
+## 🔍 Known Limitations
+
+1. **Action-level intent binding, not argument-level**: The token binds the declared action set and token expiration. Changing an argument such as an amount does not invalidate the token; arguments are evaluated at the upstream tool boundary. (Platform policy governs action dispatch; argument-level constraints are reserved for upcoming platform parameter rules).
+2. **Quorum counted in the gateway**: ArmorIQ creates the hold (`POST /delegation/request`). The two-approval tally is BeyondFlow gateway code; once quorum is reached, the approved call is released through the ArmorIQ proxy (`proxy.armoriq.ai`).
+3. **Open sandbox endpoint by design**: `/mcp` accepts unauthenticated requests so `proxy.armoriq.ai` can reach it without static credentials. Calling `/mcp` directly bypasses ArmorIQ governance; enforcement applies to traffic that routes through the proxy.
+4. **Local business rules**: ArmorPay's duplicate-invoice and reserve-floor checks are application logic, not ArmorIQ decisions.
+5. **Synthetic data only**: All customers, orders, accounts, and balances are mock entities. No real money moves.
+
+---
+
+<details>
+<summary><strong>✨ Additional Features (Not Part of the Core ArmorIQ Demo)</strong></summary>
+
+### 3D Interactive Elements (Three.js)
+`RotatingHeroVault.jsx`, `ParticleBackgroundField.jsx`, and `InteractiveIntentGyroscope.jsx` in `client/src/components/3d/`. Lazy-loaded, GPU resources disposed on unmount, `prefers-reduced-motion` respected, SVG fallback when WebGL is unavailable, light and dark theme aware.
+
+### Light and Dark Theme System
+CSS design tokens in `client/src/index.css` for `:root`, `[data-theme="dark"]`, and `[data-theme="light"]`. Accessible toggle in the nav, zero flash on first load.
+
+### Language Support
+English and Hindi (हिन्दी) UI toggle.
+
+### PDF Technical Guides
+- [docs/BeyondFlow_Overview.pdf](docs/BeyondFlow_Overview.pdf): Technical overview of the ElevenLabs + ArmorIQ integration.
+- [docs/USER_GUIDE.pdf](docs/USER_GUIDE.pdf): Operator guide.
+- Regenerate with `npm run docs:overview` and `npm run docs:pdf`.
+
+</details>
+
+---
+
+## 📖 Further Reading
+
+- [DX_NOTES.md](DX_NOTES.md): 5s timeout pattern, prefix normalization, latencies, quorum approach, SDK error typing gotchas.
+- [DISCLOSURES.md](DISCLOSURES.md): Complete disclosures and attribution.
+- [ARMORIQ_ONBOARDING.md](ARMORIQ_ONBOARDING.md): Step-by-step onboarding walkthrough for `platform.armoriq.ai`.
 - [LICENSE](LICENSE): MIT Open Source License.
 
 ---
 
-## ⚖️ Hackathon Compliance & Disclosures
-
-### 1. ArmorIQ Integration & Policy Enforcement
-BeyondFlow integrates with the official ArmorIQ platform:
-- **IAP Plan Capture & Token Minting**: `capturePlan` and `getIntentToken` are invoked on every voice tool request.
-- **PEP Enforcement Boundary**: In compliance with Hackathon Rule 8 (*no simulated or hardcoded verdicts*), the upstream MCP server contains zero local policy logic. Tool decisions are cryptographically evaluated and enforced strictly at the **ArmorIQ Policy Enforcement Point reverse proxy (`proxy.armoriq.ai`)**.
-- **Live Platform Records**:
-  - Agent Platform Record: `flowguard-agent` (`c8bcbe51-dea4-4459-9fd8-38f88ebc714e`)
-  - MCP Server Record: `flowguard-treasury-mcp` (`7540cd0a-7d76-414a-a849-96b337a0c6ed`)
-  - Policy: `flowguard-treasury-allowlist` (`23f8f304-0f6b-44a0-9bba-fa9886ca611b`)
-
-### 2. Lineage & Development Window (Rules 5 & 6)
-- **Official Window**: Development was carried out within the hackathon window (October 10–17, 2026). Git log confirms all commits in the repository were authored between Oct 16 and Oct 17.
-- **Pre-Existing Code Disclosures**: As disclosed in [DISCLOSURES.md](DISCLOSURES.md), BeyondFlow adapts concepts from an earlier MIT-licensed IntentGate prototype (basic voice gateway and Airwallex sandbox adapter), alongside pre-existing responsive UI subsystems and 3D visual components.
-- **Built Fresh During Hackathon**: All ArmorIQ cryptographic intent-binding, live PEP proxy policy enforcement, ElevenLabs voice holding pattern, dual-supervisor quorum, and technical explainer video were authored fresh during the hackathon.
-
-### 3. Known Limitations & Architecture Decisions
-- **Action-Level Intent Binding**: ArmorIQ cryptographically binds the declared action set and token expiration (`IntentMismatchException` / `TokenExpiredException`). Call arguments are evaluated at the upstream tool boundary (see `test-intent-mismatch.mjs`).
-- **Approval Quorum**: The ArmorIQ platform delegation API (`POST /delegation/request`) creates the pending `HELD` state; the dual-supervisor quorum requirement (2 approvals) is tallied within the BeyondFlow gateway before releasing execution through `proxy.armoriq.ai`.
-- **Open Sandbox Endpoint by Design**: The public production `/mcp` endpoint accepts unauthenticated requests so that the cloud `proxy.armoriq.ai` can reach it without static credentials. Direct calls to `/mcp` hit raw sandbox tools without governance by design; policy enforcement occurs when requests pass through the ArmorIQ Policy Enforcement Point.
-- **100% Synthetic Sandbox Data**: All customer names, order IDs, account routing numbers, and balances are synthetic mock entities. Real money is never moved.
-
----
-
 ## 📄 License & Attribution
-- **Application Code**: [MIT License](LICENSE) (Copyright © 2026 BeyondFlow Authors).
-- **Typography**: SIL Open Font License (OFL) for self-hosted Inter, JetBrains Mono, and Noto Sans Devanagari.
-- **Contact**: `support@beyondflow.io`
 
-
+- **Application Code**: [MIT License](LICENSE), Copyright © 2026 BeyondFlow Authors.
+- **Typography**: SIL Open Font License (self-hosted Inter, JetBrains Mono, Noto Sans Devanagari).
+- **Issues & Inquiries**: [GitHub Issues](https://github.com/vikassharma270907-alt/flowguard-treasury/issues) · `vikas.sharma270907@gmail.com`
