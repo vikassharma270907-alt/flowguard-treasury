@@ -14,7 +14,7 @@ export const headerConfig = {
     { label: 'How it works', href: '#how-it-works', id: 'enclave', isExternal: false },
     { label: 'In production', href: '#production', id: 'voice', isExternal: false },
     { label: 'Docs', href: 'https://docs.armoriq.ai', isExternal: true },
-    { label: 'GitHub', href: 'https://github.com/vikassharma270907-alt/flowguard-treasury', isExternal: true },
+    { label: 'GitHub', href: 'https://github.com/vikassharma270907-alt/beyondflow-treasury', isExternal: true },
   ],
   statusIndicator: {
     label: 'PLAYGROUND',
@@ -23,7 +23,7 @@ export const headerConfig = {
   },
   actionButton: {
     label: 'HACKATHON',
-    href: 'https://github.com/vikassharma270907-alt/flowguard-treasury#readme',
+    href: 'https://github.com/vikassharma270907-alt/beyondflow-treasury#readme',
     isExternal: true
   }
 };
@@ -36,7 +36,7 @@ export const footerConfig = {
     socials: [
       {
         name: 'GitHub',
-        href: 'https://github.com/vikassharma270907-alt/flowguard-treasury',
+        href: 'https://github.com/vikassharma270907-alt/beyondflow-treasury',
         icon: 'github'
       },
       {
@@ -69,10 +69,10 @@ export const footerConfig = {
     {
       title: 'PROJECT',
       links: [
-        { label: 'GitHub', href: 'https://github.com/vikassharma270907-alt/flowguard-treasury', isExternal: true },
+        { label: 'GitHub', href: 'https://github.com/vikassharma270907-alt/beyondflow-treasury', isExternal: true },
         { label: 'npm', href: 'https://www.npmjs.com/package/@armoriq/sdk', isExternal: true },
-        { label: 'DX notes on ArmorIQ', href: 'https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/DX_NOTES.md', isExternal: true },
-        { label: 'Hackathon', href: 'https://github.com/vikassharma270907-alt/flowguard-treasury#readme', isExternal: true }
+        { label: 'DX notes on ArmorIQ', href: 'https://github.com/vikassharma270907-alt/beyondflow-treasury/blob/main/DX_NOTES.md', isExternal: true },
+        { label: 'Hackathon', href: 'https://github.com/vikassharma270907-alt/beyondflow-treasury#readme', isExternal: true }
       ]
     }
   ]

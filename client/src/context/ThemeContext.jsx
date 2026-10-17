@@ -19,11 +19,11 @@ function getInitialTheme() {
   if (fromAttr === 'light' || fromAttr === 'dark') return fromAttr;
   
   try {
-    const themeCookie = document.cookie.match(/(?:^|; )(?:beyondflow-theme|flowguard-theme)=([^;]*)/);
+    const themeCookie = document.cookie.match(/(?:^|; )(?:beyondflow-theme|beyondflow-theme)=([^;]*)/);
     if (themeCookie && (themeCookie[1] === 'light' || themeCookie[1] === 'dark')) {
       return themeCookie[1];
     }
-    const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('flowguard-theme');
+    const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('beyondflow-theme');
     if (saved === 'light' || saved === 'dark') return saved;
   } catch (err) {
     console.warn('Theme storage access warning:', err);

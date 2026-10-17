@@ -17,6 +17,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
+import { ShieldCheck, AlertTriangle, Shield, Clock, ArrowDownCircle, RefreshCw, User, LogOut, ChevronDown } from 'lucide-react';
 import { siteConfig as defaultSiteConfig } from '../siteConfig';
 import { useI18n } from '../context/I18nContext';
 import { useTheme } from '../context/ThemeContext';
@@ -88,9 +89,55 @@ export const BrandLogoIcon = ({ isDark = false }) => (
 export default function Header({
   config = defaultSiteConfig,
   activeTab = 'overview',
-  onNavigate
+  onNavigate,
+  systemStatus,
+  onSelectScenario,
+  isRefreshing,
+  onRefresh,
+  userSession,
+  onLogout
 }) {
   const { language, setLanguage, t } = useI18n();
+  const [scenarioOpen, setScenarioOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  const scenarios = [
+    {
+      id: 'SCENARIO_A',
+      title: 'Scenario A: Baseline Multi-Currency Run',
+      desc: 'Standard operations, healthy liquidity reserve ($15,000 floor), $0 local rails prioritized.',
+      badge: 'NORMAL OPS',
+      icon: ShieldCheck,
+      color: '#34d399'
+    },
+    {
+      id: 'SCENARIO_B',
+      title: 'Scenario B: Duplicate Invoice Attack',
+      desc: 'Injects candidate INV-2024-884B with 91.2% Levenshtein similarity to trigger the duplicate shield.',
+      badge: 'ATTACK SIM',
+      icon: AlertTriangle,
+      color: '#f87171'
+    },
+    {
+      id: 'SCENARIO_C',
+      title: 'Scenario C: Delayed Receivable Shock',
+      desc: 'Simulates a $14,500 inbound payment delay from Nordic Retail, squeezing the cash buffer.',
+      badge: 'LIQUIDITY STRESS',
+      icon: Clock,
+      color: '#fbbf24'
+    },
+    {
+      id: 'SCENARIO_D',
+      title: 'Scenario D: $25k Customer Deposit',
+      desc: 'A simulated inbound customer deposit clears, unlocking deferred payments.',
+      badge: 'DEPOSIT CLEARANCE',
+      icon: ArrowDownCircle,
+      color: '#60a5fa'
+    }
+  ];
+
+  const activeScenarioObj = scenarios.find(s => s.id === (systemStatus?.activeScenario || 'SCENARIO_A')) || scenarios[0];
+
   const { theme, isDark, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
@@ -265,10 +312,173 @@ export default function Header({
             <span>{config.name}</span>
           </a>
 
+          {/* Extra Controls */}
+          {systemStatus && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ position: 'relative' }}>
+                <button
+                  onClick={() => setScenarioOpen(!scenarioOpen)}
+                  style={{
+                    background: 'var(--surface-muted)',
+                    border: '1px solid var(--border)',
+                    color: 'var(--foreground)',
+                    borderRadius: '6px',
+                    padding: '4px 10px',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <activeScenarioObj.icon size={12} color={activeScenarioObj.color} />
+                  {activeScenarioObj.badge}
+                  <ChevronDown size={12} style={{ opacity: 0.6 }} />
+                </button>
+                {scenarioOpen && (
+                  <div style={{
+                    position: 'absolute',
+                    top: 'calc(100% + 4px)',
+                    left: 0,
+                    width: '320px',
+                    background: 'var(--popover)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '8px',
+                    boxShadow: 'var(--card-shadow)',
+                    padding: '8px',
+                    zIndex: 100
+                  }}>
+                    <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-dim)', margin: '4px 8px 8px', fontWeight: 700 }}>
+                      HACKATHON DEMO SCENARIOS
+                    </div>
+                    {scenarios.map(s => (
+                      <button
+                        key={s.id}
+                        onClick={() => {
+                          if (onSelectScenario) onSelectScenario(s.id);
+                          setScenarioOpen(false);
+                        }}
+                        style={{
+                          width: '100%',
+                          textAlign: 'left',
+                          background: 'transparent',
+                          border: 'none',
+                          padding: '8px',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          gap: '10px',
+                          alignItems: 'flex-start',
+                          color: 'var(--foreground)'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--card-hover)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <s.icon size={16} color={s.color} style={{ flexShrink: 0, marginTop: '2px' }} />
+                        <div>
+                          <div style={{ fontSize: '0.8rem', fontWeight: 600 }}>{s.title}</div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-dim)', marginTop: '2px' }}>{s.desc}</div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={onRefresh}
+                disabled={isRefreshing}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid var(--border)',
+                  color: 'var(--foreground)',
+                  borderRadius: '6px',
+                  width: '28px',
+                  height: '28px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: isRefreshing ? 'not-allowed' : 'pointer',
+                  opacity: isRefreshing ? 0.5 : 1
+                }}
+              >
+                <RefreshCw size={14} style={{ animation: isRefreshing ? 'spin 1s linear infinite' : 'none' }} />
+              </button>
+
+              {userSession && userSession.authenticated && (
+                <div style={{ position: 'relative' }}>
+                  <button
+                    onClick={() => setUserMenuOpen(!userMenuOpen)}
+                    style={{
+                      background: 'var(--card)',
+                      border: '1px solid var(--border)',
+                      borderRadius: '6px',
+                      padding: '4px 10px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      cursor: 'pointer',
+                      color: 'var(--foreground)'
+                    }}
+                  >
+                    <User size={14} color="#a1a1aa" />
+                    <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>{userSession.user.name}</span>
+                    <ChevronDown size={12} color="#a1a1aa" />
+                  </button>
+
+                  {userMenuOpen && (
+                    <div style={{
+                      position: 'absolute',
+                      top: 'calc(100% + 4px)',
+                      right: 0,
+                      width: '220px',
+                      background: 'var(--popover)',
+                      border: '1px solid var(--border)',
+                      borderRadius: '8px',
+                      boxShadow: 'var(--card-shadow)',
+                      padding: '8px',
+                      zIndex: 100
+                    }}>
+                      <div style={{ padding: '8px', borderBottom: '1px solid var(--border)', marginBottom: '4px' }}>
+                        <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--foreground)' }}>{userSession.user.name}</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{userSession.user.email}</div>
+                        <div style={{ display: 'inline-block', padding: '2px 6px', background: 'rgba(99, 102, 241, 0.15)', color: '#818cf8', borderRadius: '4px', fontSize: '0.6rem', fontWeight: 700, marginTop: '6px' }}>
+                          {userSession.user.role}
+                        </div>
+                      </div>
+                      <button
+                        onClick={onLogout}
+                        style={{
+                          width: '100%',
+                          textAlign: 'left',
+                          background: 'transparent',
+                          border: 'none',
+                          padding: '8px',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          color: '#ef4444',
+                          fontSize: '0.8rem',
+                          fontWeight: 600
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <LogOut size={14} /> Sign out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Desktop Nav Links (from 1024px up) */}
           {isDesktop && (
             <nav
-              style={{ display: 'flex', alignItems: 'center', gap: '24px' }}
+              style={{ display: 'flex', alignItems: 'center', gap: '16px' }}
               aria-label="Main navigation"
             >
               {config.headerNav

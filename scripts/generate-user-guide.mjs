@@ -149,8 +149,8 @@ doc.fillColor(PRIMARY).font('Helvetica-Bold').fontSize(10).text('METADATA & ENVI
 doc.moveDown(0.5);
 
 const metadata = [
-  ['Project Name', 'FlowGuard Treasury & Voice Gateway'],
-  ['Repository', 'https://github.com/vikassharma270907-alt/flowguard-treasury'],
+  ['Project Name', 'BeyondFlow Treasury & Voice Gateway'],
+  ['Repository', 'https://github.com/vikassharma270907-alt/beyondflow-treasury'],
   ['ArmorIQ Organization', "Vikas Sharma's Workspace (dd9e9695-e58d-4e56-8cff-ef9617ba4c54)"],
   ['Agent ID', 'flowguard-agent (c8bcbe51-dea4-4459-9fd8-38f88ebc714e)'],
   ['MCP Server ID', 'flowguard-treasury-mcp (7540cd0a-7d76-414a-a849-96b337a0c6ed)'],
@@ -230,8 +230,8 @@ p('• Node.js: v18.0.0 or higher (Tested and certified on Node.js v24.18.0 LTS)
 
 subHeading('1.2 Installation & Environment Configuration');
 p('Clone the repository and install dependencies for both the root governance gateway and the React frontend:');
-codeBlock(`git clone https://github.com/vikassharma270907-alt/flowguard-treasury.git
-cd flowguard-treasury
+codeBlock(`git clone https://github.com/vikassharma270907-alt/beyondflow-treasury.git
+cd beyondflow-treasury
 npm install
 cd client && npm install && cd ..
 cp .env.example .env`);
@@ -242,7 +242,7 @@ ARMORIQ_AGENT_ID=flowguard-agent
 ARMORIQ_MCP_ID=flowguard-treasury-mcp
 GATEWAY_PORT=8790
 GATEWAY_SHARED_SECRET=flowguard-dev-secret
-PLAYGROUND_TOKEN=flowguard-local`);
+PLAYGROUND_TOKEN=beyondflow-local`);
 
 subHeading('1.3 Running Locally');
 p('The project includes orchestrators for running the MCP server, ArmorIQ Voice Gateway, and React frontend simultaneously:');
@@ -254,7 +254,7 @@ npm run gateway
 
 # Terminal 3: Launch React 19 + Three.js Frontend
 cd client && npm run dev`);
-p('Navigate to http://localhost:5173 for the FlowGuard Treasury Dashboard or http://localhost:8790/playground for the standalone Supervisor Playground.');
+p('Navigate to http://localhost:5173 for the BeyondFlow Treasury Dashboard or http://localhost:8790/playground for the standalone Supervisor Playground.');
 
 subHeading('1.4 Building for Production');
 p('To bundle the client with Vite and code-split the 3D Three.js chunks:');
@@ -266,7 +266,7 @@ codeBlock(`cd client && npm run build
    ========================================================================== */
 doc.addPage();
 subHeading('1.5 Using & Customizing 3D Elements');
-p('FlowGuard Treasury features three interactive, hardware-accelerated 3D elements in `client/src/components/3d/`:');
+p('BeyondFlow Treasury features three interactive, hardware-accelerated 3D elements in `client/src/components/3d/`:');
 
 p('1. RotatingHeroVault.jsx (Hero Object):\n' +
   '   • Renders an inner crystalline icosahedron with an outer holographic cage and orbital intent ring.\n' +
@@ -288,14 +288,14 @@ callout('Resource Cleanup & Accessibility',
 );
 
 subHeading('1.6 Switching Light/Dark Mode & Customizing Tokens');
-p('FlowGuard implements a theme system using CSS variables with persistent localStorage storage and zero-flash inline script execution in `index.html`.');
+p('BeyondFlow implements a theme system using CSS variables with persistent localStorage storage and zero-flash inline script execution in `index.html`.');
 p('• Toggle Theme: Click the Sun/Moon button in the top navigation bar, or call `useTheme().toggleTheme()` in React.\n' +
   '• Customizing Tokens: Edit `client/src/index.css`. Both `:root, [data-theme="dark"]` and `[data-theme="light"]` define design tokens (e.g. `--background`, `--card`, `--border`, `--3d-vault-core`).\n' +
   '• 3D Theme Synchronization: When theme flips, Three.js lighting, specular materials, and particle colors instantly update.');
 
 subHeading('1.7 Troubleshooting & FAQ');
 p('• "Tool call times out after 5 seconds": ElevenLabs voice models mandate quick tool responses. The gateway answers with a holding message in ~3.8s, persists the case, and allows the agent to relay the final decision via `check_supervisor_decision`.\n' +
-  '• "Tool not found / FlowGuard_ prefix error": ElevenLabs surfaces tools as `FlowGuard_<tool>`. The gateway strips this prefix via `canonicalToolName()` so action names match onboarded platform MCP names.\n' +
+  '• "Tool not found / BeyondFlow_ prefix error": ElevenLabs surfaces tools as `BeyondFlow_<tool>`. The gateway strips this prefix via `canonicalToolName()` so action names match onboarded platform MCP names.\n' +
   '• "IntentMismatchException": Occurs when an agent mints a token for one tool (e.g. `lookup_order`) and attempts to invoke an unauthorized tool (e.g. `issue_refund`). This is ArmorIQ cryptographic binding working as intended.');
 
 /* ==========================================================================
@@ -325,11 +325,11 @@ codeBlock(`                  +--------------------------------------------------
                   |      ElevenLabs Conversational Voice Agent        |
                   +---------------------------------------------------+
                                             |
-                            Tool Call: FlowGuard_<tool>
+                            Tool Call: BeyondFlow_<tool>
                                             v
                   +---------------------------------------------------+
                   |            ArmorIQ Voice Gateway (8790)           |
-                  |  - Strips FlowGuard_ prefix                       |
+                  |  - Strips BeyondFlow_ prefix                       |
                   |  - Enforces <5s holding replies                   |
                   |  - Dual-supervisor quorum aggregator (2 approvals)|
                   +---------------------------------------------------+
@@ -483,7 +483,7 @@ p('1. Production Webhook Integration: Connect the Voice Gateway holding endpoint
 // Final signoff
 doc.moveDown(1);
 hr();
-doc.fillColor(MUTED).font('Helvetica-Bold').fontSize(9).text('FlowGuard Treasury · ArmorIQ Flow State Hackathon Project Submission', { align: 'center' });
+doc.fillColor(MUTED).font('Helvetica-Bold').fontSize(9).text('BeyondFlow Treasury · ArmorIQ Flow State Hackathon Project Submission', { align: 'center' });
 
 /* ==========================================================================
    PAGE NUMBERING (FOOTER ON ALL PAGES)
@@ -495,7 +495,7 @@ for (let i = 0; i < range.count; i++) {
   // Footer text
   doc.fillColor('#94a3b8').font('Helvetica').fontSize(7.5);
   doc.text(
-    `FlowGuard Treasury | ArmorIQ Governed Voice Agent | Page ${i + 1} of ${range.count}`,
+    `BeyondFlow Treasury | ArmorIQ Governed Voice Agent | Page ${i + 1} of ${range.count}`,
     54,
     795,
     { align: 'center', width: 487 }

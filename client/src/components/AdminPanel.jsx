@@ -884,7 +884,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                     onClick={() => {
                       const cfg = {
                         mcpServers: {
-                          "flowguard-treasury": {
+                          "beyondflow-treasury": {
                             "command": "node",
                            "args": ["server/mcpServer.js", "--stdio"],
                            "env": { "ARMORIQ_API_KEY": "<your-armoriq-api-key>" }
@@ -904,7 +904,7 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
                 <pre style={{ background: 'var(--surface-muted)', border: '1px solid var(--border)', padding: '8px 10px', borderRadius: '6px', fontSize: '0.68rem', color: 'var(--foreground)', margin: 0, overflowX: 'auto' }}>
 {`{
   "mcpServers": {
-    "flowguard-treasury": {
+    "beyondflow-treasury": {
       "command": "node",
       "args": ["server/mcpServer.js", "--stdio"],
       "env": { "ARMORIQ_API_KEY": "<your-armoriq-api-key>" }

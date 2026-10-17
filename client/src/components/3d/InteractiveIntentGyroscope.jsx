@@ -51,7 +51,7 @@ export default function InteractiveIntentGyroscope({ height = 380, interactive =
       powerPreference: 'high-performance'
     });
     renderer.setSize(width, h);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
@@ -159,6 +159,11 @@ export default function InteractiveIntentGyroscope({ height = 380, interactive =
     let clock = new THREE.Clock();
 
     const animate = () => {
+      // Pause render loop if tab is hidden
+      if (document.hidden) {
+        animationFrameId = requestAnimationFrame(animate);
+        return;
+      }
       animationFrameId = requestAnimationFrame(animate);
       const delta = clock.getDelta();
       const speed = reducedMotion ? 0.08 : 0.75;

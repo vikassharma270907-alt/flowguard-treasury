@@ -355,7 +355,7 @@ const result = await client.invoke(MCP_ID, tool, token, args);</pre>
     </div>
     <div class="footer-bar">
       <div>All commands tested against clean checkout · See /how-it-works for full verbatim guide.</div>
-      <div>https://github.com/vikassharma270907-alt/flowguard-treasury</div>
+      <div>https://github.com/vikassharma270907-alt/beyondflow-treasury</div>
     </div>
   </body></html>`,
 
@@ -426,7 +426,7 @@ const result = await client.invoke(MCP_ID, tool, token, args);</pre>
     </div>
     <div class="footer-bar">
       <div>Developed for the ArmorIQ Flow State Hackathon (October 10–17, 2026).</div>
-      <div>https://github.com/vikassharma270907-alt/flowguard-treasury</div>
+      <div>https://github.com/vikassharma270907-alt/beyondflow-treasury</div>
     </div>
   </body></html>`
 };

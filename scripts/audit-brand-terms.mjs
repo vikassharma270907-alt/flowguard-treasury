@@ -1,7 +1,7 @@
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 
-const terms = ['flowguard', 'veratone', 'yourbrand', 'intentgate'];
+const terms = ['beyondflow', 'veratone', 'yourbrand', 'intentgate'];
 const report = {};
 
 for (const term of terms) {

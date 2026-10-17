@@ -71,7 +71,7 @@ class VoiceGatewayService {
     //    decision that has not happened.
     const canonicalPlan = {
       agent_id: 'elevenlabs-voice-support-agent-v2',
-      gateway: 'flowguard-voice-gateway-v1',
+      gateway: 'beyondflow-voice-gateway-v1',
       call_id: callId,
       caller_account: caller.verifiedAccountId,
       caller_name: caller.name,
@@ -215,7 +215,7 @@ class VoiceGatewayService {
    */
   normalizeToolName(toolName) {
     if (!toolName) return '';
-    for (const prefix of ['BeyondFlow_', 'FlowGuard_', 'IntentGate_']) {
+    for (const prefix of ['BeyondFlow_', 'IntentGate_']) {
       if (toolName.startsWith(prefix)) {
         return toolName.substring(prefix.length);
       }

@@ -1,5 +1,5 @@
 /**
- * FlowGuard MCP server — JSON-RPC 2.0 over HTTP, SSE responses.
+ * BeyondFlow MCP server — JSON-RPC 2.0 over HTTP, SSE responses.
  *
  * Format per ArmorIQ's MCP requirements:
  *   POST /mcp   Content-Type: application/json

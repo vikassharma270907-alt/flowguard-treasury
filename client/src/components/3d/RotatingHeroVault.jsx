@@ -51,7 +51,7 @@ export default function RotatingHeroVault({ height = 340, interactive = true }) 
       powerPreference: 'high-performance'
     });
     renderer.setSize(width, h);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setClearColor(0x000000, 0); // Transparent canvas background
     container.appendChild(renderer.domElement);
 
@@ -167,6 +167,11 @@ export default function RotatingHeroVault({ height = 340, interactive = true }) 
     let clock = new THREE.Clock();
 
     const animate = () => {
+      // Pause render loop if tab is hidden
+      if (document.hidden) {
+        animationFrameId = requestAnimationFrame(animate);
+        return;
+      }
       animationFrameId = requestAnimationFrame(animate);
       const delta = clock.getDelta();
       const rotSpeed = reducedMotion ? 0.05 : 0.85;

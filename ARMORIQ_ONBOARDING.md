@@ -1,14 +1,14 @@
-# FlowGuard — ArmorIQ Platform Onboarding & Hackathon Compliance Guide
+# BeyondFlow — ArmorIQ Platform Onboarding & Hackathon Compliance Guide
 
 > **Official Portal:** [https://platform.armoriq.ai](https://platform.armoriq.ai)  
-> **Repository:** [github.com/vikassharma270907-alt/flowguard-treasury](https://github.com/vikassharma270907-alt/flowguard-treasury)  
+> **Repository:** [github.com/vikassharma270907-alt/beyondflow-treasury](https://github.com/vikassharma270907-alt/beyondflow-treasury)
 > **Live Production:** [https://flowguard-treasury.vercel.app](https://flowguard-treasury.vercel.app)
 
 ---
 
 ## 📜 Hackathon Rules Compliance Matrix
 
-| Rule | Requirement | FlowGuard Treasury Implementation | Status |
+| Rule | Requirement | BeyondFlow Treasury Implementation | Status |
 | :--- | :--- | :--- | :--- |
 | **Rule 1** | **Mandatory ArmorIQ Integration** | Integrated `@armoriq/sdk` in production mode connected to `api.armoriq.ai` and `iap.armoriq.ai`. |  **COMPLIANT** |
 | **Rule 2** | **ElevenLabs with ArmorIQ** | Every ElevenLabs support call session mints an ArmorIQ-signed plan with Ed25519 token & SHA-256 hash. |  **COMPLIANT** |
@@ -34,23 +34,23 @@
 
 ## 🤖 2. Onboarding Agents to platform.armoriq.ai
 
-FlowGuard registers one governed agent on the ArmorIQ platform; the same identity is used by the voice gateway and the verification scripts.
+BeyondFlow registers one governed agent on the ArmorIQ platform; the same identity is used by the voice gateway and the verification scripts.
 
-### Agent: `flowguard-agent` (FlowGuard Operator Identity)
+### Agent: `flowguard-agent` (BeyondFlow Operator Identity)
 * **Agent UUID:** `c8bcbe51-dea4-4459-9fd8-38f88ebc714e`
-* **Description:** Represents the FlowGuard operator (`flowguard-operator`) when plans are captured and intent tokens are minted.
+* **Description:** Represents the BeyondFlow operator (`flowguard-operator`) when plans are captured and intent tokens are minted.
 * **Attached MCP Server:** `flowguard-treasury-mcp` (`7540cd0a-7d76-414a-a849-96b337a0c6ed`) at `https://flowguard-treasury.vercel.app/mcp`.
 * **Governing Policy:** `flowguard-treasury-allowlist` (`23f8f304-0f6b-44a0-9bba-fa9886ca611b`) — allowed tools `issue_refund` + `lookup_order`, default enforcement `block`, priority 100.
-* **Tools exposed to the voice agent (via the FlowGuard gateway):**
-  - `FlowGuard_orderLookup`: Allowed automatically by the stored read policy.
-  - `FlowGuard_payoutChange`: Blocked by the stored policy (`tool_not_in_allowlist`).
-  - `FlowGuard_issueRefund`: Held for dual-supervisor approval via a real platform delegation.
+* **Tools exposed to the voice agent (via the BeyondFlow gateway):**
+  - `BeyondFlow_orderLookup`: Allowed automatically by the stored read policy.
+  - `BeyondFlow_payoutChange`: Blocked by the stored policy (`tool_not_in_allowlist`).
+  - `BeyondFlow_issueRefund`: Held for dual-supervisor approval via a real platform delegation.
 
 ---
 
 ## 🔌 3. Onboarding the Model Context Protocol (MCP) Server
 
-FlowGuard implements a full MCP server compliant with the **Model Context Protocol spec (2024-11-05)**.
+BeyondFlow implements a full MCP server compliant with the **Model Context Protocol spec (2024-11-05)**.
 
 ### MCP Server Registration Details
 * **Server Name:** `flowguard-treasury-mcp`
@@ -67,7 +67,7 @@ FlowGuard implements a full MCP server compliant with the **Model Context Protoc
 ```json
 {
   "mcpServers": {
-    "flowguard-treasury": {
+    "beyondflow-treasury": {
       "command": "node",
       "args": ["server/mcpServer.js", "--stdio"],
       "env": {

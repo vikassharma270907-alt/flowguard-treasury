@@ -68,7 +68,7 @@ console.log('\ninitialize');
 const init = await rpc('initialize', {
   protocolVersion: '2024-11-05',
   capabilities: {},
-  clientInfo: { name: 'flowguard-conformance', version: '1.0.0' },
+  clientInfo: { name: 'beyondflow-conformance', version: '1.0.0' },
 });
 check('HTTP 200', init.status === 200, `got ${init.status}`);
 check('content-type is text/event-stream', (init.contentType || '').startsWith('text/event-stream'), init.contentType);

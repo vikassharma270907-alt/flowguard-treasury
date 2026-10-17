@@ -17,8 +17,8 @@ if (!apiKey) {
 
 const client = new ArmorIQClient({
   apiKey,
-  userId: process.env.USER_ID || 'flowguard-smoke',
-  agentId: process.env.AGENT_ID || 'flowguard-smoke',
+  userId: process.env.USER_ID || 'beyondflow-smoke',
+  agentId: process.env.AGENT_ID || 'beyondflow-smoke',
 });
 
 const internals = client._sessionInternals();

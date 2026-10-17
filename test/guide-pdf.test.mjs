@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
 
-test('1. FlowGuard guide PDF file exists and is valid', () => {
+test('1. BeyondFlow guide PDF file exists and is valid', () => {
   const clientPdfPath = path.resolve('client/public/docs/flowguard-guide.pdf');
   const rootPdfPath = path.resolve('public/docs/flowguard-guide.pdf');
 
@@ -51,7 +51,7 @@ test('3. i18n dictionaries contain English and Hindi guide keys', () => {
 
   assert.equal(en.links.guidePdf, 'Guide (PDF)');
   assert.equal(en.links.downloadGuide, 'Download the guide (PDF)');
-  assert.ok(en.links.guidePdfAria.includes('BeyondFlow guide, PDF') || en.links.guidePdfAria.includes('FlowGuard guide, PDF'));
+  assert.ok(en.links.guidePdfAria.includes('BeyondFlow guide, PDF') || en.links.guidePdfAria.includes('BeyondFlow guide, PDF'));
 
   assert.equal(hi.links.guidePdf, 'गाइड (PDF)');
   assert.equal(hi.links.downloadGuide, 'गाइड डाउनलोड करें (PDF)');

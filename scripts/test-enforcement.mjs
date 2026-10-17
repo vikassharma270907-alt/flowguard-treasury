@@ -11,7 +11,7 @@
  *
  * Nothing in this file decides allow/block: those verdicts are the exception
  * (or the success) ArmorIQ returns. For issue_refund the script creates a real
- * platform delegation (backend /delegation/request) — FlowGuard's designed
+ * platform delegation (backend /delegation/request) — BeyondFlow's designed
  * hold path for refunds — and reports the returned delegation ID.
  */
 import { ArmorIQClient } from '@armoriq/sdk';

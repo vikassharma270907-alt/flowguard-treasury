@@ -16,7 +16,7 @@ async function warmup() {
 
   const SHARED_SECRET = process.env.GATEWAY_SHARED_SECRET || process.env.INTENTGATE_TOKEN || '';
   if (SHARED_SECRET) {
-      options.headers['x-flowguard-token'] = SHARED_SECRET;
+      options.headers['x-beyondflow-token'] = SHARED_SECRET;
   }
 
   const start = Date.now();

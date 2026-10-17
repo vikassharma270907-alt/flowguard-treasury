@@ -50,7 +50,7 @@ const config = {
     {
       id: MCP_ID,
       url: MCP_URL,
-      description: 'FlowGuard synthetic treasury tools: lookup_order, change_payout, issue_refund',
+      description: 'BeyondFlow synthetic treasury tools: lookup_order, change_payout, issue_refund',
       auth: { type: 'bearer', token: MCP_TOKEN },
     },
   ],

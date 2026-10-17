@@ -52,6 +52,20 @@ export default defineConfig(({ mode }) => {
       '__GUIDE_PDF_SIZE_LABEL__': JSON.stringify(computedSizeLabel),
       '__GUIDE_PDF_EXISTS__': JSON.stringify(pdfExists)
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: (id) => {
+            if (id.includes('node_modules')) {
+              if (id.includes('three')) return 'three';
+              if (id.includes('react') || id.includes('react-dom')) return 'react';
+              if (id.includes('lucide-react')) return 'lucide';
+              return 'vendor';
+            }
+          }
+        }
+      }
+    },
     server: {
       host: '0.0.0.0',
       port: 5173,

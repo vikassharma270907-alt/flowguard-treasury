@@ -17,7 +17,7 @@ export const PRODUCT_NAME = "BeyondFlow";
 export const SUPPORT_EMAIL = "beyondnothing01@gmail.com";
 
 // Real project repository & documentation links
-export const GITHUB_REPO_URL = "https://github.com/vikassharma270907-alt/flowguard-treasury";
+export const GITHUB_REPO_URL = "https://github.com/vikassharma270907-alt/beyondflow-treasury";
 export const DOCS_URL = "https://docs.armoriq.ai";
 
 // Resolve Calendly / Cal.com URL from Next.js (process.env) or Vite (import.meta.env)
@@ -117,12 +117,10 @@ export const siteConfig = {
   // Desktop nav visible from lg (1024px) up; collapsible hamburger drawer below 1024px.
   headerNav: [
     { labelKey: "nav.home", href: "/", id: "overview", isExternal: false },
-    { labelKey: "nav.video", href: "/#explainer-video", id: "video", isExternal: false, badge: "3-Min Video" },
     { labelKey: "nav.judges", href: "/judges", id: "judges", isExternal: false, badge: "Tour" },
     { labelKey: "nav.howItWorks", href: "/how-it-works", id: "enclave", isExternal: false },
     { labelKey: "nav.boundaryTest", href: "/#boundary-test", id: "boundary", isExternal: false },
-    { labelKey: "nav.docs", href: DOCS_URL, isExternal: true },
-    { labelKey: "nav.github", href: GITHUB_REPO_URL, isExternal: true }
+    { labelKey: "nav.docs", href: DOCS_URL, isExternal: true }
   ],
 
   // Optional status/playground indicator config

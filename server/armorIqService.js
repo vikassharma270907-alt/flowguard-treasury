@@ -116,7 +116,7 @@ class ArmorIQService {
     userEmail = 'operator@beyondflow.io',
     goal = 'Treasury execution',
     tools = [],
-    agentId = 'flowguard-treasury-agent-v1'
+    agentId = 'beyondflow-treasury-agent-v1'
   }) {
     if (this.client && this.mode === 'ARMORIQ_LIVE') {
       try {
@@ -214,7 +214,7 @@ class ArmorIQService {
       },
       {
         step: 3,
-        tool: 'flowguard.treasury.assert_reserve_floor',
+        tool: 'beyondflow.treasury.assert_reserve_floor',
         params: {
           minimum_reserve_usd: Number(reserveFloor) || 15000,
           payout_usd_equivalent: Number(invoice.totalOutflowUsd || invoice.amount || 0)
@@ -233,7 +233,7 @@ class ArmorIQService {
     ];
 
     const canonicalPlan = {
-      agent_id: 'flowguard-treasury-agent-v1',
+      agent_id: 'beyondflow-treasury-agent-v1',
       session_id: 'ses_' + uuidv4().substring(0, 10),
       approver: approverName,
       created_at: new Date().toISOString(),
@@ -302,7 +302,7 @@ class ArmorIQService {
     }
 
     // 3. Issue Intent Token via ArmorIQ (Live CSRG-IAP or Intent Assurance)
-    const userEmail = invoice.vendor_id ? `${invoice.vendor_id}@flowguard.treasury` : 'treasury.operator@beyondflow.io';
+    const userEmail = invoice.vendor_id ? `${invoice.vendor_id}@beyondflow.treasury` : 'treasury.operator@beyondflow.io';
     const mintResult = await this.mintPlanToken({
       userEmail,
       goal: `Authorize payout of ${invoice.currency} ${invoice.amount} to ${invoice.vendor_name}`,
@@ -310,7 +310,7 @@ class ArmorIQService {
         name: s.tool.split('.').pop(),
         args: s.params
       })),
-      agentId: 'flowguard-treasury-agent-v1'
+      agentId: 'beyondflow-treasury-agent-v1'
     });
 
     if (!mintResult.success || !mintResult.intentToken) {

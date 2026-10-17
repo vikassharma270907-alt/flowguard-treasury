@@ -41,7 +41,7 @@ export default function JudgesPage({ onNavigate }) {
     {
       rule: "4. Official Window Development",
       requirement: "Core development must take place within official hackathon window (10 to 17 Oct 2026).",
-      evidence: "Git history runs from first commit ac099d0 (2026-10-15) through the current HEAD — inside the official Oct 10-17, 2026 window. Verified against github.com/vikassharma270907-alt/flowguard-treasury/commits/main (first commit ac099d0 … current HEAD).",
+      evidence: "Git history runs from first commit ac099d0 (2026-10-15) through the current HEAD — inside the official Oct 10-17, 2026 window. Verified against github.com/vikassharma270907-alt/beyondflow-treasury/commits/main (first commit ac099d0 … current HEAD).",
       status: "PASS",
       verified: true
     },
@@ -137,7 +137,7 @@ export default function JudgesPage({ onNavigate }) {
         {/* Action Links Bar */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
           <a
-            href="https://github.com/vikassharma270907-alt/flowguard-treasury"
+            href="https://github.com/vikassharma270907-alt/beyondflow-treasury"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-secondary btn-sm mobile-tap-target"
@@ -470,12 +470,12 @@ export default function JudgesPage({ onNavigate }) {
           Unedited console output from live runs of the verification scripts, committed to the repository (no secrets are printed):
         </p>
         <ul style={{ paddingLeft: '18px', color: 'var(--muted-foreground)', fontSize: '0.85rem', lineHeight: 1.9, margin: 0 }}>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-enforcement-2026-10-17.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-enforcement-2026-10-17.txt</a> — fresh live run: allow / block / hold verdicts with real token and delegation IDs.</li>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-intent-mismatch-2026-10-17.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-intent-mismatch-2026-10-17.txt</a> — fresh live run: IntentMismatchException (wrong action) & TokenExpiredException; Case 2 honest boundary.</li>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-enforcement-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-enforcement-2026-10-16.txt</a> — baseline run: allow / block / hold platform verdicts.</li>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-intent-mismatch-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-intent-mismatch-2026-10-16.txt</a> — baseline run: intent-binding refusals.</li>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/EVIDENCE.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>EVIDENCE.md</a> — full audit-log entries for each verdict, including the end-to-end allowed call.</li>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/README.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>docs/evidence/README.md</a> — run metadata: repo revision, platform object IDs, per-case token and policy refs.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/beyondflow-treasury/blob/main/docs/evidence/test-enforcement-2026-10-17.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-enforcement-2026-10-17.txt</a> — fresh live run: allow / block / hold verdicts with real token and delegation IDs.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/beyondflow-treasury/blob/main/docs/evidence/test-intent-mismatch-2026-10-17.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-intent-mismatch-2026-10-17.txt</a> — fresh live run: IntentMismatchException (wrong action) & TokenExpiredException; Case 2 honest boundary.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/beyondflow-treasury/blob/main/docs/evidence/test-enforcement-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-enforcement-2026-10-16.txt</a> — baseline run: allow / block / hold platform verdicts.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/beyondflow-treasury/blob/main/docs/evidence/test-intent-mismatch-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-intent-mismatch-2026-10-16.txt</a> — baseline run: intent-binding refusals.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/beyondflow-treasury/blob/main/EVIDENCE.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>EVIDENCE.md</a> — full audit-log entries for each verdict, including the end-to-end allowed call.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/beyondflow-treasury/blob/main/docs/evidence/README.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>docs/evidence/README.md</a> — run metadata: repo revision, platform object IDs, per-case token and policy refs.</li>
         </ul>
       </section>
 
@@ -522,7 +522,7 @@ export default function JudgesPage({ onNavigate }) {
          <strong>Developer Statement:</strong> &ldquo;Yes, BeyondFlow reuses and adapts my earlier MIT-licensed IntentGate prototype components (such as the voice gateway holding pattern and Airwallex sandbox adapter) alongside official ArmorIQ SDK and MCP libraries. All code is disclosed under the MIT License.&rdquo; Third-party open-source libraries: <code>@armoriq/sdk</code>, <code>@modelcontextprotocol/sdk</code>, <code>three</code>, <code>react</code>, <code>express</code>. All sensitive operations use synthetic sandbox data only — no live banking rails, no real funds.
         </p>
         <p style={{ fontSize: '0.82rem', color: '#94a3b8', margin: 0 }}>
-          Detailed dependency disclosures and licensing notices are documented in <a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/DISCLOSURES.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>DISCLOSURES.md</a>.
+          Detailed dependency disclosures and licensing notices are documented in <a href="https://github.com/vikassharma270907-alt/beyondflow-treasury/blob/main/DISCLOSURES.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>DISCLOSURES.md</a>.
         </p>
       </section>
 

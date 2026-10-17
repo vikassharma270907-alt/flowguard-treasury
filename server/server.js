@@ -20,7 +20,7 @@ const armorIqService = require('./armorIqService');
 const armorPayService = require('./armorPayService');
 const securityEngine = require('./securityEngine');
 const voiceGatewayService = require('./voiceGatewayService');
-const { flowguardMcpServer, FLOWGUARD_MCP_TOOLS, FLOWGUARD_APP_TOOLS } = require('./mcpServer');
+const { beyondflowMcpServer, FLOWGUARD_MCP_TOOLS, FLOWGUARD_APP_TOOLS } = require('./mcpServer');
 const armorIqEnforcement = require('./armorIqEnforcement');
 const { scanAllInvoices, inspectInvoice } = require('./duplicateDetector');
 const { planPayments } = require('./rulesEngine');
@@ -81,7 +81,7 @@ let adminOrgMembers = [
   { id: 'usr_01', name: 'beyond_nothing', email: 'beyond_nothing@beyondflow.io', role: 'SUPER_ADMIN', department: 'Treasury & Risk', status: 'ACTIVE', lastLogin: 'Just now' },
   { id: 'usr_02', name: 'Sarah Chen', email: 'sarah.chen@beyondflow.io', role: 'FINANCE_DIRECTOR', department: 'Accounts Payable', status: 'ACTIVE', lastLogin: '2 hours ago' },
   { id: 'usr_03', name: 'Marcus Sterling', email: 'm.sterling@beyondflow.io', role: 'COMPLIANCE_AUDITOR', department: 'Internal Audit', status: 'ACTIVE', lastLogin: '1 day ago' },
-  { id: 'usr_04', name: 'Airwallex Agent Bot', email: 'agent@flowguard.bot', role: 'AUTONOMOUS_AGENT', department: 'Automated Operations', status: 'MANAGED_BY_ARMORIQ', lastLogin: 'Continuous' }
+  { id: 'usr_04', name: 'Airwallex Agent Bot', email: 'agent@beyondflow.bot', role: 'AUTONOMOUS_AGENT', department: 'Automated Operations', status: 'MANAGED_BY_ARMORIQ', lastLogin: 'Continuous' }
 ];
 
 // --- ArmorIQ Platform Authentication Endpoints (docs.armoriq.ai/platform/authentication) ---
@@ -476,7 +476,7 @@ app.post('/api/mcp/execute', async (req, res) => {
   const { tool, name, arguments: toolArgs = {} } = req.body;
   const toolName = tool || name;
   try {
-    const result = await flowguardMcpServer.executeTool(toolName, toolArgs);
+    const result = await beyondflowMcpServer.executeTool(toolName, toolArgs);
     let payload = null;
     try {
       payload = JSON.parse(result.content?.[0]?.text ?? 'null');
@@ -501,7 +501,7 @@ app.get('/api/mcp/config', (req, res) => {
   res.json({
     claudeDesktopConfig: {
       mcpServers: {
-        'flowguard-treasury': {
+        'beyondflow-treasury': {
           command: 'node',
           args: ['server/mcpServer.js', '--stdio'],
           env: {
@@ -546,7 +546,7 @@ const buildMcpEnvelope = async (req) => {
     const toolName = params.name || params.tool;
     const toolArgs = params.arguments || params.args || {};
     try {
-      const toolResult = await flowguardMcpServer.executeTool(toolName, toolArgs);
+      const toolResult = await beyondflowMcpServer.executeTool(toolName, toolArgs);
       return { body: { jsonrpc: '2.0', id: id ?? 1, result: toolResult } };
     } catch (err) {
       return { body: { jsonrpc: '2.0', id: id ?? 1, error: { code: err.code ?? -32000, message: err.message } } };

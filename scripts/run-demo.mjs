@@ -9,7 +9,7 @@
  */
 const BASE = process.env.GATEWAY_LOCAL_URL || `http://127.0.0.1:${process.env.GATEWAY_PORT || 8790}`;
 const TOKEN = process.env.GATEWAY_SHARED_SECRET || 'flowguard-dev-secret';
-const PLAYGROUND_TOKEN = process.env.PLAYGROUND_TOKEN || 'flowguard-local';
+const PLAYGROUND_TOKEN = process.env.PLAYGROUND_TOKEN || 'beyondflow-local';
 
 async function run() {
   console.log('='.repeat(72));
@@ -21,7 +21,7 @@ async function run() {
   let t0 = Date.now();
   let res = await fetch(BASE + '/tools/BeyondFlow_lookup_order', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-flowguard-token': TOKEN },
+    headers: { 'Content-Type': 'application/json', 'x-beyondflow-token': TOKEN },
     body: JSON.stringify({ order_id: 'ORD-1002', __goal: 'Check delivery status of order ORD-1002' })
   });
   let data = await res.json();
@@ -36,7 +36,7 @@ async function run() {
   t0 = Date.now();
   res = await fetch(BASE + '/tools/BeyondFlow_change_payout', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-flowguard-token': TOKEN },
+    headers: { 'Content-Type': 'application/json', 'x-beyondflow-token': TOKEN },
     body: JSON.stringify({ account_id: 'ACC-4471', new_destination: 'US-CHECKING-9988', __goal: 'Change payout destination for ACC-4471' })
   });
   data = await res.json();
@@ -51,7 +51,7 @@ async function run() {
   t0 = Date.now();
   res = await fetch(BASE + '/tools/BeyondFlow_issue_refund', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-flowguard-token': TOKEN },
+    headers: { 'Content-Type': 'application/json', 'x-beyondflow-token': TOKEN },
     body: JSON.stringify({ order_id: 'ORD-1002', amount: 45, __goal: 'Issue refund of $45 on order ORD-1002' })
   });
   data = await res.json();
@@ -90,7 +90,7 @@ async function run() {
   console.log('6. [Voice Agent Relay] Agent checks supervisor decision and relays to caller:');
   res = await fetch(BASE + '/tools/check_supervisor_decision', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-flowguard-token': TOKEN },
+    headers: { 'Content-Type': 'application/json', 'x-beyondflow-token': TOKEN },
     body: JSON.stringify({ order_id: 'ORD-1002' })
   });
   let relay = await res.json();

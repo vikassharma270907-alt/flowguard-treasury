@@ -23,7 +23,7 @@ export default function PricingSection({ onBackToHome, onBookDemo }) {
         'Single sandbox enclave key'
       ],
       cta: 'Start Free',
-      ctaHref: 'https://github.com/vikassharma270907-alt/flowguard-treasury',
+      ctaHref: 'https://github.com/vikassharma270907-alt/beyondflow-treasury',
       popular: false
     },
     {

@@ -7,7 +7,7 @@
  * 2. How ArmorIQ and ElevenLabs play a crucial role
  * 3. How it differs fundamentally from typical industry standards
  *
- * Output: flowguard_demo_walkthrough.webm in the brain artifact directory
+ * Output: beyondflow_demo_walkthrough.webm in the brain artifact directory
  */
 import { chromium } from 'playwright';
 import path from 'node:path';
@@ -153,7 +153,7 @@ try {
 
   if (video) {
     const rawVideoPath = await video.path();
-    const finalVideoPath = path.join(ARTIFACT_DIR, 'flowguard_demo_video.webm');
+    const finalVideoPath = path.join(ARTIFACT_DIR, 'beyondflow_demo_video.webm');
     fs.copyFileSync(rawVideoPath, finalVideoPath);
     console.log(`Video recorded successfully!`);
     console.log(`Raw Video: ${rawVideoPath}`);

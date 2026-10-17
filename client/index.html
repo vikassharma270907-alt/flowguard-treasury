@@ -58,8 +58,8 @@
         } catch (e) {}
 
         try {
-          var themeCookie = document.cookie.match(/(?:^|; )(?:beyondflow-theme|flowguard-theme)=([^;]*)/);
-          var saved = themeCookie ? decodeURIComponent(themeCookie[1]) : (localStorage.getItem('beyondflow-theme') || localStorage.getItem('flowguard-theme'));
+          var themeCookie = document.cookie.match(/(?:^|; )(?:beyondflow-theme|beyondflow-theme)=([^;]*)/);
+          var saved = themeCookie ? decodeURIComponent(themeCookie[1]) : (localStorage.getItem('beyondflow-theme') || localStorage.getItem('beyondflow-theme'));
           var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
           var theme = (saved === 'light' || saved === 'dark') ? saved : (prefersLight ? 'light' : 'dark');
           document.documentElement.setAttribute('data-theme', theme);

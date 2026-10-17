@@ -31,7 +31,7 @@ function plan(action, inputs, goal) {
 }
 
 async function mint(action, inputs, goal) {
-  const capture = client.capturePlan('flowguard-test', goal, plan(action, inputs, goal));
+  const capture = client.capturePlan('beyondflow-test', goal, plan(action, inputs, goal));
   return client.getIntentToken(capture);
 }
 
@@ -68,7 +68,7 @@ const case2 = await report('Case 2 — issue_refund(89) token used to invoke iss
 });
 
 // --- Case 3: expired token --------------------------------------------------
-const shortCapture = client.capturePlan('flowguard-test', 'expiry test', plan('lookup_order', { order_id: 'ORD-1002' }, 'expiry test'));
+const shortCapture = client.capturePlan('beyondflow-test', 'expiry test', plan('lookup_order', { order_id: 'ORD-1002' }, 'expiry test'));
 const shortToken = await client.getIntentToken(shortCapture, undefined, 5);
 console.log(`minted short-lived token    expiresAt=${new Date(shortToken.expiresAt * 1000).toISOString()} (5s validity)`);
 console.log('waiting 7s for it to lapse…');
@@ -80,7 +80,7 @@ const case3 = await report('Case 3 — using a token after it expired', async ()
 
 console.log(`\n${'='.repeat(72)}`);
 console.log(`Case 1 — wrong action   : ${case1}`);
-console.log(`Case 2 — swapped amount : ${case2}`);
+console.log(`Case 2 — swapped amount : ${case2} (KNOWN LIMITATION)`);
 console.log(`Case 3 — expired token  : ${case3}`);
 console.log('='.repeat(72));
 

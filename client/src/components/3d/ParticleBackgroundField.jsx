@@ -17,7 +17,10 @@ import * as THREE from 'three';
 import { isWebGLAvailable, prefersReducedMotion, WebGLFallback } from './webglUtils';
 import { useTheme } from '../../context/ThemeContext';
 
-export default function ParticleBackgroundField({ particleCount = 1200, height = 300, interactive = true }) {
+export default function ParticleBackgroundField({ particleCount, height = 300, interactive = true }) {
+  // Mobile reduction
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const actualParticleCount = particleCount !== undefined ? particleCount : (isMobile ? 300 : 1200);
   const containerRef = useRef(null);
   const { isDark } = useTheme();
   const [hasWebGL, setHasWebGL] = useState(true);
@@ -54,7 +57,7 @@ export default function ParticleBackgroundField({ particleCount = 1200, height =
 
     // 3. Particle Geometry & Buffer Attributes
     const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
+    const positions = new Float32Array(actualParticleCount * 3);
     const originalPositions = new Float32Array(particleCount * 3);
     const velocities = new Float32Array(particleCount * 3);
 
@@ -142,6 +145,11 @@ export default function ParticleBackgroundField({ particleCount = 1200, height =
     let clock = new THREE.Clock();
 
     const animate = () => {
+      // Pause render loop if tab is hidden
+      if (document.hidden) {
+        animationFrameId = requestAnimationFrame(animate);
+        return;
+      }
       animationFrameId = requestAnimationFrame(animate);
       const delta = clock.getDelta();
       const speedFactor = reducedMotion ? 0.1 : 1.0;

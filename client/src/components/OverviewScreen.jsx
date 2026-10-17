@@ -26,14 +26,46 @@ export default function OverviewScreen({
   // budget; a static placeholder holds the space until then.
   const [show3dHero, setShow3dHero] = useState(false);
 
-  useEffect(() => {
+    useEffect(() => {
     if (typeof window === 'undefined') return undefined;
-    const activate = () => setShow3dHero(true);
-    const events = ['pointerdown', 'pointermove', 'keydown', 'scroll', 'touchstart'];
-    events.forEach((evt) => window.addEventListener(evt, activate, { once: true, passive: true }));
-    return () => {
-      events.forEach((evt) => window.removeEventListener(evt, activate));
-    };
+
+    // Check prefers-reduced-motion, mobile screen, and save-data
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.innerWidth <= 768;
+    const saveData = navigator.connection?.saveData === true;
+
+    if (prefersReducedMotion || saveData || isMobile) {
+      // Don't load 3D on low-power/mobile/data-saver or if motion is reduced
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          if (window.requestIdleCallback) {
+            window.requestIdleCallback(() => setShow3dHero(true));
+          } else {
+            setTimeout(() => setShow3dHero(true), 1500);
+          }
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    const heroEl = document.getElementById('hero-3d-container');
+    if (heroEl) {
+      observer.observe(heroEl);
+    } else {
+      // Fallback
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(() => setShow3dHero(true));
+      } else {
+        setTimeout(() => setShow3dHero(true), 1500);
+      }
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   const walkthroughSteps = [
@@ -778,7 +810,7 @@ export default function OverviewScreen({
           </div>
         </div>
 
-        <div style={{
+        <div id="hero-3d-container" style={{
           height: '240px',
           background: 'var(--background)',
           borderRadius: '10px',

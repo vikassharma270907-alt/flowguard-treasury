@@ -65,7 +65,7 @@ const FLOWGUARD_APP_TOOLS = [
   }
 ];
 
-class FlowGuardMcpServer {
+class BeyondFlowMcpServer {
   constructor() {
     this.server = new Server(
       {
@@ -197,18 +197,18 @@ class FlowGuardMcpServer {
   }
 }
 
-const flowguardMcpServer = new FlowGuardMcpServer();
+const beyondflowMcpServer = new BeyondFlowMcpServer();
 
 // If run directly with node server/mcpServer.js --stdio, start stdio transport
 if (require.main === module) {
-  flowguardMcpServer.startStdio().catch(err => {
+  beyondflowMcpServer.startStdio().catch(err => {
     console.error('Fatal MCP Server error:', err);
     process.exit(1);
   });
 }
 
 module.exports = {
-  flowguardMcpServer,
+  beyondflowMcpServer,
   FLOWGUARD_MCP_TOOLS,
   FLOWGUARD_APP_TOOLS
 };

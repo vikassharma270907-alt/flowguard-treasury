@@ -3,7 +3,7 @@
  * Compiles docs/BeyondFlow_Overview.pdf with professional typography, diagrams,
  * comparative tables, and print-ready light styling.
  * 
- * Usage: node scripts/generate-flowguard-overview.mjs
+ * Usage: node scripts/generate-beyondflow-overview.mjs
  */
 
 import fs from 'node:fs';
@@ -147,7 +147,7 @@ doc.moveDown(0.5);
 
 const metaRows = [
   ['Project Name', 'BeyondFlow'],
-  ['Repository', 'https://github.com/vikassharma270907-alt/flowguard-treasury'],
+  ['Repository', 'https://github.com/vikassharma270907-alt/beyondflow-treasury'],
   ['Production URL', 'https://flowguard-treasury.vercel.app'],
   ['Voice Engine', 'ElevenLabs Conversational AI & Text-to-Speech API'],
   ['Governance Platform', "ArmorIQ Platform (Org: Vikas Sharma's Workspace, dd9e9695-e58d)"],
@@ -287,8 +287,8 @@ subHeading('1.3 Setup & Local Execution Walkthrough');
 p('BeyondFlow is architected to run seamlessly in local development and production environments. Follow these commands to initialize all services:');
 
 p('Step 1: Install Dependencies & Setup Environment:');
-codeBlock(`git clone https://github.com/vikassharma270907-alt/flowguard-treasury.git
-cd flowguard-treasury
+codeBlock(`git clone https://github.com/vikassharma270907-alt/beyondflow-treasury.git
+cd beyondflow-treasury
 npm run install:all
 cp .env.example .env`);
 

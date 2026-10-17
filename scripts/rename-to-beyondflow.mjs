@@ -41,7 +41,7 @@ const filesToProcess = [
   'docs/evidence/README.md',
   'scripts/run-demo.mjs',
   'scripts/record-demo-video.mjs',
-  'scripts/generate-flowguard-overview.mjs',
+  'scripts/generate-beyondflow-overview.mjs',
   'playground/index.html'
 ];
 
@@ -58,20 +58,20 @@ for (const relPath of filesToProcess) {
   const original = content;
 
   // 1. Direct word replacements for titles and descriptions
-  content = content.replace(/\bFlowGuard\b/g, 'BeyondFlow');
+  content = content.replace(/\bBeyondFlow\b/g, 'BeyondFlow');
   content = content.replace(/\bFLOWGUARD\b/g, 'BEYONDFLOW');
 
   // 2. ElevenLabs tool prefixes
-  content = content.replace(/FlowGuard_/g, 'BeyondFlow_');
+  content = content.replace(/BeyondFlow_/g, 'BeyondFlow_');
 
   // 3. Email handles if any
-  content = content.replace(/@flowguard\.io/g, '@beyondflow.io');
+  content = content.replace(/@beyondflow\.io/g, '@beyondflow.io');
 
   // 4. Special cases preservation for ArmorIQ platform entities and URLs
   // If github repo was modified, restore it:
   content = content.replace(
     /https:\/\/github\.com\/vikassharma270907-alt\/beyondflow-treasury/g,
-    'https://github.com/vikassharma270907-alt/flowguard-treasury'
+    'https://github.com/vikassharma270907-alt/beyondflow-treasury'
   );
   content = content.replace(
     /https:\/\/beyondflow-treasury\.vercel\.app/g,
@@ -88,8 +88,8 @@ for (const relPath of filesToProcess) {
   content = content.replace(/"beyondflow-operator"/g, '"flowguard-operator"');
 
   // But in display text: "BeyondFlow MCP Server" or "BeyondFlow Agent" is great!
-  content = content.replace(/flowguard MCP Server/gi, 'BeyondFlow MCP Server');
-  content = content.replace(/flowguard Agent/gi, 'BeyondFlow Agent');
+  content = content.replace(/beyondflow MCP Server/gi, 'BeyondFlow MCP Server');
+  content = content.replace(/beyondflow Agent/gi, 'BeyondFlow Agent');
 
   if (content !== original) {
     fs.writeFileSync(fullPath, content, 'utf8');
