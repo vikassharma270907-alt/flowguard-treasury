@@ -104,7 +104,40 @@ const pendingVerifications = new Map();
 const pendingDeviceApprovals = new Map();
 
 function hashPassword(password) {
-  return crypto.createHash('sha256').update(password + ':armoriq_salt').digest('hex');
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hash = crypto.pbkdf2Sync(password, salt, 310000, 32, 'sha256').toString('hex');
+  return `${salt}:${hash}`;
+}
+
+function verifyPassword(password, storedHash) {
+  if (!storedHash || typeof storedHash !== 'string') return false;
+  const parts = storedHash.split(':');
+
+  if (parts.length === 2) {
+    const [salt, originalHash] = parts;
+    try {
+      const originalHashBuffer = Buffer.from(originalHash, 'hex');
+      const hashBuffer = crypto.pbkdf2Sync(password, salt, 310000, 32, 'sha256');
+      if (originalHashBuffer.length === hashBuffer.length) {
+         return crypto.timingSafeEqual(originalHashBuffer, hashBuffer);
+      }
+    } catch (e) {
+      return false;
+    }
+  } else {
+    // Fallback for old global salt hashes
+    const oldHash = crypto.createHash('sha256').update(password + ':armoriq_salt').digest('hex');
+    try {
+      const oldHashBuffer = Buffer.from(oldHash, 'hex');
+      const storedHashBuffer = Buffer.from(storedHash, 'hex');
+      if (oldHashBuffer.length === storedHashBuffer.length) {
+        return crypto.timingSafeEqual(oldHashBuffer, storedHashBuffer);
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+  return false;
 }
 
 /**
@@ -212,8 +245,7 @@ function authenticateWithPassword(email, password) {
   }
 
   // Check password
-  const expectedHash = hashPassword(password);
-  if (user.passwordHash !== expectedHash) {
+  if (!verifyPassword(password, user.passwordHash)) {
     return { success: false, error: 'Invalid email or password' };
   }
 
