@@ -12,6 +12,7 @@ const AuditLedgerScreen = lazy(() => import('./components/AuditLedgerScreen'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
 const VoiceGatewayScreen = lazy(() => import('./components/VoiceGatewayScreen'));
 const EnclaveScreen = lazy(() => import('./components/EnclaveScreen'));
+const HowItWorksPage = lazy(() => import('./components/HowItWorksPage'));
 const ApprovalModal = lazy(() => import('./components/ApprovalModal'));
 const CredentialsModal = lazy(() => import('./components/CredentialsModal'));
 const OAuthModal = lazy(() => import('./components/OAuthModal'));
@@ -417,7 +418,7 @@ export default function App() {
         )}
 
         {(activeTab === 'enclave' || activeTab === 'how-it-works') && (
-          <EnclaveScreen onNavigate={handleNavigate} />
+          <HowItWorksPage onNavigate={handleNavigate} />
         )}
 
         {activeTab === 'planner' && (

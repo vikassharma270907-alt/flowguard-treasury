@@ -5,9 +5,9 @@
 
 export const headerConfig = {
   brand: {
-    name: 'flowguard',
+    name: 'BeyondFlow',
     href: '/',
-    badge: 'F'
+    badge: 'B'
   },
   navLinks: [
     { label: 'Home', href: '/', id: 'overview', isExternal: false },
@@ -32,7 +32,7 @@ export const footerConfig = {
   brand: {
     name: 'BeyondFlow',
     tagline: 'Intent enforcement for any MCP client and ElevenLabs voice agent, powered by ArmorIQ.',
-    badge: 'F',
+    badge: 'B',
     socials: [
       {
         name: 'GitHub',

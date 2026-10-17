@@ -34,6 +34,7 @@ const ROUTES = [
   { name: 'boundary-test', path: '/#boundary-test' },
   { name: 'architecture', path: '/#architecture' },
   { name: 'playground', path: '/voice' },
+  { name: 'how-it-works', path: '/how-it-works' },
   { name: '404', path: '/non-existent-page-404' }
 ];
 

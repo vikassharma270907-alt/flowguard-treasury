@@ -96,7 +96,7 @@ export default function Navbar({
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               <span style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--foreground)' }}>
-                Flow<span style={{ color: '#10b981' }}>Guard</span>
+                Beyond<span style={{ color: '#10b981' }}>Flow</span>
               </span>
               <span className="badge badge-live" style={{ fontSize: '0.62rem' }}>
                 <span className="pulse-dot green"></span>

@@ -1,6 +1,6 @@
 /**
  * Responsive Header Component
- * Indian Developer-Tools / SaaS Product ("YourBrand")
+ * BeyondFlow Responsive Header Component
  * 
  * Complies with strict Phase 2 & Calendly requirements:
  * - Sticky, white, 1px bottom border, ~56px height, max-width 1280px container

@@ -6,14 +6,15 @@ import {
 } from 'lucide-react';
 
 const SCENES = [
-  { id: 'scene_1', sceneNumber: 1, title: 'The Problem', time: '0:00 - 0:18', startSec: 0.5, desc: 'Why conversational voice agents need execution-level guardrails between words and funds.' },
-  { id: 'scene_2', sceneNumber: 2, title: 'What It Is', time: '0:18 - 0:32', startSec: 19.5, desc: 'BeyondFlow: ElevenLabs voice interface governed by ArmorIQ cryptographic authority.' },
-  { id: 'scene_3', sceneNumber: 3, title: 'How It Works', time: '0:32 - 1:00', startSec: 31.0, desc: 'Caller -> ElevenLabs webhook -> BeyondFlow gateway -> ArmorIQ PEP -> Treasury MCP.' },
-  { id: 'scene_4', sceneNumber: 4, title: 'How We Used ElevenLabs', time: '1:00 - 1:25', startSec: 59.0, desc: 'Sub-5s webhook holding pattern, structured parameter extraction, and AI voiceover.' },
-  { id: 'scene_5', sceneNumber: 5, title: 'How We Used ArmorIQ', time: '1:25 - 2:00', startSec: 85.0, desc: 'capturePlan -> getIntentToken -> invoke via proxy.armoriq.ai & dual-supervisor quorum.' },
-  { id: 'scene_6', sceneNumber: 6, title: 'The Boundary Test', time: '2:00 - 2:30', startSec: 126.0, desc: 'Live screen recording: ALLOWED read, BLOCKED wire diversion, HELD refund release.' },
-  { id: 'scene_7', sceneNumber: 7, title: 'How It Differs', time: '2:30 - 2:52', startSec: 153.0, desc: 'Intent enforcement vs semantic guardrails, post-hoc logging, and blanket API keys.' },
-  { id: 'scene_8', sceneNumber: 8, title: 'Close & Disclosures', time: '2:52 - 3:05', startSec: 173.0, desc: 'Official sandbox environment disclosures, MIT/OFL license credits, and platform references.' }
+  { id: 'scene_1', sceneNumber: 1, title: 'The Problem', time: '0:00 - 0:17', startSec: 0.5, desc: 'Why voice AI needs execution-level guardrails between its words and your money.' },
+  { id: 'scene_2', sceneNumber: 2, title: 'Meet BeyondFlow', time: '0:17 - 0:30', startSec: 17.0, desc: 'BeyondFlow: ElevenLabs voice interface governed by ArmorIQ cryptographic authority.' },
+  { id: 'scene_3', sceneNumber: 3, title: 'The Big Picture', time: '0:30 - 0:56', startSec: 30.5, desc: 'Caller -> ElevenLabs webhook -> BeyondFlow gateway -> ArmorIQ PEP -> Treasury MCP.' },
+  { id: 'scene_4', sceneNumber: 4, title: 'How We Used ElevenLabs', time: '0:56 - 1:22', startSec: 56.5, desc: 'Sub-5s webhook holding pattern, structured parameter extraction, and AI voiceover.' },
+  { id: 'scene_5', sceneNumber: 5, title: 'How We Used ArmorIQ', time: '1:22 - 1:55', startSec: 82.0, desc: 'capturePlan -> getIntentToken -> invoke via proxy.armoriq.ai & dual-supervisor quorum.' },
+  { id: 'scene_6', sceneNumber: 6, title: 'Set It Up, Step by Step', time: '1:55 - 2:54', startSec: 115.5, desc: '7-step setup guide: ArmorIQ platform onboarding, policies, env, webhooks, and tests.' },
+  { id: 'scene_7', sceneNumber: 7, title: 'The Boundary Test', time: '2:54 - 3:23', startSec: 174.5, desc: 'Live screen recording: ALLOWED read, BLOCKED wire diversion, HELD refund release.' },
+  { id: 'scene_8', sceneNumber: 8, title: 'How It Differs', time: '3:23 - 3:45', startSec: 203.8, desc: 'Intent enforcement vs semantic guardrails, post-hoc logging, and blanket API keys.' },
+  { id: 'scene_9', sceneNumber: 9, title: 'Close & Disclosures', time: '3:45 - 3:58', startSec: 225.8, desc: 'Sandbox environment disclosures, MIT/OFL license credits, and platform references.' }
 ];
 
 export default function ExplainerVideoSection({

@@ -163,6 +163,22 @@ export default function JudgesPage({ onNavigate }) {
           </a>
 
           <a
+            href="/how-it-works"
+            onClick={(e) => {
+              if (onNavigate) {
+                e.preventDefault();
+                onNavigate('how-it-works');
+              }
+            }}
+            className="btn btn-primary btn-sm mobile-tap-target"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 16px', minHeight: '44px', textDecoration: 'none', fontWeight: 700 }}
+          >
+            <Sparkles size={15} />
+            <span>How It Works Guide (/how-it-works)</span>
+            <ArrowRight size={13} />
+          </a>
+
+          <a
             href="/docs/flowguard-guide.pdf"
             target="_blank"
             rel="noopener noreferrer"
@@ -245,10 +261,10 @@ export default function JudgesPage({ onNavigate }) {
             </p>
             <a
               href="/how-it-works"
-              onClick={(e) => { e.preventDefault(); onNavigate('enclave'); }}
+              onClick={(e) => { e.preventDefault(); onNavigate('how-it-works'); }}
               style={{ fontSize: '0.8rem', color: '#34d399', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
             >
-              <span>Inspect MCP & Enclave</span>
+              <span>Inspect Step-by-Step Guide (/how-it-works)</span>
               <ArrowRight size={13} />
             </a>
           </div>

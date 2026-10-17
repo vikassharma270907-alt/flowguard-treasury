@@ -1,32 +1,32 @@
-BeyondFlow — 3-Minute Hackathon Explainer Video Credits & Attribution
+BeyondFlow — Technical Explainer Video Credits & Disclosures
 ========================================================================
 
-1. AI Voice & Narration:
-   - "Narration: AI voice generated with ElevenLabs"
-   - Voice Model: Eleven Multilingual v2 / Sarah (calm, clear, professional voice)
-   - Provider: ElevenLabs Inc. (https://elevenlabs.io)
-   - Usage: Licensed under developer subscription terms.
+PRODUCT & ARCHITECTURE
+- Product: BeyondFlow (formerly IntentGate)
+- Category: Autonomous Treasury & Intent Vault
+- Governance: ArmorIQ Identity & Policy Assertion (IAP) & Policy Enforcement Point (PEP)
+- Conversational Voice: ElevenLabs Conversational Voice Agent Platform
+- Protocols: Model Context Protocol (MCP) by Anthropic, JSON-RPC 2.0 over HTTP/SSE
+- Repository: https://github.com/vikassharma270907-alt/flowguard-treasury
+- Live Demo: https://flowguard-treasury.vercel.app
 
-2. Cryptographic Intent Governance:
-   - ArmorIQ Platform, CSRG-IAP & PEP Proxy
-   - SDK: @armoriq/sdk (v0.6.10) (MIT License)
-   - Verified Runs: proxy.armoriq.ai, iap.armoriq.ai, api.armoriq.ai
-   - Trace Ref: armoriq:5081adc84221:1a1472a954f (Recorded from live run on 2026-10-17)
+AUDIO ATTRIBUTION
+- Narration: AI voice generated with ElevenLabs
+- Voice Model: George (JBFqnCBsd6RMkjVDRZzb) — Warm, resonant, articulate narrator
+- Timestamps: Character & word-level forced alignment via ElevenLabs /v1/text-to-speech/{voice_id}/with-timestamps API
+- Background Audio: No music or disruptive audio tracks; speech-first technical clarity mastered at ~-16 LUFS
 
-3. Tool Model Context Protocol:
-   - Model Context Protocol (MCP) by Anthropic
-   - SDK: @modelcontextprotocol/sdk (v1.32.1) (MIT License)
+RECORDINGS & VERIFICATION EVIDENCE
+- Boundary Test Screen Recording: Real execution capture from supervisor playground & live ArmorIQ proxy
+  - Allowed: lookup_order (Status: success, verified: true)
+  - Blocked: change_payout (PolicyBlockedException, HTTP 403, reason: tool_not_in_allowlist)
+  - Held: issue_refund (POST /delegation/request, delegationId: ff0b796d-db11-4342-8053-046ff86f9540, dual supervisor approval)
+- Trace ID: armoriq:5081adc84221:1a146791a57
+- Operator Workspace Org: dd9e9695-e58d-4e56-8cff-ef9617ba4c54
+- Governed MCP Server: flowguard-treasury-mcp (UUID: 7540cd0a-7d76-414a-a849-96b337a0c6ed)
+- Active Policy: flowguard-treasury-allowlist (UUID: 23f8f304-0f6b-44a0-9bba-fa9886ca611b)
+- Recorded Date: October 16–17, 2026
 
-4. Typography & Icons:
-   - Inter (SIL Open Font License 1.1)
-   - JetBrains Mono (Apache License 2.0)
-   - Lucide Icons (ISC License)
-
-5. Audio & Music:
-   - No background music used (pure high-contrast vocal delivery at ~ -16 LUFS to guarantee speech intelligibility and zero copyright ambiguity).
-
-6. Environment & Data Attestation:
-   - "Sandbox / test environment. No real funds or customer data."
-   - Synthetic mock ledger records: ORD-1001, ACC-4471.
-   - Project Repository: https://github.com/vikassharma270907-alt/flowguard-treasury
-   - Live Application: https://flowguard-treasury.vercel.app
+ENVIRONMENT & DATA ATTESTATION
+- Synthetic / Sandbox Data Only: Order ORD-1001, customer Dana Whitfield, account ACC-4471.
+- No real funds, customer PII, or live banking credentials were used or moved.

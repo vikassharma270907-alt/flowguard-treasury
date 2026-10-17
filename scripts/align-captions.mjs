@@ -3,16 +3,17 @@ import path from 'node:path';
 
 const manifest = JSON.parse(fs.readFileSync('video/audio/manifest.json', 'utf8'));
 
-// Planned start offsets for each scene in the timeline (seconds)
+// Exact planned timeline offsets for all 9 scenes (seconds)
 const sceneOffsets = [
-  0.5,    // Scene 1: 0:00.5
-  19.5,   // Scene 2: 0:19.5
-  31.0,   // Scene 3: 0:31.0
-  59.0,   // Scene 4: 0:59.0
-  85.0,   // Scene 5: 1:25.0
-  126.0,  // Scene 6: 2:06.0
-  153.0,  // Scene 7: 2:33.0
-  173.0   // Scene 8: 2:53.0
+  0.5,    // Scene 1: 0:00.5 -> 16.34s
+  17.0,   // Scene 2: 0:17.0 -> 29.77s
+  30.5,   // Scene 3: 0:30.5 -> 55.62s
+  56.5,   // Scene 4: 0:56.5 -> 81.02s
+  82.0,   // Scene 5: 1:22.0 -> 114.37s
+  115.5,  // Scene 6: 1:55.5 -> 173.36s
+  174.5,  // Scene 7: 2:54.5 -> 202.78s
+  203.8,  // Scene 8: 3:23.8 -> 224.88s
+  225.8   // Scene 9: 3:45.8 -> 237.09s
 ];
 
 function formatSrtTime(totalSec) {
@@ -33,6 +34,15 @@ function formatVttTime(totalSec) {
 
 let srtEntries = [];
 let vttEntries = [];
+let transcriptLines = [
+  '# BeyondFlow — Technical Explainer Video Transcript',
+  '',
+  '> **Narration**: AI voice generated with ElevenLabs (Voice: George)',
+  '> **Target Runtime**: ~3:55 (Hard cap 4:00)',
+  '> **Environment**: Sandbox / test environment. No real funds or customer data.',
+  ''
+];
+
 let counter = 1;
 
 for (let i = 0; i < manifest.length; i++) {
@@ -44,6 +54,13 @@ for (let i = 0; i < manifest.length; i++) {
   const chars = align.characters;
   const starts = align.character_start_times_seconds;
   const ends = align.character_end_times_seconds;
+
+  // Add to transcript
+  transcriptLines.push(`## Scene ${scene.sceneNumber}: ${scene.title}`);
+  transcriptLines.push(`*Time: ${formatVttTime(offset)} – ${formatVttTime(offset + scene.actualSpeechSeconds)}*`);
+  transcriptLines.push('');
+  transcriptLines.push(scene.text);
+  transcriptLines.push('');
 
   // 1. Group into words first
   let words = [];
@@ -91,7 +108,13 @@ for (let i = 0; i < manifest.length; i++) {
   }
 }
 
+if (!fs.existsSync('out')) {
+  fs.mkdirSync('out', { recursive: true });
+}
+
 fs.writeFileSync('out/captions.srt', srtEntries.join('\n'));
 fs.writeFileSync('client/public/captions.vtt', 'WEBVTT\n\n' + vttEntries.join('\n'));
+fs.writeFileSync('out/transcript.md', transcriptLines.join('\n'));
 
-console.log(`Successfully generated ${counter - 1} word-aligned subtitle cues!`);
+console.log(`Successfully generated ${counter - 1} word-aligned subtitle cues for 9 scenes!`);
+console.log(`Saved: out/captions.srt, client/public/captions.vtt, out/transcript.md`);
