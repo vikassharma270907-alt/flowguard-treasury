@@ -409,11 +409,11 @@ export default function Footer({
                           <span
                             style={{
                               fontSize: '11px',
-                              color: isDark ? '#a1a1aa' : '#6b7280',
+                              color: isDark ? '#d4d4d8' : '#1e293b',
                               backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)',
                               padding: '2px 6px',
                               borderRadius: '4px',
-                              fontWeight: 500,
+                              fontWeight: 600,
                               lineHeight: 1
                             }}
                           >

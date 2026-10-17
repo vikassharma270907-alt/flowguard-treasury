@@ -76,24 +76,19 @@ try {
 
         const page = await browser.newPage({
           viewport: { width: vp.width, height: vp.height },
+          colorScheme: theme,
         });
 
-        await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
-
-        // Apply theme deterministically
-        await page.evaluate((th) => {
-          if (th === 'dark') {
-            document.documentElement.classList.add('dark');
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('beyondflow_theme', 'dark');
-          } else {
-            document.documentElement.classList.remove('dark');
-            document.documentElement.setAttribute('data-theme', 'light');
-            localStorage.setItem('beyondflow_theme', 'light');
-          }
+        await page.addInitScript((th) => {
+          localStorage.setItem('beyondflow-theme', th);
+          localStorage.setItem('flowguard-theme', th);
+          document.documentElement.setAttribute('data-theme', th);
+          document.documentElement.className = th;
+          document.cookie = `beyondflow-theme=${th}; path=/; max-age=31536000; SameSite=Lax`;
         }, theme);
 
-        await page.waitForTimeout(400);
+        await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
+        await page.waitForTimeout(500);
 
         // Take screenshot
         const shotPath = path.join(
@@ -126,7 +121,11 @@ try {
         if (violations.length > 0) {
           violations.forEach((v) => {
             console.log(`    [FAIL] ${v.id} (${v.impact}): ${v.description}`);
-            console.log(`      Affected: ${v.nodes.map((n) => n.target.join(' ')).slice(0, 3).join(', ')}`);
+            v.nodes.slice(0, 5).forEach((n) => {
+              console.log(`      Node: ${n.target.join(' ')}`);
+              console.log(`        Failure: ${n.failureSummary}`);
+              console.log(`        Data: ${JSON.stringify(n.any?.map((a) => a.data))}`);
+            });
           });
         }
 

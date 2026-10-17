@@ -395,7 +395,7 @@ export default function OverviewScreen({
           <div style={{ background: 'var(--muted)', padding: '14px', borderRadius: '8px', border: '1px solid var(--border)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
               <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--foreground)' }}>1. AI Agent Framework</span>
-              <span className="badge badge-live" style={{ fontSize: '0.62rem' }}>VERIFIED</span>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, padding: '2px 8px', borderRadius: '9999px', background: 'var(--verdict-allowed-bg)', border: '1px solid var(--verdict-allowed-border)', color: 'var(--verdict-allowed-text)' }}>VERIFIED</span>
             </div>
             <div style={{ fontSize: '0.76rem', color: 'var(--foreground)', marginBottom: '4px' }}>
               <strong>ElevenLabs Voice Support Agent</strong> & Google ADK Treasury Controller.
@@ -409,24 +409,24 @@ export default function OverviewScreen({
           <div style={{ background: 'var(--muted)', padding: '14px', borderRadius: '8px', border: '1px solid var(--border)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
               <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--foreground)' }}>2. Active MCP Server</span>
-              <span className="badge badge-live" style={{ fontSize: '0.62rem' }}>VERIFIED</span>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, padding: '2px 8px', borderRadius: '9999px', background: 'var(--verdict-allowed-bg)', border: '1px solid var(--verdict-allowed-border)', color: 'var(--verdict-allowed-text)' }}>VERIFIED</span>
             </div>
             <div style={{ fontSize: '0.76rem', color: 'var(--foreground)', marginBottom: '4px' }}>
-              <code style={{ color: '#c084fc' }}>flowguard-treasury-mcp</code> (Spec 2024-11-05)
+              <code style={{ color: 'var(--step-indigo-text)' }}>flowguard-treasury-mcp</code> (Spec 2024-11-05)
             </div>
             <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>
-              5 governed tools exposed via JSON-RPC 2.0 at <code style={{ color: '#38bdf8' }}>/mcp</code> & CLI stdio (<code style={{ color: '#a1a1aa' }}>npm run mcp</code>).
+              5 governed tools exposed via JSON-RPC 2.0 at <code style={{ color: 'var(--step-sky-text)' }}>/mcp</code> & CLI stdio (<code style={{ color: 'var(--muted-foreground)' }}>npm run mcp</code>).
             </div>
           </div>
 
           {/* Card 3: Action ALLOWED */}
-          <div style={{ background: 'rgba(16, 185, 129, 0.06)', padding: '14px', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+          <div style={{ background: 'var(--verdict-allowed-bg)', padding: '14px', borderRadius: '8px', border: '1px solid var(--verdict-allowed-border)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#34d399' }}>3A. Action ALLOWED</span>
-              <span className="badge badge-success" style={{ fontSize: '0.62rem' }}>ALLOWED</span>
+              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--verdict-allowed-text)' }}>3A. Action ALLOWED</span>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, padding: '2px 8px', borderRadius: '9999px', background: 'var(--verdict-allowed-bg)', border: '1px solid var(--verdict-allowed-border)', color: 'var(--verdict-allowed-text)' }}>ALLOWED</span>
             </div>
             <div style={{ fontSize: '0.76rem', color: 'var(--foreground)', marginBottom: '4px' }}>
-              Tool: <code style={{ color: '#34d399' }}>lookup_order</code>
+              Tool: <code style={{ color: 'var(--verdict-allowed-text)' }}>lookup_order</code>
             </div>
             <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>
               Read-only inquiry allowed by ArmorIQ at call time; the tool executes with the intent token issued for the call.
@@ -434,13 +434,13 @@ export default function OverviewScreen({
           </div>
 
           {/* Card 4: Action BLOCKED */}
-          <div style={{ background: 'rgba(239, 68, 68, 0.06)', padding: '14px', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+          <div style={{ background: 'var(--verdict-blocked-bg)', padding: '14px', borderRadius: '8px', border: '1px solid var(--verdict-blocked-border)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#f87171' }}>3B. Action BLOCKED</span>
-              <span className="badge badge-warning" style={{ fontSize: '0.62rem', background: 'rgba(239, 68, 68, 0.2)', color: '#fca5a5' }}>BLOCKED</span>
+              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--verdict-blocked-text)' }}>3B. Action BLOCKED</span>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, padding: '2px 8px', borderRadius: '9999px', background: 'var(--verdict-blocked-bg)', border: '1px solid var(--verdict-blocked-border)', color: 'var(--verdict-blocked-text)' }}>BLOCKED</span>
             </div>
             <div style={{ fontSize: '0.76rem', color: 'var(--foreground)', marginBottom: '4px' }}>
-              Tool: <code style={{ color: '#f87171' }}>change_payout</code>
+              Tool: <code style={{ color: 'var(--verdict-blocked-text)' }}>change_payout</code>
             </div>
             <div style={{ fontSize: '0.72rem', color: 'var(--muted-foreground)' }}>
               Unverified bank diversion halted by ArmorIQ policy. Supervisor presses <strong>DENY</strong> & agent rejects execution.
@@ -552,7 +552,7 @@ export default function OverviewScreen({
               title: 'Baseline Multi-Currency Run',
               desc: '$33,110 cash across 4 wallets, $15,000 reserve floor, 5 supplier bills. Normal operations preserved.',
               badge: 'NORMAL OPS',
-              color: '#10b981',
+              color: 'var(--verdict-allowed-text)',
               actionLabel: 'View in Planner',
               targetView: 'planner'
             },
@@ -562,7 +562,7 @@ export default function OverviewScreen({
               title: 'Duplicate Invoice Attack',
               desc: 'Injects invoice INV-2024-884B (€4,250) with 91.2% similarity. Caught by duplicate shield & blocked.',
               badge: 'ATTACK SIM',
-              color: '#ef4444',
+              color: 'var(--verdict-blocked-text)',
               actionLabel: 'Inspect Risk Guard',
               targetView: 'invoices'
             },
@@ -572,7 +572,7 @@ export default function OverviewScreen({
               title: 'Delayed Receivable Shock',
               desc: '$14,500 customer receipt delayed by 14 days. Rules engine defers low-priority bills to protect floor.',
               badge: 'STRESS SHOCK',
-              color: '#f59e0b',
+              color: 'var(--verdict-held-text)',
               actionLabel: 'View Deferred Bills',
               targetView: 'planner'
             },
@@ -582,7 +582,7 @@ export default function OverviewScreen({
               title: 'Sandbox Deposit (+ $25,000)',
               desc: 'Calls Airwallex sandbox deposit to inject +$25,000 USD, unlocking held obligations automatically.',
               badge: 'REPLENISHMENT',
-              color: '#38bdf8',
+              color: 'var(--step-sky-text)',
               actionLabel: 'View Audit Ledger',
               targetView: 'audit'
             }
@@ -609,7 +609,7 @@ export default function OverviewScreen({
                         {item.code}
                       </span>
                       {isCurrent && (
-                        <span className="badge badge-live" style={{ fontSize: '0.62rem' }}>
+                        <span style={{ fontSize: '0.72rem', fontWeight: 700, padding: '2px 8px', borderRadius: '9999px', background: 'var(--verdict-allowed-bg)', border: '1px solid var(--verdict-allowed-border)', color: 'var(--verdict-allowed-text)' }}>
                           Active Now
                         </span>
                       )}
@@ -672,14 +672,14 @@ export default function OverviewScreen({
             justifyContent: 'center',
             border: '1px solid rgba(16, 185, 129, 0.4)'
           }}>
-            <PhoneCall size={20} color="#34d399" />
+            <PhoneCall size={20} color="var(--success)" />
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontWeight: 800, fontSize: '0.96rem', color: '#ffffff' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <span style={{ fontWeight: 800, fontSize: '0.96rem', color: 'var(--foreground)' }}>
                 ElevenLabs Voice Agent Gateway & Supervisor Playground
               </span>
-              <span className="badge badge-live">NEW FEATURE</span>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, padding: '2px 8px', borderRadius: '9999px', background: 'var(--badge-nav-bg)', border: '1px solid var(--badge-nav-border)', color: 'var(--step-indigo-text)' }}>NEW FEATURE</span>
             </div>
             <div style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginTop: '2px' }}>
               Real-time voice support agent with ArmorIQ-signed plans, &lt;5s timeout protection, and interactive supervisor approval quorum.
@@ -708,12 +708,12 @@ export default function OverviewScreen({
         boxShadow: 'var(--card-shadow)'
       }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <span className="badge badge-live" style={{ fontSize: '0.68rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', fontWeight: 700, padding: '2px 8px', borderRadius: '9999px', background: 'var(--badge-nav-bg)', border: '1px solid var(--badge-nav-border)', color: 'var(--step-indigo-text)' }}>
               <Box size={11} />
               THREE.JS 3D CRYPTOGRAPHIC MODEL
             </span>
-            <span className="badge badge-success" style={{ fontSize: '0.68rem' }}>60 FPS ACCELERATED</span>
+            <span style={{ fontSize: '0.72rem', fontWeight: 700, padding: '2px 8px', borderRadius: '9999px', background: 'var(--verdict-allowed-bg)', border: '1px solid var(--verdict-allowed-border)', color: 'var(--verdict-allowed-text)' }}>60 FPS ACCELERATED</span>
           </div>
           <h2 style={{ fontSize: '1.4rem', fontWeight: 800, margin: '0 0 8px 0', letterSpacing: '-0.02em', color: 'var(--foreground)' }}>
             BeyondFlow & ArmorIQ Intent Vault 3D
@@ -735,7 +735,7 @@ export default function OverviewScreen({
               className="btn btn-secondary btn-sm"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
             >
-              <Shield size={13} color="#10b981" />
+              <Shield size={13} color="var(--success)" />
               <span>Test Voice Agent Governance</span>
             </button>
           </div>
@@ -894,7 +894,7 @@ export default function OverviewScreen({
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span className="mono" style={{ fontSize: '0.9rem', fontWeight: 700, color: '#93c5fd' }}>
+                <span className="mono" style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--step-sky-text)' }}>
                   {b.currency} Wallet
                 </span>
                 <span className="badge badge-neutral" style={{ fontSize: '0.7rem' }}>

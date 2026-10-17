@@ -592,6 +592,7 @@ export default function Header({
           {isDesktop && (
             <a
               href="/judges"
+              className="btn btn-primary"
               onClick={(e) => {
                 e.preventDefault();
                 if (onNavigate) onNavigate('judges');
@@ -616,8 +617,8 @@ export default function Header({
               }}
               aria-label={t('nav.bookDemoAria')}
             >
-              <ShieldCheck size={14} />
-              <span>{t('nav.bookDemo')}</span>
+              <ShieldCheck size={14} color="#ffffff" />
+              <span style={{ color: '#ffffff' }}>{t('nav.bookDemo')}</span>
             </a>
           )}
 
@@ -689,6 +690,7 @@ export default function Header({
           {/* Quick Start for Judges */}
           <a
             href="/judges"
+            className="btn btn-primary"
             onClick={(e) => {
               e.preventDefault();
               setMobileMenuOpen(false);
@@ -709,8 +711,8 @@ export default function Header({
               textDecoration: 'none'
             }}
           >
-            <ShieldCheck size={16} />
-            <span>Judge Quick Start (/judges)</span>
+            <ShieldCheck size={16} color="#ffffff" />
+            <span style={{ color: '#ffffff' }}>Judge Quick Start (/judges)</span>
           </a>
 
           {/* Navigation Links */}

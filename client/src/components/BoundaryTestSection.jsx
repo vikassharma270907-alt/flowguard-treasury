@@ -36,20 +36,20 @@ export default function BoundaryTestSection() {
       {/* Header & Authenticity Badge */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
         <div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '9999px', background: 'rgba(56, 189, 248, 0.1)', border: '1px solid rgba(56, 189, 248, 0.3)', color: '#38bdf8', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#38bdf8', boxShadow: '0 0 8px #38bdf8' }}></span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '9999px', background: 'var(--badge-mcp-bg)', border: '1px solid var(--badge-mcp-border)', color: 'var(--step-sky-text)', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--step-sky-text)', boxShadow: '0 0 8px var(--step-sky-text)' }}></span>
             Centerpiece · Proof of Real ArmorIQ Enforcement
           </div>
           <h2 id="boundary-test-heading" style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.02em', margin: 0 }}>
             ArmorIQ Boundary Test: 3-Result Verification
           </h2>
           <p style={{ color: 'var(--muted-foreground)', fontSize: '0.92rem', marginTop: '6px', maxWidth: '780px', lineHeight: 1.5 }}>
-            Demonstrates real enforcement decisions rendered by ArmorIQ's cloud PEP Proxy (<code style={{ color: '#38bdf8' }}>proxy.armoriq.ai</code>) and CSRG-IAP Platform. Allow and block verdicts come from the platform's policy engine; refunds are held through a real platform delegation — no code-level allow/block <code style={{ color: '#f87171' }}>if</code> statements.
+            Demonstrates real enforcement decisions rendered by ArmorIQ's cloud PEP Proxy (<code style={{ color: 'var(--step-sky-text)' }}>proxy.armoriq.ai</code>) and CSRG-IAP Platform. Allow and block verdicts come from the platform's policy engine; refunds are held through a real platform delegation — no code-level allow/block <code style={{ color: 'var(--verdict-blocked-text)' }}>if</code> statements.
           </p>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
-          <span style={{ fontSize: '0.78rem', color: '#10b981', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '4px 10px', borderRadius: '6px', fontWeight: 600 }}>
+          <span style={{ fontSize: '0.78rem', color: 'var(--verdict-allowed-text)', background: 'var(--verdict-allowed-bg)', border: '1px solid var(--verdict-allowed-border)', padding: '4px 10px', borderRadius: '6px', fontWeight: 600 }}>
             Recorded from a real ArmorIQ run on 16 Oct 2026
           </span>
           <a
@@ -80,13 +80,13 @@ export default function BoundaryTestSection() {
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
             Registered Agent
           </span>
-          <strong style={{ color: '#38bdf8', fontFamily: 'monospace' }}>flowguard-agent</strong>
+          <strong style={{ color: 'var(--step-sky-text)', fontFamily: 'monospace' }}>flowguard-agent</strong>
         </div>
         <div>
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
             Governed MCP Server
           </span>
-          <strong style={{ color: '#34d399', fontFamily: 'monospace' }}>flowguard-treasury-mcp</strong>
+          <strong style={{ color: 'var(--verdict-allowed-text)', fontFamily: 'monospace' }}>flowguard-treasury-mcp</strong>
         </div>
         <div>
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
@@ -98,13 +98,13 @@ export default function BoundaryTestSection() {
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
             Active Policy
           </span>
-          <strong style={{ color: '#c084fc', fontFamily: 'monospace' }}>flowguard-treasury-allowlist</strong>
+          <strong style={{ color: 'var(--step-indigo-text)', fontFamily: 'monospace' }}>flowguard-treasury-allowlist</strong>
         </div>
         <div>
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
             Run / Trace ID
           </span>
-          <strong style={{ color: '#fbbf24', fontFamily: 'monospace' }}>trace_armoriq_20261016_887ms</strong>
+          <strong style={{ color: 'var(--step-amber-text)', fontFamily: 'monospace' }}>trace_armoriq_20261016_887ms</strong>
         </div>
         <div>
           <span style={{ fontSize: '0.68rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
@@ -114,7 +114,7 @@ export default function BoundaryTestSection() {
             href="https://platform.armoriq.ai"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: '#38bdf8', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 600 }}
+            style={{ color: 'var(--step-sky-text)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 600 }}
           >
             <span>Verified on platform</span>
             <ExternalLink size={11} />
@@ -130,9 +130,9 @@ export default function BoundaryTestSection() {
           const isBlocked = c.verdict === 'BLOCKED';
           const isHeld = c.verdict === 'HELD';
 
-          const badgeBg = isAllowed ? 'var(--success-bg)' : isBlocked ? 'var(--danger-bg)' : 'var(--warning-bg)';
-          const badgeColor = isAllowed ? 'var(--success)' : isBlocked ? 'var(--danger)' : 'var(--warning)';
-          const borderColor = isSelected ? (isAllowed ? 'var(--success)' : isBlocked ? 'var(--danger)' : 'var(--warning)') : 'var(--border)';
+          const badgeBg = isAllowed ? 'var(--verdict-allowed-bg)' : isBlocked ? 'var(--verdict-blocked-bg)' : 'var(--verdict-held-bg)';
+          const badgeColor = isAllowed ? 'var(--verdict-allowed-text)' : isBlocked ? 'var(--verdict-blocked-text)' : 'var(--verdict-held-text)';
+          const borderColor = isSelected ? (isAllowed ? 'var(--verdict-allowed-text)' : isBlocked ? 'var(--verdict-blocked-text)' : 'var(--verdict-held-text)') : 'var(--border)';
 
           return (
             <button
@@ -195,19 +195,19 @@ export default function BoundaryTestSection() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '12px', marginBottom: '18px' }}>
           <div style={{ background: 'var(--card)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
             <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', textTransform: 'uppercase' }}>Token ID</div>
-            <div style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: '#38bdf8', wordBreak: 'break-all' }}>
+            <div style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: 'var(--step-sky-text)', wordBreak: 'break-all' }}>
               {activeCase.tokenId}
             </div>
           </div>
           <div style={{ background: 'var(--card)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
             <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', textTransform: 'uppercase' }}>Canonical Plan Hash (SHA-256)</div>
-            <div style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: '#c084fc', wordBreak: 'break-all' }}>
+            <div style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: 'var(--brand-violet)', wordBreak: 'break-all' }}>
               {activeCase.planHash}
             </div>
           </div>
           <div style={{ background: 'var(--card)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
             <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', textTransform: 'uppercase' }}>Policy Ref (OPA)</div>
-            <div style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: '#34d399', wordBreak: 'break-all' }}>
+            <div style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: 'var(--verdict-allowed-text)', wordBreak: 'break-all' }}>
               {activeCase.policyRef}
             </div>
           </div>
@@ -216,18 +216,18 @@ export default function BoundaryTestSection() {
         {/* Live Verdict Details */}
         {activeCase.verdict === 'ALLOWED' && (
           <div style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.25)', borderRadius: '8px', padding: '16px', marginBottom: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#34d399', fontWeight: 700, marginBottom: '6px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--verdict-allowed-text)', fontWeight: 700, marginBottom: '6px' }}>
               <CheckCircle2 size={18} />
               <span>ALLOWED by ArmorIQ Stored Policy</span>
             </div>
             <p style={{ fontSize: '0.85rem', color: 'var(--foreground)', margin: '0 0 10px 0' }}>
-              Verified through ArmorIQ PEP Proxy. The tool was matched against allowlist policy <code style={{ color: '#34d399' }}>{realRunData.policyName}</code> and forwarded downstream to the MCP server.
+              Verified through ArmorIQ PEP Proxy. The tool was matched against allowlist policy <code style={{ color: 'var(--verdict-allowed-text)' }}>{realRunData.policyName}</code> and forwarded downstream to the MCP server.
             </p>
             <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', marginBottom: '4px' }}>Returned Payload:</div>
             <pre
               tabIndex={0}
               aria-label="Returned payload JSON"
-              style={{ margin: 0, padding: '10px', background: 'rgba(0, 0, 0, 0.5)', borderRadius: '6px', fontSize: '0.78rem', color: 'var(--brand-accent-text)', overflowX: 'auto', fontFamily: 'monospace' }}
+              style={{ margin: 0, padding: '10px', background: 'var(--surface-muted)', border: '1px solid var(--border)', borderRadius: '6px', fontSize: '0.78rem', color: 'var(--foreground)', overflowX: 'auto', fontFamily: 'monospace' }}
             >
               {JSON.stringify(activeCase.resultPayload, null, 2)}
             </pre>
@@ -236,30 +236,30 @@ export default function BoundaryTestSection() {
 
         {activeCase.verdict === 'BLOCKED' && (
           <div style={{ background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.25)', borderRadius: '8px', padding: '16px', marginBottom: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f87171', fontWeight: 700, marginBottom: '6px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--verdict-blocked-text)', fontWeight: 700, marginBottom: '6px' }}>
               <XCircle size={18} />
               <span>BLOCKED by ArmorIQ Policy (HTTP 403)</span>
             </div>
             <p style={{ fontSize: '0.85rem', color: 'var(--foreground)', margin: '0 0 10px 0' }}>
-              <strong>Exception:</strong> <code style={{ color: '#f87171' }}>{activeCase.exception}</code> · Reason: <code style={{ color: '#f87171' }}>{activeCase.reason}</code>
+              <strong>Exception:</strong> <code style={{ color: 'var(--verdict-blocked-text)' }}>{activeCase.exception}</code> · Reason: <code style={{ color: 'var(--verdict-blocked-text)' }}>{activeCase.reason}</code>
             </p>
             <p style={{ fontSize: '0.82rem', color: 'var(--muted-foreground)', margin: 0 }}>
-              The client attempted to redirect bank routing to <code style={{ color: '#fbbf24' }}>{activeCase.params.new_destination}</code>. ArmorIQ rejected this invocation at proxy level because the action is not in the agent's authorized allowlist: <code style={{ color: '#a1a1aa' }}>{JSON.stringify(activeCase.allowedTools)}</code>.
+              The client attempted to redirect bank routing to <code style={{ color: 'var(--verdict-held-text)' }}>{activeCase.params.new_destination}</code>. ArmorIQ rejected this invocation at proxy level because the action is not in the agent's authorized allowlist: <code style={{ color: 'var(--muted-foreground)' }}>{JSON.stringify(activeCase.allowedTools)}</code>.
             </p>
           </div>
         )}
 
         {activeCase.verdict === 'HELD' && (
           <div style={{ background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.25)', borderRadius: '8px', padding: '16px', marginBottom: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#fbbf24', fontWeight: 700, marginBottom: '6px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--verdict-held-text)', fontWeight: 700, marginBottom: '6px' }}>
               <AlertTriangle size={18} />
               <span>HELD for Human Approval — 2 Supervisor Approvals Required</span>
             </div>
             <p style={{ fontSize: '0.85rem', color: 'var(--foreground)', margin: '0 0 8px 0' }}>
-              <strong>Mechanism:</strong> <code style={{ color: '#fbbf24' }}>{activeCase.mechanism || 'ArmorIQ platform delegation'}</code> · Delegation ID: <code style={{ color: '#38bdf8' }}>{activeCase.delegationId}</code>
+              <strong>Mechanism:</strong> <code style={{ color: 'var(--verdict-held-text)' }}>{activeCase.mechanism || 'ArmorIQ platform delegation'}</code> · Delegation ID: <code style={{ color: 'var(--step-sky-text)' }}>{activeCase.delegationId}</code>
             </p>
             <p style={{ fontSize: '0.82rem', color: 'var(--muted-foreground)', margin: 0 }}>
-              Financial disbursement of ${activeCase.params.amount} USD cannot be executed autonomously. A delegation request was registered on ArmorIQ platform (<code style={{ color: '#fbbf24' }}>status: {activeCase.delegationStatus}</code>), awaiting dual supervisor quorum.
+              Financial disbursement of ${activeCase.params.amount} USD cannot be executed autonomously. A delegation request was registered on ArmorIQ platform (<code style={{ color: 'var(--verdict-held-text)' }}>status: {activeCase.delegationStatus}</code>), awaiting dual supervisor quorum.
             </p>
           </div>
         )}
@@ -267,12 +267,12 @@ export default function BoundaryTestSection() {
         {/* Intent Mismatch Bonus Verification */}
         <div style={{ background: 'rgba(129, 140, 248, 0.06)', border: '1px solid rgba(129, 140, 248, 0.2)', borderRadius: '8px', padding: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
           <div>
-            <div style={{ fontSize: '0.72rem', color: '#818cf8', fontWeight: 700, textTransform: 'uppercase' }}>
+            <div style={{ fontSize: '0.72rem', color: 'var(--step-indigo-text)', fontWeight: 700, textTransform: 'uppercase' }}>
               Cryptographic Intent Binding Verification
             </div>
             <div style={{ fontSize: '0.82rem', color: 'var(--foreground)' }}>
-              Declared plan <code style={{ color: '#38bdf8' }}>{realRunData.intentMismatchCase.declaredPlan}</code> → Attempted <code style={{ color: '#f87171' }}>{realRunData.intentMismatchCase.attemptedInvocation}</code>:
-              Refused locally by <strong style={{ color: '#f87171' }}>{realRunData.intentMismatchCase.exception}</strong> before any network call.
+              Declared plan <code style={{ color: 'var(--step-sky-text)' }}>{realRunData.intentMismatchCase.declaredPlan}</code> → Attempted <code style={{ color: 'var(--verdict-blocked-text)' }}>{realRunData.intentMismatchCase.attemptedInvocation}</code>:
+              Refused locally by <strong style={{ color: 'var(--verdict-blocked-text)' }}>{realRunData.intentMismatchCase.exception}</strong> before any network call.
             </div>
           </div>
           <button

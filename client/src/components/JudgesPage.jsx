@@ -319,28 +319,28 @@ export default function JudgesPage({ onNavigate }) {
               title: 'Baseline Multi-Currency Run',
               desc: '$33,110 cash across 4 wallets, $15,000 reserve floor, 5 supplier bills. Normal operations preserved.',
               badge: 'NORMAL OPS',
-              color: '#10b981'
+              color: 'var(--verdict-allowed-text)'
             },
             {
               code: 'Scenario B',
               title: 'Duplicate Invoice Attack',
               desc: 'Injects invoice INV-2024-884B (€4,250) with 91.2% similarity. Caught by duplicate shield & blocked.',
               badge: 'ATTACK SIM',
-              color: '#ef4444'
+              color: 'var(--verdict-blocked-text)'
             },
             {
               code: 'Scenario C',
               title: 'Delayed Receivable Shock',
               desc: '$14,500 customer receipt delayed by 14 days. Rules engine defers low-priority bills to protect floor.',
               badge: 'STRESS SHOCK',
-              color: '#f59e0b'
+              color: 'var(--verdict-held-text)'
             },
             {
               code: 'Scenario D',
               title: 'Sandbox Deposit (+ $25,000)',
               desc: 'Calls Airwallex sandbox deposit to inject +$25,000 USD, unlocking held obligations automatically.',
               badge: 'REPLENISHMENT',
-              color: '#38bdf8'
+              color: 'var(--step-sky-text)'
             }
           ].map((item, idx) => (
             <div
@@ -390,7 +390,7 @@ export default function JudgesPage({ onNavigate }) {
         <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--foreground)', marginBottom: '16px' }}>
           📋 Hackathon Rules Compliance Table
         </h2>
-        <div className="table-cards-mobile" style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid var(--border)' }}>
+        <div className="table-cards-mobile" tabIndex={0} aria-label="Hackathon Rules Compliance Table" style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid var(--border)' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
             <thead>
               <tr style={{ background: 'var(--card)', borderBottom: '1px solid var(--border)' }}>
@@ -410,7 +410,7 @@ export default function JudgesPage({ onNavigate }) {
                     <div style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)' }}>{r.evidence}</div>
                   </td>
                   <td style={{ padding: '14px 16px', verticalAlign: 'top' }}>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '3px 8px', borderRadius: '4px', background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', fontWeight: 700, fontSize: '0.75rem' }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '3px 8px', borderRadius: '4px', background: 'var(--verdict-allowed-bg)', color: 'var(--verdict-allowed-text)', border: '1px solid var(--verdict-allowed-border)', fontWeight: 700, fontSize: '0.75rem' }}>
                       <CheckCircle2 size={12} />
                       {r.status}
                     </span>
@@ -427,7 +427,7 @@ export default function JudgesPage({ onNavigate }) {
         <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--foreground)', marginBottom: '16px' }}>
           🔍 Claims & Proof Verification Table
         </h2>
-        <div className="table-cards-mobile" style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid var(--border)' }}>
+        <div className="table-cards-mobile" tabIndex={0} aria-label="Claims and Proof Verification Table" style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid var(--border)' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
             <thead>
               <tr style={{ background: 'var(--card)', borderBottom: '1px solid var(--border)' }}>
@@ -450,13 +450,13 @@ export default function JudgesPage({ onNavigate }) {
                     {c.verification}
                   </td>
                   <td style={{ padding: '14px 16px', verticalAlign: 'top' }}>
-                    <span style={{ fontSize: '0.72rem', padding: '2px 8px', borderRadius: '4px', background: 'rgba(56, 189, 248, 0.1)', color: '#38bdf8', fontWeight: 600, border: '1px solid rgba(56, 189, 248, 0.25)' }}>
+                    <span style={{ fontSize: '0.72rem', padding: '2px 8px', borderRadius: '4px', background: 'var(--badge-mcp-bg)', color: 'var(--badge-mcp-text)', fontWeight: 600, border: '1px solid var(--badge-mcp-border)' }}>
                       {c.status}
                     </span>
                   </td>
                 </tr>
               ))}
-           </tbody>
+            </tbody>
           </table>
         </div>
       </section>
@@ -470,12 +470,12 @@ export default function JudgesPage({ onNavigate }) {
           Unedited console output from live runs of the verification scripts, committed to the repository (no secrets are printed):
         </p>
         <ul style={{ paddingLeft: '18px', color: 'var(--muted-foreground)', fontSize: '0.85rem', lineHeight: 1.9, margin: 0 }}>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-enforcement-2026-10-17.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-enforcement-2026-10-17.txt</a> — fresh live run: allow / block / hold verdicts with real token and delegation IDs.</li>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-intent-mismatch-2026-10-17.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-intent-mismatch-2026-10-17.txt</a> — fresh live run: IntentMismatchException (wrong action) & TokenExpiredException; Case 2 honest boundary.</li>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-enforcement-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-enforcement-2026-10-16.txt</a> — baseline run: allow / block / hold platform verdicts.</li>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-intent-mismatch-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>test-intent-mismatch-2026-10-16.txt</a> — baseline run: intent-binding refusals.</li>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/EVIDENCE.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>EVIDENCE.md</a> — full audit-log entries for each verdict, including the end-to-end allowed call.</li>
-          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/README.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>docs/evidence/README.md</a> — run metadata: repo revision, platform object IDs, per-case token and policy refs.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-enforcement-2026-10-17.txt" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--brand-accent-text)' }}>test-enforcement-2026-10-17.txt</a> — fresh live run: allow / block / hold verdicts with real token and delegation IDs.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-intent-mismatch-2026-10-17.txt" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--brand-accent-text)' }}>test-intent-mismatch-2026-10-17.txt</a> — fresh live run: IntentMismatchException (wrong action) & TokenExpiredException; Case 2 honest boundary.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-enforcement-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--brand-accent-text)' }}>test-enforcement-2026-10-16.txt</a> — baseline run: allow / block / hold platform verdicts.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/test-intent-mismatch-2026-10-16.txt" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--brand-accent-text)' }}>test-intent-mismatch-2026-10-16.txt</a> — baseline run: intent-binding refusals.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/EVIDENCE.md" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--brand-accent-text)' }}>EVIDENCE.md</a> — full audit-log entries for each verdict, including the end-to-end allowed call.</li>
+          <li><a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/docs/evidence/README.md" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--brand-accent-text)' }}>docs/evidence/README.md</a> — run metadata: repo revision, platform object IDs, per-case token and policy refs.</li>
         </ul>
       </section>
 
@@ -486,7 +486,7 @@ export default function JudgesPage({ onNavigate }) {
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '16px' }}>
           <div style={{ background: 'var(--card)', padding: '20px', borderRadius: '12px', border: '1px solid var(--border)' }}>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#38bdf8', marginBottom: '12px' }}>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--step-sky-text)', marginBottom: '12px' }}>
               ✨ What We Built for the Hackathon
             </h3>
             <ul style={{ paddingLeft: '18px', color: 'var(--muted-foreground)', fontSize: '0.85rem', lineHeight: 1.6, margin: 0 }}>
@@ -499,7 +499,7 @@ export default function JudgesPage({ onNavigate }) {
           </div>
 
           <div style={{ background: 'var(--card)', padding: '20px', borderRadius: '12px', border: '1px solid var(--border)' }}>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#818cf8', marginBottom: '12px' }}>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--step-indigo-text)', marginBottom: '12px' }}>
               📦 Third-Party Platforms & Libraries Used
             </h3>
             <ul style={{ paddingLeft: '18px', color: 'var(--muted-foreground)', fontSize: '0.85rem', lineHeight: 1.6, margin: 0 }}>
@@ -521,14 +521,14 @@ export default function JudgesPage({ onNavigate }) {
         <p style={{ fontSize: '0.88rem', color: 'var(--muted-foreground)', lineHeight: 1.6, margin: '0 0 14px 0' }}>
          <strong>Developer Statement:</strong> &ldquo;Yes, BeyondFlow reuses and adapts my earlier MIT-licensed IntentGate prototype components (such as the voice gateway holding pattern and Airwallex sandbox adapter) alongside official ArmorIQ SDK and MCP libraries. All code is disclosed under the MIT License.&rdquo; Third-party open-source libraries: <code>@armoriq/sdk</code>, <code>@modelcontextprotocol/sdk</code>, <code>three</code>, <code>react</code>, <code>express</code>. All sensitive operations use synthetic sandbox data only — no live banking rails, no real funds.
         </p>
-        <p style={{ fontSize: '0.82rem', color: '#94a3b8', margin: 0 }}>
-          Detailed dependency disclosures and licensing notices are documented in <a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/DISCLOSURES.md" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>DISCLOSURES.md</a>.
+        <p style={{ fontSize: '0.82rem', color: 'var(--muted-foreground)', margin: 0 }}>
+          Detailed dependency disclosures and licensing notices are documented in <a href="https://github.com/vikassharma270907-alt/flowguard-treasury/blob/main/DISCLOSURES.md" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--brand-accent-text)' }}>DISCLOSURES.md</a>.
         </p>
       </section>
 
       {/* Honest Limitations */}
       <section style={{ background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.25)', borderRadius: '12px', padding: '24px' }}>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fbbf24', marginBottom: '10px' }}>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--step-amber-text)', marginBottom: '10px' }}>
           ⚠️ Honest Technical Limitations
         </h2>
         <ul style={{ paddingLeft: '18px', color: 'var(--muted-foreground)', fontSize: '0.85rem', lineHeight: 1.6, margin: 0 }}>

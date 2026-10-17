@@ -208,9 +208,9 @@ export default function LiveEnforcementStrip() {
                     borderRadius: '6px',
                     fontSize: '0.68rem',
                     fontWeight: 700,
-                    background: 'rgba(99, 102, 241, 0.12)',
-                    color: 'var(--brand-indigo, #6366f1)',
-                    border: '1px solid rgba(99, 102, 241, 0.28)',
+                    background: 'var(--badge-nav-bg)',
+                    color: 'var(--step-indigo-text)',
+                    border: '1px solid var(--badge-nav-border)',
                     whiteSpace: 'nowrap'
                   }}
                 >

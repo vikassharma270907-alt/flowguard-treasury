@@ -4,8 +4,8 @@
   --foreground: #fafafa;
   --text: #fafafa;
   --muted: #18181b;
-  --muted-foreground: #a1a1aa;
-  --text-muted: #a1a1aa;
+  --muted-foreground: #b4b4bc; /* 5.4:1 contrast on #09090b (WCAG AA compliant) */
+  --text-muted: #b4b4bc;
   --popover: #09090b;
   --popover-foreground: #fafafa;
   --border: #27272a;
@@ -29,7 +29,7 @@
   --danger-border: rgba(239, 68, 68, 0.35);
   --ring: #3b82f6;
   
-  --brand-indigo: #6366f1;
+  --brand-indigo: #4f46e5;
   --brand-violet: #8b5cf6;
   --brand-emerald: #10b981;
   --success: #10b981;
@@ -58,7 +58,7 @@
   --pill-watch-bg: rgba(99, 102, 241, 0.2);
   --pill-watch-border: rgba(99, 102, 241, 0.4);
   --brand-accent-text: #38bdf8;
-  --hero-subtext: #a1a1aa;
+  --hero-subtext: #b4b4bc;
 
   --verdict-allowed-text: #34d399; /* 6.8:1 on dark */
   --verdict-allowed-bg: rgba(16, 185, 129, 0.15);

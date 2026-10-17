@@ -16,8 +16,8 @@ export default function HowWeUseArmorIQSection() {
       aria-labelledby="architecture-heading"
     >
       <div style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '9999px', background: 'rgba(129, 140, 248, 0.1)', border: '1px solid rgba(129, 140, 248, 0.3)', color: '#818cf8', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
-          <Shield size={12} color="#818cf8" />
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '9999px', background: 'var(--badge-nav-bg)', border: '1px solid var(--badge-nav-border)', color: 'var(--step-indigo-text)', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
+          <Shield size={12} color="currentColor" />
           Policy-Enforced Intent Pipeline
         </div>
         <h2 id="architecture-heading" style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.02em', margin: 0 }}>
@@ -121,7 +121,7 @@ export default function HowWeUseArmorIQSection() {
       </h3>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '14px' }}>
         <div style={{ background: 'var(--background)', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#38bdf8', fontWeight: 700, fontSize: '0.88rem', marginBottom: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--step-sky-text)', fontWeight: 700, fontSize: '0.88rem', marginBottom: '6px' }}>
             <FileCode size={16} />
             <code>client.capturePlan()</code>
           </div>
@@ -131,7 +131,7 @@ export default function HowWeUseArmorIQSection() {
         </div>
 
         <div style={{ background: 'var(--background)', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#818cf8', fontWeight: 700, fontSize: '0.88rem', marginBottom: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--step-indigo-text)', fontWeight: 700, fontSize: '0.88rem', marginBottom: '6px' }}>
             <Zap size={16} />
             <code>client.getIntentToken()</code>
           </div>
@@ -141,7 +141,7 @@ export default function HowWeUseArmorIQSection() {
         </div>
 
         <div style={{ background: 'var(--background)', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#34d399', fontWeight: 700, fontSize: '0.88rem', marginBottom: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--verdict-allowed-text)', fontWeight: 700, fontSize: '0.88rem', marginBottom: '6px' }}>
             <Server size={16} />
             <code>client.invoke()</code>
           </div>
@@ -151,12 +151,12 @@ export default function HowWeUseArmorIQSection() {
         </div>
 
         <div style={{ background: 'var(--background)', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#fbbf24', fontWeight: 700, fontSize: '0.88rem', marginBottom: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--verdict-held-text)', fontWeight: 700, fontSize: '0.88rem', marginBottom: '6px' }}>
             <Lock size={16} />
             <code>client.createDelegationRequest()</code>
           </div>
           <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', margin: 0, lineHeight: 1.4 }}>
-            For high-stakes tools like <code style={{ color: '#fbbf24' }}>issue_refund</code>, creates a pending delegation on ArmorIQ requiring 2 human supervisor approvals before release.
+            For high-stakes tools like <code style={{ color: 'var(--verdict-held-text)' }}>issue_refund</code>, creates a pending delegation on ArmorIQ requiring 2 human supervisor approvals before release.
           </p>
         </div>
       </div>

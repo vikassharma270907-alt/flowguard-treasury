@@ -3,20 +3,26 @@
 This document discloses all libraries, frameworks, tools, and developer lineage used in BeyondFlow for the ArmorIQ Flow State Hackathon, in accordance with the official hackathon rules.
 
 ## 1. Development Window & Git History
-- **Official Window**: Development was carried out within the official hackathon window (October 10–17, 2026).
-- **Git History**: Commit history reflects iterative authoring of the ArmorIQ policy integration, the Model Context Protocol (MCP) server, the voice gateway holding pattern, and the cryptographic boundary test.
+
+- **Official window**: October 10 to 17, 2026.
+- **First commit in this repository**: October 15, 2026 (`ac099d0`).
+- **Commits before October 10, 2026**: none (0 commits).
+- **What predates the window** (if anything): nothing in this repository predates the window; earlier work is limited to the separate prototypes listed in section 2.
+- **Built fresh in the window**: ArmorIQ plan capture and intent-token flow, PEP enforcement for `lookup_order`, `change_payout`, and `issue_refund`, the voice-gateway holding pattern as integrated here, the dual-supervisor quorum, the verification scripts, and the explainer video.
 
 ## 2. Lineage & Development Statement
-- **Developer Statement**: &ldquo;Yes, BeyondFlow reuses and adapts my earlier MIT-licensed IntentGate prototype components alongside official ArmorIQ SDK and MCP libraries. All code is disclosed under the MIT License.&rdquo;
-- **Pre-Existing Code Disclosed (Built Prior to Hackathon Window)**:
-  1. *IntentGate Prototype*: Basic voice gateway concept for webhook routing and Airwallex sandbox adapter.
-  2. *Design & UI Subsystems*: India-first responsive Header and Footer navigation components, i18n English/Hindi dictionary skeleton, and Three.js 3D visual components (gyroscopic enclave, orbital particle background field).
-- **Built Fresh During Hackathon Window (October 10–17, 2026)**:
-  1. *ArmorIQ Cryptographic Core*: Full integration with `@armoriq/sdk` for `capturePlan`, CSRG-IAP intent token issuance, Merkle proof generation, and PEP reverse proxy execution (`proxy.armoriq.ai`).
-  2. *Live Policy Governance*: Onboarding and configuration of `flowguard-agent`, `flowguard-treasury-mcp`, and policy `flowguard-treasury-allowlist` on `platform.armoriq.ai`.
-  3. *Voice Telephony Holding Pattern*: Sub-5-second ElevenLabs holding pattern with asynchronous conversational hold messages and background supervisor resolution.
-  4. *Dual-Supervisor Quorum*: Platform delegation creation (`POST /delegation/request`) and multi-officer quorum verification.
-  5. *Explainer Video & Conformance Pipeline*: 9-scene master video rendering pipeline with ElevenLabs George AI voiceover, WCAG 2.1 AA keyboard accessibility suite, and automated viewport audits.
+
+BeyondFlow reuses and adapts earlier work by the same developer. All of it is MIT-licensed or self-authored:
+
+| Reused component | Where it lives | Origin |
+| :--- | :--- | :--- |
+| Voice gateway holding pattern (sub-5-second reply for held calls) | `gateway/` | Earlier IntentGate prototype, MIT |
+| Airwallex sandbox adapter | `server/` | Earlier IntentGate prototype, MIT |
+| Header, footer, `siteConfig.js`, English/Hindi i18n, and legal stub pages | `client/src/` (header/footer, i18n files, `siteConfig.js`), `vercel.json` rewrites | Separate website project by the same developer, adapted for BeyondFlow. `<FILL: approximate date it was built>` |
+| Theme tokens and UI subsystems | `client/src/index.css` and related components | `<FILL: origin>` |
+| Three.js scenes | `client/src/components/3d/` | `<FILL: origin, or "written for this project">` |
+
+The repository description on GitHub previously read "FlowGuard - Airwallex Sandbox Treasury Controller", reflecting the earlier prototype lineage.
 
 ## 3. Third-Party Libraries & Frameworks
 The following open-source packages and frameworks were utilized:
@@ -32,6 +38,7 @@ The following open-source packages and frameworks were utilized:
 
 ## 4. AI Coding Assistants
 - **Google Antigravity IDE (Gemini 2.5 Pro Agentic Engine)**: Used as an interactive pair-programming assistant for code generation, test script validation, linting, and documentation.
+- **Claude (Anthropic)**: used for project review, documentation and README drafting, and drafting prompts for coding agents. It had no access to the repository or API credentials.
 
 ## 5. Security & Synthetic Data Attestation
 - **No Production Customer Data**: 100% of customer names, order IDs (e.g. `ORD-1001`, `ORD-84920`), bank routing numbers, and accounts are synthetic mock/sandbox entities.
@@ -44,3 +51,11 @@ The following open-source packages and frameworks were utilized:
 - **Update API limits**: `PATCH /mcp/servers/{id}` accepts only `roleMapping` / `toolMetadata` changes — URL or name changes return 500s. Recreate the record if the endpoint URL must change.
 - **Naming rule**: the MCP identifier must equal the record name because the SDK builds the `X-Armoriq-MCP-Auth` header from `ARMORIQ_MCP_<SAFE_NAME>_{AUTH_TYPE,TOKEN}` environment variables keyed by the identifier passed to `invoke()`. Re-registering through the SDK after a console create would rename the record and break that mapping.
 - **Open prod endpoint by design**: the deployed `/mcp` endpoint currently runs without `MCP_AUTH_TOKEN` (open sandbox endpoint; synthetic data only) so the ArmorIQ PEP proxy can reach it during judging. The conformance suite therefore passes `18/18` locally and the prod run intentionally shows the single auth-check deviation; all other checks pass.
+
+## 7. Known Security Limitations
+
+- **Open production MCP endpoint.** See section 6. `/mcp` currently runs without `MCP_AUTH_TOKEN`; direct calls bypass ArmorIQ governance. `<FILL: if you enabled the token before submitting, replace this with: "The endpoint requires a bearer token; the ArmorIQ proxy supplies it through ARMORIQ_MCP_FLOWGUARD_TREASURY_MCP_TOKEN. A direct call without it is rejected (verified <date>).">`
+- **Intent binding is action-level.** Argument changes are not rejected by the intent token.
+- **Approval quorum is counted in the BeyondFlow gateway,** not by ArmorIQ.
+- **No caller identity verification** on the voice channel.
+- **Credential hygiene.** An API key fragment was visible in an earlier version of the demo video. The key was rotated on `<FILL: date, or remove this bullet if the video was re-cut before publication and the key was rotated>`.

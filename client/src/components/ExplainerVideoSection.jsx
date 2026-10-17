@@ -102,12 +102,12 @@ export default function ExplainerVideoSection({
     <section
       id="explainer-video"
       style={{
-        background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.4) 0%, rgba(13, 13, 17, 0.95) 100%)',
-        border: '1px solid rgba(99, 102, 241, 0.25)',
+        background: 'var(--card)',
+        border: '1px solid var(--border)',
         borderRadius: '16px',
         padding: '32px 24px',
         marginBottom: '40px',
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6)'
+        boxShadow: 'var(--card-shadow)'
       }}
     >
       {/* Header Badges */}
@@ -145,28 +145,28 @@ export default function ExplainerVideoSection({
               key={scene.id}
               onClick={() => jumpToScene(scene.startSec, idx)}
               style={{
-                background: activeSceneIdx === idx ? 'var(--pill-watch-bg)' : 'var(--secondary)',
-                border: activeSceneIdx === idx ? '1px solid var(--pill-watch-border)' : '1px solid var(--border)',
+                background: activeSceneIdx === idx ? 'var(--card)' : 'var(--secondary)',
+                border: activeSceneIdx === idx ? '2px solid var(--primary)' : '1px solid var(--border)',
                 borderRadius: '8px',
                 padding: '8px 10px',
                 textAlign: 'left',
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
-                color: activeSceneIdx === idx ? 'var(--foreground)' : 'var(--muted-foreground)'
+                color: 'var(--foreground)'
               }}
               title={scene.desc}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px' }}>
-                <span style={{ fontSize: '0.66rem', fontFamily: 'monospace', fontWeight: 600, color: activeSceneIdx === idx ? 'var(--brand-accent-text)' : 'var(--muted-foreground)' }}>
+                <span style={{ fontSize: '0.66rem', fontFamily: 'monospace', fontWeight: 700, color: 'var(--foreground)' }}>
                   {scene.time}
                 </span>
                 <span style={{
                   fontSize: '0.6rem',
-                  fontWeight: 700,
+                  fontWeight: 800,
                   padding: '1px 5px',
                   borderRadius: '4px',
-                  background: activeSceneIdx === idx ? 'var(--brand-indigo)' : 'var(--muted)',
-                  color: activeSceneIdx === idx ? '#ffffff' : 'var(--foreground)',
+                  background: activeSceneIdx === idx ? 'var(--primary)' : 'var(--muted)',
+                  color: activeSceneIdx === idx ? 'var(--primary-foreground)' : 'var(--foreground)',
                   border: '1px solid var(--border)'
                 }}>
                   P{scene.sceneNumber}
@@ -218,17 +218,17 @@ export default function ExplainerVideoSection({
         alignItems: 'center',
         gap: '12px',
         padding: '12px 18px',
-        background: 'rgba(0, 0, 0, 0.4)',
+        background: 'var(--surface-muted)',
         borderRadius: '10px',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
+        border: '1px solid var(--border)',
         fontSize: '0.78rem',
-        color: 'var(--text-muted)'
+        color: 'var(--foreground)'
       }}>
         {/* Verification Trace Badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <ShieldCheck size={16} color="#10b981" />
-          <span>
-            <strong>Recorded live on 2026-10-17</strong> (Trace: <code style={{ color: '#38bdf8' }}>armoriq:5081adc84221:1a1472a954f</code>)
+          <ShieldCheck size={16} color="var(--success)" />
+          <span style={{ color: 'var(--foreground)' }}>
+            <strong>Recorded live on 2026-10-17</strong> (Trace: <code style={{ color: 'var(--step-sky-text)', fontWeight: 600 }}>armoriq:5081adc84221:1a1472a954f</code>)
           </span>
         </div>
 
@@ -270,7 +270,7 @@ export default function ExplainerVideoSection({
       {showTranscript && (
         <div style={{
           marginTop: '18px',
-          background: 'rgba(0, 0, 0, 0.45)',
+          background: 'var(--surface-muted)',
           border: '1px solid var(--border)',
           borderRadius: '10px',
           padding: '20px',
@@ -280,8 +280,8 @@ export default function ExplainerVideoSection({
           lineHeight: 1.6,
           color: 'var(--foreground)'
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '10px' }}>
-            <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0, color: '#a5b4fc', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>
+            <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0, color: 'var(--step-indigo-text)', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Sparkles size={16} />
               <span>Full Explainer Narration Script (8 Scenes · Duration: 03:05)</span>
             </h4>
@@ -303,10 +303,10 @@ export default function ExplainerVideoSection({
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                  <span style={{ fontSize: '0.72rem', fontFamily: 'monospace', fontWeight: 700, color: '#38bdf8' }}>
+                  <span style={{ fontSize: '0.72rem', fontFamily: 'monospace', fontWeight: 700, color: 'var(--step-sky-text)' }}>
                     [{scene.time}]
                   </span>
-                  <span style={{ fontSize: '0.76rem', fontWeight: 800, color: '#f1f5f9' }}>
+                  <span style={{ fontSize: '0.76rem', fontWeight: 800, color: 'var(--foreground)' }}>
                     Scene {scene.sceneNumber}: {scene.title}
                   </span>
                 </div>
@@ -330,7 +330,7 @@ export default function ExplainerVideoSection({
       {showCredits && (
         <div style={{
           marginTop: '14px',
-          background: 'rgba(0, 0, 0, 0.45)',
+          background: 'var(--surface-muted)',
           border: '1px solid var(--border)',
           borderRadius: '10px',
           padding: '18px 20px',
@@ -338,7 +338,7 @@ export default function ExplainerVideoSection({
           color: 'var(--muted-foreground)',
           lineHeight: 1.6
         }}>
-          <div style={{ fontWeight: 800, color: '#fafafa', marginBottom: '8px', fontSize: '0.88rem' }}>
+          <div style={{ fontWeight: 800, color: 'var(--foreground)', marginBottom: '8px', fontSize: '0.88rem' }}>
             Official Hackathon Disclosures & Attributions
           </div>
           <ul style={{ margin: 0, paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
