@@ -75,7 +75,8 @@ test('4. Backend Express server delivers PDF with required headers', async () =>
     assert.equal(res.headers.get('x-robots-tag'), 'noindex');
 
     const arrayBuffer = await res.arrayBuffer();
-    assert.equal(arrayBuffer.byteLength, 33075, 'Downloaded PDF size must match exactly');
+    const diskSize = fs.statSync(path.resolve('client/public/docs/flowguard-guide.pdf')).size;
+    assert.equal(arrayBuffer.byteLength, diskSize, 'Downloaded PDF size must match file on disk');
   } finally {
     server.close();
   }
