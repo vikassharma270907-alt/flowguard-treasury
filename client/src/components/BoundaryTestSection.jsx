@@ -224,7 +224,11 @@ export default function BoundaryTestSection() {
               Verified through ArmorIQ PEP Proxy. The tool was matched against allowlist policy <code style={{ color: '#34d399' }}>{realRunData.policyName}</code> and forwarded downstream to the MCP server.
             </p>
             <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', marginBottom: '4px' }}>Returned Payload:</div>
-            <pre style={{ margin: 0, padding: '10px', background: 'rgba(0, 0, 0, 0.5)', borderRadius: '6px', fontSize: '0.78rem', color: '#38bdf8', overflowX: 'auto', fontFamily: 'monospace' }}>
+            <pre
+              tabIndex={0}
+              aria-label="Returned payload JSON"
+              style={{ margin: 0, padding: '10px', background: 'rgba(0, 0, 0, 0.5)', borderRadius: '6px', fontSize: '0.78rem', color: 'var(--brand-accent-text)', overflowX: 'auto', fontFamily: 'monospace' }}
+            >
               {JSON.stringify(activeCase.resultPayload, null, 2)}
             </pre>
           </div>
@@ -297,7 +301,11 @@ export default function BoundaryTestSection() {
                 <span>{copied ? 'Copied' : 'Copy JSON'}</span>
               </button>
             </div>
-            <pre style={{ margin: 0, padding: '12px', background: '#090d16', borderRadius: '8px', border: '1px solid var(--border)', fontSize: '0.75rem', color: '#a5f3fc', overflowX: 'auto', maxHeight: '320px', fontFamily: 'monospace' }}>
+            <pre
+              tabIndex={0}
+              aria-label="Full recorded run JSON"
+              style={{ margin: 0, padding: '12px', background: '#090d16', borderRadius: '8px', border: '1px solid var(--border)', fontSize: '0.75rem', color: '#a5f3fc', overflowX: 'auto', maxHeight: '320px', fontFamily: 'monospace' }}
+            >
               {JSON.stringify(realRunData, null, 2)}
             </pre>
           </div>

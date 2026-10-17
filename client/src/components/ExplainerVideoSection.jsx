@@ -145,26 +145,34 @@ export default function ExplainerVideoSection({
               key={scene.id}
               onClick={() => jumpToScene(scene.startSec, idx)}
               style={{
-                background: activeSceneIdx === idx ? 'rgba(99, 102, 241, 0.22)' : 'rgba(255, 255, 255, 0.03)',
-                border: activeSceneIdx === idx ? '1px solid #818cf8' : '1px solid rgba(255, 255, 255, 0.08)',
+                background: activeSceneIdx === idx ? 'var(--pill-watch-bg)' : 'var(--secondary)',
+                border: activeSceneIdx === idx ? '1px solid var(--pill-watch-border)' : '1px solid var(--border)',
                 borderRadius: '8px',
                 padding: '8px 10px',
                 textAlign: 'left',
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
-                color: activeSceneIdx === idx ? '#ffffff' : 'var(--muted-foreground)'
+                color: activeSceneIdx === idx ? 'var(--foreground)' : 'var(--muted-foreground)'
               }}
               title={scene.desc}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px' }}>
-                <span style={{ fontSize: '0.66rem', fontFamily: 'monospace', fontWeight: 600, color: activeSceneIdx === idx ? '#c7d2fe' : 'var(--muted-foreground)' }}>
+                <span style={{ fontSize: '0.66rem', fontFamily: 'monospace', fontWeight: 600, color: activeSceneIdx === idx ? 'var(--brand-accent-text)' : 'var(--muted-foreground)' }}>
                   {scene.time}
                 </span>
-                <span style={{ fontSize: '0.6rem', fontWeight: 700, padding: '1px 5px', borderRadius: '4px', background: activeSceneIdx === idx ? '#4f46e5' : 'rgba(255,255,255,0.06)' }}>
+                <span style={{
+                  fontSize: '0.6rem',
+                  fontWeight: 700,
+                  padding: '1px 5px',
+                  borderRadius: '4px',
+                  background: activeSceneIdx === idx ? 'var(--brand-indigo)' : 'var(--muted)',
+                  color: activeSceneIdx === idx ? '#ffffff' : 'var(--foreground)',
+                  border: '1px solid var(--border)'
+                }}>
                   P{scene.sceneNumber}
                 </span>
               </div>
-              <div style={{ fontSize: '0.74rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <div style={{ fontSize: '0.74rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--foreground)' }}>
                 {scene.title}
               </div>
             </button>

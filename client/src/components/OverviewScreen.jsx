@@ -293,7 +293,10 @@ export default function OverviewScreen({
                   </div>
                   <span style={{ fontSize: '0.65rem', color: '#34d399', fontWeight: 600 }}>Recorded Platform Call</span>
                 </div>
-                <pre style={{
+                <pre
+                  tabIndex={0}
+                  aria-label="ArmorIQ SDK execution trace"
+                  style={{
                   flex: 1,
                   background: '#04060a',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
