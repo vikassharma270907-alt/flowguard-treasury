@@ -19,7 +19,7 @@ const SCENES = [
 
 export default function ExplainerVideoSection({
   videoSrc = "/videos/beyondflow-explainer.mp4",
-  posterSrc = "/poster.png",
+  posterSrc = "/poster.webp",
   audioSrc = "/audio/beyondflow-narration-master.mp3"
 }) {
   const [showTranscript, setShowTranscript] = useState(false);
