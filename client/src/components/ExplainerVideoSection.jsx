@@ -19,14 +19,13 @@ const SCENES = [
 
 export default function ExplainerVideoSection({
   videoSrc = "/videos/beyondflow-explainer.mp4",
-  posterSrc = "/poster.webp",
-  audioSrc = "/audio/beyondflow-narration-master.mp3"
+  posterSrc = "/poster.webp"
 }) {
   const [showTranscript, setShowTranscript] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
   const [activeSceneIdx, setActiveSceneIdx] = useState(0);
   const [voiceoverMuted, setVoiceoverMuted] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+
   const [activePoster, setActivePoster] = useState('');
 
   const videoRef = useRef(null);
@@ -57,9 +56,6 @@ export default function ExplainerVideoSection({
     const video = videoRef.current;
     if (!video) return;
 
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-
     const handleTimeUpdate = () => {
       const cur = video.currentTime;
       // Determine active scene based on current playback time
@@ -71,13 +67,9 @@ export default function ExplainerVideoSection({
       }
     };
 
-    video.addEventListener('play', handlePlay);
-    video.addEventListener('pause', handlePause);
     video.addEventListener('timeupdate', handleTimeUpdate);
 
     return () => {
-      video.removeEventListener('play', handlePlay);
-      video.removeEventListener('pause', handlePause);
       video.removeEventListener('timeupdate', handleTimeUpdate);
     };
   }, []);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Zap, Terminal, Lock, CheckCircle2, FileCode, Server } from 'lucide-react';
+import { Shield, Zap, Lock, FileCode, Server } from 'lucide-react';
 
 export default function HowWeUseArmorIQSection() {
   return (

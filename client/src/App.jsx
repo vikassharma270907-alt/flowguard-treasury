@@ -42,7 +42,7 @@ function getInitialTabFromUrl() {
     if (hash === 'scenarios') return 'scenarios';
     if (hash === 'pricing') return 'pricing';
     if (hash === 'how-it-works' || hash === 'enclave') return 'enclave';
-    if (hash === 'video' || hash === 'explainer' || hash === 'explainer-video' || hash === 'explainer-video') return 'video';
+    if (hash === 'video' || hash === 'explainer' || hash === 'explainer-video') return 'video';
     if (hash === 'boundary-test' || hash === 'boundary') return 'overview';
     if (hash === 'quickstart') return 'overview';
   }

@@ -46,7 +46,7 @@ export default function ArmorPayModal({
             invoiceId: invoice.id || invoice.invoiceId,
             approverName,
             paymentMethod,
-            expedited: isExpedited
+            expedited: false
           })
         : fetch('/api/armorpay/settle', {
             method: 'POST',
@@ -55,7 +55,7 @@ export default function ArmorPayModal({
               invoiceId: invoice.id || invoice.invoiceId,
               approverName,
               paymentMethod,
-              expedited: isExpedited
+              expedited: false
             })
           }).then(r => r.json());
 
