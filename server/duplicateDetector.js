@@ -51,6 +51,73 @@ function checkDateProximity(dateStr1, dateStr2, maxDays = 14) {
   return diffDays <= maxDays;
 }
 
+function checkExactCollision(targetInvoice, existing) {
+  if (targetInvoice.invoice_number.trim().toLowerCase() === existing.invoice_number.trim().toLowerCase()) {
+    return {
+      code: 'ERR_EXACT_INVOICE_DUPLICATE',
+      rule: 'Exact Identifier Collision',
+      severity: 'CRITICAL',
+      detail: `Exact duplicate invoice number "${targetInvoice.invoice_number}" already registered in ledger (ID: ${existing.id}).`
+    };
+  }
+  return null;
+}
+
+function checkFuzzyCollision(targetInvoice, existing, targetNorm, existingNorm) {
+  const editDist = calculateLevenshtein(targetNorm, existingNorm);
+  const areNormEqual = targetNorm === existingNorm;
+  const isFuzzyNear = editDist <= 2 && targetNorm.length > 4;
+
+  if (areNormEqual || isFuzzyNear) {
+    const sameVendor = targetInvoice.vendor_id === existing.vendor_id ||
+      targetInvoice.vendor_name.toLowerCase() === existing.vendor_name.toLowerCase();
+
+    if (sameVendor) {
+      return {
+        code: 'WARN_FUZZY_INVOICE_VARIATION',
+        rule: 'Normalized Pattern & Suffix Variation',
+        severity: 'CRITICAL',
+        detail: `Invoice number "${targetInvoice.invoice_number}" is a near-match variation of existing invoice "${existing.invoice_number}" for vendor "${existing.vendor_name}".`
+      };
+    }
+  }
+  return null;
+}
+
+function checkTripleVectorProximity(targetInvoice, existing) {
+  const sameVendor = targetInvoice.vendor_id === existing.vendor_id;
+  const sameAmount = Math.abs(targetInvoice.amount - existing.amount) < 0.01;
+  const sameCurrency = targetInvoice.currency === existing.currency;
+  const dateNearby = checkDateProximity(targetInvoice.issue_date, existing.issue_date, 14);
+
+  if (sameVendor && sameAmount && sameCurrency && dateNearby) {
+    return {
+      code: 'WARN_PROXIMITY_TRIPLE_VECTOR',
+      rule: 'Identical Amount & Vendor Proximity',
+      severity: 'HIGH',
+      detail: `Identical amount (${targetInvoice.currency} ${targetInvoice.amount.toFixed(2)}) submitted for "${existing.vendor_name}" within 14 days of invoice ${existing.invoice_number}. High statistical probability of dual-channel re-billing.`
+    };
+  }
+  return null;
+}
+
+function checkBankDetailMismatch(targetInvoice, verifiedVendors) {
+  const vendorRecord = verifiedVendors.find(v => v.id === targetInvoice.vendor_id);
+  if (vendorRecord && targetInvoice.bank_details) {
+    if (vendorRecord.bank_details.iban && targetInvoice.bank_details.iban) {
+      if (vendorRecord.bank_details.iban !== targetInvoice.bank_details.iban) {
+        return {
+          code: 'WARN_BANK_DETAIL_MISMATCH',
+          rule: 'Beneficiary Routing Mismatch',
+          severity: 'CRITICAL',
+          detail: `Remittance IBAN (${targetInvoice.bank_details.iban}) does not match verified vendor record (${vendorRecord.bank_details.iban}). Possible vendor impersonation or altered remittance advice.`
+        };
+      }
+    }
+  }
+  return null;
+}
+
 /**
  * Evaluates a single invoice against a corpus of existing/historical invoices and vendor registries
  */
@@ -67,72 +134,36 @@ function inspectInvoice(targetInvoice, existingInvoices, verifiedVendors = []) {
     const existingNorm = normalizeInvoiceNumber(existing.invoice_number);
 
     // Rule 1: Exact Number Collision
-    if (targetInvoice.invoice_number.trim().toLowerCase() === existing.invoice_number.trim().toLowerCase()) {
-      flags.push({
-        code: 'ERR_EXACT_INVOICE_DUPLICATE',
-        rule: 'Exact Identifier Collision',
-        severity: 'CRITICAL',
-        detail: `Exact duplicate invoice number "${targetInvoice.invoice_number}" already registered in ledger (ID: ${existing.id}).`
-      });
+    const exactCollisionFlag = checkExactCollision(targetInvoice, existing);
+    if (exactCollisionFlag) {
+      flags.push(exactCollisionFlag);
       matchedWith = existing;
       riskLevel = 'CRITICAL_DUPLICATE';
       break;
     }
 
     // Rule 2: Normalized / Fuzzy Identifier Collision
-    const editDist = calculateLevenshtein(targetNorm, existingNorm);
-    const areNormEqual = targetNorm === existingNorm;
-    const isFuzzyNear = editDist <= 2 && targetNorm.length > 4;
-
-    if (areNormEqual || isFuzzyNear) {
-      // Check if also same vendor
-      const sameVendor = targetInvoice.vendor_id === existing.vendor_id ||
-        targetInvoice.vendor_name.toLowerCase() === existing.vendor_name.toLowerCase();
-
-      if (sameVendor) {
-        flags.push({
-          code: 'WARN_FUZZY_INVOICE_VARIATION',
-          rule: 'Normalized Pattern & Suffix Variation',
-          severity: 'CRITICAL',
-          detail: `Invoice number "${targetInvoice.invoice_number}" is a near-match variation of existing invoice "${existing.invoice_number}" for vendor "${existing.vendor_name}".`
-        });
-        matchedWith = existing;
-        riskLevel = 'CRITICAL_DUPLICATE';
-      }
+    const fuzzyCollisionFlag = checkFuzzyCollision(targetInvoice, existing, targetNorm, existingNorm);
+    if (fuzzyCollisionFlag) {
+      flags.push(fuzzyCollisionFlag);
+      matchedWith = existing;
+      riskLevel = 'CRITICAL_DUPLICATE';
     }
 
-    // Rule 3: Triple-Vector Proximity (Same Vendor + Same Major Unit Amount + Date window <= 14 days)
-    const sameVendor = targetInvoice.vendor_id === existing.vendor_id;
-    const sameAmount = Math.abs(targetInvoice.amount - existing.amount) < 0.01;
-    const sameCurrency = targetInvoice.currency === existing.currency;
-    const dateNearby = checkDateProximity(targetInvoice.issue_date, existing.issue_date, 14);
-
-    if (sameVendor && sameAmount && sameCurrency && dateNearby) {
-      flags.push({
-        code: 'WARN_PROXIMITY_TRIPLE_VECTOR',
-        rule: 'Identical Amount & Vendor Proximity',
-        severity: 'HIGH',
-        detail: `Identical amount (${targetInvoice.currency} ${targetInvoice.amount.toFixed(2)}) submitted for "${existing.vendor_name}" within 14 days of invoice ${existing.invoice_number}. High statistical probability of dual-channel re-billing.`
-      });
+    // Rule 3: Triple-Vector Proximity
+    const proximityFlag = checkTripleVectorProximity(targetInvoice, existing);
+    if (proximityFlag) {
+      flags.push(proximityFlag);
       if (!matchedWith) matchedWith = existing;
       if (riskLevel !== 'CRITICAL_DUPLICATE') riskLevel = 'SUSPECT';
     }
   }
 
   // Rule 4: Bank Account / IBAN verification against vendor master record
-  const vendorRecord = verifiedVendors.find(v => v.id === targetInvoice.vendor_id);
-  if (vendorRecord && targetInvoice.bank_details) {
-    if (vendorRecord.bank_details.iban && targetInvoice.bank_details.iban) {
-      if (vendorRecord.bank_details.iban !== targetInvoice.bank_details.iban) {
-        flags.push({
-          code: 'WARN_BANK_DETAIL_MISMATCH',
-          rule: 'Beneficiary Routing Mismatch',
-          severity: 'CRITICAL',
-          detail: `Remittance IBAN (${targetInvoice.bank_details.iban}) does not match verified vendor record (${vendorRecord.bank_details.iban}). Possible vendor impersonation or altered remittance advice.`
-        });
-        riskLevel = 'CRITICAL_DUPLICATE';
-      }
-    }
+  const bankDetailFlag = checkBankDetailMismatch(targetInvoice, verifiedVendors);
+  if (bankDetailFlag) {
+    flags.push(bankDetailFlag);
+    riskLevel = 'CRITICAL_DUPLICATE';
   }
 
   // Calculate composite risk score (0 to 100)
