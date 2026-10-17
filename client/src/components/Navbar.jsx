@@ -158,17 +158,7 @@ export default function Navbar({
             <button
               key={tab.id}
               onClick={() => {
-                if (tab.id === 'video') {
-                  if (activeTab !== 'overview') {
-                    setActiveTab('overview');
-                  }
-                  setTimeout(() => {
-                    const el = document.getElementById('explainer-video');
-                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }, 80);
-                } else {
-                  setActiveTab(tab.id);
-                }
+                setActiveTab(tab.id);
               }}
               style={{
                 background: activeTab === tab.id ? 'var(--secondary)' : 'transparent',

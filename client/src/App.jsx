@@ -21,6 +21,7 @@ const PricingSection = lazy(() => import('./components/PricingSection'));
 const JudgesPage = lazy(() => import('./components/JudgesPage'));
 const ScenariosScreen = lazy(() => import('./components/ScenariosScreen'));
 const ArmorPayModal = lazy(() => import('./components/ArmorPayModal'));
+const VideoPage = lazy(() => import('./components/VideoPage'));
 import { Lock, Shield, ArrowRight } from 'lucide-react';
 
 const LEGAL_ROUTES = ['privacy', 'terms', 'refund-policy', 'grievance-officer', 'dpdp-compliance', 'dpdp-act'];
@@ -34,8 +35,8 @@ function getInitialTabFromUrl() {
     return path === 'dpdp-act' ? 'dpdp-compliance' : path;
   }
   if (path === 'how-it-works' || path === 'enclave') return 'enclave';
+  if (path === 'video' || path === 'explainer' || path === 'explainer-video') return 'video';
   if (path === 'boundary-test' || path === 'boundary') return 'overview';
-  if (path === 'video' || path === 'explainer' || path === 'explainer-video') return 'overview';
   if (path === 'pricing') return 'pricing';
 
   if (window.location.hash) {
@@ -44,8 +45,8 @@ function getInitialTabFromUrl() {
     if (hash === 'scenarios') return 'scenarios';
     if (hash === 'pricing') return 'pricing';
     if (hash === 'how-it-works' || hash === 'enclave') return 'enclave';
+    if (hash === 'video' || hash === 'explainer' || hash === 'explainer-video' || hash === 'explainer-video') return 'video';
     if (hash === 'boundary-test' || hash === 'boundary') return 'overview';
-    if (hash === 'video' || hash === 'explainer' || hash === 'explainer-video') return 'overview';
     if (hash === 'quickstart') return 'overview';
   }
   return 'overview';
@@ -181,6 +182,13 @@ export default function App() {
           }, 3000);
         }
       }, 100);
+      return;
+    }
+
+    if (rawTab === 'video' || rawTab === 'explainer' || rawTab === 'explainer-video') {
+      setActiveTab('video');
+      window.history.pushState(null, '', '/video');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
@@ -406,6 +414,10 @@ export default function App() {
           <PricingSection
             onBackToHome={() => handleNavigate('overview')}
           />
+        )}
+
+        {activeTab === 'video' && (
+          <VideoPage onNavigate={handleNavigate} />
         )}
 
         {activeTab === 'overview' && (
