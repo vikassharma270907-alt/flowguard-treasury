@@ -40,9 +40,12 @@ class ArmorPayService {
       fxRates: fxResult.rates || INDICATIVE_FX_RATES
     });
 
+    const inspectionMap = new Map();
+    inspections.forEach(insp => inspectionMap.set(insp.invoiceId, insp));
+
     const settledInvoices = invoices.filter(inv => inv.status === 'PAID');
     const clearedInvoices = invoices.filter(inv => {
-      const insp = inspections.find(i => i.invoiceId === inv.id);
+      const insp = inspectionMap.get(inv.id);
       return inv.status !== 'PAID' && (!insp || insp.riskLevel === 'CLEARED');
     });
 
@@ -252,9 +255,13 @@ class ArmorPayService {
     approverName = 'Finance Director (ArmorPay Batch)'
   }) {
     const inspections = scanAllInvoices(invoices, vendors);
+
+    const inspectionMap = new Map();
+    inspections.forEach(insp => inspectionMap.set(insp.invoiceId, insp));
+
     const eligibleInvoices = invoices.filter(inv => {
       if (inv.status === 'PAID') return false;
-      const insp = inspections.find(i => i.invoiceId === inv.id);
+      const insp = inspectionMap.get(inv.id);
       return !insp || insp.riskLevel === 'CLEARED';
     });
 
