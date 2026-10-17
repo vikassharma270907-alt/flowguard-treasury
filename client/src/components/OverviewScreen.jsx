@@ -6,10 +6,9 @@ import {
   Sparkles, Video, Play, X, Info, ChevronRight, ChevronLeft,
   Check, Terminal, Lock, Cpu
 } from 'lucide-react';
-import BoundaryTestSection from './BoundaryTestSection';
-import HowWeUseArmorIQSection from './HowWeUseArmorIQSection';
-import ExplainerVideoSection from './ExplainerVideoSection';
-
+const BoundaryTestSection = lazy(() => import('./BoundaryTestSection'));
+const HowWeUseArmorIQSection = lazy(() => import('./HowWeUseArmorIQSection'));
+const ExplainerVideoSection = lazy(() => import('./ExplainerVideoSection'));
 const RotatingHeroVault = lazy(() => import('./3d/RotatingHeroVault'));
 
 export default function OverviewScreen({
@@ -364,17 +363,23 @@ export default function OverviewScreen({
 
       {/* Official 3-Minute Architectural Explainer Video */}
       <div className="cv-auto">
-        <ExplainerVideoSection />
+        <Suspense fallback={<div style={{ minHeight: '260px' }} />}>
+          <ExplainerVideoSection />
+        </Suspense>
       </div>
 
       {/* TIER 1 ITEM 5: Centerpiece Boundary Test Section */}
       <div className="cv-auto">
-        <BoundaryTestSection />
+        <Suspense fallback={<div style={{ minHeight: '360px' }} />}>
+          <BoundaryTestSection />
+        </Suspense>
       </div>
 
       {/* TIER 1 ITEM 7: Architecture & Enforcement Flow Section */}
       <div className="cv-auto">
-        <HowWeUseArmorIQSection />
+        <Suspense fallback={<div style={{ minHeight: '300px' }} />}>
+          <HowWeUseArmorIQSection />
+        </Suspense>
       </div>
 
         <div className="cv-auto" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '12px' }}>

@@ -29,6 +29,32 @@ function guidePdfPlugin() {
   }
 }
 
+function inlineCssPlugin() {
+  return {
+    name: 'inline-css-plugin',
+    apply: 'build',
+    enforce: 'post',
+    generateBundle(_, bundle) {
+      let combinedCss = ''
+      for (const [name, chunk] of Object.entries(bundle)) {
+        if (name.endsWith('.css') && typeof chunk.source === 'string') {
+          combinedCss += chunk.source + '\n'
+        }
+      }
+      if (combinedCss) {
+        for (const [name, chunk] of Object.entries(bundle)) {
+          if (name.endsWith('.html') && typeof chunk.source === 'string') {
+            chunk.source = chunk.source.replace(
+              /<link\s+[^>]*rel=["']stylesheet["'][^>]*>/gi,
+              `<style>${combinedCss}</style>`
+            )
+          }
+        }
+      }
+    }
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
@@ -43,7 +69,7 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
-    plugins: [react(), guidePdfPlugin()],
+    plugins: [react(), guidePdfPlugin(), inlineCssPlugin()],
     envPrefix: ['VITE_', 'NEXT_PUBLIC_'],
     define: {
       'process.env.NEXT_PUBLIC_CALENDLY_URL': JSON.stringify(
