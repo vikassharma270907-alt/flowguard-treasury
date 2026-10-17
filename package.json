@@ -12,7 +12,7 @@
     "mcp": "node server/mcpServer.js --stdio",
     "mcp:server": "node mcp-server/server.mjs",
     "gateway": "node --env-file=.env gateway/server.mjs",
-    "test": "node --test test/guide-pdf.test.mjs test/armoriq-auth.test.mjs",
+    "test": "node --test test/guide-pdf.test.mjs test/armoriq-auth.test.mjs test/verdicts.test.mjs",
     "test:guide": "node --test test/guide-pdf.test.mjs",
     "test:auth": "node --test test/armoriq-auth.test.mjs",
   "verify:keyboard": "node scripts/verify-keyboard.mjs",
