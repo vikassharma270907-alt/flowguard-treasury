@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://flowguard-treasury.vercel.app/sitemap.xml
