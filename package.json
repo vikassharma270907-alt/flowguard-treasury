@@ -29,6 +29,7 @@
   "dependencies": {
     "@armoriq/sdk": "^0.6.10",
     "@modelcontextprotocol/sdk": "^1.32.1",
+    "@vercel/analytics": "^2.0.1",
     "concurrently": "^10.0.6",
     "cors": "^2.8.6",
     "dotenv": "^18.0.8",

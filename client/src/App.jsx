@@ -22,6 +22,8 @@ const ArmorPayModal = lazy(() => import('./components/ArmorPayModal'));
 const VideoPage = lazy(() => import('./components/VideoPage'));
 const NotFoundScreen = lazy(() => import('./components/NotFoundScreen'));
 
+import { Analytics } from '@vercel/analytics/react';
+
 const LEGAL_ROUTES = ['privacy', 'terms', 'refund-policy', 'grievance-officer', 'dpdp-compliance', 'dpdp-act'];
 
 function getInitialTabFromUrl() {
@@ -584,6 +586,9 @@ export default function App() {
           <Footer onNavigate={handleNavigate} />
         </Suspense>
       </LazySection>
+
+      {/* Vercel Web Analytics */}
+      <Analytics />
     </div>
   );
 }
