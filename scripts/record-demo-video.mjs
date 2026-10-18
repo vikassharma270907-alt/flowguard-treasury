@@ -13,7 +13,7 @@ import { chromium } from 'playwright';
 import path from 'node:path';
 import fs from 'node:fs';
 
-const ARTIFACT_DIR = 'C:\\Users\\vikas sharma\\.gemini\\antigravity-ide\\brain\\1e99fdba-7cab-4d98-9b7b-c3d1c10fe1c1';
+const ARTIFACT_DIR = process.env.ARTIFACT_DIR || path.resolve('./docs/assets/video');
 const VIDEO_OUTPUT_DIR = path.join(ARTIFACT_DIR, 'videos');
 if (!fs.existsSync(VIDEO_OUTPUT_DIR)) {
   fs.mkdirSync(VIDEO_OUTPUT_DIR, { recursive: true });

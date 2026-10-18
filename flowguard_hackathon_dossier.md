@@ -153,7 +153,7 @@ sequenceDiagram
 The application is structured into a clean decoupled backend and modern React frontend:
 
 ```
-d:/hackathon/New folder/
+flowguard-treasury/
 ├── .env                          # Local credentials configuration
 ├── .env.example                  # Placeholder template for judges
 ├── package.json                  # Root runner scripts (concurrently server + client)

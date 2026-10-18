@@ -20,12 +20,26 @@ const JudgesPage = lazy(() => import('./components/JudgesPage'));
 const ScenariosScreen = lazy(() => import('./components/ScenariosScreen'));
 const ArmorPayModal = lazy(() => import('./components/ArmorPayModal'));
 const VideoPage = lazy(() => import('./components/VideoPage'));
+const NotFoundScreen = lazy(() => import('./components/NotFoundScreen'));
 
 const LEGAL_ROUTES = ['privacy', 'terms', 'refund-policy', 'grievance-officer', 'dpdp-compliance', 'dpdp-act'];
 
 function getInitialTabFromUrl() {
   if (typeof window === 'undefined') return 'overview';
   const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  if (!path) {
+    if (window.location.hash) {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'judges') return 'judges';
+      if (hash === 'scenarios') return 'scenarios';
+      if (hash === 'pricing') return 'pricing';
+      if (hash === 'how-it-works' || hash === 'enclave') return 'enclave';
+      if (hash === 'video' || hash === 'explainer' || hash === 'explainer-video') return 'video';
+      if (hash === 'boundary-test' || hash === 'boundary' || hash === 'quickstart') return 'overview';
+    }
+    return 'overview';
+  }
+
   if (path === 'judges') return 'judges';
   if (path === 'scenarios') return 'scenarios';
   if (LEGAL_ROUTES.includes(path)) {
@@ -35,18 +49,13 @@ function getInitialTabFromUrl() {
   if (path === 'video' || path === 'explainer' || path === 'explainer-video') return 'video';
   if (path === 'boundary-test' || path === 'boundary') return 'overview';
   if (path === 'pricing') return 'pricing';
+  if (path === 'planner') return 'planner';
+  if (path === 'invoices') return 'invoices';
+  if (path === 'voice') return 'voice';
+  if (path === 'audit') return 'audit';
+  if (path === 'admin') return 'admin';
 
-  if (window.location.hash) {
-    const hash = window.location.hash.replace('#', '');
-    if (hash === 'judges') return 'judges';
-    if (hash === 'scenarios') return 'scenarios';
-    if (hash === 'pricing') return 'pricing';
-    if (hash === 'how-it-works' || hash === 'enclave') return 'enclave';
-    if (hash === 'video' || hash === 'explainer' || hash === 'explainer-video') return 'video';
-    if (hash === 'boundary-test' || hash === 'boundary') return 'overview';
-    if (hash === 'quickstart') return 'overview';
-  }
-  return 'overview';
+  return 'not-found';
 }
 
 export default function App() {
@@ -521,6 +530,10 @@ export default function App() {
               </div>
             </div>
           )
+        )}
+
+        {activeTab === 'not-found' && (
+          <NotFoundScreen onNavigate={handleNavigate} />
         )}
         </Suspense>
       </main>
