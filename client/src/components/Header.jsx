@@ -14,7 +14,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   ShieldCheck, RefreshCw, ChevronDown, Sliders,
-  User, ExternalLink
+  User, ExternalLink, Calendar
 } from 'lucide-react';
 import { siteConfig as defaultSiteConfig } from '../siteConfig';
 import { useI18n } from '../context/I18nContext';
@@ -82,6 +82,7 @@ export default function Header({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scenarioOpen, setScenarioOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' ? window.innerWidth >= 1024 : true);
+  const bookingUrl = config.booking?.url || 'https://cal.id/vikas-sharma-ykmxxw/partnership-call';
 
   const hamburgerButtonRef = useRef(null);
   const drawerRef = useRef(null);
@@ -428,7 +429,7 @@ export default function Header({
               </button>
             </div>
 
-            {/* Judge Quick Start Button (Replaces "Book a Demo", linking to /judges) */}
+            {/* Option A: Judge Quick Start Button (linking to /judges) */}
             {isDesktop && (
               <a
                 href="/judges"
@@ -445,8 +446,8 @@ export default function Header({
                   backgroundColor: 'var(--brand-indigo, #4f46e5)',
                   border: '1px solid rgba(255, 255, 255, 0.25)',
                   borderRadius: '6px',
-                  padding: '7px 13px',
-                  fontSize: '12.5px',
+                  padding: '7px 12px',
+                  fontSize: '12px',
                   fontWeight: 700,
                   color: '#ffffff',
                   textDecoration: 'none',
@@ -456,10 +457,40 @@ export default function Header({
                   boxShadow: '0 2px 8px rgba(79, 70, 229, 0.35)',
                   whiteSpace: 'nowrap'
                 }}
-                aria-label={t('nav.bookDemoAria')}
+                aria-label={t('nav.judgeQuickStartAria') || 'Judge quick start'}
               >
                 <ShieldCheck size={14} color="#ffffff" />
-                <span style={{ color: '#ffffff' }}>{t('nav.bookDemo')}</span>
+                <span style={{ color: '#ffffff' }}>{t('nav.judgeQuickStart') || 'Judge quick start'}</span>
+              </a>
+            )}
+
+            {/* Option A: Book a Demo Button (Opens Booking Calendar) */}
+            {isDesktop && (
+              <a
+                href={bookingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  backgroundColor: 'var(--secondary)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '6px',
+                  padding: '7px 11px',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: 'var(--foreground)',
+                  textDecoration: 'none',
+                  transition: 'all 0.15s ease',
+                  outlineOffset: '2px',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap'
+                }}
+                aria-label={t('nav.bookDemoAria') || 'Book a Demo'}
+              >
+                <Calendar size={13} style={{ color: 'var(--brand-accent-text, #38bdf8)' }} />
+                <span>{t('nav.bookDemo') || 'Book a Demo'}</span>
               </a>
             )}
 
@@ -736,33 +767,59 @@ export default function Header({
           aria-modal="true"
           aria-label="Mobile Navigation"
         >
-          {/* Quick Start for Judges */}
-          <a
-            href="/judges"
-            className="btn btn-primary"
-            onClick={(e) => {
-              e.preventDefault();
-              setMobileMenuOpen(false);
-              if (onNavigate) onNavigate('judges');
-              window.history.pushState(null, '', '/judges');
-            }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              padding: '12px 16px',
-              borderRadius: '8px',
-              background: 'var(--brand-indigo, #4f46e5)',
-              color: '#ffffff',
-              fontWeight: 700,
-              fontSize: '14px',
-              textDecoration: 'none'
-            }}
-          >
-            <ShieldCheck size={16} color="#ffffff" />
-            <span style={{ color: '#ffffff' }}>Judge Quick Start (/judges)</span>
-          </a>
+          {/* Option A: Quick Actions on Mobile (Judge Tour + Book a Demo) */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            <a
+              href="/judges"
+              className="btn btn-primary"
+              onClick={(e) => {
+                e.preventDefault();
+                setMobileMenuOpen(false);
+                if (onNavigate) onNavigate('judges');
+                window.history.pushState(null, '', '/judges');
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                padding: '11px 10px',
+                borderRadius: '8px',
+                background: 'var(--brand-indigo, #4f46e5)',
+                color: '#ffffff',
+                fontWeight: 700,
+                fontSize: '13px',
+                textDecoration: 'none'
+              }}
+            >
+              <ShieldCheck size={15} color="#ffffff" />
+              <span>{t('nav.judgeQuickStart') || 'Judge Tour'}</span>
+            </a>
+
+            <a
+              href={bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileMenuOpen(false)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                padding: '11px 10px',
+                borderRadius: '8px',
+                background: 'var(--secondary)',
+                border: '1px solid var(--border)',
+                color: 'var(--foreground)',
+                fontWeight: 600,
+                fontSize: '13px',
+                textDecoration: 'none'
+              }}
+            >
+              <Calendar size={14} style={{ color: 'var(--brand-accent-text, #38bdf8)' }} />
+              <span>{t('nav.bookDemo') || 'Book a Demo'}</span>
+            </a>
+          </div>
 
           {/* Navigation Links */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>

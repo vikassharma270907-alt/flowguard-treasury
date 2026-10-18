@@ -338,7 +338,11 @@ export default function Footer({
                           ref={bookingTriggerRef}
                           href={bookingUrl}
                           onClick={(e) => handleLinkClick(e, link)}
-                          onMouseEnter={handleBookingHover}
+                          onMouseEnter={(e) => {
+                            handleBookingHover();
+                            e.currentTarget.style.color = isDark ? '#ffffff' : '#111111';
+                            e.currentTarget.style.textDecoration = 'underline';
+                          }}
                           onFocus={handleBookingHover}
                           target="_blank"
                           rel="noopener noreferrer"
@@ -350,10 +354,6 @@ export default function Footer({
                             transition: 'color 0.15s ease',
                             cursor: 'pointer',
                             outlineOffset: '2px'
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.color = isDark ? '#ffffff' : '#111111';
-                            e.currentTarget.style.textDecoration = 'underline';
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.color = isDark ? '#d4d4d8' : '#444444';
