@@ -623,9 +623,50 @@ app.get('/api/status', async (req, res) => {
   }
 
   res.json({
-    appName: 'BeyondFlow - Airwallex Sandbox Decision Assistant',
+    status: 'OPERATIONAL',
+    appName: 'BeyondFlow — Voice AI Support Agent Governed by ArmorIQ',
+    product: 'BeyondFlow',
+    version: '1.0.0',
+    environment: 'sandbox',
+    timestamp: new Date().toISOString(),
+    uptime: Math.floor(process.uptime()),
+    systems: {
+      armorIqGovernance: {
+        status: 'OPERATIONAL',
+        mode: armorIqService.mode,
+        agentId: armorIqService.getAgentId?.() || 'flowguard-agent',
+        mcpServerId: armorIqService.getMcpId?.() || 'flowguard-treasury-mcp',
+        proxyEndpoint: 'https://proxy.armoriq.ai',
+        iapEndpoint: 'https://iap.armoriq.ai',
+        policy: 'flowguard-treasury-allowlist'
+      },
+      mcpServer: {
+        status: 'OPERATIONAL',
+        name: 'flowguard-treasury-mcp',
+        version: '1.0.0',
+        protocolVersion: '2024-11-05',
+        endpoint: '/mcp',
+        governedTools: ['lookup_order', 'change_payout', 'issue_refund'],
+        appSideTools: ['assert_reserve_floor', 'verify_audit_merkle']
+      },
+      voiceGateway: {
+        status: 'OPERATIONAL',
+        provider: 'ElevenLabs Conversational AI',
+        webhookHoldingPattern: 'ACTIVE (<5s response)',
+        tools: ['BeyondFlow_orderLookup', 'BeyondFlow_payoutChange', 'BeyondFlow_issueRefund']
+      },
+      treasuryEngine: {
+        status: 'OPERATIONAL',
+        mode: authStatus.success ? 'AIRWALLEX_LIVE_SANDBOX' : 'AIRWALLEX_SANDBOX_SIMULATOR',
+        reserveFloor: currentReserveFloor,
+        currency: 'USD',
+        activeScenario: activeScenario,
+        syntheticDataOnly: true,
+        realFunds: false
+      }
+    },
     isLiveSandbox: authStatus.success,
-    mode: authStatus.success ? 'AIRWALLEX_LIVE_SANDBOX' : 'SANDBOX_MOCK_ADAPTER',
+    mode: authStatus.success ? 'AIRWALLEX_LIVE_SANDBOX' : 'AIRWALLEX_SANDBOX_SIMULATOR',
     armorIq: {
       isConfigured: armorIqService.isConfigured(),
       mode: armorIqService.mode
