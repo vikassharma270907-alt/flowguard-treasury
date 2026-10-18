@@ -419,6 +419,12 @@ export default function JudgesPage({ onNavigate }) {
             </tbody>
           </table>
         </div>
+        <div style={{ marginTop: '12px', padding: '10px 14px', borderRadius: '8px', background: 'var(--secondary)', border: '1px solid var(--border)', fontSize: '0.78rem', color: 'var(--muted-foreground)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Sparkles size={14} style={{ color: 'var(--step-sky-text)', flexShrink: 0 }} />
+          <span>
+            <strong>Platform Object Mapping</strong>: Product brand is <strong>BeyondFlow</strong>; GitHub repository & Vercel deployment are <strong>flowguard-treasury</strong>; registered MCP server UUID <code>7540cd0a-7d76-414a-a849-96b337a0c6ed</code> is named <code>intentgate-treasury-mcp</code> on platform.armoriq.ai and aliased in code as <code>flowguard-treasury-mcp</code> to preserve SDK environment mapping.
+          </span>
+        </div>
       </section>
 
       {/* Claims Verification Table */}
