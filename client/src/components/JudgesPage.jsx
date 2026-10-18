@@ -19,7 +19,7 @@ export default function JudgesPage({ onNavigate }) {
     {
       rule: "1. Functional ArmorIQ Integration",
       requirement: "Intent and policy enforcement must be demonstrated through platform.armoriq.ai. API keys from platform, agents and MCP servers onboarded.",
-      evidence: "Onboarded agent 'flowguard-agent' (c8bcbe51-dea4-4459-9fd8-38f88ebc714e), MCP server 'flowguard-treasury-mcp' (UUID: 7540cd0a-7d76-414a-a849-96b337a0c6ed), and policy 'flowguard-treasury-allowlist' (23f8f304-0f6b-44a0-9bba-fa9886ca611b) in the operator workspace (org dd9e9695-e58d-4e56-8cff-ef9617ba4c54). Tokens minted at iap.armoriq.ai; calls invoked via proxy.armoriq.ai.",
+      evidence: "Onboarded agent 'flowguard-agent' (c8bcbe51-dea4-4459-9fd8-38f88ebc714e), MCP server registered under UUID 7540cd0a-7d76-414a-a849-96b337a0c6ed ('intentgate-treasury-mcp', aliased as 'flowguard-treasury-mcp'), and policy 'flowguard-treasury-allowlist' (23f8f304-0f6b-44a0-9bba-fa9886ca611b) in the operator workspace (org dd9e9695-e58d-4e56-8cff-ef9617ba4c54). Tokens minted at iap.armoriq.ai; calls invoked via proxy.armoriq.ai.",
       status: "PASS",
       verified: true
     },
@@ -33,7 +33,7 @@ export default function JudgesPage({ onNavigate }) {
     {
       rule: "3. At Least One MCP Server",
       requirement: "The project must implement and utilize at least one functional MCP server.",
-      evidence: "One MCP server implementation, onboarded to the ArmorIQ platform as 'flowguard-treasury-mcp' with 3 governed tools (lookup_order, change_payout, issue_refund). Transports: JSON-RPC 2.0 over HTTP with SSE responses (deployed /mcp endpoint at flowguard-treasury.vercel.app) and stdio (server/mcpServer.js) for local CLI use. Two further helper checks (reserve floor, audit Merkle root) are labelled app-side in the UI.",
+      evidence: "One MCP server implementation, onboarded to the ArmorIQ platform under registered UUID 7540cd0a-7d76-414a-a849-96b337a0c6ed ('intentgate-treasury-mcp', aliased as 'flowguard-treasury-mcp') with 3 governed tools (lookup_order, change_payout, issue_refund). Transports: JSON-RPC 2.0 over HTTP with SSE responses (deployed /mcp endpoint at flowguard-treasury.vercel.app) and stdio (server/mcpServer.js) for local CLI use. Two further helper checks (reserve floor, audit Merkle root) are labelled app-side in the UI.",
       status: "PASS",
       verified: true
     },

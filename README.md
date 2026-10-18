@@ -16,7 +16,11 @@
 - **ArmorIQ Documentation**: [https://docs.armoriq.ai](https://docs.armoriq.ai)
 
 > [!NOTE]
-> **Naming note**: Some infrastructure identifiers still say `flowguard` because they are registered on external platforms (e.g. ArmorIQ agent `flowguard-agent`, MCP server `flowguard-treasury-mcp`, policy `flowguard-treasury-allowlist`, repository path, and the Vercel deployment URL).
+> **Naming & Platform Object Mapping**: 
+> - **Product Brand**: **BeyondFlow** (unified user-facing application name).
+> - **Platform Agent & Policy**: `flowguard-agent` (UUID `c8bcbe51-dea4-4459-9fd8-38f88ebc714e`) governed by policy `flowguard-treasury-allowlist` (UUID `23f8f304-0f6b-44a0-9bba-fa9886ca611b`).
+> - **Governed MCP Server**: Registered on ArmorIQ platform as UUID `7540cd0a-7d76-414a-a849-96b337a0c6ed` under name `intentgate-treasury-mcp` (aliased as `flowguard-treasury-mcp`), deployed at `https://flowguard-treasury.vercel.app/mcp`.
+> - **Repository & Vercel**: `github.com/vikassharma270907-alt/flowguard-treasury` and `https://flowguard-treasury.vercel.app`.
 
 ---
 
