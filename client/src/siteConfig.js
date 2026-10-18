@@ -24,7 +24,7 @@ export const DOCS_URL = "https://docs.armoriq.ai";
 const CALENDLY_URL =
   (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_CALENDLY_URL) ||
   (typeof import.meta !== 'undefined' && (import.meta.env?.NEXT_PUBLIC_CALENDLY_URL || import.meta.env?.VITE_NEXT_PUBLIC_CALENDLY_URL)) ||
-  "https://cal.com/beyondflow/demo";
+  `mailto:${SUPPORT_EMAIL}?subject=BeyondFlow%20Demo%20Request`;
 
 export const siteConfig = {
   name: PRODUCT_NAME,
@@ -167,7 +167,7 @@ export const siteConfig = {
         { labelKey: "links.docs", href: DOCS_URL, isExternal: true },
         { labelKey: "links.github", href: GITHUB_REPO_URL, isExternal: true },
         { labelKey: "links.npm", href: `${GITHUB_REPO_URL}#architecture`, isExternal: true },
-        { labelKey: "links.community", href: `${GITHUB_REPO_URL}/discussions`, isExternal: true },
+        { labelKey: "links.community", href: `${GITHUB_REPO_URL}/issues`, isExternal: true },
         { labelKey: "links.hackathons", href: "#hackathons" },
         {
           labelKey: "links.guidePdf",

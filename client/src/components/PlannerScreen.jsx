@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sliders, CheckCircle2, Clock, AlertOctagon, ArrowRight } from 'lucide-react';
+import { Sliders, CheckCircle2, Clock, AlertOctagon, ArrowRight, ShieldAlert } from 'lucide-react';
 
 export default function PlannerScreen({
   planData,
@@ -24,6 +24,12 @@ export default function PlannerScreen({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* Universal Sandbox Disclaimer */}
+      <div className="sandbox-disclaimer" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', borderRadius: '8px', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.25)', color: 'var(--step-amber-text, #f59e0b)', fontSize: '0.82rem' }}>
+        <ShieldAlert size={16} />
+        <span><strong>Sandbox / test environment.</strong> No real funds or customer data. Synthetic treasury calculations only.</span>
+      </div>
+
       {/* Reserve Floor Controller Header */}
       <div className="glass-card" style={{ padding: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '20px' }}>

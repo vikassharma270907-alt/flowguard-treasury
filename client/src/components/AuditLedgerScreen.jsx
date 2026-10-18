@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, RefreshCw, Eye, X, Code } from 'lucide-react';
+import { Search, RefreshCw, Eye, X, Code, ShieldAlert } from 'lucide-react';
 
 export default function AuditLedgerScreen() {
   const [logs, setLogs] = useState([]);
@@ -35,6 +35,12 @@ export default function AuditLedgerScreen() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      {/* Universal Sandbox Disclaimer */}
+      <div className="sandbox-disclaimer" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', borderRadius: '8px', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.25)', color: 'var(--step-amber-text, #f59e0b)', fontSize: '0.82rem' }}>
+        <ShieldAlert size={16} />
+        <span><strong>Sandbox / test environment.</strong> No real funds or customer data. Synthetic audit ledger events only.</span>
+      </div>
+
       {/* Search and Filters Bar */}
       <div className="glass-card" style={{ padding: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px' }}>

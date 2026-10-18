@@ -17,7 +17,7 @@ Configure the following secrets in your deployment dashboard:
 | Variable | Description | Example / Note |
 |---|---|---|
 | `ARMORIQ_API_KEY` | ArmorIQ Platform API Key | `sec_live_...` |
-| `ARMORIQ_MCP_ID` | Registered MCP server identifier | `intentgate-treasury-mcp` |
+| `ARMORIQ_MCP_ID` | Registered MCP server identifier | `flowguard-treasury-mcp` |
 | `ARMORIQ_AGENT_ID` | Agent identity registered on ArmorIQ | `flowguard-agent` |
 | `USER_ID` | Default actor identity | `flowguard-operator` |
 | `GATEWAY_SHARED_SECRET` | Shared secret header (`x-flowguard-token`) | Random high-entropy string |

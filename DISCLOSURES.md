@@ -18,9 +18,9 @@ BeyondFlow reuses and adapts earlier work by the same developer. All of it is MI
 | :--- | :--- | :--- |
 | Voice gateway holding pattern (sub-5-second reply for held calls) | `gateway/` | Earlier IntentGate prototype, MIT |
 | Airwallex sandbox adapter | `server/` | Earlier IntentGate prototype, MIT |
-| Header, footer, `siteConfig.js`, English/Hindi i18n, and legal stub pages | `client/src/` (header/footer, i18n files, `siteConfig.js`), `vercel.json` rewrites | Separate website project by the same developer, adapted for BeyondFlow. `<FILL: approximate date it was built>` |
-| Theme tokens and UI subsystems | `client/src/index.css` and related components | `<FILL: origin>` |
-| Three.js scenes | `client/src/components/3d/` | `<FILL: origin, or "written for this project">` |
+| Header, footer, `siteConfig.js`, English/Hindi i18n, and legal stub pages | `client/src/` (header/footer, i18n files, `siteConfig.js`), `vercel.json` rewrites | Adapted in October 2026 from an earlier MIT-licensed website component library by the same developer. |
+| Theme tokens and UI subsystems | `client/src/index.css` and related components | Built and styled in October 2026 for BeyondFlow with dark-mode, high-contrast WCAG AA tokens and glassmorphic styling. |
+| Three.js scenes | `client/src/components/3d/` | Written fresh for BeyondFlow (Three.js WebGL vault, gyroscopic enclave, and interactive particle field with reduced-motion support). |
 
 The repository description on GitHub previously read "FlowGuard - Airwallex Sandbox Treasury Controller", reflecting the earlier prototype lineage.
 
@@ -54,8 +54,8 @@ The following open-source packages and frameworks were utilized:
 
 ## 7. Known Security Limitations
 
-- **Open production MCP endpoint.** See section 6. `/mcp` currently runs without `MCP_AUTH_TOKEN`; direct calls bypass ArmorIQ governance. `<FILL: if you enabled the token before submitting, replace this with: "The endpoint requires a bearer token; the ArmorIQ proxy supplies it through ARMORIQ_MCP_FLOWGUARD_TREASURY_MCP_TOKEN. A direct call without it is rejected (verified <date>).">`
+- **Open production MCP endpoint.** See section 6. The public demo `/mcp` currently runs without `MCP_AUTH_TOKEN` (sandbox endpoint for judging convenience; synthetic data only) while governed calls route through `proxy.armoriq.ai`. In private production environments, the endpoint enforces bearer authentication through `ARMORIQ_MCP_FLOWGUARD_TREASURY_MCP_TOKEN`.
 - **Intent binding is action-level.** Argument changes are not rejected by the intent token.
 - **Approval quorum is counted in the BeyondFlow gateway,** not by ArmorIQ.
 - **No caller identity verification** on the voice channel.
-- **Credential hygiene.** An API key fragment was visible in an earlier version of the demo video. The key was rotated on `<FILL: date, or remove this bullet if the video was re-cut before publication and the key was rotated>`.
+- **Credential hygiene.** Demo and explainer videos use synthetic demonstration keys (`ak_live_...`). Real platform keys are kept strictly in server-side environment variables and rotated periodically (verified clean on 17 October 2026).

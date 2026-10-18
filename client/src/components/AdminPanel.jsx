@@ -162,6 +162,12 @@ export default function AdminPanel({ userSession, onLogout, onRefreshStatus }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* Universal Sandbox Disclaimer */}
+      <div className="sandbox-disclaimer" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', borderRadius: '8px', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.25)', color: 'var(--step-amber-text, #f59e0b)', fontSize: '0.82rem' }}>
+        <AlertTriangle size={16} />
+        <span><strong>Sandbox / test environment.</strong> No real funds or customer data. Synthetic treasury controls only.</span>
+      </div>
+
       {/* Vercel-style Admin Breadcrumb & Sub-header */}
       <div style={{
         display: 'flex',
