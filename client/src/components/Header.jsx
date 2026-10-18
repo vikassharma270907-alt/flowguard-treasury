@@ -265,10 +265,15 @@ export default function Header({
                 outlineOffset: '2px',
                 flexShrink: 0
               }}
-              aria-label={`${config.name} home`}
+              aria-label={`${config.name} — FlowGuard Treasury home`}
             >
               <BrandLogoIcon isDark={isDark} />
-              <span>{config.name}</span>
+              <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
+                <span>{config.name}</span>
+                <span style={{ fontSize: '0.62rem', fontWeight: 600, color: 'var(--muted-foreground)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                  FlowGuard Treasury
+                </span>
+              </div>
             </a>
 
             {/* Desktop Nav Links */}

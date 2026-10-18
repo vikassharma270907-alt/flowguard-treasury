@@ -395,7 +395,7 @@ function createDeviceCodeRequest(clientName = 'ArmorIQ CLI (armoriq login)') {
   return { userCode, deviceCode, verificationUrl: '/auth/device', expiresIn: 900 };
 }
 
-function approveDeviceCode(userCode, apiKey = 'ak_live_b4f92a10c83d4e7f') {
+function approveDeviceCode(userCode, apiKey = 'mock_dev_key_b4f92a10c83d4e7f') {
   const code = (userCode || '').trim().toUpperCase();
   const entry = pendingDeviceApprovals.get(code);
 
