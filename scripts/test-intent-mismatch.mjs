@@ -20,7 +20,7 @@
 import { ArmorIQClient } from '@armoriq/sdk';
 import { classifyError } from '../lib/verdicts.mjs';
 
-const MCP = process.env.ARMORIQ_MCP_ID;
+const MCP = process.env.ARMORIQ_MCP_ID || 'intentgate-treasury-mcp';
 const AGENT = process.env.ARMORIQ_AGENT_ID || 'flowguard-agent';
 const USER = process.env.USER_ID || 'flowguard-operator';
 

@@ -662,14 +662,15 @@ app.get('/api/status', async (req, res) => {
         status: armorIqConfigured ? 'OPERATIONAL' : 'DEGRADED',
         mode: armorIqService.mode,
         agentId: process.env.ARMORIQ_AGENT_ID || 'flowguard-agent',
-        mcpServerId: process.env.ARMORIQ_MCP_ID || 'flowguard-treasury-mcp',
+        mcpServerId: process.env.ARMORIQ_MCP_ID || 'intentgate-treasury-mcp',
         proxyEndpoint: 'https://proxy.armoriq.ai',
         iapEndpoint: 'https://iap.armoriq.ai',
         policy: 'flowguard-treasury-allowlist'
       },
       mcpServer: {
         status: 'OPERATIONAL',
-        name: 'flowguard-treasury-mcp',
+        name: process.env.ARMORIQ_MCP_ID || 'intentgate-treasury-mcp',
+        registeredUuid: process.env.ARMORIQ_MCP_UUID || '7540cd0a-7d76-414a-a849-96b337a0c6ed',
         version: '1.0.0',
         protocolVersion: '2024-11-05',
         endpoint: '/mcp',

@@ -15,12 +15,12 @@
 import { ArmorIQClient } from '@armoriq/sdk';
 import { classifyError } from '../lib/verdicts.mjs';
 
-const MCP = process.env.ARMORIQ_MCP_ID;
+const MCP = process.env.ARMORIQ_MCP_ID || 'intentgate-treasury-mcp';
 const AGENT = process.env.ARMORIQ_AGENT_ID || 'flowguard-agent';
 const USER = process.env.USER_ID || 'flowguard-operator';
 
-if (!process.env.ARMORIQ_API_KEY || !MCP) {
-  throw new Error('ARMORIQ_API_KEY and ARMORIQ_MCP_ID must be set (see .env.example)');
+if (!process.env.ARMORIQ_API_KEY) {
+  throw new Error('ARMORIQ_API_KEY must be set (see .env.example)');
 }
 
 export const client = new ArmorIQClient({
