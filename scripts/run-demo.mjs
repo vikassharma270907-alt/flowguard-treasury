@@ -63,6 +63,10 @@ async function run() {
   console.log(`   Latency          : ${ms3} ms (replied inside ~5s budget!)\n`);
 
   const caseId = data.case_id;
+  if (!caseId) {
+    console.error("Demo failed: Expected case_id for issue_refund, got null.");
+    return;
+  }
 
   // Step 4: Supervisor 1 Approves
   console.log('4. [Supervisor Playground] Supervisor Alice reviews hold and clicks APPROVE:');

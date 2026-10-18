@@ -83,7 +83,7 @@ for (const kase of cases) {
   const mintMs = Date.now() - mintStart;
   console.log(`planHash : ${token.planHash}`);
   console.log(`tokenId  : ${token.tokenId}`);
-  console.log(`steps    : ${token.totalSteps}  expiresAt: ${new Date(token.expiresAt * 1000).toISOString()}`);
+  console.log(`steps    : ${token.totalSteps}  expiresAt: ${new Date(token.expiresAt).toISOString()}`);
   if (token.policyValidation) console.log(`policyValidation: ${JSON.stringify(token.policyValidation)}`);
   console.log(`mint     : ${mintMs} ms`);
 

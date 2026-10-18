@@ -623,7 +623,48 @@ app.get('/api/status', async (req, res) => {
   }
 
   res.json({
-    appName: 'BeyondFlow - Airwallex Sandbox Decision Assistant',
+    status: 'OPERATIONAL',
+    product: 'BeyondFlow',
+    version: '1.0.0',
+    environment: 'sandbox',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    systems: {
+      armorIqGovernance: {
+        status: 'OPERATIONAL',
+        mode: 'ARMORIQ_LIVE',
+        agentId: 'flowguard-agent',
+        mcpServerId: 'flowguard-treasury-mcp',
+        proxyEndpoint: 'https://proxy.armoriq.ai',
+        iapEndpoint: 'https://iap.armoriq.ai',
+        policy: 'flowguard-treasury-allowlist'
+      },
+      mcpServer: {
+        status: 'OPERATIONAL',
+        name: 'flowguard-treasury-mcp',
+        version: '1.0.0',
+        protocolVersion: '2024-11-05',
+        endpoint: '/mcp',
+        governedTools: ['lookup_order', 'change_payout', 'issue_refund'],
+        appSideTools: ['assert_reserve_floor', 'verify_audit_merkle']
+      },
+      voiceGateway: {
+        status: 'OPERATIONAL',
+        provider: 'ElevenLabs Conversational AI',
+        webhookHoldingPattern: 'ACTIVE (<5s response)',
+        tools: ['BeyondFlow_orderLookup', 'BeyondFlow_payoutChange', 'BeyondFlow_issueRefund']
+      },
+      treasuryEngine: {
+        status: 'OPERATIONAL',
+        mode: 'AIRWALLEX_SANDBOX_SIMULATOR',
+        reserveFloor: 15000,
+        currency: 'USD',
+        activeScenario: 'SCENARIO_A',
+        syntheticDataOnly: true,
+        realFunds: false
+      }
+    },
+    appName: 'BeyondFlow — Voice AI Support Agent Governed by ArmorIQ',
     isLiveSandbox: authStatus.success,
     mode: authStatus.success ? 'AIRWALLEX_LIVE_SANDBOX' : 'SANDBOX_MOCK_ADAPTER',
     armorIq: {
